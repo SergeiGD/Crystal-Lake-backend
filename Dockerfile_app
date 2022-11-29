@@ -5,10 +5,13 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+RUN apk update && apk add bash && apk add postgresql-dev gcc python3-dev musl-dev
 
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY . .
+
+ENTRYPOINT ./wait-for-it.sh db:5432 -- python3.9 manage.py migrate && python3.9 manage.py runserver 0.0.0.0:8000
+

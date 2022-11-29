@@ -81,7 +81,7 @@ DATABASES = {
         "USER": environ.get("DB_USER"),
         "PASSWORD": environ.get("DB_PASSWORD"),
         "HOST": environ.get("DB_HOST"),
-        "PORT": environ.get("DB_PORT_DOCKER")
+        "PORT": '5432'
     }
 }
 

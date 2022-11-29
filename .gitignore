@@ -2,3 +2,4 @@
 *.vscode
 .env
 venv
+postgres_data

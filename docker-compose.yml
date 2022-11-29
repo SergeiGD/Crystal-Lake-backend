@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile_app
-    container_name: app
+    container_name: crystal_lake_app
     command: python3.9 manage.py runserver 0.0.0.0:8000
     volumes:
       - ./crystallake/:/app/
@@ -18,7 +18,7 @@ services:
 
   db:
     image: postgres:15.1-alpine3.16
-    container_name: db
+    container_name: crystal_lake_db
     volumes:
       - ./postgres_data:/var/lib/postgresql/data/
     environment:
@@ -26,6 +26,6 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - ${DB_PORT_OUT}:${DB_PORT_DOCKER}
+      - ${DB_PORT}:5432
     env_file:
       - ./.env

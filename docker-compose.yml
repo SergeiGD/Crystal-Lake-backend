@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: ./Dockerfile_app
     container_name: crystal_lake_app
-    command: python3.9 manage.py runserver 0.0.0.0:8000
+    command: sh -c "python3.9 manage.py migrate && python3.9 manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./crystallake/:/app/
     ports:

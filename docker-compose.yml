@@ -26,6 +26,6 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5454:5432"
+      - ${DB_PORT_OUT}:${DB_PORT_DOCKER}
     env_file:
       - ./.env

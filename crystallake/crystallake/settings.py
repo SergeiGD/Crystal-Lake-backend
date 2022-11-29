@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-8a@)ukh&36+asiwqk&o)f4yx!+flvoaoq^-7fnq(fc9$6s=wmt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'crystallake.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": environ.get("DB_ENGINE", "django.db.backends.postgresql"),
+        "ENGINE": 'django.db.backends.postgresql',
         "NAME": environ.get("DB_NAME"),
         "USER": environ.get("DB_USER"),
         "PASSWORD": environ.get("DB_PASSWORD"),
         "HOST": environ.get("DB_HOST"),
-        "PORT": environ.get("DB_PORT", "5432")
+        "PORT": environ.get("DB_PORT_DOCKER")
     }
 }
 

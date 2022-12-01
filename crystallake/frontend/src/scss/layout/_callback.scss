@@ -1,0 +1,44 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.call{
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.7rem;
+    gap: 1.5em;
+    width: 35%;
+    margin: 0 auto;
+    align-items: center;
+
+    @include mixins.device(tablet){
+        font-size: 1.5rem;
+    }
+
+    @include mixins.device(mobile){
+        font-size: 1.3rem;
+        gap: 1em;
+    }
+
+    .call_input{
+        font-size: 1em;
+        text-align: center;
+        width: 10em;
+        border-radius: vars.$radius;
+        border-color: vars.$pink_color;
+        padding: 0.3em 0;
+    }
+
+    .fa-phone{
+        font-size: 1em;
+        color: #FFFFFF;
+        background-color: vars.$pink_color;
+        padding: 0.5em;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.15s linear;
+
+        &:hover{
+            background-color: #000;
+        }
+    }
+}

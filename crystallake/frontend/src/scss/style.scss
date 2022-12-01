@@ -1,0 +1,59 @@
+// CLIENTS-SITE PAGES STYLE (NO BOOTSTRAP)
+
+// BASE
+@import 'base/reset';
+@import 'base/typographic';
+
+
+// SCSS-UTILS 
+@import 'utils/mixins';
+@import 'utils/vars';
+
+
+// COMPONENTS 
+@import 'components/breadcrumbs';
+@import 'components/card_short';
+@import 'components/card_long';
+@import 'components/pages';
+@import 'components/slider';
+@import 'components/highlighted';
+@import 'components/input_field';
+@import 'components/select_field';
+@import 'components/content_container';
+@import 'components/modal';
+
+
+// LAYOUT 
+@import 'layout/section';
+@import 'layout/sales';
+@import 'layout/book_form';
+@import 'layout/callback';
+@import 'layout/catalog';
+@import 'layout/catalog_medium';
+@import 'layout/catalog_long';
+@import 'layout/finder';
+@import 'layout/footer';
+@import 'layout/header';
+@import 'layout/map';
+@import 'layout/recomendations';
+@import 'layout/profile_menu';
+@import 'layout/description';
+@import 'layout/photo';
+@import 'layout/info';
+@import 'layout/free_dates';
+@import 'layout/form_inputs';
+@import 'layout/login_popup';
+
+
+// PAGES SPECIFIC STYLES
+@import 'pages/main';
+@import 'pages/contacts';
+@import 'pages/cart';
+@import 'pages/offer';
+@import 'pages/profile';
+@import 'pages/profile_history_item';
+@import 'pages/profile_info';
+
+// VENDORS (JQUERY PLUGINS)
+@import 'vendors/evo_calendar';
+@import 'vendors/slick_slider';

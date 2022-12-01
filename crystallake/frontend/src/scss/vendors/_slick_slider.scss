@@ -1,0 +1,96 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.images_popup{
+    width: 100%;
+    margin-top: 50vh;
+    transform: translate(0,  -50%);
+
+    position: relative;
+
+    .slick_slider{
+        position: relative;
+    
+        .slick-track{
+            display: flex;
+        }
+        
+        .slick-list{
+            overflow: hidden;
+        }
+    
+        .slick-dots{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3em;
+            margin-top: 1.5em;
+    
+            .slick-active button{
+                background-color: vars.$pink_color;
+            }
+    
+            li{
+                list-style: none;
+    
+                button{
+                    background-color: #fff;
+                    font-size: 0;
+                    content: "";
+                    display: block;
+                    padding: 0;
+                    margin: 0;
+                    border: 2px solid vars.$pink_color;
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+            }
+        }
+    
+        .slick_slider_item{
+            text-align: center;
+            width: 100vw !important;
+            img{
+                border-radius: vars.$radius;
+                display: block;
+                width: 38%;
+                margin: 0 auto;
+    
+                @include mixins.device(tablet){
+                    width: 60%;
+                }
+    
+                @include mixins.device(mobile){
+                    width: 80%;
+                }
+            }
+        }
+    }
+
+    
+    .images_close{
+        position: absolute;
+        top: 0;
+        right: 20%;
+        font-size: 2em;
+        cursor: pointer;
+
+        @include mixins.device(tablet){
+            right: 10%;
+        }
+
+        @include mixins.device(mobile){
+            top: -1.3em;
+            font-size: 2.5em;
+            right: 10%;
+            transform: translate(10%, 0);
+        }
+    }
+    
+}
+
+
+
+

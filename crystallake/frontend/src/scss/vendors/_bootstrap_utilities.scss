@@ -1,0 +1,91 @@
+$width: (
+  3r: 3rem,
+  5r: 5rem,
+  7r: 7rem,
+  9r: 9rem,
+  10r: 10rem,
+  12r: 12rem,
+  15r: 15rem,
+  1000p: 1000px,
+);
+
+$max-width: (
+  7r: 7rem,
+  8r: 8rem,
+  10r: 10rem,
+  12r: 12rem,
+  15r: 15rem,
+);
+
+$height: (
+  10r: 10rem,
+  15r: 15rem,
+  45: 45%,
+);
+
+$bg-color:(
+  "c_yellow-700": #FFD20A,
+);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "width": map-merge(
+      map-get($utilities, "width"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "width"), "values"),
+          $width,
+        ),
+      ),
+    ),
+  )
+);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "max-width": map-merge(
+      map-get($utilities, "max-width"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "max-width"), "values"),
+          $max-width,
+        ),
+      ),
+    ),
+  )
+);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "height": map-merge(
+      map-get($utilities, "height"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "height"), "values"),
+          $height,
+        ),
+      ),
+    ),
+  )
+);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "background-color": map-merge(
+      map-get($utilities, "background-color"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "background-color"), "values"),
+          $bg-color,
+        ),
+      ),
+    ),
+  )
+);
+
+
+

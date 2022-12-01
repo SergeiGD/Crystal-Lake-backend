@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Crystal Lake</title>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <script async src="https://kit.fontawesome.com/c98347f4c9.js" crossorigin="anonymous"></script>
+</head>
+<body class="font-main">
+    
+    <header class="w-100 bg-black">
+        <div class="d-flex justify-content-between align-items-center container-xl py-3">
+
+            <a href="../client/index.html" class="text-white fs-4 font-logo text-decoration-none link-hover">Crystal Lake</a>
+
+            <div class="d-flex gap-5 align-items-center fs-5">
+                <span class="text-white">Иван Иванович Иванов</span>
+                <a href="../client/index.html" class="text-white text-decoration-none link-hover">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Выйти</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    
+    
+
+    <section class="pt-5">
+
+        <div class="container-xl d-flex flex-column gap-5">
+
+            <h2 class="text-center h-2 section_title">Администирование</h2>
+
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+                    <li class="breadcrumb-item">
+                        <a href="../client/index.html" class="link-hover text-dark text-decoration-none">
+                            Главная
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="admin_rooms.html" class="link-hover text-dark text-decoration-none">
+                            Номера
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="admin_show_room.html" class="link-hover text-dark text-decoration-none">
+                            Просмотр номера
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Редактирование номера</li>
+                </ol>
+            </nav>
+
+            <ul class="nav justify-content-center gap-2 shadow rounded-2 fs-5 py-2">
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_orders.html">Заказы</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active text-dark link-hover" aria-current="page" href="admin_clients.html">Клиенты</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover link-active" href="admin_rooms.html">Номера</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_services.html">Услуги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_workers.html">Сотрудники</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_roles.html">Роли</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_sales.html ">Акции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_profile.html">Кабинет</a>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link text-dark link-hover dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Дополнительно
+                        </a>
+                      
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="admin_tags.html">Теги</a></li>
+                          <li><a class="dropdown-item" href="admin_properties.html">Доп. свойства</a></li>
+                          <li><a class="dropdown-item" href="admin_weekends.html">Даты праздников</a></li>
+                          <li><a class="dropdown-item" href="admin_set_main.html">Настройка главной</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+            
+                
+                <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
+
+                    <i class="fa-regular fa-square-minus text-danger card_icon" data-bs-toggle="modal" data-bs-target="#delete_modal"></i>
+
+                    <div class="text-center">
+                        <span class="fw-bold fs-5">id номера: </span>
+                        <span class="fw-bold fs-5">19</span>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-6 col-12">
+                            <div class="input-group">
+                                <label for="manage_name" class="input-group-text w-10r" id="basic-addon1">Наименование</label>
+                                <input id="manage_name" type="text" class="form-control" value="Двухэтажный домик у озера">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-lg-0 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_beds" class="input-group-text w-10r" id="basic-addon1">Спальных мест</label>
+                                <input id="manage_beds" type="number" class="form-control " value="7">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_def_price" class="input-group-text w-10r" id="basic-addon1">Обычная цена</label>
+                                <input id="manage_def_price" type="number" class="form-control " value="8999">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_wek_price" class="input-group-text w-10r" id="basic-addon1">Праздничная цена</label>
+                                <input id="manage_wek_price" type="number" class="form-control " value="9999">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_rooms" class="input-group-text w-10r" id="basic-addon1">Комнат</label>
+                                <input id="manage_rooms" type="number" class="form-control " value="4">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_square" class="input-group-text w-10r" id="basic-addon1">Площадь (м&#178;)</label>
+                                <input id="manage_square" type="number" class="form-control " value="142">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_floors" class="input-group-text w-10r" id="basic-addon1">Этажей</label>
+                                <input id="manage_floors" type="number" class="form-control " value="2">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_bonus" class="input-group-text w-10r" id="basic-addon1">Макс. бонусов (%)</label>
+                                <input id="manage_bonus" type="number" class="form-control " value="40">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_prepayment_percent" class="input-group-text w-10r" id="basic-addon1">Предоплата (%)</label>
+                                <input id="manage_prepayment_percent" type="number" class="form-control " value="10">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_prepayment_money" class="input-group-text w-10r" id="basic-addon1">Предоплата (&#8381;)</label>
+                                <input id="manage_prepayment_money" type="number" class="form-control " value="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 mt-4">
+                            <div class="input-group flex-nowrap w-auto">
+                                <label for="manage_prepayment_money" class="input-group-text w-10r" id="basic-addon1">Возврат (%)</label>
+                                <input id="manage_prepayment_money" type="number" class="form-control " value="25">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-6 col-12">
+
+                            <div class="col-12">
+                                <label class="input-group-text rounded-top rounded-0" for="manage_info">Описание номера</label>
+                                <textarea name="" id="manage_info" class="form-control rounded-bottom rounded-0 h-15r">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum tenetur illum nemo minima consequatur nulla ducimus excepturi itaque hic cumque pariatur beatae veniam, a dolores iste inventore repellat voluptas? Porro, quisquam veniam expedita numquam enim amet quis architecto dolor harum repudiandae, eius quas nihil omnis impedit doloremque aspernatur optio nam nobis fuga facere nostrum. 
+                                </textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="d-flex flex-column">
+                                    <span class="input-group-text rounded-top rounded-0 mt-3">Теги:</span>
+                                    <div class="border-1 border rounded-bottom border-top-0 flex-grow-1 p-2">
+    
+                                        <button class="btn btn-c_grey-100 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add_tag_modal">+ Добавить</button>
+    
+                                            <div class="d-flex gap-4 flex-wrap mt-3">
+                                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                                    <span class="py-1 px-3">Два этажа</span>
+                                                    <button class="btn btn-danger rounded-0">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                                    <span class="py-1 px-3">Беседка</span>
+                                                    <button class="btn btn-danger rounded-0">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                                    <span class="py-1 px-3">Два этажа</span>
+                                                    <button class="btn btn-danger rounded-0">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                                    <span class="py-1 px-3">Два этажа</span>
+                                                    <button class="btn btn-danger rounded-0">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                                    <span class="py-1 px-3">Два этажа</span>
+                                                    <button class="btn btn-danger rounded-0">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                                    <span class="py-1 px-3">Два этажа</span>
+                                                    <button class="btn btn-danger rounded-0">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                                    <span class="py-1 px-3">Два этажа</span>
+                                                    <button class="btn btn-danger rounded-0">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                                    <span class="py-1 px-3">Два этажа</span>
+                                                    <button class="btn btn-danger rounded-0">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6 col-12 mt-lg-0 mt-4">
+                            <span class="input-group-text rounded-top rounded-0">Главное фото:</span>
+                            <div class="img_wrapper">
+                                <img src="../../img/card/house.jpg" alt="Главное фото" class="img-fluid w-100 img">
+                                <button class="btn btn-primary upload_img" >
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                    Загрузить фотографию
+                                </button>
+                                <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- accordion images -->
+
+                    <div class="accordion" id="images-accord">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="heading-1">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#images" aria-expanded="true" aria-controls="images">
+                              Дополнительные фотографии 
+                            </button>
+                          </h2>
+                          <div id="images" class="accordion-collapse collapse" aria-labelledby="heading-1" data-bs-parent="#images-accord">
+                            <div class="accordion-body row">
+
+                                <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="1">
+
+                                    <div class="w-100">
+                                        <span class="input-group-text rounded-top rounded-0">Фото 1:</span>
+                                        <div class="img_wrapper">
+
+                                            <img src="../../img/card/house.jpg" alt="Главное фото" class="img-fluid w-100 img">
+
+                                            <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                                                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                                            </button>
+
+                                            <button class="btn btn-primary update_img w-10r">
+                                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                                Обновить
+                                            </button>
+
+                                            <button class="btn btn-danger delete_img w-10r">
+                                                <i class="fa-solid fa-xmark"></i>
+                                                Удалить
+                                            </button>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-2 text-center">
+                                        <i class="fa-solid fa-arrow-left fs-2 opacity-50 move_prev" role="button"></i>
+                                        <i class="fa-solid fa-arrow-right fs-2 ms-5 move_next" role="button"></i>
+                                    </div>
+        
+                                </div>
+
+                                <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="2">
+
+                                    <div class="w-100">
+                                        <span class="input-group-text rounded-top rounded-0">Фото 2:</span>
+                                        <div class="img_wrapper">
+
+                                            <img src="../../img/card/house.jpg" alt="Главное фото" class="img-fluid w-100 img">
+
+                                            <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                                                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                                            </button>
+
+                                            <button class="btn btn-primary update_img w-10r">
+                                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                                Обновить
+                                            </button>
+
+                                            <button class="btn btn-danger delete_img w-10r">
+                                                <i class="fa-solid fa-xmark"></i>
+                                                Удалить
+                                            </button>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-2 text-center">
+                                        <i class="fa-solid fa-arrow-left fs-2 move_prev" role="button"></i>
+                                        <i class="fa-solid fa-arrow-right fs-2 ms-5 move_next" role="button"></i>
+                                    </div>
+        
+                                </div>
+
+                                <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="3">
+
+                                    <div class="w-100">
+                                        <span class="input-group-text rounded-top rounded-0">Фото 3:</span>
+                                        <div class="img_wrapper">
+
+                                            <img src="../../img/card/house.jpg" alt="Главное фото" class="img-fluid w-100 img">
+
+                                            <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                                                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                                            </button>
+
+                                            <button class="btn btn-primary update_img w-10r">
+                                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                                Обновить
+                                            </button>
+
+                                            <button class="btn btn-danger delete_img w-10r">
+                                                <i class="fa-solid fa-xmark"></i>
+                                                Удалить
+                                            </button>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-2 text-center">
+                                        <i class="fa-solid fa-arrow-left fs-2 move_prev" role="button"></i>
+                                        <i class="fa-solid fa-arrow-right fs-2 ms-5 opacity-50 move_next" role="button"></i>
+                                    </div>
+        
+                                </div>
+
+                                <div class="col-lg-4 col-sm-6 col-12 my-auto">
+                                    <button class="btn btn-c_yellow-700 btn-lg w-100 mx-auto">Загрузить еще</button>
+
+                                </div>
+                                
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <!-- accordion imges end -->               
+
+                    
+
+                    <div class="col-12 mt-4">
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-lg btn-c_yellow-700" data-bs-toggle="modal" data-bs-target="#save_modal">Сохранить</button>
+                            <button type="button" class="btn btn-lg btn-c_grey-100"  data-goto="admin_show_room.html">Назад</button>
+                        </div>
+                    </div>
+                    
+
+                </form>
+
+
+                <!-- rooms -->
+
+                <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5">
+
+                    <div class="text-center">
+                        <span class="fw-bold fs-5">Номера этого типа</span>
+                    </div>
+
+                    <div class="overflow-auto mt-4">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">Номер</th>
+                                <th scope="col" class="px-3 text-center" >Удалить</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-0" colspan="8">
+                                        <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold">+ Добавить</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">19</th>
+                                    <td class="p-0 position-relative w-10r">
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute">Удалить</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">36</th>
+                                    <td class="p-0 position-relative w-10r">
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute">Удалить</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+ 
+                </form>
+
+                <!-- end rooms -->
+
+                <!-- sales -->
+
+                <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5">
+
+                    <div class="text-center">
+                        <span class="fw-bold fs-5">Активные акции на эту услуги</span>
+                    </div>
+
+                    <div class="overflow-auto mt-4">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">id</th>
+                                <th scope="col">Наименование</th>
+                                <th scope="col">Начало</th>
+                                <th scope="col">Окончание</th>
+                                <th scope="col">Скидка</th>
+                                <th scope="col">Доп. условия</th>
+                                <th scope="col">Итого цена</th>
+                                <th scope="col" class="px-3 text-center" >Убрать</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-0" colspan="8">
+                                        <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#select_sale_modal">+ Добавить</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                        <a href="#" class="link-hover">Новогодние скидки</a> 
+                                    </td>
+                                    <td>01.01.2022</td>
+                                    <td>10.01.2022</td>
+                                    <td>15%</td>
+                                    <td>Нет</td>
+                                    <td>12354&#8381;</td>
+                                    <td class="p-0 position-relative">
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute">Убрать</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>
+                                        <a href="#" class="link-hover">Новогодние скидки</a> 
+                                    </td>
+                                    <td>01.01.2022</td>
+                                    <td>10.01.2022</td>
+                                    <td>15%</td>
+                                    <td>Нет</td>
+                                    <td>12354&#8381;</td>
+                                    <td class="p-0 position-relative">
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute">Убрать</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>
+                                        <a href="#" class="link-hover">Живи дольше, плати меньше</a> 
+                                    </td>
+                                    <td>01.01.2022</td>
+                                    <td>10.01.2022</td>
+                                    <td>3525&#8381;</td>
+                                    <td>Да</td>
+                                    <td>12354&#8381;</td>
+                                    <td class="p-0 position-relative">
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute">Убрать</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    
+
+                </form>
+
+                <!-- end sales -->
+
+                <!-- prices -->
+
+                <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5">
+
+                    <div class="text-center">
+                        <span class="fw-bold fs-5">Дополнительное повышение цен</span>
+                    </div>
+
+                    <div class="overflow-auto mt-4">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">Даты</th>
+                                <th scope="col">Цена</th>
+                                <th scope="col" class="px-3 text-center" >Изменить</th>
+                                <th scope="col" class="px-3 text-center" >Удалить</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-0" colspan="4">
+                                        <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#price_modal">+ Добавить</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-nowrap">01.01.2022 - 10.01.2022</td>
+                                    <td>9248&#8381;</td>
+                                    <td class="p-0 position-relative w-10r">
+                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target="#price_modal">Изменить</button>
+                                    </td>
+                                    <td class="p-0 position-relative w-10r">
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute">Удалить</button>
+                                    </td>
+                                </tr>
+     
+                            </tbody>
+                        </table>
+                    </div>
+                    
+ 
+                </form>
+
+                <!-- end prices -->
+
+                <!-- properties -->
+
+                <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5">
+
+                    <div class="text-center">
+                        <span class="fw-bold fs-5">Дополнительные свойства</span>
+                    </div>
+
+                    <div class="overflow-auto mt-4">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">id свойства</th>
+                                <th scope="col">Наименование свойства</th>
+                                <th scope="col">Установленное значение</th>
+                                <th scope="col" class="px-3 text-center" >Изменить</th>
+                                <th scope="col" class="px-3 text-center" >Убрать</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-0" colspan="5">
+                                        <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add_property_modal">+ Добавить</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                        <a href="admin_manage_tag.html" class="link-hover d-block">Количество гамаков</a>
+                                    </td>
+                                    <td>2</td>
+                                    <td class="p-0 position-relative w-10r">
+                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target="#edit_property_modal">Изменить</button>
+                                    </td>
+                                    <td class="p-0 position-relative w-10r">
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute">Убрать</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>
+                                        <a href="admin_manage_tag.html" class="link-hover d-block">Вид из окон</a>
+                                    </td>
+                                    <td>На озеро</td>
+                                    <td class="p-0 position-relative w-10r">
+                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target="#edit_property_modal">Изменить</button>
+                                    </td>
+                                    <td class="p-0 position-relative w-10r">
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute">Убрать</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </form>
+
+                <!-- end properties -->
+
+                
+
+            
+
+        </div>
+
+    </section>
+
+    
+    
+    <footer class="mt-5 bg-black">
+        <div class="container-xl mx-auto row justify-content-between py-3">
+            <div class="col-lg-7 col-12 d-flex gap-5 justify-content-lg-start justify-content-between">
+
+                <div class="d-flex flex-column gap-2">
+                    <a href="admin_orders.html" class="text-white text-decoration-none link-hover fs-5 w-auto">Заказы</a>
+                    <a href="admin_clients.html" class="text-white text-decoration-none link-hover fs-5">Клиенты</a>
+                    <a href="admin_rooms.html" class="text-white text-decoration-none link-hover fs-5">Номера</a>
+                    <a href="admin_services.html" class="text-white text-decoration-none link-hover fs-5">Услуги</a>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <a href="admin_workers.html" class="text-white text-decoration-none link-hover fs-5">Сотрудники</a>
+                    <a href="admin_roles.html" class="text-white text-decoration-none link-hover fs-5">Роли</a>
+                    <a href="admin_sales.html" class="text-white text-decoration-none link-hover fs-5">Акции</a>
+                    <a href="admin_profile.html" class="text-white text-decoration-none link-hover fs-5">Кабинет</a>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <div class="dropdown">
+                        <a class="text-white text-decoration-none link-hover fs-5 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Дополнительно
+                        </a>
+                      
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="admin_tags.html">Теги</a></li>
+                          <li><a class="dropdown-item" href="admin_properties.html">Доп. свойства</a></li>
+                          <li><a class="dropdown-item" href="admin_weekends.html">Даты праздников</a></li>
+                          <li><a class="dropdown-item" href="admin_set_main.html">Настройка главной</a></li>
+                        </ul>
+                    </div>
+                    <a href="../client/index.html" class="text-white text-decoration-none link-hover fs-5">На главную</a>
+                </div>
+
+            </div>
+
+            <div class="col-lg-auto col-12 mt-lg-0 mt-3 d-flex flex-lg-column justify-content-between">
+                <p class="text-white fs-5">Иван Иванович Иванов</p>
+                <a href="../client/index.html" class="text-white text-decoration-none link-hover fs-5">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Выйти</span>
+                </a>
+            </div>
+        </div>
+
+    </footer>
+    
+    <!-- modal save changes -->
+    <div class="modal fade" id="save_modal" tabindex="-1" aria-labelledby="save_modal_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="save_modal_label">Сохранить изменения?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены, что хотите сохранить изменения?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary w-10r" data-bs-dismiss="modal" data-goto="admin_show_room.html">Да, сохранить</button>
+                    <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- modal delete -->
+    <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="delete_modal_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="delete_modal_label">Удалить номер?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены, что хотите удалить этот номер?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger w-10r" data-bs-dismiss="modal" data-goto="admin_rooms.html">Да, удалить</button>
+                    <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- modal delete end -->
+
+
+    <!-- show image modal -->
+    <div class="modal fade" id="show_img_modal" tabindex="-1" aria-labelledby="show_img_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="show_img_label">Просмотр изображения</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="img_modal" class="w-100" alt="Просмотр изображения">
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- show image modal end -->
+
+
+    <!-- add tag modal -->
+    <div class="modal fade" id="add_tag_modal" tabindex="-1" aria-labelledby="add_tag_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="add_tag_label">Добавление тега</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form class="shadow p-3 rounded-2 position-relative">
+
+                    <i class="fa-regular fa-trash-can text-danger card_icon"></i>
+
+                    <div class="row align-items-start justify-content-between py-3">
+
+                        <div class="col-12 row justify-content-between mx-auto p-0">
+
+                            <div class="col-md-3 col-6">
+                                <div>
+                                    <label for="tag_id" class="form-label">id тега:</label>
+                                    <input type="text" class="form-control " id="tag_id">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-12 mt-md-0 mt-3">
+                                <label for="tag_name" class="form-label">Наименование:</label>
+                                <input type="text" class="form-control" id="tag_name">
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                        </div>
+
+                    </div>
+
+                </form>
+                
+                <div class="shadow mt-4 rounded-2 overflow-auto">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button">
+                                id <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap col-hover" role="button">
+                                Наименование <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap">
+                                Выбрать
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr role="button">
+                                <th scope="row">1</th>
+                                <td class="text-nowrap">Панорамный вид</td>
+                                <td class="p-0 position-relative w-10r">
+                                    <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal">Выбрать</button>
+                                </td>
+                            </tr>
+                            <tr role="button">
+                                <th scope="row">2 </th>
+                                <td class="text-nowrap">Панорамный вид</td>
+                                <td class="p-0 position-relative w-10r">
+                                    <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal">Выбрать</button>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="d-flex justify-content-center mt-4">
+                    <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    </ul>
+                </nav>  
+
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- add tag modal end -->
+
+
+    <!-- modal select sale -->
+    <div class="modal fade" id="select_sale_modal" tabindex="-1" aria-labelledby="select_sale_label" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="select_sale_label">Выбор акции</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form class="shadow p-3 rounded-2 position-relative">
+
+                        <i class="fa-regular fa-trash-can text-danger card_icon"></i>
+    
+                        <div class="row align-items-start justify-content-between ">
+    
+                            <div class="col-12 row mx-auto p-0">
+                                
+                                <div class="col-6">
+                                    <div>
+                                        <label for="sale_id" class="form-label">id акции:</label>
+                                        <input type="text" class="form-control mw-10r" id="sale_id">
+                                    </div>
+                                </div>
+                                
+        
+                                <div class="col-lg-6 col-12 mt-lg-0 mt-3">
+                                    <label for="sale_name" class="form-label">Наименование:</label>
+                                    <input type="text" class="form-control" id="sale_name">
+                                </div>
+    
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <label for="order_action" class="form-label">Даты проведения:</label>
+                                    
+                                    <div class="d-flex justify-content-start gap-0">
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="sale_date_from" class="input-group-text rounded-start" id="basic-addon1">с</label>
+                                            <input id="sale_date_from" type="date" class="form-control w-100 mw-8r rounded-0 flex-grow-0 flex-shrink-1">
+                                        </div>
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="sale_date_until" class="input-group-text  rounded-0" id="basic-addon1">до</label>
+                                            <input id="sale_date_until" type="date" class="form-control w-100 mw-8r rounded-end flex-grow-0 flex-shrink-1">
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="col-6 mt-3">
+    
+                                    <label for="sale_type" class="form-label">Тип скидки:</label>
+                                    <select id="sale_type" class="form-select w-100 mw-12r flex-grow-0 flex-shrink-1">
+                                        <option selected>Все</option>
+                                        <option value="1">Процент</option>
+                                        <option value="2">Точная сумма</option>
+                                    </select>
+    
+                                </div>
+    
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <label for="order_price" class="form-label">Размер скидки (%):</label>
+                                    <div class="d-flex justify-content-start gap-0">
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="sale_procent_from" class="input-group-text rounded-start" id="basic-addon1">от</label>
+                                            <input id="sale_procent_from" type="number" class="form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1">
+                                        </div>
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="sale_procent_until" class="input-group-text  rounded-0" id="basic-addon1">до</label>
+                                            <input id="sale_procent_until" type="number" class="form-control w-100 mw-10r rounded-end flex-grow-0 flex-shrink-1">
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <label for="order_price" class="form-label">Размер скидки (&#8381;):</label>
+                                    <div class="d-flex justify-content-start gap-0">
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="sale_money_from" class="input-group-text rounded-start" id="basic-addon1">от</label>
+                                            <input id="sale_money_from" type="number" class="form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1">
+                                        </div>
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="sale_money_until" class="input-group-text  rounded-0" id="basic-addon1">до</label>
+                                            <input id="sale_money_until" type="number" class="form-control w-100 mw-10r rounded-end flex-grow-0 flex-shrink-1">
+                                        </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+    
+                            <div class="col-12 mt-3">
+                                <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                            </div>
+    
+                        </div>
+    
+                    </form>
+
+                    
+                    <div class="shadow mt-4 rounded-2 overflow-auto">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button">
+                                    id <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                                </th>
+                                <th scope="col" class="text-nowrap col-hover" role="button">
+                                    Наименование <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                                </th>
+                                <th scope="col" class="text-nowrap col-hover" role="button">
+                                    Начало <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                                </th>
+                                <th scope="col" class="text-nowrap col-hover" role="button">
+                                    Окончание <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                                </th>
+                                <th scope="col" class="text-nowrap col-hover" role="button">
+                                    Скидка <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                                </th>
+                                <th scope="col" class="text-nowrap">
+                                    Выбрать
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr role="button">
+                                    <th scope="row">1</th>
+                                    <td>Живи дольше, плати меньше</td>
+                                    <td>01.01.2022</td>
+                                    <td>10.01.2022</td>
+                                    <td>30%</td>
+                                    <td class="p-0 position-relative">
+                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-dismiss="modal">Выбрать</button>
+                                    </td>
+                                </tr>
+                                <tr role="button">
+                                    <th scope="row">2</th>
+                                    <td>Скидка на водные прогулки</td>
+                                    <td>01.01.2022</td>
+                                    <td>10.01.2022</td>
+                                    <td>500&#8381;</td>
+                                    <td class="p-0 position-relative">
+                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-dismiss="modal">Выбрать</button>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+    
+                    <nav class="d-flex justify-content-center mt-4">
+                        <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        </ul>
+                    </nav>  
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal select sale end -->
+
+
+    <!-- modal price -->
+    <div class="modal fade" id="price_modal" tabindex="-1" aria-labelledby="price_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="price_label">Дополнительное повышение цен</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group flex-nowrap w-auto">
+                            <label for="price_price" class="input-group-text w-10r" id="basic-addon1">Цена</label>
+                            <input id="price_price" type="number" class="form-control mw-10r" value="9234">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mt-4">
+                        <div class="input-group flex-nowrap w-auto">
+                            <label for="start_price" class="input-group-text w-10r" id="basic-addon1">Начало</label>
+                            <input id="start_price" type="date" class="form-control " value="2022-06-15">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mt-4">
+                        <div class="input-group flex-nowrap w-auto">
+                            <label for="end_price" class="input-group-text w-10r" id="basic-addon1">Окончание</label>
+                            <input id="end_price" type="date" class="form-control " value="2022-06-30">
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary w-10r" data-bs-dismiss="modal">Сохранить</button>
+                <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- modal price end -->
+
+    
+    <!-- modal add property -->
+    <div class="modal fade" id="add_property_modal" tabindex="-1" aria-labelledby="add_property_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="add_property_label">Добавление тэга к номеру</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group flex-nowrap w-auto">
+                            <label for="select_tag" class="input-group-text">Свойство:</label>
+                            <div class="d-flex w-100">
+                                <input id="select_tag" type="text" class="form-control rounded-0 rounded-start">
+                                <button class="btn btn-primary w-5r rounded-0" data-bs-toggle="modal" data-bs-target="#select_property_modal">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                                <button class="btn btn-danger w-5r rounded-0 rounded-end">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-lg-12 col-12 mt-4">
+                        <div class="input-group flex-nowrap w-auto">
+                            <label for="start_price" class="input-group-text w-10r" id="basic-addon1">Значение</label>
+                            <input id="start_price" type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary w-10r" data-bs-dismiss="modal">Добавить</button>
+                <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- modal add property end -->
+
+
+    <!-- modal select property -->
+    <div class="modal fade" id="select_property_modal" tabindex="-1" aria-labelledby="select_property_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="select_property_label">Выбор свойства</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <form class="shadow p-3 rounded-2 position-relative">
+
+                    <i class="fa-regular fa-trash-can text-danger card_icon"></i>
+
+                    <div class="row align-items-start justify-content-between py-3">
+
+                        <div class="col-12 row justify-content-between mx-auto p-0">
+
+                            <div class="col-md-3 col-6">
+                                <div>
+                                    <label for="property_id" class="form-label">id свойства:</label>
+                                    <input type="text" class="form-control " id="property_id">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-12 mt-md-0 mt-3">
+                                <label for="property_name" class="form-label">Наименование:</label>
+                                <input type="text" class="form-control" id="property_name">
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                        </div>
+
+                    </div>
+
+                </form>
+
+                
+                <div class="shadow mt-4 rounded-2 overflow-auto">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button">
+                                id  <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap col-hover" role="button">
+                                Наименование  <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap">
+                                Выбрать
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr role="button">
+                                <th scope="row">1</th>
+                                <td class="text-nowrap">Вид из окон </td>
+                                <td class="p-0 position-relative">
+                                    <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-dismiss="modal">Выбрать</button>
+                                </td>
+                            </tr>
+                            <tr role="button">
+                                <th scope="row">2</th>
+                                <td class="text-nowrap">Вид из окон</td>
+                                <td class="p-0 position-relative">
+                                    <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-dismiss="modal">Выбрать</button>
+                                </td>
+                            </tr>
+                            <tr role="button">
+                                <th scope="row">3</th>
+                                <td class="text-nowrap">Вид из окон</td>
+                                <td class="p-0 position-relative">
+                                    <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-dismiss="modal">Выбрать</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="d-flex justify-content-center mt-4">
+                    <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    </ul>
+                </nav>  
+
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- modal select property end -->
+
+
+    <!-- modal edit property -->
+    <div class="modal fade" id="edit_property_modal" tabindex="-1" aria-labelledby="edit_property_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="add_property_label">Изменение свойства в номере</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="row">
+                    <div class="col-12 d-flex">
+                        
+                        <p class="fw-bold">Свойство:</p>
+                        <p class="opacity-75 ms-3">Вид из окон</p>
+                        <hr>
+                        
+                    </div>
+                    <div class="col-lg-12 col-12 mt-4">
+                        <div class="input-group flex-nowrap w-auto">
+                            <label for="start_price" class="input-group-text w-10r" id="basic-addon1">Значение</label>
+                            <input id="start_price" type="text" class="form-control" value="На озеро">
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary w-10r" data-bs-dismiss="modal">Сохранить</button>
+                <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- modal edit tag property -->
+
+</body>
+</html>

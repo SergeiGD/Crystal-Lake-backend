@@ -1,0 +1,125 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.login_popup{
+    opacity: 1;
+    position: fixed;
+    left: 50%;
+    top: 20%;
+    background-color: #fff;
+    transform: translate(-50%, 0);
+
+    flex-direction: column;
+    gap: 2em;
+    padding: 2em 1.5em;
+    width: 30%;
+    border-radius: vars.$radius;
+    border: 1px solid #000;
+
+
+    display: none;
+
+    @include mixins.device(tablet){
+        width: 50%;
+    };
+
+    @include mixins.device(mobile){
+        width: 80%;
+    };
+
+    .login_title{
+        text-align: center;
+
+        
+
+        .login_link{
+            @include mixins.link(#000);
+            font-size: 1.1em;
+            position: relative;
+            display: inline-block;
+        }
+
+        .login_link__active{
+            &::after{
+                content: "";
+                height: 1px;
+                width: 100%;
+                background-color: #000;
+                display: block;
+                margin-top: 5px;
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+            }
+
+            &:hover{
+                color: #000;
+            }
+        }
+    }
+
+    .login_fields{
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        .login_field{
+            border-radius: vars.$radius;
+            padding: 0.3em;
+        }
+    }
+
+    .login_reset{
+        @include mixins.link(#000);
+    }
+
+    .login_buttons{
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        align-items: center;
+
+        .login_button{
+            @extend %button;
+            width: 15em;
+            color: #000;
+            background-color: #fff;
+            border-color: #000;
+
+            // border-radius: vars.$radius;
+            // font-size: 1em;
+            // padding: 0.3em;
+        }
+
+        // .login_button__login{
+        //     color: #000;
+        //     background-color: #fff;
+        //     border-color: #000;
+        // }
+
+        // .login_button__reset{
+        //     color: #fff;
+        //     background-color: vars.$red_color;
+        //     border-color: transparent;
+        // }
+    }
+
+    .login_close{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: transparent;
+        border: none;
+        font-size: 2em;
+        cursor: pointer;
+        transition: color 0.15s linear;
+
+        &:hover{
+            color: vars.$pink_color;
+        }
+    }
+}
+
+.login_popup__active{
+    display: flex;
+}

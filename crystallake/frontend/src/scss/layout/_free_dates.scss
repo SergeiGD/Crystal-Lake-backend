@@ -1,0 +1,30 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.dates{
+    @include mixins.content_block(1em);
+    flex-basis: vars.$block_width_decs;
+    max-width: vars.$block_width_decs;
+    line-height: 1.5;
+
+    .dates_title{
+        @extend %subtitle;
+    }
+
+    .calendar{
+        display: block;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    @include mixins.device(tablet){
+        flex-basis: auto;
+        width: 100%;
+        max-width: vars.$block_width_tab;
+    }
+
+    @include mixins.device(mobile){
+        max-width: vars.$block_width_mob;
+    }
+
+}

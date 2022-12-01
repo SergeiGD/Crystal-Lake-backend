@@ -1,0 +1,29 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.breadcrumbs{
+    display: flex;
+    gap: 1em;
+    margin-bottom: 2em;
+    white-space: nowrap;
+    overflow: scroll;
+    box-shadow: vars.$shadow;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+
+    &::-webkit-scrollbar {
+        display: none;
+      }
+
+    .breadcrumbs_item{
+        font-size: 0.9em;
+        @include mixins.link(#000);
+    }
+
+    .breadcrumbs_item__active{
+        cursor: auto;
+        &:hover{
+            color: #000;
+        }
+    }
+}

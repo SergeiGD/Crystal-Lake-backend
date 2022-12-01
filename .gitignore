@@ -4,3 +4,4 @@
 venv
 postgres_data
 migrate.sh
+watch_front.sh

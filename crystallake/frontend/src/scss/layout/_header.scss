@@ -1,0 +1,214 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.header{
+    font-size: 1rem;
+    color: #FFF;
+    width: 100%;
+    background-color: vars.$header_color;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    transition: background-color 0.15s linear;
+
+    &:hover{
+        background-color: #000000;
+
+        .header_menu__mobile{
+            background-color: #000000;
+        }
+
+        .header_menu{
+            background-color: #000000;
+        }
+    }
+
+}
+
+.header_inner{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.header_upper{
+    display: flex;
+    justify-content: space-between;
+    min-height: 1.5em;
+    align-items: center;
+    position: relative;
+
+    &::after{
+        content: "";
+        height: 1px;
+        width: 100%;
+        background-color: #FFF;
+        display: block;
+        margin-top: 5px;
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+    }
+
+    @include mixins.device(tablet){
+        display: none;
+    }
+
+    .header_upper_section{
+        display: flex;
+        justify-content: space-between;
+        gap: 2em;
+        font-size: 0.8em;
+    }
+
+    .header_upper_section_socials{
+        gap: 1em;
+    }
+}
+
+.header_under{
+    display: flex;
+    justify-content: space-between;
+    min-height: 2.5em;
+    align-items: center;
+    position: relative;
+
+    .header_logo{
+        font-family: vars.$logo_font;
+    }
+
+    .header_menu{
+        display: flex;
+        gap: 2em;
+
+        @include mixins.device(tablet){
+            flex-direction: column;
+            gap: 1em;
+            align-items: center;
+            z-index: 100;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            left: 100vw;
+            padding: 1em 0em;
+            text-align: center;
+            width: 100%;
+            background-color: vars.$header_color;
+            border-bottom-left-radius: vars.$radius;
+            border-bottom-right-radius: vars.$radius;
+            transition: background-color 0.15s linear;
+            transition: all linear 0.2s;
+        }
+    }
+
+    .header_menu_item{
+        display: inline-block;
+        width: fit-content;
+
+        @include mixins.device(tablet){
+            width: 100%;
+        }
+        
+    }
+
+    .header_menu_item__active{
+        &::after{
+            content: ' ' attr(data-text) ' ';
+            color: rgba($color: #000000, $alpha: 0);
+            height: 2px;
+            width: fit-content;
+            margin: 0 auto;
+            background-color: #FFF;
+            display: block;
+            margin-top: 5px;
+        }
+
+    }
+
+    .header_burger{
+        display: none;
+        position: relative;
+        cursor: pointer;
+    
+        @include mixins.device(tablet){
+            display: block;
+            position: relative;
+            height: 22px;
+            width: 35px;
+            
+    
+            &::before, &::after, span{
+                content: "";
+                background-color: #fff;
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                left: 0;
+                transition: all linear 0.2s;
+            }
+    
+            &::before{
+                top: 0;
+            }
+    
+            &::after{
+                bottom: 0;
+            }
+    
+            span{
+                top: 10px;
+            }
+    
+        }
+    }
+    
+    // .header_menu__mobile{
+    //     z-index: 100;
+    //     position: absolute;
+    //     top: 100%;
+    //     left: 100vw;
+    //     text-align: center;
+    //     width: 100%;
+    //     background-color: vars.$header_color;
+    //     border-bottom-left-radius: vars.$radius;
+    //     border-bottom-right-radius: vars.$radius;
+    //     transition: background-color 0.15s linear;
+    //     transition: all linear 0.2s;
+
+    //     .header_mobile_content{
+    //         display: flex;
+    //         flex-direction: column;
+    //         gap: 1em;
+    //         padding: 1em 0em;
+
+    //         li{
+    //             list-style: none;
+    //         }
+    //     }
+    // }
+
+    .burger__active{
+        &::before{
+            top: 50%;
+            transform: rotate(-45deg) translate(0, -50%);
+        }
+    
+        &::after{
+            top: 50%;
+            transform: rotate(45deg) translate(0, -50%);
+        }
+    
+        span{
+            opacity: 0;
+        }
+    
+        left: 0;
+
+    }
+
+}
+
+.header_link{
+    @include mixins.link(#FFF);
+}

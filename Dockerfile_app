@@ -1,4 +1,4 @@
-FROM python:3.9.15-alpine3.16
+FROM nikolaik/python-nodejs:python3.9-nodejs19-alpine
 
 WORKDIR /app
 
@@ -12,6 +12,8 @@ COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY . .
+
+RUN cd ./crystallake/frontend && chmod -R a+x node_modules && npm install && npm run dev
 
 ENTRYPOINT ./wait-for-it.sh db:5432 -- python3.9 manage.py migrate && python3.9 manage.py runserver 0.0.0.0:8000
 

@@ -1,0 +1,142 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+
+.profile_burger{
+    height: 22px;
+    width: 35px;
+    position: relative;
+    cursor: pointer;
+    display: none;
+
+    @include mixins.device(mobile){
+        display: block;
+    }
+
+    &::before, &::after, span{
+        content: "";
+        background-color: #000;
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        left: 0;
+        transition: all linear 0.2s;
+        left: 0;
+        transform: translate(0, -50%);
+    }
+
+    &::before{
+        top: 0;
+    }
+
+    &::after{
+        bottom: 0;
+    }
+
+    span{
+        top: 10px;
+    }
+
+    &:hover{
+        border-color: vars.$pink_color;
+    }
+
+    &:hover span, &:hover::before, &:hover::after{
+        background-color: vars.$pink_color;
+    }
+
+    &:hover .profile_burger_title{
+        color: vars.$pink_color;
+    }
+
+    .profile_burger_title{
+        position: absolute;
+        top: 50%;
+        left: 3em;
+        transform: translate(0, -50%);
+        white-space: nowrap;
+        //margin-left: 3em;
+        font-size: 1em;
+        transition: all linear 0.2s;
+    }
+}
+
+.profile_menu{
+    display: flex;
+    font-size: 1rem;
+    justify-content: space-around;
+    gap: 1em;
+    box-shadow: vars.$shadow;
+    padding: 1em 0.5em;
+    border-radius: vars.$radius;
+
+    @include mixins.device(mobile){
+        display: none;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile_menu_item{
+        display: flex;
+        gap: 0.5em;
+        align-items: center;
+        justify-content: center;
+
+        @include mixins.device(mobile){
+            width: 11em;
+            text-align: start;
+            justify-content: flex-start;
+        }
+
+        i{
+            transition: color 0.15s linear;
+        }
+
+        &:hover{
+            i {
+                color: vars.$pink_color;
+            }
+        }
+
+        .profile_menu_title{
+            @include mixins.link(#000);
+        }
+
+        .profile_menu_title__active{
+            position: relative;
+
+            &::after{
+                content: "";
+                width: 100%;
+                height: 1px;
+                background-color: #000;
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+            }
+        }
+    }
+
+}
+
+.profile_burger__active{
+    &::before{
+        top: 50%;
+        transform: rotate(-45deg) translate(0, -50%);
+    }
+
+    &::after{
+        top: 50%;
+        transform: rotate(45deg) translate(0, -50%);
+    }
+
+    span{
+        opacity: 0;
+    }
+
+    left: 0;
+
+    @include mixins.device(mobile){
+        display: flex;
+    }
+}

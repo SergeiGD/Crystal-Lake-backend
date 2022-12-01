@@ -1,0 +1,84 @@
+{
+  "status": "done",
+  "assets": {
+    "css/admin-b9c8682b3c0198b0172a.bundle.css": {
+      "name": "css/admin-b9c8682b3c0198b0172a.bundle.css",
+      "path": "/app/apps/core/static/css/admin-b9c8682b3c0198b0172a.bundle.css"
+    },
+    "css/admin-b9c8682b3c0198b0172a.bundle.css.map": {
+      "name": "css/admin-b9c8682b3c0198b0172a.bundle.css.map",
+      "path": "/app/apps/core/static/css/admin-b9c8682b3c0198b0172a.bundle.css.map"
+    },
+    "css/client-cdd1834a446893a03215.bundle.css": {
+      "name": "css/client-cdd1834a446893a03215.bundle.css",
+      "path": "/app/apps/core/static/css/client-cdd1834a446893a03215.bundle.css"
+    },
+    "css/client-cdd1834a446893a03215.bundle.css.map": {
+      "name": "css/client-cdd1834a446893a03215.bundle.css.map",
+      "path": "/app/apps/core/static/css/client-cdd1834a446893a03215.bundle.css.map"
+    },
+    "images/intro-60e8cb53066439a45a79.webp": {
+      "name": "images/intro-60e8cb53066439a45a79.webp",
+      "path": "/app/apps/core/static/images/intro-60e8cb53066439a45a79.webp"
+    },
+    "images/why_is-8d9483bc8b97327e78b1.webp": {
+      "name": "images/why_is-8d9483bc8b97327e78b1.webp",
+      "path": "/app/apps/core/static/images/why_is-8d9483bc8b97327e78b1.webp"
+    },
+    "js/admin-912e0e51928ba5ce4681.bundle.js": {
+      "name": "js/admin-912e0e51928ba5ce4681.bundle.js",
+      "path": "/app/apps/core/static/js/admin-912e0e51928ba5ce4681.bundle.js"
+    },
+    "js/admin-912e0e51928ba5ce4681.bundle.js.map": {
+      "name": "js/admin-912e0e51928ba5ce4681.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-912e0e51928ba5ce4681.bundle.js.map"
+    },
+    "js/client-a268277e60a0b660de89.bundle.js": {
+      "name": "js/client-a268277e60a0b660de89.bundle.js",
+      "path": "/app/apps/core/static/js/client-a268277e60a0b660de89.bundle.js"
+    },
+    "js/client-a268277e60a0b660de89.bundle.js.map": {
+      "name": "js/client-a268277e60a0b660de89.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-a268277e60a0b660de89.bundle.js.map"
+    },
+    "js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js": {
+      "name": "js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js",
+      "path": "/app/apps/core/static/js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js"
+    },
+    "js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js.map": {
+      "name": "js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js.map",
+      "path": "/app/apps/core/static/js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js.map"
+    },
+    "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js": {
+      "name": "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
+      "path": "/app/apps/core/static/js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js"
+    },
+    "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js.map": {
+      "name": "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js.map",
+      "path": "/app/apps/core/static/js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js.map"
+    },
+    "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js": {
+      "name": "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
+      "path": "/app/apps/core/static/js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js"
+    },
+    "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js.map": {
+      "name": "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js.map",
+      "path": "/app/apps/core/static/js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js.map"
+    }
+  },
+  "chunks": {
+    "admin": [
+      "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
+      "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
+      "js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js",
+      "css/admin-b9c8682b3c0198b0172a.bundle.css",
+      "js/admin-912e0e51928ba5ce4681.bundle.js"
+    ],
+    "client": [
+      "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
+      "js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js",
+      "css/client-cdd1834a446893a03215.bundle.css",
+      "js/client-a268277e60a0b660de89.bundle.js"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.sales{
+    width: 100%;
+    max-width: 60%;
+    margin: 0 auto;
+    position: relative;
+
+    @include mixins.device(mobile){
+        max-width: 100%;
+    }
+}

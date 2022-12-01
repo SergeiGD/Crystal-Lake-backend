@@ -1,0 +1,27 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.map{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: 1rem;
+    margin: 0 auto;
+    box-shadow: vars.$shadow;
+    border-radius: vars.$radius;
+
+    .map_img{
+        display: block;
+        width: 100%;
+        border-radius: 5px 5px 0 0;
+        height: 60vh;
+    }
+
+    .map_info{
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        line-height: 1.2;
+    }
+}

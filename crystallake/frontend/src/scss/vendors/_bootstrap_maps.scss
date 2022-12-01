@@ -1,0 +1,9 @@
+$custom-colors: (
+  "c_yellow-100": #E2FFA0,
+  "c_yellow-700": #FFD20A,
+  "c_grey-100": #CED4DA,
+  "c_blue_100": #E7F1FF,
+  "c_teal-700": #4DD4AC,
+  "c_orange-500": #FD7E14,
+);
+$theme-colors: map-merge($theme-colors, $custom-colors);

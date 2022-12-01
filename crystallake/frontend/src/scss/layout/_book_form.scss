@@ -1,0 +1,94 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.book{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    box-shadow: vars.$shadow;
+    margin: 0 auto;
+    gap: 2em;
+    font-size: 1rem;
+    padding: 1em 3em;
+    min-width: 60%;
+
+    @include mixins.device(mobile){
+        padding: 1em;
+    }
+
+
+    .button__book{
+        @extend %button;
+        width: 100%;
+        color: #000;
+        border-color: #000;
+        background-color: #fff;
+    }
+
+}
+
+
+.field_name{
+    min-width: 10em;
+
+    i{
+        font-size: 0.9em;
+        cursor: pointer;
+    }
+
+    @include mixins.device(mobile){
+        min-width: auto;
+    }
+}
+
+.field_subname{
+    min-width: 1.5em;
+    display: inline-block;
+}
+
+.time{
+    background-color: vars.$grey_color;
+    padding: 0.5em 0.3em;
+    cursor: pointer;
+    border-radius: vars.$radius;
+    transition: background-color 0.15s linear, color 0.15s linear;
+
+    &:hover{
+        background-color: vars.$yellow_light_color;
+    }
+}
+
+.time__active{
+    background-color: vars.$yellow_color;
+
+    &:hover{
+        background-color: vars.$yellow_color;
+        color: #000;
+    }
+}
+
+.input_field__name{
+    width: 100%;
+}
+
+.input_field__people{
+    width: 5em;
+}
+
+.input_field__phone{
+    width: 8em;
+}
+
+.loggin_req{
+    font-style: italic;
+}
+
+.loggin_link{
+    @include mixins.link(#000);
+}
+
+.input_field__bonus{
+    width: 10.5em;
+}

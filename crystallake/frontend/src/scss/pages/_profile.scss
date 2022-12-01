@@ -1,0 +1,12 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.profile{
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 2em;
+
+}
+

@@ -1,0 +1,63 @@
+@use 'vars' as vars;
+
+%subtitle{
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+%button{
+    font-size: 1.1rem;
+    display: inline;
+    cursor: pointer;
+    border-radius: vars.$radius;
+    transition: background-color 0.15s linear, color 0.15s linear;
+    padding: .5em;
+
+    &:hover{
+        background-color: vars.$pink_color;
+        color: #fff;
+        border-color: transparent;
+    }
+}
+
+
+@mixin link($color) {
+    text-decoration: none;
+    color: $color;
+    transition: color 0.15s linear;
+    cursor: pointer;
+
+    &:hover{
+        color: vars.$pink_color;
+    }
+}
+
+@mixin device($breakpoint) {
+    @if $breakpoint == tablet{
+        @media screen and (max-width: 1279px) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == rotated{
+        @media screen and (max-width: 992px) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == mobile{
+        @media screen and (max-width: 767px) {
+            @content;
+        }
+    }
+}
+
+@mixin content_block($gap){
+    box-shadow: vars.$shadow;
+    padding: vars.$block_padding;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    border-radius: vars.$radius;
+    gap: $gap;
+}

@@ -1,0 +1,58 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.description{
+    @include mixins.content_block(2em);
+    flex-basis: vars.$block_width_decs;
+
+    @include mixins.device(tablet){
+        flex-basis: auto;
+        width: 100%;
+        max-width: vars.$block_width_tab;
+    }
+
+    @include mixins.device(mobile){
+        max-width: vars.$block_width_mob;
+    }
+
+    .description_title{
+        margin-bottom: 1em;
+        @extend %subtitle;
+    }
+
+    .description_text{
+        line-height: 1.5;
+    }
+
+    .description_extra{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        position: relative;
+        gap: 1em;
+
+        .description_info{
+            font-size: 1.1em;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+            flex-basis: 50%;
+
+        }
+
+        .description_button_wrapper{
+            flex-basis: 50%;
+            text-decoration: none;
+            height: 100%;
+
+            .button__description{
+                @extend %button;
+                width: 100%;
+                color: #000;
+                border-color: #000;
+                background-color: #fff;
+            }
+
+        }
+    }
+}

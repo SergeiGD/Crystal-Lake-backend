@@ -1,0 +1,116 @@
+.header{
+    opacity: .75;
+    transition: opacity linear 0.15s;
+    &:hover{
+        opacity: 1;
+    }
+}
+
+.link-hover{
+    transition: color linear 0.15s;
+    text-decoration: none;
+    &:hover{
+        color: #E72574 !important;
+    }
+}
+
+.link-active{
+    position: relative;
+
+        &::before{
+            content: "";
+            width: 80%;
+            height: 1px;
+            background-color: #000;
+            position: absolute;
+            bottom: 5px;
+            left: 10%;
+            transform: translate(0, -10%);
+        }
+}
+
+.col-hover{
+    transition: background-color linear 0.15s;
+    &:hover{
+        background-color: #FFF04B;
+    }
+}
+
+
+.section_title{
+    position: relative;
+    &::after{
+        position: absolute;
+        width: 50%;
+        height: 1px;
+        background-color: #000;
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        content: "";
+    }
+}
+
+.img_wrapper{
+    position: relative;
+    &:hover{
+
+        .img{
+            opacity: 0.5;
+        }
+
+        .update_img, .delete_img, .upload_img, .open_img{
+            display: block !important;
+        }
+    }
+
+    .update_img, .delete_img, .upload_img, .open_img{
+        display: none !important; 
+        position: absolute;
+        
+    }
+    
+    .upload_img{
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) !important;
+    }
+
+    .update_img{
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -40%) !important;
+    }
+    
+    .delete_img{
+        left: 50%;
+        top: 60%;
+        transform: translate(-50%, -60%) !important;
+    }
+
+    .open_img{
+        right: 20px;
+        top: 20px;
+    }
+}
+
+// input[type=number]::-webkit-inner-spin-button {
+//     opacity: 0
+// }
+
+.card_icon{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.6;
+    &:hover{
+        opacity: 1;
+    }
+}
+
+
+
+

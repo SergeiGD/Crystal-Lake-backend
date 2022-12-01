@@ -1,0 +1,31 @@
+// ADMIN-SITE PAGES STYLE (WITH BOOTSTRAP)
+
+// functions
+@import "~bootstrap/scss/functions";
+
+// vars override
+@import "vendors/bootstrap_vars";
+
+// vars default
+@import "~bootstrap/scss/variables";
+
+// maps extend
+@import "~bootstrap/scss/maps";
+
+// maps override
+@import "vendors/bootstrap_maps";
+
+// utilities
+@import "~bootstrap/scss/utilities";
+
+// extend utilities
+@import "vendors/bootstrap_utilities";
+
+// custom classes
+@import "vendors/bootstrap_classes";
+
+// the rest remaining bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+// jquery plugins
+@import "vendors/evo_calendar";

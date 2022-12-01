@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Crystal Lake</title>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <script async src="https://kit.fontawesome.com/c98347f4c9.js" crossorigin="anonymous"></script>
+</head>
+<body class="font-main">
+    
+    <header class="w-100 bg-black">
+        <div class="d-flex justify-content-between align-items-center container-xl py-3">
+
+            <a href="../client/index.html" class="text-white fs-4 font-logo text-decoration-none link-hover">Crystal Lake</a>
+
+            <div class="d-flex gap-5 align-items-center fs-5">
+                <span class="text-white">Иван Иванович Иванов</span>
+                <a href="../client/index.html" class="text-white text-decoration-none link-hover">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Выйти</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    
+    
+
+    <section class="pt-5">
+
+        <div class="container-xl d-flex flex-column gap-5">
+
+            <h2 class="text-center h-2 section_title">Администирование</h2>
+
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+                    <li class="breadcrumb-item">
+                        <a href="../client/index.html" class="link-hover text-dark text-decoration-none">
+                            Главная
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Настройка главной</li>
+                </ol>
+            </nav>
+
+            <ul class="nav justify-content-center gap-2 shadow rounded-2 fs-5 py-2">
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_orders.html">Заказы</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active text-dark link-hover" aria-current="page" href="admin_clients.html">Клиенты</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_rooms.html">Номера</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_services.html">Услуги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_workers.html">Сотрудники</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_roles.html">Роли</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_sales.html ">Акции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover" href="admin_profile.html">Кабинет</a>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link text-dark link-hover dropdown-toggle link-active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Дополнительно
+                        </a>
+                      
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="admin_tags.html">Теги</a></li>
+                          <li><a class="dropdown-item" href="admin_properties.html">Доп. свойства</a></li>
+                          <li><a class="dropdown-item" href="admin_weekends.html">Даты праздников</a></li>
+                          <li><a class="dropdown-item link-active" href="#">Настройка главной</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+            
+                
+                <form class="shadow p-3 rounded-2 d-flex flex-column gap-4">
+
+                    <div class="row">
+
+                        <div class="col-12 row mx-auto p-0">
+
+                            <div class="col-12">
+
+                                <div class="d-flex flex-column align-items-center">
+                                    <span class="input-group-text rounded-top rounded-0 mt-3 w-100">Дома на главной:</span>
+                                    <div class="border-1 border rounded-bottom border-top-0 flex-grow-1 py-2 row w-100">
+
+                                        <div class="col-md-4 col-12 d-flex flex-column justify-content-between">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="houses_radio" id="houses_new" >
+                                                <label class="form-check-label" for="houses_new">
+                                                  Новые
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="houses_radio" id="houses_popular" >
+                                                <label class="form-check-label" for="houses_popular">
+                                                  Популярыне
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="houses_radio" id="houses_random" >
+                                                <label class="form-check-label" for="houses_random">
+                                                  Случайные
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="houses_radio" id="houses_picked" checked>
+                                                <label class="form-check-label" for="houses_picked" >
+                                                  Вручную
+                                                </label>
+                                            </div>
+                                        </div>
+    
+                                        <div class="col-md-8 col-12 mt-md-0 mt-3 d-flex flex-column gap-2">
+                                            <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                <label for="picked_house_1" class="form-label text-nowrap">Дом 1:</label>
+                                                <div class="d-flex flex-grow-1">
+                                                    <a href="#" class="form-control rounded-0 rounded-start text-primary link-hover" id="picked_house_1">Двухэтажный домик у озера</a>
+                                                    <button class="btn btn-primary w-3r rounded-0" id="find_house_1">
+                                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger w-3r rounded-0 rounded-end" id="clean_house_1">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                <label for="picked_house_2" class="form-label text-nowrap">Дом 2:</label>
+                                                <div class="d-flex flex-grow-1">
+                                                    <a href="#" class="form-control rounded-0 rounded-start text-primary link-hover" id="picked_house_2">Двухэтажный домик у озера</a>
+                                                    <button class="btn btn-primary w-3r rounded-0" id="find_house_2">
+                                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger w-3r rounded-0 rounded-end" id="clean_house_2">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                <label for="picked_house_3" class="form-label text-nowrap">Дом 3:</label>
+                                                <div class="d-flex flex-grow-1">
+                                                    <a href="#" class="form-control rounded-0 rounded-start text-primary link-hover" id="picked_house_3">Двухэтажный домик у озера</a>
+                                                    <button class="btn btn-primary w-3r rounded-0" id="find_house_3">
+                                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger w-3r rounded-0 rounded-end" id="clean_house_3">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+ 
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <div class="d-flex flex-column align-items-center">
+                                    <span class="input-group-text rounded-top rounded-0 mt-3 w-100">Услуги на главной:</span>
+                                    <div class="border-1 border rounded-bottom border-top-0 flex-grow-1 py-2 row w-100">
+
+                                        <div class="col-md-4 col-12 d-flex flex-column justify-content-between">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="services_radio" id="services_new" >
+                                                <label class="form-check-label" for="services_new">
+                                                  Новые
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="services_radio" id="services_popular" checked>
+                                                <label class="form-check-label" for="services_popular">
+                                                  Популярыне
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="services_radio" id="services_random" >
+                                                <label class="form-check-label" for="services_random">
+                                                  Случайные
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="services_radio" id="services_picked" >
+                                                <label class="form-check-label" for="services_picked" >
+                                                  Вручную
+                                                </label>
+                                            </div>
+                                        </div>
+    
+                                        <div class="col-md-8 col-12 mt-md-0 mt-3  d-flex flex-column gap-2">
+                                            <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                <label for="picked_service_1" class="form-label text-nowrap">Услуга 1:</label>
+                                                <div class="d-flex flex-grow-1">
+                                                    <a href="#" class="form-control rounded-0 rounded-start text-primary link-hover" id="picked_service_1">Езда верхом</a>
+                                                    <button class="btn btn-primary w-3r rounded-0" id="find_service_1" disabled>
+                                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger w-3r rounded-0 rounded-end" id="clean_service_1" disabled>
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                <label for="picked_service_2" class="form-label text-nowrap">Услуга 2:</label>
+                                                <div class="d-flex flex-grow-1">
+                                                    <a href="#" class="form-control rounded-0 rounded-start text-primary link-hover" id="picked_service_2">Езда верхом</a>
+                                                    <button class="btn btn-primary w-3r rounded-0" id="find_service_2" disabled>
+                                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger w-3r rounded-0 rounded-end" id="clean_service_2" disabled>
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                <label for="picked_service_3" class="form-label text-nowrap">Услуга 3:</label>
+                                                <div class="d-flex flex-grow-1">
+                                                    <a href="#" class="form-control rounded-0 rounded-start text-primary link-hover" id="picked_service_3">Езда верхом</a>
+                                                    <button class="btn btn-primary w-3r rounded-0" id="find_service_3" disabled>
+                                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger w-3r rounded-0 rounded-end" id="clean_service_3" disabled>
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+ 
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <div class="d-flex flex-column align-items-center">
+                                    <span class="input-group-text rounded-top rounded-0 mt-3 w-100">Акции на главной:</span>
+                                    <div class="border-1 border rounded-bottom border-top-0 flex-grow-1 py-2 row w-100">
+
+                                        <div class="col-md-4 col-12 d-flex flex-column justify-content-between">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="sales_radio" id="sales_new" checked>
+                                                <label class="form-check-label" for="sales_new">
+                                                  Новые
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="sales_radio" id="sales_random" >
+                                                <label class="form-check-label" for="sales_random">
+                                                  Случайные
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="sales_radio" id="sales_picked" >
+                                                <label class="form-check-label" for="sales_picked" >
+                                                  Вручную
+                                                </label>
+                                            </div>
+                                        </div>
+    
+                                        <div class="col-md-8 col-12 mt-md-0 mt-3  d-flex flex-column gap-2">
+                                            <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                <label for="picked_sale_1" class="form-label text-nowrap">Акция 1:</label>
+                                                <div class="d-flex flex-grow-1">
+                                                    <a href="#" class="form-control rounded-0 rounded-start text-primary link-hover" id="picked_sale_1">Скидки на водные прогулки</a>
+                                                    <button class="btn btn-primary w-3r rounded-0" id="find_sale_1" disabled>
+                                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger w-3r rounded-0 rounded-end" id="clean_sale_1" disabled>
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                <label for="picked_sale_2" class="form-label text-nowrap">Акция 2:</label>
+                                                <div class="d-flex flex-grow-1">
+                                                    <a href="#" class="form-control rounded-0 rounded-start text-primary link-hover" id="picked_sale_2">Скидки на водные прогулки</a>
+                                                    <button class="btn btn-primary w-3r rounded-0" id="find_sale_2" disabled>
+                                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger w-3r rounded-0 rounded-end" id="clean_sale_2" disabled>
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                <label for="picked_sale_3" class="form-label text-nowrap">Акция 3:</label>
+                                                <div class="d-flex flex-grow-1">
+                                                    <a href="#" class="form-control rounded-0 rounded-start text-primary link-hover" id="picked_sale_3">Скидки на водные прогулки</a>
+                                                    <button class="btn btn-primary w-3r rounded-0" id="find_sale_3" disabled>
+                                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger w-3r rounded-0 rounded-end" id="clean_sale_3" disabled>
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+ 
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <div class="d-flex justify-content-between">
+                                <button type="button-" class="btn btn-lg btn-c_yellow-700">Сохранить</button>
+                                <button type="button" class="btn btn-lg btn-c_grey-100">Отмена</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            
+
+        </div>
+
+    </section>
+
+    
+    
+    <footer class="mt-5 bg-black">
+        <div class="container-xl mx-auto row justify-content-between py-3">
+            <div class="col-lg-7 col-12 d-flex gap-5 justify-content-lg-start justify-content-between">
+
+                <div class="d-flex flex-column gap-2">
+                    <a href="admin_orders.html" class="text-white text-decoration-none link-hover fs-5 w-auto">Заказы</a>
+                    <a href="admin_clients.html" class="text-white text-decoration-none link-hover fs-5">Клиенты</a>
+                    <a href="admin_rooms.html" class="text-white text-decoration-none link-hover fs-5">Номера</a>
+                    <a href="admin_services.html" class="text-white text-decoration-none link-hover fs-5">Услуги</a>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <a href="admin_workers.html" class="text-white text-decoration-none link-hover fs-5">Сотрудники</a>
+                    <a href="admin_roles.html" class="text-white text-decoration-none link-hover fs-5">Роли</a>
+                    <a href="admin_sales.html" class="text-white text-decoration-none link-hover fs-5">Акции</a>
+                    <a href="admin_profile.html" class="text-white text-decoration-none link-hover fs-5">Кабинет</a>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <div class="dropdown">
+                        <a class="text-white text-decoration-none link-hover fs-5 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Дополнительно
+                        </a>
+                      
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="admin_tags.html">Теги</a></li>
+                          <li><a class="dropdown-item" href="admin_properties.html">Доп. свойства</a></li>
+                          <li><a class="dropdown-item" href="admin_weekends.html">Даты праздников</a></li>
+                          <li><a class="dropdown-item" href="#">Настройка главной</a></li>
+                        </ul>
+                    </div>
+                    <a href="../client/index.html" class="text-white text-decoration-none link-hover fs-5">На главную</a>
+                </div>
+
+            </div>
+
+            <div class="col-lg-auto col-12 mt-lg-0 mt-3 d-flex flex-lg-column justify-content-between">
+                <p class="text-white fs-5">Иван Иванович Иванов</p>
+                <a href="../client/index.html" class="text-white text-decoration-none link-hover fs-5">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Выйти</span>
+                </a>
+            </div>
+        </div>
+
+    </footer>
+    
+    
+    
+</body>
+</html>

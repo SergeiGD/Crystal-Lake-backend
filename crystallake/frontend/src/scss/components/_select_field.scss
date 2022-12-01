@@ -1,0 +1,11 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+
+.select_field{
+    flex-shrink: 1;
+    overflow: hidden;
+    border-radius: vars.$radius;
+    border-radius: vars.$radius;
+    border: 1px solid #000;
+}

@@ -1,0 +1,44 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.section{
+    padding-top: 9rem;
+
+    @include mixins.device(tablet){
+        padding-top: 7rem;
+    }
+
+    @include mixins.device(mobile){
+        padding-top: 6rem;
+    }
+
+    .section_title, .section_subtitle{
+        font-size: 1.6rem;
+        text-align: center;
+        font-weight: 500;
+        position: relative;
+
+        &::after{
+            width: 50%;
+            height: 1px;
+            background-color: #000;
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            content: "";
+        }
+    }
+
+    .section_title{
+        margin-bottom: 3em;
+
+        @include mixins.device(tablet){
+            font-size: 1.4rem;
+        }
+
+        @include mixins.device(mobile){
+            font-size: 1.3rem;
+        }
+    }
+}

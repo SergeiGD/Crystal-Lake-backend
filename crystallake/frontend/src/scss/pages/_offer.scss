@@ -1,0 +1,45 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+
+// OFFER (HOUSE / SALE / SERVICE)
+
+.offer{
+    display: flex;
+    flex-direction: column;
+    gap: vars.$blocks_indent;
+}
+
+
+// PHOTOS DESCRIPTION
+
+.photos_description{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+
+    @include mixins.device(tablet){
+        flex-direction: column;
+        align-items: center;
+        gap: vars.$blocks_indent;
+    }
+
+}
+
+
+// INFO DATES
+
+.info_dates{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+
+
+    @include mixins.device(tablet){
+        flex-direction: column;
+        align-items: center;
+        gap: vars.$blocks_indent;
+
+    }
+
+}

@@ -1,0 +1,37 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+
+.contacts{
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    gap: 1em;
+    box-shadow: vars.$shadow;
+    border-radius: vars.$radius;
+    padding: 1em;
+
+    .contacts_text, .contacts_socials_item{
+        line-height: 1.5;
+    }
+
+    .contacts_socials{
+        padding-left: 1em;
+
+        .contacts_link{
+            @include mixins.link(#000);
+            font-weight: 700;
+        }
+
+        .contacts_socials_wrapper{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4em;
+
+            @include mixins.device(mobile){
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    }
+}

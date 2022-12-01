@@ -1,0 +1,42 @@
+{
+  "name": "crystal-lake-frontend",
+  "version": "1.0.0",
+  "description": "Фронтэнд часть сайт Crystal Lake Hotel",
+  "source": "./dist/pages/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env PROJECT_ENV=development webpack --mode development",
+    "build": "cross-env PROJECT_ENV=production webpack --mode production",
+    "watch": "cross-env PROJECT_ENV=development webpack --mode development --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergeiGD/Crystal-Lake-frontend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergeiGD/Crystal-Lake-frontend/issues"
+  },
+  "homepage": "https://github.com/SergeiGD/Crystal-Lake-frontend#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.2",
+    "jquery": "^3.6.1"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.2",
+    "css-minimizer-webpack-plugin": "^4.2.2",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.56.1",
+    "sass-loader": "^13.2.0",
+    "terser-webpack-plugin": "^5.3.6",
+    "webpack": "^5.75.0",
+    "webpack-bundle-tracker": "^1.7.0",
+    "webpack-cli": "^4.10.0"
+  }
+}

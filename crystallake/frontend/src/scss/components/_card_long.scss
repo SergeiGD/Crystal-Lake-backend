@@ -1,0 +1,126 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+.card_long{
+    display: flex;
+    box-shadow: vars.$shadow;
+    border-radius: vars.$radius;
+    position: relative;
+
+    @include mixins.device(mobile){
+        flex-direction: column-reverse;
+    }
+
+    .card_long_img{
+        display: inline-block;
+        max-height: 100%;
+        max-width: 12em;
+        border-radius: 5px 0 0 5px;
+
+        @include mixins.device(tablet){
+            max-width: 15em;
+        }
+
+        @include mixins.device(mobile){
+            max-width: 100%;
+            border-radius: 0 0 5px 5px;
+        }
+
+    }
+
+    .card_long_inner{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 1em;
+        gap: 1em;
+
+        @include mixins.device(mobile){
+            flex-direction: column;
+        }
+    }
+
+    .card_long_desciption{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        line-height: 1.2;
+
+        .card_long_name{
+            @include mixins.link(#000);
+            font-weight: 700;
+            font-size: 1.2em;
+            padding: 0 2em 1em 0;
+        }
+
+        .card_long_stats{
+            display: flex;
+            flex-direction: column;
+            gap: 0.75em;
+
+            .card_long_text{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+        }
+    }
+
+    .card_delete{
+        position: absolute;
+        color: vars.$red_color;
+        font-size: 1.8em;
+        top: 0.5em;
+        right: 0.5em;
+        cursor: pointer;
+        opacity: 0.6;
+
+        &:hover{
+            opacity: 1;
+        }
+    }
+
+    .card_long_buttons{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        @include mixins.device(mobile){
+            gap: 1em;
+        }
+
+        .card_button{
+            @extend %button;
+        }
+
+        .card_button__reschedule{
+            background-color: #fff;
+            color: #000;
+            border-color: #000;
+        }
+        
+        .card_button__pay{
+            background-color: vars.$yellow_color;
+            color: #000;
+            border-color: transparent;
+        }
+        
+        .card_button__cancel{
+            background-color: vars.$red_color;
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .card_button__more{
+            background-color: #fff;
+            color: #000;
+            border-color: #000;
+        }
+        
+        .card_button__inactive{
+            cursor: auto;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    }
+}

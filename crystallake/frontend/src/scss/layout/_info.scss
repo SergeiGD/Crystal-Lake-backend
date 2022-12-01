@@ -1,0 +1,57 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins; 
+
+
+.info{
+    @include mixins.content_block(1em);
+    flex-basis: vars.$block_width_decs;
+
+    @include mixins.device(tablet){
+        flex-basis: auto;
+        width: 100%;
+        max-width: vars.$block_width_tab;
+    }
+
+    @include mixins.device(mobile){
+        max-width: vars.$block_width_mob;
+    }
+
+    .info_title{
+        @extend %subtitle;
+    }
+
+    .info_link{
+        @include mixins.link(#000);
+    }
+
+    .info_stats{
+        padding-left: 1em;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7em;
+    }
+
+    .stat_item{
+        display: flex;
+        gap: 0.5em;
+        flex-wrap: wrap;
+
+        .stat_item_name{
+            position: relative;
+            &::before{
+                content: "";
+                background-color: #000;
+                border-radius: 50%;
+                display: block;
+                width: 5px;
+                height: 5px;
+                position: absolute;
+                top: 50%;
+                left: -1em;
+                transform: translate(0, -50%);
+            }
+        }
+
+        
+    }
+}

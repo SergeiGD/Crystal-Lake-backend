@@ -3,3 +3,4 @@
 .env
 venv
 postgres_data
+migrate.sh

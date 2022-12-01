@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'polymorphic',
+    'apps.offer.apps.OfferConfig',
+    'apps.order.apps.OrderConfig',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +83,8 @@ DATABASES = {
         "NAME": environ.get("DB_NAME"),
         "USER": environ.get("DB_USER"),
         "PASSWORD": environ.get("DB_PASSWORD"),
-        "HOST": 'db',
-        "PORT": '5432'
+        "HOST": "db",
+        "PORT": "5432"
     }
 }
 

@@ -60,13 +60,13 @@
                     </a>
 
                     <nav class="header_menu">
-                        <a href="#" class="header_menu_item header_link header_menu_item__active" data-text="Главная">Главная</a>
-                        <a href="rooms.html" class="header_menu_item header_link"  data-text="Номера">Номера</a>
-                        <a href="services.html" class="header_menu_item header_link" data-text="Услуги">Услуги</a>
-                        <a href="sales.html" class="header_menu_item header_link" data-text="Акции">Акции</a>
-                        <a href="contacts.html" class="header_menu_item header_link" data-text="Контакты">Контакты</a>
-                        <a href="cart.html" class="header_menu_item header_link" data-text="Корзина">Корзина</a>
-                        <p class="header_menu_item header_link" id="login_open" data-text="Личный кабинет">Личный кабинет</p>
+                        <a href="#" class="header_menu_item header_link {% if current_page == 'index' %} header_menu_item__active {% endif %}" data-text="Главная">Главная</a>
+                        <a href="rooms.html" class="header_menu_item header_link {% if current_page == 'rooms' %} header_menu_item__active {% endif %}"  data-text="Номера">Номера</a>
+                        <a href="services.html" class="header_menu_item header_link {% if current_page == 'services' %} header_menu_item__active {% endif %}" data-text="Услуги">Услуги</a>
+                        <a href="sales.html" class="header_menu_item header_link {% if current_page == 'sales' %} header_menu_item__active {% endif %}" data-text="Акции">Акции</a>
+                        <a href="contacts.html" class="header_menu_item header_link {% if current_page == 'contacts' %} header_menu_item__active {% endif %}" data-text="Контакты">Контакты</a>
+                        <a href="cart.html" class="header_menu_item header_link {% if current_page == 'cart' %} header_menu_item__active {% endif %}" data-text="Корзина">Корзина</a>
+                        <p class="header_menu_item header_link {% if current_page == 'profile' %} header_menu_item__active {% endif %}" id="login_open" data-text="Личный кабинет">Личный кабинет</p>
                     </nav>
 
                     <div class="header_burger">

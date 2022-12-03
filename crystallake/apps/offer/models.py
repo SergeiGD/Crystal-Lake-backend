@@ -1,11 +1,14 @@
+import uuid
+
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
-from ..order.models import Purchase
+#from ..order.models import Purchase
+from polymorphic.models import PolymorphicModel
 
 # Create your models here.
 
 
-class Offer(models.Model):
+class Offer(PolymorphicModel):
     name = models.CharField(verbose_name="наименование", max_length=255)
     description = models.TextField(verbose_name="описание")
     default_price = models.DecimalField(verbose_name="стандартная цена", max_digits=12, decimal_places=5)
@@ -18,7 +21,6 @@ class Offer(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
 
     class Meta:
-        abstract = True
         indexes = [
             models.Index(fields=['date_deleted', 'is_hidden']),
             models.Index(fields=['slug'])
@@ -26,6 +28,9 @@ class Offer(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_main_photo(self):
+        return self.photos.get(is_main=True).path.url
 
 
 class Room(Offer):
@@ -44,11 +49,23 @@ class Room(Offer):
     )
 
 
-    orders = GenericRelation(Purchase, related_name="rooms", related_query_name="room")
-
-
 class Service(Offer):
     max_for_moment = models.SmallIntegerField(verbose_name="макс. единовременно")
     dynamic_timetable = models.BooleanField(verbose_name="динамическое расписание")
-    orders = GenericRelation(Purchase, related_name="services", related_query_name="service")
+
+
+def build_photo_path(instance, filename):
+    ext = filename.split('.')[-1]
+    code = uuid.uuid4()
+    return 'offer_{0}/{1}.{2}'.format(instance.offer.slug, code, ext)
+
+
+class Photo(models.Model):
+    offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name="photos")
+    is_main = models.BooleanField(default=False)
+    order = models.SmallIntegerField()
+    path = models.ImageField(upload_to=build_photo_path)
+
+
+
 

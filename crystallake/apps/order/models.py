@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from polymorphic.models import PolymorphicModel
+from ..offer.models import Offer
 
 # Create your models here.
 
@@ -19,10 +20,7 @@ class Order(models.Model):
 
 class Purchase(PolymorphicModel):
     order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name="purchases")
-
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
-    object_id = models.BigIntegerField()
-    offer = GenericForeignKey("content_type", "object_id")
+    offer = models.ForeignKey(Offer, on_delete=models.PROTECT, related_name="purchases")
 
     date_start = models.DateTimeField()
     date_end = models.DateTimeField()

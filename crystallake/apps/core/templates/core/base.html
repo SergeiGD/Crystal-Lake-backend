@@ -55,13 +55,13 @@
 
                 <div class="header_under">
 
-                    <a href="index.html" class="header_logo header_link">
+                    <a href="{% url 'index' %}" class="header_logo header_link">
                         Crystal Lake
                     </a>
 
                     <nav class="header_menu">
-                        <a href="#" class="header_menu_item header_link {% if current_page == 'index' %} header_menu_item__active {% endif %}" data-text="Главная">Главная</a>
-                        <a href="rooms.html" class="header_menu_item header_link {% if current_page == 'rooms' %} header_menu_item__active {% endif %}"  data-text="Номера">Номера</a>
+                        <a href="{% url 'index' %}" class="header_menu_item header_link {% if current_page == 'index' %} header_menu_item__active {% endif %}" data-text="Главная">Главная</a>
+                        <a href="{% url 'rooms' %}" class="header_menu_item header_link {% if current_page == 'rooms' %} header_menu_item__active {% endif %}"  data-text="Номера">Номера</a>
                         <a href="services.html" class="header_menu_item header_link {% if current_page == 'services' %} header_menu_item__active {% endif %}" data-text="Услуги">Услуги</a>
                         <a href="sales.html" class="header_menu_item header_link {% if current_page == 'sales' %} header_menu_item__active {% endif %}" data-text="Акции">Акции</a>
                         <a href="contacts.html" class="header_menu_item header_link {% if current_page == 'contacts' %} header_menu_item__active {% endif %}" data-text="Контакты">Контакты</a>
@@ -100,8 +100,8 @@
                     <div class="footer_menu_inner">
 
                         <div class="footer_menu_column">
-                            <a href="#" class="footer_link">Главная</a>
-                            <a href="rooms.html" class="footer_link">Номера</a>
+                            <a href="{% url 'index' %}" class="footer_link">Главная</a>
+                            <a href="{% url 'rooms' %}" class="footer_link">Номера</a>
                             <a href="services.html" class="footer_link">Услуги</a>
                             <a href="sales.html" class="footer_link">Акции</a>
                         </div>
@@ -140,57 +140,9 @@
 
     </footer>
 
-    <div class="modal_wrapper modal_wrapper__dark" id="login_modal">
-        <div class="login_popup" id="login_popup">
+    {% block popups %}
 
-            <div class="login_title">
-                <p class="login_link login_link__active">Вход</p>
-                <span>/</span>
-                <p class="login_link" id="goto_singup">Регистрация</p>
-                <button class="login_close" id="login_close">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <div class="login_fields">
-                <input class="login_field input_field" type="text" name="phone" id="phone" placeholder="Номер телефона">
-                <input class="login_field input_field" type="text" name="password" id="password" placeholder="Пароль">
-            </div>
-
-            <div>
-                <p class="login_reset">Забыли пароль?</p>
-            </div>
-
-            <div class="login_buttons">
-                <button class="login_button" id="end_login_button">Войти</button>
-            </div>
-
-        </div>
-
-        <div class="login_popup" id="signup_popup">
-
-            <div class="login_title">
-                <p class="login_link" id="goto_login">Вход</p>
-                <span>/</span>
-                <p class="login_link login_link__active">Регистрация</p>
-                <button class="login_close" id="signup_close">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <div class="login_fields">
-                <input class="login_field input_field" type="text" name="phone" id="phone" placeholder="Номер телефона">
-            </div>
-
-            <div class="login_buttons">
-                <button class="login_button" id="end_signup_button">Прислать пароль</button>
-            </div>
-
-        </div>
-    </div>
-
-
-     <!--  -->
+    {% endblock popups %}
 
 </body>
 

@@ -79,7 +79,7 @@
 
             <div class="about_us">
 
-                <img src="../../../../static/images/about-6a8484d127da0157d403.webp" alt="О нас" class="about_us_img">
+                <img src="../../static/images/about_us.webp" alt="О нас" class="about_us_img">
 
                 <div class="about_us_info">
                     <h2 class="section_subtitle">О нас</h2>
@@ -105,7 +105,7 @@
             <div class="tablet-slider-required"></div>
 
             {% for room in rooms %}
-            <article class="card_short recomendations_item slider_content slider_content__active" data-goto="room.html">
+            <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ room.get_absolute_url }}">
                 <div class="card_inner">
                     <img src="{{ room.get_main_photo }}" alt="{{ room.name }}" class="card_img">
                     <div class="card_info">
@@ -117,33 +117,11 @@
                                 {{ room.default_price.to_integral_value }}&#8381;
                             </span>
                         </p>
-                        <button class="card_button card_button__long" data-goto="room.html#offer_book">Забронировать</button>
+                        <button class="card_button card_button__long" data-goto="{{ room.get_absolute_url }}#offer_book">Забронировать</button>
                     </div>
                 </div>
             </article>
             {% endfor %}
-
-{#            <article class="card_short recomendations_item slider_content" data-goto="room.html">#}
-{#                <div class="card_inner">#}
-{#                    <img src="../../../../static/images/house-9edc46a9ad985c23bfe0.jpg" alt="Номер" class="card_img">#}
-{#                    <div class="card_info">#}
-{#                        <p class="card_info_title">Двухэтажный домик у озера 2</p>#}
-{#                        <p class="card_info_text">Начиная от: <span class="highlighted">8.999&#8381;</span></p>#}
-{#                        <button class="card_button card_button__long" data-goto="room.html#offer_book">Забронировать</button>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </article>#}
-{##}
-{#            <article class="card_short recomendations_item slider_content"  data-goto="room.html">#}
-{#                <div class="card_inner">#}
-{#                    <img src="../../../../static/images/house-9edc46a9ad985c23bfe0.jpg" alt="Номер" class="card_img">#}
-{#                    <div class="card_info">#}
-{#                        <p class="card_info_title">Двухэтажный домик у озера 3</p>#}
-{#                        <p class="card_info_text">Начиная от: <span class="highlighted">8.999&#8381;</span></p>#}
-{#                        <button class="card_button card_button__long" data-goto="room.html#offer_book">Забронировать</button>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </article>#}
 
             <div class="slider slider__hidden">
             </div>
@@ -181,38 +159,6 @@
                 </article>
                 {% endfor %}
 
-{#            <article class="card_short recomendations_item slider_content slider_content__active" data-goto="service.html">#}
-{#                <div class="card_inner">#}
-{#                    <img src="../../../../static/images/service-4fa3f286054fcd9d8b95.jpg" alt="Номер" class="card_img">#}
-{#                    <div class="card_info">#}
-{#                        <p class="card_info_title">Езда верхом 1</p>#}
-{#                        <p class="card_info_text">Начиная от: <span class="highlighted">8.999&#8381;</span></p>#}
-{#                        <button class="card_button card_button__long" data-goto="service.html#offer_book">Забронировать</button>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </article>#}
-{##}
-{#            <article class="card_short recomendations_item slider_content" data-goto="service.html">#}
-{#                <div class="card_inner">#}
-{#                    <img src="../../../../static/images/service-4fa3f286054fcd9d8b95.jpg" alt="Номер" class="card_img">#}
-{#                    <div class="card_info">#}
-{#                        <p class="card_info_title">Езда верхом 2</p>#}
-{#                        <p class="card_info_text">Начиная от: <span class="highlighted">8.999&#8381;</span></p>#}
-{#                        <button class="card_button card_button__long" data-goto="service.html#offer_book">Забронировать</button>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </article>#}
-{##}
-{#            <article class="card_short recomendations_item slider_content" data-goto="service.html">#}
-{#                <div class="card_inner">#}
-{#                    <img src="../../../../static/images/service-4fa3f286054fcd9d8b95.jpg" alt="Номер" class="card_img">#}
-{#                    <div class="card_info">#}
-{#                        <p class="card_info_title">Езда верхом 3</p>#}
-{#                        <p class="card_info_text">Начиная от: <span class="highlighted">8.999&#8381;</span></p>#}
-{#                        <button class="card_button card_button__long" data-goto="service.html#offer_book">Забронировать</button>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </article>#}
 
             <div class="slider slider__hidden">
             </div>
@@ -340,4 +286,8 @@
 </section>
 
 {% endblock content %}
+
+{% block popups %}
+    {% include 'core/login_popup.html' %}
+{% endblock popups %}
 

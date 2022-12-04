@@ -21,7 +21,7 @@ from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apps.offer.urls')),
+    path('rooms/', include('apps.offer.urls')),
     path('', include('apps.core.urls'))
 ]
 

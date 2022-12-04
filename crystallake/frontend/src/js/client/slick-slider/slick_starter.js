@@ -5,15 +5,16 @@ $(document).ready(function(){
         arrows: false,
         dots: true,
         slidesToShow: 1,
-        infinite: true,
+        infinite: false,
         autoplay: false,
         variableWidth: true,
     });
 
     $('.photos_img').on("click", function(){
         const slider_number = $(this).attr("data-number");
-        $('.slick_slider').slick('slickGoTo', slider_number,  true);        // открываем именну ту картинку, на которую нажали
+        console.log(slider_number);
         $("#images_modal").addClass("modal_wrapper__active");
+        $('.slick_slider').slick('slickGoTo', slider_number, true);        // открываем именну ту картинку, на которую нажали
     });
 
     $('#images_modal, #images_close').on("click", function(){

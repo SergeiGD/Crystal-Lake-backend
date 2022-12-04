@@ -2,6 +2,7 @@ import uuid
 
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.urls import reverse
 #from ..order.models import Purchase
 from polymorphic.models import PolymorphicModel
 
@@ -48,6 +49,9 @@ class Room(Offer):
         related_query_name="child_room"
     )
 
+    def get_absolute_url(self):
+        return reverse('room', kwargs={'room_slug': self.slug})
+
 
 class Service(Offer):
     max_for_moment = models.SmallIntegerField(verbose_name="макс. единовременно")
@@ -65,6 +69,9 @@ class Photo(models.Model):
     is_main = models.BooleanField(default=False)
     order = models.SmallIntegerField()
     path = models.ImageField(upload_to=build_photo_path)
+
+    class Meta:
+        ordering = ['order']
 
 
 

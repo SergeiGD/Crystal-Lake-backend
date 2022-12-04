@@ -15,7 +15,44 @@
         gap: 1.5em;
     }
 
-    &:after, &:before{
+    //&:after, &:before{
+    //    content: "";
+    //    display: block;
+    //    height: 12px;
+    //    width: 12px;
+    //    border-top: 2px solid #000000;
+    //    position: absolute;
+    //    top: 50%;
+    //    cursor: pointer;
+    //}
+    //
+    //&:after{
+    //    right: -50px;
+    //    border-right: 2px solid #000000;
+    //    transform: translate(0, -50%) rotate(45deg);
+    //
+    //    @include mixins.device(mobile){
+    //        right: -40px;
+    //    }
+    //}
+    //
+    //&:before{
+    //    left: -50px;
+    //    border-left: 2px solid #000000;
+    //    transform: translate(0, -50%) rotate(-45deg);
+    //
+    //    @include mixins.device(mobile){
+    //        left: -40px;
+    //    }
+    //}
+    
+    .page_item{
+        position: relative;
+        text-decoration: none;
+        color: #000;
+    }
+
+    .page_arrow{
         content: "";
         display: block;
         height: 12px;
@@ -23,10 +60,19 @@
         border-top: 2px solid #000000;
         position: absolute;
         top: 50%;
-        cursor: pointer;
     }
-    
-    &:after{
+
+    .page_arrow__prev{
+        left: -50px;
+        border-left: 2px solid #000000;
+        transform: translate(0, -50%) rotate(-45deg);
+
+        @include mixins.device(mobile){
+            left: -40px;
+        }
+    }
+
+    .page_arrow__next{
         right: -50px;
         border-right: 2px solid #000000;
         transform: translate(0, -50%) rotate(45deg);
@@ -36,21 +82,11 @@
         }
     }
 
-    &:before{
-        left: -50px;
-        border-left: 2px solid #000000;
-        transform: translate(0, -50%) rotate(-45deg);
+    .page_disabled{
+        border-color: rgba(0, 0, 0, 0.4);
+        cursor: auto;
+    }
 
-        @include mixins.device(mobile){
-            left: -40px;
-        }
-    }
-    
-    .page_item{
-        position: relative;
-        cursor: pointer;
-    }
-    
     .page_item_more{
         cursor: auto;
     }

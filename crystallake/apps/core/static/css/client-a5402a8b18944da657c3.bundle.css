@@ -448,7 +448,12 @@ body {
     gap: 1.5em;
   }
 }
-.pages:after, .pages:before {
+.pages .page_item {
+  position: relative;
+  text-decoration: none;
+  color: #000;
+}
+.pages .page_arrow {
   content: "";
   display: block;
   height: 12px;
@@ -456,31 +461,30 @@ body {
   border-top: 2px solid #000000;
   position: absolute;
   top: 50%;
-  cursor: pointer;
 }
-.pages:after {
-  right: -50px;
-  border-right: 2px solid #000000;
-  transform: translate(0, -50%) rotate(45deg);
-}
-@media screen and (max-width: 767px) {
-  .pages:after {
-    right: -40px;
-  }
-}
-.pages:before {
+.pages .page_arrow__prev {
   left: -50px;
   border-left: 2px solid #000000;
   transform: translate(0, -50%) rotate(-45deg);
 }
 @media screen and (max-width: 767px) {
-  .pages:before {
+  .pages .page_arrow__prev {
     left: -40px;
   }
 }
-.pages .page_item {
-  position: relative;
-  cursor: pointer;
+.pages .page_arrow__next {
+  right: -50px;
+  border-right: 2px solid #000000;
+  transform: translate(0, -50%) rotate(45deg);
+}
+@media screen and (max-width: 767px) {
+  .pages .page_arrow__next {
+    right: -40px;
+  }
+}
+.pages .page_disabled {
+  border-color: rgba(0, 0, 0, 0.4);
+  cursor: auto;
 }
 .pages .page_item_more {
   cursor: auto;
@@ -634,8 +638,8 @@ body {
   flex-shrink: 1;
   overflow: hidden;
   border-radius: 5px;
-  border-radius: 5px;
   border: 1px solid #000;
+  background-color: inherit;
 }
 
 .dates .dates_title, .info .info_title, .description .description_title {
@@ -2381,6 +2385,7 @@ body {
   border: none;
   padding: 0;
   color: #E72574;
+  background-color: inherit;
 }
 .intro .find_rooms .find_rooms_section .find_rooms_info .find_rooms_input__date {
   max-width: 7em;
@@ -4114,4 +4119,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=client-cdd1834a446893a03215.bundle.css.map*/
+/*# sourceMappingURL=client-a5402a8b18944da657c3.bundle.css.map*/

@@ -1,0 +1,204 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<main>
+
+    <section class="section">
+        <div class="content_container">
+            <h2 class="section_title">Номера</h2>
+
+            <div class="breadcrumbs">
+                <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
+                <span>&#10148;</span>
+                <a href="#" class="breadcrumbs_item">Номера</a>
+            </div>
+
+            <div class="offers">
+
+                <div class="finder">
+
+                    <form class="mobile_filter_soring">
+                        <div class="mobile_filter">
+                            <i class="fa-solid fa-sliders"></i>
+                            <p>Фильтр</p>
+                        </div>
+                        <div class="mobile_sorting">
+                            <i class="fa-solid fa-arrow-up-wide-short"></i>
+                            <p>Сортировать по:</p>
+                            <select class="select_sortby">
+                                <option value="1" selected>убыванию цен</option>
+                                <option value="2">возрастанию цен</option>
+                                <option value="3">убыванию спальных мест</option>
+                                <option value="2">возрастанию спальных мест</option>
+                                <option value="3">убыванию кол-ва комнат</option>
+                                <option value="2">возрастанию кол-ва комнет</option>
+                            </select>
+                        </div>
+                    </form>
+
+                    <form class="filter">
+
+                        <div class="filter_column">
+                            <div class="filter_item">
+                                <label class="filter_name filter_name__long" for="name_field">Наименование:</label>
+                                <div class="filter_select filter_select__name">
+                                    <input type="text" name="" id="name_field" class="input_field input_field__name">
+                                </div>
+                            </div>
+
+                            <div class="filter_item">
+                                <label class="filter_name filter_name__long" for="people_field">Спальных мест:</label>
+                                <div class="filter_select">
+                                    <select id="people_field" class="input_field select_field">
+                                        <option value="1">1 человек(а)</option>
+                                        <option value="2" selected>3 человек(а)</option>
+                                        <option value="3">2 человек(а)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="filter_item">
+                                <p class="filter_name filter_name__long">Даты прибывания:</p>
+                                <div class="filter_select">
+                                    <div class="filter_select_subfiled">
+                                        <label class="filter_subname" for="date_from_field">с</label>
+                                        <input type="date" name="" id="date_from_field" class="input_field input_field__date">
+                                    </div>
+                                    <div class="filter_select_subfiled">
+                                        <label class="filter_subname" for="date_until_field">до</label>
+                                        <input type="date" name="" id="date_until_field" class="input_field input_field__date">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter_column">
+                            <div class="filter_item">
+                                <label class="filter_name filter_name__long" for="floors_field">Количество этажей:</label>
+                                <div class="filter_select">
+                                    <select id="floors_field" class="input_field select_field">
+                                        <option value="1" selected>1 этаж(а)</option>
+                                        <option value="2">2 этаж(а)</option>
+                                        <option value="3">3 этаж(а)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="filter_item">
+                                <label class="filter_name filter_name__long" for="rooms_field">Количество комнат:</label>
+                                <div class="filter_select">
+                                    <select id="rooms_field" class="input_field select_field">
+                                        <option value="1" selected>1 комант(ы)</option>
+                                        <option value="2">2 комант(ы)</option>
+                                        <option value="3">3 комант(ы)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="filter_item">
+                                <p class="filter_name filter_name__long">Цена за 1 сутки:</p>
+                                <div class="filter_select">
+                                    <div class="filter_select_subfiled">
+                                        <label class="filter_subname" for="price_from_field">от</label>
+                                        <input type="number" name="" id="price_from_field" class="input_field input_field__price">
+                                    </div>
+                                    <div class="filter_select_subfiled">
+                                        <label class="filter_subname" for="price_until_field">до</label>
+                                        <input type="number" name="" id="price_until_field" class="input_field input_field__price">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter_column filter__buttons">
+                            <button class="filter_button filter_button__find">Применить</button>
+                            <button class="filter_button filter_button__clean">Сбросить</button>
+                        </div>
+
+                    </form>
+
+                    <form class="sorting">
+                        <p class="sorting_item">
+                            <i class="fa-solid fa-arrow-up-short-wide sorting_icon_active"></i>
+                            Цена
+                        </p>
+                        <p class="sorting_item">
+                            <i class="fa-solid fa-arrow-down-wide-short"></i>
+                            Спальных мест
+                        </p>
+                        <p class="sorting_item">
+                            <i class="fa-solid fa-arrow-down-wide-short"></i>
+                            Кол-во комнат
+                        </p>
+                    </form>
+
+
+
+                </div>
+
+                <div class="catalog">
+
+                    {% for room in page_obj %}
+                    <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ room.get_absolute_url }}">
+                        <div class="card_inner">
+                            <img src="{{ room.get_main_photo }}" alt="{{ room.name }}" class="card_img">
+                            <div class="card_info">
+                                <p class="card_info_title">
+                                    {{ room.name }}
+                                </p>
+                                <p class="card_info_text">Начиная от:
+                                    <span class="highlighted">
+                                        {{ room.default_price.to_integral_value }}&#8381;
+                                    </span>
+                                </p>
+                                <button class="card_button card_button__long" data-goto="{{ room.get_absolute_url }}#offer_book">Забронировать</button>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+
+
+                </div>
+
+                <div class="pages">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="page_arrow page_arrow__prev"></a>
+                    {% else %}
+                        <p class="page_arrow page_arrow__prev page_disabled"></p>
+                    {% endif %}
+
+                    {% if page_obj.number|add:'-3' > 1 %}
+                        <a href="?page={{ 1 }}" class="page_item page_item_more">&hellip;</a>
+                    {% endif %}
+
+                    {% for i in page_obj.paginator.page_range  %}
+                        {% if i == page_obj.number %}
+                            <p class="page_item page_item_active">{{ i }}</p>
+                        {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
+                            <a href="?page={{ i }}" class="page_item">{{ i }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
+                        <a href="?page={{ page_obj.paginator.num_pages }}" class="page_item page_item_more">&hellip;</a>
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="page_arrow page_arrow__next"></a>
+                    {% else %}
+                        <p class="page_arrow page_arrow__next page_disabled"></p>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock content %}
+
+{% block popups %}
+    {% include 'core/login_popup.html' %}
+{% endblock popups %}

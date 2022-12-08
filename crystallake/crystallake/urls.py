@@ -20,8 +20,9 @@ from django.urls import path, include
 from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin_django/', admin.site.urls),
     path('rooms/', include('apps.offer.urls')),
+    path('admin/rooms/', include('apps.offer.admin_urls')),
     path('', include('apps.core.urls'))
 ]
 

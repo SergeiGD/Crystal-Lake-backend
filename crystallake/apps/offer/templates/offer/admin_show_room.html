@@ -1,0 +1,335 @@
+{% extends 'offer/base_admin_show_offer.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_rooms' %}" class="link-hover text-dark text-decoration-none">
+                    Номера
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Просмотр номера</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block properties %}
+
+    <div class="col-md-6 col-12 row">
+        <p class="fw-bold col-5">Наименование:</p>
+        <p class="opacity-75 col-7">{{ offer.name }}</p>
+        <hr>
+    </div>
+
+    <div class="col-md-6 col-12 mt-md-0 mt-2 row">
+        <p class="fw-bold col-5">Спальных мест:</p>
+        <p class="opacity-75 col-7">{{ offer.beds }}</p>
+        <hr>
+    </div>
+
+    <div class="col-md-6 col-12 mt-2 row">
+        <p class="fw-bold col-5">Обычная цена:</p>
+        <p class="opacity-75 col-7">{{ offer.default_price.to_integral_value }}&#8381;</p>
+        <hr>
+    </div>
+
+    <div class="col-md-6 col-12 mt-2 row">
+        <p class="fw-bold col-5">Праздничная цена:</p>
+        <p class="opacity-75 col-7">{{ offer.weekend_price.to_integral_value }}&#8381;</p>
+        <hr>
+    </div>
+
+    <div class="col-md-6 col-12 mt-2 row">
+        <p class="fw-bold col-5">Комнат:</p>
+        <p class="opacity-75 col-7">{{ offer.rooms }}</p>
+        <hr>
+    </div>
+
+    <div class="col-md-6 col-12 mt-2 row">
+        <p class="fw-bold col-5">Площадь (м&#178;):</p>
+        <p class="opacity-75 col-7">{{ offer.square }}</p>
+        <hr>
+    </div>
+
+    <div class="col-md-6 col-12 mt-2 row">
+        <p class="fw-bold col-5">Этажей:</p>
+        <p class="opacity-75 col-7">{{ offer.floors }}</p>
+        <hr>
+    </div>
+
+    <div class="col-md-6 col-12 mt-2 row">
+        <p class="fw-bold col-5">Предоплата:</p>
+        <p class="opacity-75 col-7">{{ offer.prepayment_percent }}%</p>
+        <hr>
+    </div>
+
+    <div class="col-md-6 col-12 mt-2 row">
+        <p class="fw-bold col-5">Возврат:</p>
+        <p class="opacity-75 col-7">{{ offer.refund_percent }}%</p>
+        <hr>
+    </div>
+
+{% endblock properties %}
+
+
+{% block additional_info %}
+
+    <!-- dates -->
+
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5" id="dates">
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">Свободные даты</span>
+        </div>
+
+        <div class="row">
+            <div class="mx-auto col-lg-5 col-12">
+                <span class="input-group-text rounded-top rounded-0">Общие даты (1 день):</span>
+                <div class="evoCalendar calendar calendar__room"></div>
+            </div>
+        </div>
+
+
+        <div class="row mt-5 justify-content-between">
+            <div class="col-lg-5 col-12">
+                <span class="input-group-text rounded-top rounded-0">Номер 19:</span>
+                <div class="evoCalendar calendar calendar__room"></div>
+            </div>
+            <div class="col-lg-5 col-12 mt-lg-0 mt-5">
+                <span class="input-group-text rounded-top rounded-0">Номер 36:</span>
+                <div  class="evoCalendar calendar calendar__room"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- end dates -->
+
+    <!-- orders -->
+
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5" id="dates">
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">Заказы на этот номер</span>
+        </div>
+
+        <form class="shadow p-3 rounded-2 position-relative">
+
+            <i class="fa-regular fa-trash-can text-danger card_icon"></i>
+
+            <div class="row align-items-start justify-content-between">
+                <div class="col-12 row mx-auto p-0">
+
+                    <div class="col-lg-2 col-md-3 col-6">
+                        <label for="order_id" class="form-label text-nowrap">id заказа:</label>
+                        <input type="text" class="form-control" id="order_id">
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-6">
+                        <label for="order_status" class="form-label">Статус заказа:</label>
+                        <select id="order_status" class="form-select w-100 mw-10r flex-grow-0 flex-shrink-1">
+                            <option selected>В процессе</option>
+                            <option value="1">Завершен</option>
+                            <option value="2">Отменен</option>
+                            <option value="3">Все</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-6 mt-md-0 mt-3">
+                        <label for="order_payment" class="form-label">Статус оплаты:</label>
+                        <select id="order_payment" class="form-select w-100 mw-15r flex-grow-0 flex-shrink-1">
+                            <option value="1" selected>Внесена предоплата</option>
+                            <option value="2">Полностью оплачен</option>
+                            <option value="3">Средства возвращены</option>
+                            <option value="4">Все</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12 mt-lg-0 mt-3">
+                        <label for="order_price" class="form-label">Цена заказа:</label>
+                        <div class="d-flex justify-content-start gap-0">
+                            <div class="input-group flex-nowrap w-auto">
+                                <span class="input-group-text rounded-start" id="basic-addon1">от</span>
+                                <input id="order_price" type="number" class="form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1">
+                            </div>
+                            <div class="input-group flex-nowrap w-auto">
+                                <span class="input-group-text  rounded-0" id="basic-addon1">до</span>
+                                <input type="number" class="form-control w-100 mw-10r rounded-end flex-grow-0 flex-shrink-1">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-7 col-md-6 col-12 mt-3">
+                        <label for="order_name" class="form-label">Наименование:</label>
+                        <input type="text" class="form-control" id="order_name">
+                    </div>
+
+                    <div class="col-lg-5 col-md-6 col-12 mt-3">
+                        <label for="order_action" class="form-label">Даты оказания:</label>
+
+                        <div class="d-flex justify-content-start gap-0">
+                            <div class="input-group flex-nowrap w-auto">
+                                <span class="input-group-text rounded-start" id="basic-addon1">с</span>
+                                <input id="order_action" type="date" class="form-control w-100 mw-8r rounded-0 flex-grow-0 flex-shrink-1">
+                            </div>
+                            <div class="input-group flex-nowrap w-auto">
+                                <span class="input-group-text  rounded-0" id="basic-addon1">до</span>
+                                <input type="date" class="form-control w-100 mw-8r rounded-end flex-grow-0 flex-shrink-1">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-7 col-md-6 col-12 mt-3">
+                        <label for="order_client" class="form-label">Клиент:</label>
+                        <div class="d-flex">
+                            <input id="order_client" type="text" class="form-control rounded-0 rounded-start">
+                            <button class="btn btn-primary w-5r rounded-0">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            <button class="btn btn-danger w-5r rounded-0 rounded-end">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-5 col-6 mt-3">
+                        <label for="order_room" class="form-label text-nowrap">Номер:</label>
+                        <input type="number" class="form-control" id="order_room">
+                    </div>
+
+                </div>
+
+                <div class="col-12 mt-3">
+                    <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                </div>
+            </div>
+
+        </form>
+
+
+        <div class="shadow mt-4 rounded-2 overflow-auto">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button">
+                        id <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button">
+                        Наименование <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button">
+                        Клиент <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button">
+                        Номер <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button">
+                        Статус заказа <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button">
+                        Статус оплаты <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button">
+                        Цена <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button">
+                        Даты оказания <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                    <tr role="button">
+                        <th scope="row">1</th>
+                        <td>
+                            <a href="admin_show_order.html" class="link-hover d-block">Двухэтажный домик у озера на 5 дней</a>
+                        </td>
+                        <td>
+                            <a href="admin_show_client.html" class="link-hover d-block">Иванов Иван Иванович</a>
+                        </td>
+                        <td>19</td>
+                        <td>В процессе</td>
+                        <td>Внесена предоплата</td>
+                        <td>28424</td>
+                        <td>12.05.2022 - 29.05.2022</td>
+
+                    </tr>
+                    <tr role="button">
+                        <th scope="row">2</th>
+                        <td>
+                            <a href="admin_show_order.html" class="link-hover d-block">Двухэтажный домик у озера на 5 дней</a>
+                        </td>
+                        <td>
+                            <a href="admin_show_client.html" class="link-hover d-block">Иванов Иван Иванович</a>
+                        </td>
+                        <td>19</td>
+                        <td>В процессе</td>
+                        <td>Внесена предоплата</td>
+                        <td>28424</td>
+                        <td>12.05.2022 - 29.05.2022</td>
+
+                    </tr>
+                    <tr role="button">
+                        <th scope="row">3</th>
+                        <td>
+                            <a href="admin_show_order.html" class="link-hover d-block">Двухэтажный домик у озера на 5 дней</a>
+                        </td>
+                        <td>
+                            <a href="admin_show_client.html" class="link-hover d-block">Иванов Иван Иванович</a>
+                        </td>
+                        <td>36</td>
+                        <td>В процессе</td>
+                        <td>Внесена предоплата</td>
+                        <td>28424</td>
+                        <td>12.05.2022 - 29.05.2022</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- end orders -->
+
+    <!-- rooms -->
+
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5">
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">Номера этого типа</span>
+        </div>
+
+        <div class="overflow-auto mt-4">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Номер</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">35</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">36</th>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </form>
+
+    <!-- end rooms -->
+
+{% endblock additional_info %}

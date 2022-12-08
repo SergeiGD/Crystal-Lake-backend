@@ -33,6 +33,9 @@ class Offer(PolymorphicModel):
     def get_main_photo(self):
         return self.photos.get(is_main=True).path.url
 
+    def get_orders_count(self):
+        return 0
+
 
 class Room(Offer):
     rooms = models.SmallIntegerField(verbose_name="комнат")
@@ -51,6 +54,9 @@ class Room(Offer):
 
     def get_absolute_url(self):
         return reverse('room', kwargs={'room_slug': self.slug})
+
+    def get_absolute_admin_url(self):
+        return reverse('admin_show_room', kwargs={'room_slug': self.slug})
 
 
 class Service(Offer):

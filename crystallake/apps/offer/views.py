@@ -124,5 +124,5 @@ def admin_edit_room(request, room_slug):
             response.status_code = 400
             return response
 
-    return render(request, 'offer/admin_edit_room_temp.html', context)      # если GET, то просто рендерим темплейт
+    return render(request, 'offer/admin_edit_room.html', context)      # если GET, то просто рендерим темплейт
 

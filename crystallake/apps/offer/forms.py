@@ -24,6 +24,7 @@ class RoomForm(forms.ModelForm):
         self.fields['is_hidden'].widget.attrs.update({'class': 'form-check-input'})
         self.fields['description'].widget.attrs.update({'class': 'form-control rounded-bottom rounded-0 h-15r'})
         self.fields['main_photo'].widget.attrs.update({'class': 'upload_img_input d-none', 'accept': 'image/png, image/jpeg"'})
+        self.fields['name'].error_messages = {'unique': 'номер с таким названием уже существует'}
 
         for field in self.fields:
             if str(field) in self.short_fields:

@@ -25,37 +25,37 @@
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
       "path": "/app/apps/core/static/images/why_is-8d9483bc8b97327e78b1.webp"
     },
-    "js/admin-912e0e51928ba5ce4681.bundle.js": {
-      "name": "js/admin-912e0e51928ba5ce4681.bundle.js",
-      "path": "/app/apps/core/static/js/admin-912e0e51928ba5ce4681.bundle.js"
+    "js/admin-01dbdb010790e6aaccba.bundle.js": {
+      "name": "js/admin-01dbdb010790e6aaccba.bundle.js",
+      "path": "/app/apps/core/static/js/admin-01dbdb010790e6aaccba.bundle.js"
     },
-    "js/admin-912e0e51928ba5ce4681.bundle.js.map": {
-      "name": "js/admin-912e0e51928ba5ce4681.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-912e0e51928ba5ce4681.bundle.js.map"
+    "js/admin-01dbdb010790e6aaccba.bundle.js.map": {
+      "name": "js/admin-01dbdb010790e6aaccba.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-01dbdb010790e6aaccba.bundle.js.map"
     },
-    "js/client-45cebfe755d9bdec91cb.bundle.js": {
-      "name": "js/client-45cebfe755d9bdec91cb.bundle.js",
-      "path": "/app/apps/core/static/js/client-45cebfe755d9bdec91cb.bundle.js"
+    "js/admin-4d432d72ab40452259a2.bundle.js": {
+      "name": "js/admin-4d432d72ab40452259a2.bundle.js",
+      "path": "/app/apps/core/static/js/admin-4d432d72ab40452259a2.bundle.js"
     },
-    "js/client-45cebfe755d9bdec91cb.bundle.js.map": {
-      "name": "js/client-45cebfe755d9bdec91cb.bundle.js.map",
-      "path": "/app/apps/core/static/js/client-45cebfe755d9bdec91cb.bundle.js.map"
+    "js/admin-4d432d72ab40452259a2.bundle.js.map": {
+      "name": "js/admin-4d432d72ab40452259a2.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-4d432d72ab40452259a2.bundle.js.map"
     },
-    "js/client-a856a8df43095c562c5d.bundle.js": {
-      "name": "js/client-a856a8df43095c562c5d.bundle.js",
-      "path": "/app/apps/core/static/js/client-a856a8df43095c562c5d.bundle.js"
+    "js/admin-67e11dcec759ecfa04a0.bundle.js": {
+      "name": "js/admin-67e11dcec759ecfa04a0.bundle.js",
+      "path": "/app/apps/core/static/js/admin-67e11dcec759ecfa04a0.bundle.js"
     },
-    "js/client-a856a8df43095c562c5d.bundle.js.map": {
-      "name": "js/client-a856a8df43095c562c5d.bundle.js.map",
-      "path": "/app/apps/core/static/js/client-a856a8df43095c562c5d.bundle.js.map"
+    "js/admin-67e11dcec759ecfa04a0.bundle.js.map": {
+      "name": "js/admin-67e11dcec759ecfa04a0.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-67e11dcec759ecfa04a0.bundle.js.map"
     },
-    "js/client-e1667435d8cbfec56f3d.bundle.js": {
-      "name": "js/client-e1667435d8cbfec56f3d.bundle.js",
-      "path": "/app/apps/core/static/js/client-e1667435d8cbfec56f3d.bundle.js"
+    "js/admin-d1cac2442b9ab676a997.bundle.js": {
+      "name": "js/admin-d1cac2442b9ab676a997.bundle.js",
+      "path": "/app/apps/core/static/js/admin-d1cac2442b9ab676a997.bundle.js"
     },
-    "js/client-e1667435d8cbfec56f3d.bundle.js.map": {
-      "name": "js/client-e1667435d8cbfec56f3d.bundle.js.map",
-      "path": "/app/apps/core/static/js/client-e1667435d8cbfec56f3d.bundle.js.map"
+    "js/admin-d1cac2442b9ab676a997.bundle.js.map": {
+      "name": "js/admin-d1cac2442b9ab676a997.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-d1cac2442b9ab676a997.bundle.js.map"
     },
     "js/client-ec55f3adfbbe8d09af8b.bundle.js": {
       "name": "js/client-ec55f3adfbbe8d09af8b.bundle.js",
@@ -96,7 +96,7 @@
       "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
       "js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js",
       "css/admin-b9c8682b3c0198b0172a.bundle.css",
-      "js/admin-912e0e51928ba5ce4681.bundle.js"
+      "js/admin-01dbdb010790e6aaccba.bundle.js"
     ],
     "client": [
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",

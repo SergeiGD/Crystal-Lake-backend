@@ -1,0 +1,44 @@
+{% extends 'core/admin_base.html' %}
+
+{% block content %}
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    <div>
+        <form action="." method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form_room.as_p }}
+
+            <h3>Доп. фотографии</h3>
+
+
+            {{ formset.as_p }}
+
+{#            {{ formset.management_form }}#}
+{#            {% for form in formset %}#}
+{#                {{ form.as_p }}#}
+{#            {% endfor %}#}
+
+
+
+{#            {{ formset.is_multipart }}#}
+{#            {% for form in formset.forms %}#}
+{##}
+{#                {% for foo in form.visible_fields    %}#}
+{#                    {{ foo }}#}
+{#                {% endfor %}#}
+{##}
+{##}
+{#            {% endfor %}#}
+
+
+
+            <button type="submit">Сохранить</button>
+
+        </form>
+    </div>
+
+{% endblock content %}

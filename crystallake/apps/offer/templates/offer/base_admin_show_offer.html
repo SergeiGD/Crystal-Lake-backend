@@ -5,9 +5,9 @@
     {% block breadcrumbs %}
     {% endblock breadcrumbs %}
 
-    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative main_info_container">
 
-        <i class="fa-regular fa-pen-to-square card_icon" data-goto="admin_manage_room.html"></i>
+        <i class="fa-regular fa-pen-to-square card_icon" data-goto="{{ offer.get_admin_edit_url }}"></i>
 
         <div class="text-center">
             <span class="fw-bold fs-5">id: </span>
@@ -70,7 +70,7 @@
             <div class="col-lg-6 col-12 mt-lg-0 mt-4">
                 <span class="input-group-text rounded-top rounded-0">Главное фото:</span>
                 <div class="img_wrapper">
-                    <img src="{{ offer.get_main_photo }}" alt="Главное фото" class="img-fluid w-100 img">
+                    <img src="{{ offer.main_photo.url }}" alt="Главное фото" class="img-fluid w-100 img">
                     <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
                         <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
                     </button>

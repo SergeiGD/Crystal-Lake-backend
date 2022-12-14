@@ -4,4 +4,5 @@ django-polymorphic==3.1.0
 django-webpack-loader==1.7.0
 Pillow==9.3.0
 psycopg2==2.9.5
+pytils==0.4.1
 sqlparse==0.4.3

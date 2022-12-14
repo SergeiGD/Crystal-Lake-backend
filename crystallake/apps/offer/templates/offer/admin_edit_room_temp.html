@@ -1,0 +1,337 @@
+{% extends 'core/admin_base.html' %}
+
+
+{% block content %}
+<form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative main_info_container" id="edit_main_info_form" action="." method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+
+    <div>
+        <ul id="errors">
+        </ul>
+    </div>
+
+    <i class="fa-regular fa-square-minus text-danger card_icon" data-bs-toggle="modal" data-bs-target="#delete_modal"></i>
+
+    <div class="text-center">
+        <span class="fw-bold fs-5">id номера: </span>
+        <span class="fw-bold fs-5">19</span>
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-6 col-12">
+            <div class="input-group">
+                <label class="input-group-text w-10r" for="{{ form_room.name.id_for_label }}">{{ form_room.name.label }}</label>
+                {{ form_room.name }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-lg-0 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.beds.id_for_label }}">{{ form_room.beds.label }}</label>
+                {{ form_room.beds }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.default_price.id_for_label }}">{{ form_room.default_price.label }}</label>
+                {{ form_room.default_price }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.weekend_price.id_for_label }}">{{ form_room.weekend_price.label }}</label>
+                {{ form_room.weekend_price }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.rooms.id_for_label }}">{{ form_room.rooms.label }}</label>
+                {{ form_room.rooms }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.square.id_for_label }}">{{ form_room.square.label }}</label>
+                {{ form_room.square }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.floors.id_for_label }}">{{ form_room.floors.label }}</label>
+                {{ form_room.floors }}
+            </div>
+        </div>
+
+{#        <div class="col-md-6 col-12 mt-4">#}
+{#            <div class="input-group flex-nowrap w-auto">#}
+{#                <label for="manage_bonus" class="input-group-text w-10r" id="basic-addon1">Макс. бонусов (%)</label>#}
+{#                <input id="manage_bonus" type="number" class="form-control " value="40">#}
+{#            </div>#}
+{#        </div>#}
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.prepayment_percent.id_for_label }}">{{ form_room.prepayment_percent.label }}</label>
+                {{ form_room.prepayment_percent }}
+            </div>
+        </div>
+
+{#        <div class="col-md-6 col-12 mt-4">#}
+{#            <div class="input-group flex-nowrap w-auto">#}
+{#                <label for="manage_prepayment_money" class="input-group-text w-10r" id="basic-addon1">Предоплата (&#8381;)</label>#}
+{#                <input id="manage_prepayment_money" type="number" class="form-control " value="">#}
+{#            </div>#}
+{#        </div>#}
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.refund_percent.id_for_label }}">{{ form_room.refund_percent.label }}</label>
+                {{ form_room.refund_percent }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="form-check">
+                <label class="form-check-label" for="{{ form_room.is_hidden.id_for_label }}">{{ form_room.is_hidden.label }}</label>
+                {{ form_room.is_hidden }}
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-6 col-12">
+
+            <div class="col-12">
+                <label class="input-group-text rounded-top rounded-0" for="{{ form_room.description.id_for_label }}">{{ form_room.description.label }}</label>
+                {{ form_room.description }}
+            </div>
+
+            <div class="col-12">
+                <div class="d-flex flex-column">
+                    <span class="input-group-text rounded-top rounded-0 mt-3">Теги:</span>
+                    <div class="border-1 border rounded-bottom border-top-0 flex-grow-1 p-2">
+
+                        <button class="btn btn-c_grey-100 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add_tag_modal">+ Добавить</button>
+
+                            <div class="d-flex gap-4 flex-wrap mt-3">
+                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                    <span class="py-1 px-3">Два этажа</span>
+                                    <button class="btn btn-danger rounded-0">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                    <span class="py-1 px-3">Беседка</span>
+                                    <button class="btn btn-danger rounded-0">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                    <span class="py-1 px-3">Два этажа</span>
+                                    <button class="btn btn-danger rounded-0">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                    <span class="py-1 px-3">Два этажа</span>
+                                    <button class="btn btn-danger rounded-0">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                    <span class="py-1 px-3">Два этажа</span>
+                                    <button class="btn btn-danger rounded-0">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                    <span class="py-1 px-3">Два этажа</span>
+                                    <button class="btn btn-danger rounded-0">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                    <span class="py-1 px-3">Два этажа</span>
+                                    <button class="btn btn-danger rounded-0">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
+                                    <span class="py-1 px-3">Два этажа</span>
+                                    <button class="btn btn-danger rounded-0">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-6 col-12 mt-lg-0 mt-4">
+            <span class="input-group-text rounded-top rounded-0">Главное фото:</span>
+            <div class="img_wrapper">
+                <img src="{{ room.main_photo.url }}" alt="Главное фото" class="img-fluid w-100 img">
+
+                <button class="btn btn-primary upload_img upload_img_button" type="button" >
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    Загрузить фотографию
+                </button>
+
+                <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                </button>
+
+                {{ form_room.main_photo }}
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- accordion images -->
+
+    <div class="accordion" id="images-accord">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-1">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#images" aria-expanded="true" aria-controls="images">
+              Дополнительные фотографии
+            </button>
+          </h2>
+          <div id="images" class="accordion-collapse collapse" aria-labelledby="heading-1" data-bs-parent="#images-accord">
+            <div class="accordion-body row" id="accordion_body_images">
+
+
+                {{ formset.management_form }}
+
+                {% for photo, form in photo_form %}
+
+                    <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="{{ photo.order }}">
+                        <div class="w-100">
+                            <div class="img_wrapper">
+
+                                <img src="{{ photo.path.url }}" alt="Доп. фото" class="img-fluid w-100 img rounded">
+
+                                <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                                </button>
+
+                                <button class="btn btn-primary update_img w-10r upload_img_button" type="button">
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                    Обновить
+                                </button>
+
+                                <button class="btn btn-danger delete_img w-10r" type="button">
+                                    <i class="fa-solid fa-xmark"></i>
+                                    Удалить
+                                </button>
+
+                                {% for field in form %}
+                                    {% if field.name == 'DELETE' %}
+                                        {{ field.as_hidden  }}
+                                    {% else %}
+                                        {{ field }}
+                                    {% endif %}
+                                {% endfor %}
+
+                            </div>
+                        </div>
+
+                        <div class="mt-2 text-center">
+                            <i class="fa-solid fa-arrow-left fs-2 move_prev" role="button"></i>
+                            <i class="fa-solid fa-arrow-right fs-2 ms-5 move_next" role="button"></i>
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+                <div class="col-lg-4 col-sm-6 col-12 mb-4 d-none" data-empty-container>
+                    <div class="w-100">
+                        <div class="img_wrapper">
+
+                            <img src="" alt="Доп. фото" class="img-fluid w-100 img rounded">
+
+                            <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                            </button>
+
+                            <button class="btn btn-primary update_img w-10r upload_img_button" type="button">
+                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                Обновить
+                            </button>
+
+                            <button class="btn btn-danger delete_img w-10r">
+                                <i class="fa-solid fa-xmark"></i>
+                                Удалить
+                            </button>
+
+                            {% for field in formset.empty_form %}
+                                {% if field.name == 'DELETE' %}
+                                    {{ field.as_hidden  }}
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                    <div class="mt-2 text-center">
+                        <i class="fa-solid fa-arrow-left fs-2 move_prev" role="button"></i>
+                        <i class="fa-solid fa-arrow-right fs-2 ms-5 move_next" role="button"></i>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-sm-6 col-12 my-auto">
+                    <div class="w-100">
+                        <button class="btn btn-c_yellow-700 btn-lg w-100 mx-auto upload_new_img_button" type="button">Загрузить еще</button>
+                        <input type="file" class="upload_new_img_input d-none" accept="image/png, image/jpeg"/>
+                    </div>
+                </div>
+
+
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- accordion imges end -->
+
+    <div class="col-12 mt-4">
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-lg btn-c_yellow-700" id="button_save">Сохранить</button>
+            <button type="button" class="btn btn-lg btn-c_grey-100"  data-goto="admin_show_room.html">Назад</button>
+        </div>
+    </div>
+
+</form>
+
+{% endblock content %}
+
+{% block popups %}
+    <div class="modal fade" id="show_img_modal" tabindex="-1" aria-labelledby="show_img_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="show_img_label">Просмотр изображения</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="img_modal" class="w-100" alt="Просмотр изображения">
+            </div>
+          </div>
+        </div>
+    </div>
+{% endblock popups %}

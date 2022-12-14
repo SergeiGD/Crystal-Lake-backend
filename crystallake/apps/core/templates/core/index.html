@@ -107,7 +107,7 @@
             {% for room in rooms %}
             <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ room.get_absolute_url }}">
                 <div class="card_inner">
-                    <img src="{{ room.get_main_photo }}" alt="{{ room.name }}" class="card_img">
+                    <img src="{{ room.main_photo.url }}" alt="{{ room.name }}" class="card_img">
                     <div class="card_info">
                         <p class="card_info_title">
                             {{ room.name }}
@@ -143,7 +143,7 @@
                 {% for service in services %}
                 <article class="card_short recomendations_item slider_content slider_content__active" data-goto="service.html">
                     <div class="card_inner">
-                        <img src="{{ service.get_main_photo }}" alt="{{ service.name }}" class="card_img">
+                        <img src="{{ service.main_photo.url }}" alt="{{ service.name }}" class="card_img">
                         <div class="card_info">
                             <p class="card_info_title">
                                 {{ service.name }}

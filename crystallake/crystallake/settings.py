@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     'apps.offer.apps.OfferConfig',
     'apps.order.apps.OrderConfig',
     'apps.core.apps.CoreConfig',
+    'apps.user.apps.UserConfig',
 ]
+
+AUTH_USER_MODEL = 'user.CustomUser'
 
 WEBPACK_LOADER = {
     'DEFAULT': {

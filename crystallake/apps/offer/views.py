@@ -1,11 +1,14 @@
 import json
 
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView, CreateView
 from django.forms.models import modelformset_factory
+from django.contrib.auth.decorators import permission_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 
@@ -46,7 +49,8 @@ class RoomDetail(DetailView):
         return obj
 
 
-class AdminRoomsList(ListView):
+class AdminRoomsList(PermissionRequiredMixin, ListView):
+    permission_required = 'offer.view_room'
     template_name = 'offer/admin_rooms.html'
     model = Room
     context_object_name = 'rooms'
@@ -61,7 +65,8 @@ class AdminRoomsList(ListView):
         return Room.objects.filter(date_deleted=None, main_room=None)
 
 
-class AdminRoomDetail(DetailView):
+class AdminRoomDetail(PermissionRequiredMixin, DetailView):
+    permission_required = 'offer.view_room'
     template_name = 'offer/admin_show_room.html'
     model = Room
     slug_url_kwarg = 'room_slug'
@@ -79,6 +84,7 @@ class AdminRoomDetail(DetailView):
         return obj
 
 
+@permission_required('offer.change_room')
 def admin_edit_room(request, room_slug):
     room = get_object_or_404(Room, slug=room_slug)
 

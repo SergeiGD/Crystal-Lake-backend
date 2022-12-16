@@ -12,13 +12,6 @@
         </ul>
     </div>
 
-    <i class="fa-regular fa-square-minus text-danger card_icon" data-bs-toggle="modal" data-bs-target="#delete_modal"></i>
-
-    <div class="text-center">
-        <span class="fw-bold fs-5">id: </span>
-        <span class="fw-bold fs-5">{{ room.id }}</span>
-    </div>
-
     <div class="row">
 
         <div class="col-lg-6 col-12">
@@ -180,16 +173,21 @@
         </div>
         <div class="col-lg-6 col-12 mt-lg-0 mt-4">
             <span class="input-group-text rounded-top rounded-0">Главное фото:</span>
-            <div class="img_wrapper">
-                <img src="{{ room.main_photo.url }}" alt="Главное фото" class="img-fluid w-100 img">
+            <div id="img_wrapper__temp">
+                <img src="" alt="Главное фото" class="img-fluid w-100 img d-none">
 
-                <button class="btn btn-primary upload_img upload_img_button" type="button" >
+                <button class="btn btn-primary upload_img upload_img_button d-none" type="button">
                     <i class="fa-solid fa-arrow-up-from-bracket"></i>
                     Загрузить фотографию
                 </button>
 
-                <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                <button class="btn open_img btn-dark d-none" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
                     <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                </button>
+
+                <button class="btn btn-lg btn-primary upload_img_button w-100 rounded-0 rounded-bottom" type="button" id="upload_button__temp">
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    Загрузить фотографию
                 </button>
 
                 {{ form_room.main_photo }}
@@ -214,47 +212,47 @@
 
                 {{ formset.management_form }}
 
-                {% for photo, form in photo_form %}
-
-                    <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="{{ photo.order }}">
-                        <div class="w-100">
-                            <div class="img_wrapper">
-
-                                <img src="{{ photo.path.url }}" alt="Доп. фото" class="img-fluid w-100 img rounded">
-
-                                <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
-                                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-                                </button>
-
-                                <button class="btn btn-primary update_img w-10r upload_img_button" type="button">
-                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
-                                    Обновить
-                                </button>
-
-                                <button class="btn btn-danger delete_img w-10r" type="button">
-                                    <i class="fa-solid fa-xmark"></i>
-                                    Удалить
-                                </button>
-
-                                {% for field in form %}
-                                    {% if field.name == 'DELETE' %}
-                                        {{ field.as_hidden  }}
-                                    {% else %}
-                                        {{ field }}
-                                    {% endif %}
-                                {% endfor %}
-
-                            </div>
-                        </div>
-
-                        <div class="mt-2 text-center">
-                            <i class="fa-solid fa-arrow-left fs-2 move_prev" role="button"></i>
-                            <i class="fa-solid fa-arrow-right fs-2 ms-5 move_next" role="button"></i>
-                        </div>
-
-                    </div>
-
-                {% endfor %}
+{#                {% for photo, form in photo_form %}#}
+{##}
+{#                    <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="{{ photo.order }}">#}
+{#                        <div class="w-100">#}
+{#                            <div class="img_wrapper">#}
+{##}
+{#                                <img src="{{ photo.path.url }}" alt="Доп. фото" class="img-fluid w-100 img rounded">#}
+{##}
+{#                                <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">#}
+{#                                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i>#}
+{#                                </button>#}
+{##}
+{#                                <button class="btn btn-primary update_img w-10r upload_img_button" type="button">#}
+{#                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>#}
+{#                                    Обновить#}
+{#                                </button>#}
+{##}
+{#                                <button class="btn btn-danger delete_img w-10r" type="button">#}
+{#                                    <i class="fa-solid fa-xmark"></i>#}
+{#                                    Удалить#}
+{#                                </button>#}
+{##}
+{#                                {% for field in form %}#}
+{#                                    {% if field.name == 'DELETE' %}#}
+{#                                        {{ field.as_hidden  }}#}
+{#                                    {% else %}#}
+{#                                        {{ field }}#}
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{##}
+{#                        <div class="mt-2 text-center">#}
+{#                            <i class="fa-solid fa-arrow-left fs-2 move_prev" role="button"></i>#}
+{#                            <i class="fa-solid fa-arrow-right fs-2 ms-5 move_next" role="button"></i>#}
+{#                        </div>#}
+{##}
+{#                    </div>#}
+{##}
+{#                {% endfor %}#}
 
                 <div class="col-lg-4 col-sm-6 col-12 mb-4 d-none" data-empty-container>
                     <div class="w-100">

@@ -60,6 +60,11 @@ $(document).ready(function (){
             }
         });
 
+        console.log(post_data)
+        console.log(raw_data)
+        console.log(files_uploaded)
+        console.log(files_deleted)
+
         $.ajax({
             url: $('#edit_main_info_form').attr('action'),
             type: 'POST',
@@ -200,6 +205,24 @@ $(document).ready(function(){
     });
 
 
+});
+
+/***/ }),
+
+/***/ "./src/js/admin/new_offer_main_img.js":
+/*!********************************************!*\
+  !*** ./src/js/admin/new_offer_main_img.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+    // при загрузке фотографии к новому предложению, скрываем изначальную кнопку и отображаем картику
+    $('#img_wrapper__temp > .upload_img_input').on('change', function (){
+        $(this).siblings('.img').removeClass('d-none')                      // отображаем картинки
+        $('#upload_button__temp').addClass('d-none')                        // скрываем кнопку
+        $('#img_wrapper__temp').addClass('img_wrapper').removeAttr('id')    // удаляем id
+    });
 });
 
 /***/ }),
@@ -505,9 +528,10 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/move_img.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/upload_img.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/delete_img.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/new_offer_main_img.js")))
 /******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/edit_room_ajax.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-01dbdb010790e6aaccba.bundle.js.map
+//# sourceMappingURL=admin-34b2c4c18b61ae84a45b.bundle.js.map

@@ -23,7 +23,8 @@ class RoomForm(forms.ModelForm):
 
         self.fields['is_hidden'].widget.attrs.update({'class': 'form-check-input'})
         self.fields['description'].widget.attrs.update({'class': 'form-control rounded-bottom rounded-0 h-15r'})
-        self.fields['main_photo'].widget.attrs.update({'class': 'upload_img_input d-none', 'accept': 'image/png, image/jpeg"'})
+        self.fields['main_photo'].widget.attrs.update({'class': 'upload_img_input d-none', 'accept': 'image/png, image/jpeg'})
+        self.fields['main_photo'].required = False
         self.fields['name'].error_messages = {'unique': 'номер с таким названием уже существует'}
 
         for field in self.fields:
@@ -39,6 +40,14 @@ class RoomForm(forms.ModelForm):
     #     if Offer.objects.filter(name=name).exists():
     #         raise forms.ValidationError('Номер с таким названием уже существует', code='unique required')
     #     return name
+
+    def clean_main_photo(self):
+        photo = self.cleaned_data.get("main_photo")
+
+        if not photo:
+            raise forms.ValidationError('Главное фото не было выбрано', code='required')
+
+        return photo
 
 
 class PhotoForm(forms.ModelForm):

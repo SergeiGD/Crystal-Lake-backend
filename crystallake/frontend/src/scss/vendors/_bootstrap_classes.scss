@@ -99,15 +99,28 @@
 //     opacity: 0
 // }
 
-.card_icon{
+.card_icon, .show_icon{
     position: absolute;
     top: 8px;
-    right: 8px;
     font-size: 2rem;
     cursor: pointer;
     opacity: 0.6;
     &:hover{
         opacity: 1;
+    }
+}
+
+.card_icon{
+    right: 8px;
+}
+
+.show_icon{
+    right: 70px;
+}
+
+.img_wrapper__temp{
+    &:hover{
+
     }
 }
 

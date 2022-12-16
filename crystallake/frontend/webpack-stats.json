@@ -1,13 +1,13 @@
 {
   "status": "done",
   "assets": {
-    "css/admin-b9c8682b3c0198b0172a.bundle.css": {
-      "name": "css/admin-b9c8682b3c0198b0172a.bundle.css",
-      "path": "/app/apps/core/static/css/admin-b9c8682b3c0198b0172a.bundle.css"
+    "css/admin-2e2154f9b76e197838ef.bundle.css": {
+      "name": "css/admin-2e2154f9b76e197838ef.bundle.css",
+      "path": "/app/apps/core/static/css/admin-2e2154f9b76e197838ef.bundle.css"
     },
-    "css/admin-b9c8682b3c0198b0172a.bundle.css.map": {
-      "name": "css/admin-b9c8682b3c0198b0172a.bundle.css.map",
-      "path": "/app/apps/core/static/css/admin-b9c8682b3c0198b0172a.bundle.css.map"
+    "css/admin-2e2154f9b76e197838ef.bundle.css.map": {
+      "name": "css/admin-2e2154f9b76e197838ef.bundle.css.map",
+      "path": "/app/apps/core/static/css/admin-2e2154f9b76e197838ef.bundle.css.map"
     },
     "css/client-a5402a8b18944da657c3.bundle.css": {
       "name": "css/client-a5402a8b18944da657c3.bundle.css",
@@ -25,37 +25,69 @@
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
       "path": "/app/apps/core/static/images/why_is-8d9483bc8b97327e78b1.webp"
     },
-    "js/admin-01dbdb010790e6aaccba.bundle.js": {
-      "name": "js/admin-01dbdb010790e6aaccba.bundle.js",
-      "path": "/app/apps/core/static/js/admin-01dbdb010790e6aaccba.bundle.js"
+    "js/admin-34b2c4c18b61ae84a45b.bundle.js": {
+      "name": "js/admin-34b2c4c18b61ae84a45b.bundle.js",
+      "path": "/app/apps/core/static/js/admin-34b2c4c18b61ae84a45b.bundle.js"
     },
-    "js/admin-01dbdb010790e6aaccba.bundle.js.map": {
-      "name": "js/admin-01dbdb010790e6aaccba.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-01dbdb010790e6aaccba.bundle.js.map"
+    "js/admin-34b2c4c18b61ae84a45b.bundle.js.map": {
+      "name": "js/admin-34b2c4c18b61ae84a45b.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-34b2c4c18b61ae84a45b.bundle.js.map"
     },
-    "js/admin-4d432d72ab40452259a2.bundle.js": {
-      "name": "js/admin-4d432d72ab40452259a2.bundle.js",
-      "path": "/app/apps/core/static/js/admin-4d432d72ab40452259a2.bundle.js"
+    "js/admin-3ffe9f7f9a5c96e28872.bundle.js": {
+      "name": "js/admin-3ffe9f7f9a5c96e28872.bundle.js",
+      "path": "/app/apps/core/static/js/admin-3ffe9f7f9a5c96e28872.bundle.js"
     },
-    "js/admin-4d432d72ab40452259a2.bundle.js.map": {
-      "name": "js/admin-4d432d72ab40452259a2.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-4d432d72ab40452259a2.bundle.js.map"
+    "js/admin-3ffe9f7f9a5c96e28872.bundle.js.map": {
+      "name": "js/admin-3ffe9f7f9a5c96e28872.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-3ffe9f7f9a5c96e28872.bundle.js.map"
     },
-    "js/admin-67e11dcec759ecfa04a0.bundle.js": {
-      "name": "js/admin-67e11dcec759ecfa04a0.bundle.js",
-      "path": "/app/apps/core/static/js/admin-67e11dcec759ecfa04a0.bundle.js"
+    "js/admin-5df4eaef867882401b9c.bundle.js": {
+      "name": "js/admin-5df4eaef867882401b9c.bundle.js",
+      "path": "/app/apps/core/static/js/admin-5df4eaef867882401b9c.bundle.js"
     },
-    "js/admin-67e11dcec759ecfa04a0.bundle.js.map": {
-      "name": "js/admin-67e11dcec759ecfa04a0.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-67e11dcec759ecfa04a0.bundle.js.map"
+    "js/admin-5df4eaef867882401b9c.bundle.js.map": {
+      "name": "js/admin-5df4eaef867882401b9c.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-5df4eaef867882401b9c.bundle.js.map"
     },
-    "js/admin-d1cac2442b9ab676a997.bundle.js": {
-      "name": "js/admin-d1cac2442b9ab676a997.bundle.js",
-      "path": "/app/apps/core/static/js/admin-d1cac2442b9ab676a997.bundle.js"
+    "js/admin-6eff1034b79ef2dd9c95.bundle.js": {
+      "name": "js/admin-6eff1034b79ef2dd9c95.bundle.js",
+      "path": "/app/apps/core/static/js/admin-6eff1034b79ef2dd9c95.bundle.js"
     },
-    "js/admin-d1cac2442b9ab676a997.bundle.js.map": {
-      "name": "js/admin-d1cac2442b9ab676a997.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-d1cac2442b9ab676a997.bundle.js.map"
+    "js/admin-6eff1034b79ef2dd9c95.bundle.js.map": {
+      "name": "js/admin-6eff1034b79ef2dd9c95.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-6eff1034b79ef2dd9c95.bundle.js.map"
+    },
+    "js/admin-8f22f64857be312078bf.bundle.js": {
+      "name": "js/admin-8f22f64857be312078bf.bundle.js",
+      "path": "/app/apps/core/static/js/admin-8f22f64857be312078bf.bundle.js"
+    },
+    "js/admin-8f22f64857be312078bf.bundle.js.map": {
+      "name": "js/admin-8f22f64857be312078bf.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-8f22f64857be312078bf.bundle.js.map"
+    },
+    "js/admin-98e650c70b3ec68e5bfc.bundle.js": {
+      "name": "js/admin-98e650c70b3ec68e5bfc.bundle.js",
+      "path": "/app/apps/core/static/js/admin-98e650c70b3ec68e5bfc.bundle.js"
+    },
+    "js/admin-98e650c70b3ec68e5bfc.bundle.js.map": {
+      "name": "js/admin-98e650c70b3ec68e5bfc.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-98e650c70b3ec68e5bfc.bundle.js.map"
+    },
+    "js/admin-d2068ba0f792f47fa6c7.bundle.js": {
+      "name": "js/admin-d2068ba0f792f47fa6c7.bundle.js",
+      "path": "/app/apps/core/static/js/admin-d2068ba0f792f47fa6c7.bundle.js"
+    },
+    "js/admin-d2068ba0f792f47fa6c7.bundle.js.map": {
+      "name": "js/admin-d2068ba0f792f47fa6c7.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-d2068ba0f792f47fa6c7.bundle.js.map"
+    },
+    "js/admin-e0bd004fd18135e8ab17.bundle.js": {
+      "name": "js/admin-e0bd004fd18135e8ab17.bundle.js",
+      "path": "/app/apps/core/static/js/admin-e0bd004fd18135e8ab17.bundle.js"
+    },
+    "js/admin-e0bd004fd18135e8ab17.bundle.js.map": {
+      "name": "js/admin-e0bd004fd18135e8ab17.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-e0bd004fd18135e8ab17.bundle.js.map"
     },
     "js/client-ec55f3adfbbe8d09af8b.bundle.js": {
       "name": "js/client-ec55f3adfbbe8d09af8b.bundle.js",
@@ -95,8 +127,8 @@
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
       "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
       "js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js",
-      "css/admin-b9c8682b3c0198b0172a.bundle.css",
-      "js/admin-01dbdb010790e6aaccba.bundle.js"
+      "css/admin-2e2154f9b76e197838ef.bundle.css",
+      "js/admin-34b2c4c18b61ae84a45b.bundle.js"
     ],
     "client": [
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
@@ -104,5 +136,7 @@
       "css/client-a5402a8b18944da657c3.bundle.css",
       "js/client-ec55f3adfbbe8d09af8b.bundle.js"
     ]
-  }
+  },
+  "error": "ModuleParseError",
+  "message": "Module parse failed: Unexpected token (4:69)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n|     $('#img_wrapper__temp > .upload_img_input').on('change', function (){\n|         //$('#img_wrapper__temp').child('.img').removeClass('d-none')\n>         $(this).siblings('.img, .upload_img, .open_img).removeClass('d-none')\n|     });\n| });"
 }

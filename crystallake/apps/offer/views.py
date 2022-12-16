@@ -1,6 +1,6 @@
 import json
 
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -98,7 +98,7 @@ def admin_edit_room(request, room_slug):
         'formset': formset,
         'current_page': 'rooms',
         'room': room,
-        'photo_form': zip(formset.queryset, formset.forms)          # пакуем формы и объекты в один объект, для удобной обработки в темплейте
+        'photo_form': zip(formset.queryset, formset.forms)          # пакуем формы и экземпляры модели в один объект, для удобной обработки в темплейте
     }
 
     if request.method == 'POST':
@@ -131,4 +131,46 @@ def admin_edit_room(request, room_slug):
             return response
 
     return render(request, 'offer/admin_edit_room.html', context)      # если GET, то просто рендерим темплейт
+
+
+@permission_required('offer.add_room')
+def admin_create_room(request):
+
+    form_room = RoomForm(request.POST or None, files=request.FILES or None)
+    PhotoFormset = modelformset_factory(Photo, form=PhotoForm, extra=0, can_delete=True)
+
+    formset = PhotoFormset(request.POST or None, files=request.FILES or None, queryset=Photo.objects.none())
+
+    context = {
+        'form_room': form_room,
+        'formset': formset,
+        'current_page': 'rooms',
+    }
+
+    if request.method == 'POST':
+
+        if all([form_room.is_valid(), formset.is_valid()]):
+
+            created_room = form_room.save(commit=True)
+
+            formset.save(commit=False)
+
+            for created_photo in formset.new_objects:
+                created_photo.offer = created_room                  # если новая картинки, то присваиваем номер, к которому она относится
+                created_photo.save()
+
+            url = reverse('admin_show_room', kwargs={'room_slug': created_room.slug})
+            response_data = {'url': url, 'message': 'successfully created'}
+            response = HttpResponse(json.dumps(response_data), content_type="application/json")     # при успехе отправляем json, который обработам ajax
+            response.status_code = 302          # 302, т.к. редериктим при успехе на просмотр
+            return response
+
+        else:
+            print(form_room.errors)
+            print('asd')
+            response = HttpResponse(form_room.errors.as_json())     # отправляем ошибки в виде json'a
+            response.status_code = 400
+            return response
+
+    return render(request, 'offer/admin_create_room.html', context)      # если GET, то просто рендерим темплейт
 

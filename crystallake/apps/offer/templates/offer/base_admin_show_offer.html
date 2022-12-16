@@ -8,10 +8,13 @@
     <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative main_info_container">
 
         <i class="fa-regular fa-pen-to-square card_icon" data-goto="{{ offer.get_admin_edit_url }}"></i>
+        {% if not offer.is_hidden %}
+            <i class="fa-solid fa-eye show_icon" data-goto="{{ offer.get_absolute_url }}"></i>
+        {% endif %}
 
         <div class="text-center">
             <span class="fw-bold fs-5">id: </span>
-            <span class="fw-bold fs-5">19</span>
+            <span class="fw-bold fs-5">{{ offer.id }}</span>
         </div>
 
         <div class="row justify-content-between">

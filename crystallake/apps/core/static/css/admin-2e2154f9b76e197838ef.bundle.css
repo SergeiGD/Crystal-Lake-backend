@@ -87,16 +87,23 @@
   top: 20px;
 }
 
-.card_icon {
+.card_icon, .show_icon {
   position: absolute;
   top: 8px;
-  right: 8px;
   font-size: 2rem;
   cursor: pointer;
   opacity: 0.6;
 }
-.card_icon:hover {
+.card_icon:hover, .show_icon:hover {
   opacity: 1;
+}
+
+.card_icon {
+  right: 8px;
+}
+
+.show_icon {
+  right: 70px;
 }
 
 /*!
@@ -12508,4 +12515,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=admin-b9c8682b3c0198b0172a.bundle.css.map*/
+/*# sourceMappingURL=admin-2e2154f9b76e197838ef.bundle.css.map*/

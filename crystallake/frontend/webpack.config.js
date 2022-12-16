@@ -51,6 +51,7 @@ module.exports = {
             path.resolve(__dirname,'src/js/admin/move_img.js'),
             path.resolve(__dirname,'src/js/admin/upload_img.js'),
             path.resolve(__dirname,'src/js/admin/delete_img.js'),
+            path.resolve(__dirname,'src/js/admin/new_offer_main_img.js'),
             path.resolve(__dirname,'src/js/admin/ajax/edit_room_ajax.js'),
         ]
     },

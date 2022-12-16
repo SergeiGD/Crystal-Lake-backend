@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.contrib.auth import views as auth_views
 
 from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 
 urlpatterns = [
     path('admin_django/', admin.site.urls),
+    re_path('^accounts/', admin.site.urls, name='temp_login'),
     path('rooms/', include('apps.offer.urls')),
     path('admin/rooms/', include('apps.offer.admin_urls')),
     path('', include('apps.core.urls'))

@@ -80,6 +80,18 @@
         <hr>
     </div>
 
+    <div class="col-md-6 col-12 mt-2 row">
+        <p class="fw-bold col-5">Скрыто:</p>
+        <p class="opacity-75 col-7">
+            {% if offer.is_hidden %}
+                Да
+            {% else %}
+                Нет
+            {% endif %}
+        </p>
+        <hr>
+    </div>
+
 {% endblock properties %}
 
 

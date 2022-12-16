@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from ..offer.models import *
 
@@ -22,3 +22,4 @@ class Index(ListView):
 
     def get_queryset(self):
         return Room.objects.filter(is_hidden=False, main_room=None)[:3]
+

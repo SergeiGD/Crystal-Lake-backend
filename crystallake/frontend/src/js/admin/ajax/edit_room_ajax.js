@@ -36,6 +36,11 @@ $(document).ready(function (){
             }
         });
 
+        console.log(post_data)
+        console.log(raw_data)
+        console.log(files_uploaded)
+        console.log(files_deleted)
+
         $.ajax({
             url: $('#edit_main_info_form').attr('action'),
             type: 'POST',

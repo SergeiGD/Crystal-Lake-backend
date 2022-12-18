@@ -9,6 +9,7 @@ from pytils.translit import slugify
 #from django.utils.text import slugify
 #from ..order.models import Purchase
 from polymorphic.models import PolymorphicModel
+from django.db.models import Q
 
 # Create your models here.
 
@@ -23,6 +24,34 @@ def build_photo_path(instance, filename):
         return 'offer_{0}/{1}.{2}'.format(instance.offer.pk, code, ext)
 
     return 'offer_{0}/{1}.{2}'.format(instance.pk, code, ext)
+
+
+# class RoomManager(models.Manager):
+#     def search(self, query):
+#         lookups = Q(name__icontains=query)
+#         #return Room.objects.filter(lookups)
+#         return self.get_queryset().filter(lookups)
+
+
+class RoomQuerySet(models.QuerySet):
+    def search(self, **kwargs):
+        qs = self
+        if kwargs.get('name', ''):
+            qs = qs.filter(name__icontains=kwargs['name'])
+        if kwargs.get('rooms', ''):
+            qs = qs.filter(rooms=kwargs['rooms'])
+        if kwargs.get('floors', ''):
+            qs = qs.filter(floors=kwargs['floors'])
+        if kwargs.get('beds', ''):
+            qs = qs.filter(beds=kwargs['beds'])
+        if kwargs.get('price_from', ''):
+            qs = qs.filter(default_price__gte=kwargs['price_from'])
+        if kwargs.get('price_until', ''):
+            qs = qs.filter(default_price__lte=kwargs['price_from'])
+        if kwargs.get('sort_by', ''):
+            qs = qs.order_by(kwargs['sort_by'])
+
+        return qs
 
 
 class Offer(PolymorphicModel):
@@ -98,6 +127,8 @@ class Room(Offer):
 
     def get_admin_edit_url(self):
         return reverse('admin_edit_room', kwargs={'room_slug': self.slug})
+
+    objects = RoomQuerySet.as_manager()
 
 
 class Service(Offer):

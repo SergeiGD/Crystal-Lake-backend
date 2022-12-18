@@ -269,15 +269,21 @@
                                 Обновить
                             </button>
 
-                            <button class="btn btn-danger delete_img w-10r">
+                            <button class="btn btn-danger delete_img w-10r" type="button">
                                 <i class="fa-solid fa-xmark"></i>
                                 Удалить
                             </button>
 
+{#                            {% for field in formset.empty_form %}#}
+{#                                {% if field.name == 'DELETE' %}#}
+{#                                    {{ field.as_hidden  }}#}
+{#                                {% else %}#}
+{#                                    {{ field }}#}
+{#                                {% endif %}#}
+{#                            {% endfor %}#}
+
                             {% for field in formset.empty_form %}
-                                {% if field.name == 'DELETE' %}
-                                    {{ field.as_hidden  }}
-                                {% else %}
+                                {% if not field.name == 'DELETE' %}
                                     {{ field }}
                                 {% endif %}
                             {% endfor %}

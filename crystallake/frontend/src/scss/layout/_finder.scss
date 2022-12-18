@@ -131,6 +131,11 @@
 
     .sorting_item{
         cursor: pointer;
+        user-select: none;
+        transition: all 0.15s linear;
+        &:hover{
+            color: vars.$pink_color;
+        }
     }
 
     .sorting_icon_active{

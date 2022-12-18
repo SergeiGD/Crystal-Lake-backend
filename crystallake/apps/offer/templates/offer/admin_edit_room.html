@@ -2,7 +2,7 @@
 
 
 {% block content %}
-<form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative main_info_container" id="edit_main_info_form" action="." method="POST" enctype="multipart/form-data">
+<form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative main_info_container" id="edit_main_info_form" action="{{ room.get_admin_edit_url }}" method="POST" enctype="multipart/form-data">
 
     {% csrf_token %}
 
@@ -216,7 +216,7 @@
 
                 {% for photo, form in photo_form %}
 
-                    <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="{{ photo.order }}">
+                    <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="{{ photo.order }}" data-active>
                         <div class="w-100">
                             <div class="img_wrapper">
 
@@ -271,15 +271,21 @@
                                 Обновить
                             </button>
 
-                            <button class="btn btn-danger delete_img w-10r">
+                            <button class="btn btn-danger delete_img w-10r" type="button">
                                 <i class="fa-solid fa-xmark"></i>
                                 Удалить
                             </button>
 
+{#                            {% for field in formset.empty_form %}#}
+{#                                {% if field.name == 'DELETE' %}#}
+{#                                    {{ field.as_hidden  }}#}
+{#                                {% else %}#}
+{#                                    {{ field }}#}
+{#                                {% endif %}#}
+{#                            {% endfor %}#}
+
                             {% for field in formset.empty_form %}
-                                {% if field.name == 'DELETE' %}
-                                    {{ field.as_hidden  }}
-                                {% else %}
+                                {% if not field.name == 'DELETE' %}
                                     {{ field }}
                                 {% endif %}
                             {% endfor %}
@@ -312,7 +318,7 @@
     <div class="col-12 mt-4">
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-lg btn-c_yellow-700" id="button_save">Сохранить</button>
-            <button type="button" class="btn btn-lg btn-c_grey-100"  data-goto="{% url 'admin_rooms' %}">Назад</button>
+            <button type="button" class="btn btn-lg btn-c_grey-100"  data-goto="{{ room.get_admin_show_url }}">Назад</button>
         </div>
     </div>
 

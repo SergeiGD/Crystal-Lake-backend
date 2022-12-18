@@ -452,9 +452,19 @@ body {
   position: relative;
   text-decoration: none;
   color: #000;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
 }
 .pages .page_arrow {
   content: "";
+  font-size: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
   display: block;
   height: 12px;
   width: 12px;
@@ -487,6 +497,9 @@ body {
   cursor: auto;
 }
 .pages .page_item_more {
+  cursor: auto;
+}
+.pages .page_item_active {
   cursor: auto;
 }
 .pages .page_item_active:after {
@@ -1192,6 +1205,11 @@ body {
 }
 .sorting .sorting_item {
   cursor: pointer;
+  user-select: none;
+  transition: all 0.15s linear;
+}
+.sorting .sorting_item:hover {
+  color: #E72574;
 }
 .sorting .sorting_icon_active {
   color: #FFD20A;
@@ -4119,4 +4137,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=client-a5402a8b18944da657c3.bundle.css.map*/
+/*# sourceMappingURL=client-a5093423cc35b3d8177e.bundle.css.map*/

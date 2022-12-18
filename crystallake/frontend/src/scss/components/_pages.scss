@@ -50,10 +50,20 @@
         position: relative;
         text-decoration: none;
         color: #000;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        font-size: inherit;
+        font-family: inherit;
+        line-height: inherit;
     }
 
     .page_arrow{
         content: "";
+        font-size: 0;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
         display: block;
         height: 12px;
         width: 12px;
@@ -90,17 +100,22 @@
     .page_item_more{
         cursor: auto;
     }
-    
-    .page_item_active:after{
-        content: "";
-        display: block;
-        height: 1px;
-        width: 100%;
-        background-color: #000000;
-        position: absolute;
-        bottom: -3px;
-        left: 0;
+
+    .page_item_active{
+        cursor: auto;
+
+        &:after{
+            content: "";
+            display: block;
+            height: 1px;
+            width: 100%;
+            background-color: #000000;
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+        }
     }
+
 }
 
 

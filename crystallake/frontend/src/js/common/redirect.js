@@ -5,7 +5,6 @@ $(document).ready(function(){
     });
 
     $(".offers").on('click', function(e){
-        console.log("asd");
         const elem = e.target.closest('[data-goto]');                                       // в списке офферов (скидки) есть элементы, добавляющиеся диначимески.
         if(!elem) return;                                                                   // поэтому будет искать в его дочерних элементах
         if (elem.dataset.goto) window.location.href = elem.dataset.goto;

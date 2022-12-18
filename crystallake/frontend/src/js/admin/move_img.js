@@ -2,8 +2,8 @@ $(document).ready(function(){
     function update_arrows(){
         $('.move_prev, .move_next').removeClass('opacity-50');
 
-        const first_elem =$('#accordion_body_images').children('[data-order]:first');
-        const last_elem = $('#accordion_body_images').children('[data-order]:last');
+        const first_elem =$('#accordion_body_images').children('[data-active][data-order]:first');
+        const last_elem = $('#accordion_body_images').children('[data-active][data-order]:last');
 
         first_elem.find('.move_prev').first().addClass('opacity-50');       // обновляем стрелки
         last_elem.find('.move_next').last().addClass('opacity-50');

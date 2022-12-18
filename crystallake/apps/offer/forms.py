@@ -60,3 +60,79 @@ class PhotoForm(forms.ModelForm):
     path.label = ''
     order.label = ''
 
+
+class SearchRoomsForm(forms.Form):
+    ROOMS_CHOICES = (
+        ('', 'неважно'),
+        ('1', '1 комната'),
+        ('1', '2 комната'),
+        ('1', '3 комната'),
+        ('1', '4 комната'),
+        ('1', '5 комнат'),
+    )
+
+    BEDS_CHOICES = (
+        ('', 'неважно'),
+        ('1', '1 человек'),
+        ('1', '2 человека'),
+        ('1', '3 человека'),
+        ('1', '4 человека'),
+        ('1', '5 человек'),
+    )
+
+    FLOORS_CHOICES = (
+        ('', 'неважно'),
+        ('1', '1 этаж'),
+        ('1', '2 этажа'),
+        ('1', '3 этажа'),
+        ('1', '4 этажа'),
+        ('1', '5 этажей'),
+    )
+
+    SORT_CHOICES = (
+        ('default_price', 'возрастанию цен'),
+        ('-default_price', 'убыванию цен'),
+        ('beds', 'возрастанию спальных мест'),
+        ('-beds', 'убыванию спальных мест'),
+        ('rooms', 'возрастанию кол-ва комнат'),
+        ('-rooms', 'убыванию кол-ва комнат'),
+    )
+
+    name = forms.CharField(max_length=255, label='Наименование', required=False, widget=forms.TextInput(attrs={
+        'class': 'input_field input_field__name'
+    }))
+    price_from = forms.DecimalField(label='от', required=False, widget=forms.NumberInput(attrs={
+        'class': 'input_field input_field__price'
+    }))
+    price_until = forms.DecimalField(label='до', required=False, widget=forms.NumberInput(attrs={
+        'class': 'input_field input_field__price'
+    }))
+    date_from = forms.DateField(label='с', required=False, widget=forms.DateInput(attrs={
+        'class': 'input_field input_field__date',
+        'type': 'date'
+    }))
+    date_until = forms.DateField(label='до', required=False, widget=forms.DateInput(attrs={
+        'class': 'input_field input_field__date',
+        'type': 'date'
+    }))
+    rooms = forms.ChoiceField(choices=ROOMS_CHOICES, label='Количество комнат', required=False, widget=forms.Select(attrs={
+        'class': 'input_field select_field',
+    }))
+    floors = forms.ChoiceField(choices=FLOORS_CHOICES, label='Количество этажей', required=False, widget=forms.Select(attrs={
+        'class': 'input_field select_field',
+    }))
+    beds = forms.ChoiceField(choices=BEDS_CHOICES, label='Количество спальных мест', required=False, widget=forms.Select(attrs={
+        'class': 'input_field select_field',
+    }))
+    sort_by = forms.ChoiceField(choices=SORT_CHOICES, label='Сортировать по', required=False, widget=forms.Select(attrs={
+        'class': 'select_sortby',
+    }))
+
+    # def __init__(self, *args, **kwargs):
+    #     super(SearchRoomsForm, self).__init__(*args, **kwargs)
+    #     # assign a (computed, I assume) default value to the choice field
+    #     self.initial['sort_by'] = '-price'
+        # you should NOT do this:
+        #self.fields['choices_field_name'].initial = 'default value'
+
+

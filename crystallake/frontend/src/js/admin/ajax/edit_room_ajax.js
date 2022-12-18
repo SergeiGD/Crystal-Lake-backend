@@ -24,22 +24,22 @@ $(document).ready(function (){
             post_data.append(n['name'], n['value'])
         });
 
-        $.map(files_uploaded, function(n, i){
-            for (var file in n){
-                post_data.append(file, n[file])
-            }
-        });
-
         $.map(files_deleted, function(n, i){
             for (var file in n){
                 post_data.append(file, n[file])
             }
         });
 
-        console.log(post_data)
-        console.log(raw_data)
-        console.log(files_uploaded)
-        console.log(files_deleted)
+        $.map(files_uploaded, function(n, i){
+            for (var file in n){
+                post_data.append(file, n[file])
+            }
+        });
+
+        // console.log(post_data)
+        // console.log(raw_data)
+        // console.log(files_uploaded)
+        // console.log(files_deleted)
 
         $.ajax({
             url: $('#edit_main_info_form').attr('action'),
@@ -49,8 +49,9 @@ $(document).ready(function (){
             contentType: false,
             data: post_data,
             // success: function (data, textStatus, jqXHR){
-            //     const response_json = jQuery.parseJSON(jqXHR.responseText)
-            //     window.location.href = response_json['url']
+            //     console.log(jqXHR)
+            //     // const response_json = jQuery.parseJSON(jqXHR.responseText)
+            //     // window.location.href = response_json['url']
             // },
             error: function (jqXHR){
                 const errors_json = jQuery.parseJSON(jqXHR.responseText)
@@ -58,7 +59,7 @@ $(document).ready(function (){
                 $([document.documentElement, document.body]).animate({
                     scrollTop: $("#errors").offset().top
                 }, 200);
-            }
+            },
         }).statusCode({
            302: function (response){
                console.log(typeof(response))
@@ -67,6 +68,13 @@ $(document).ready(function (){
             }
         });
     })
+
+    $(document).ajaxComplete(function(e, xhr, settings){
+        console.log(xhr.status)
+        if(xhr.status === 302){
+            //check for location header and redirect...
+        }
+    });
 
     function build_erros_list(errors){
         var result = ''

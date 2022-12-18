@@ -48,22 +48,22 @@ $(document).ready(function (){
             post_data.append(n['name'], n['value'])
         });
 
-        $.map(files_uploaded, function(n, i){
-            for (var file in n){
-                post_data.append(file, n[file])
-            }
-        });
-
         $.map(files_deleted, function(n, i){
             for (var file in n){
                 post_data.append(file, n[file])
             }
         });
 
-        console.log(post_data)
-        console.log(raw_data)
-        console.log(files_uploaded)
-        console.log(files_deleted)
+        $.map(files_uploaded, function(n, i){
+            for (var file in n){
+                post_data.append(file, n[file])
+            }
+        });
+
+        // console.log(post_data)
+        // console.log(raw_data)
+        // console.log(files_uploaded)
+        // console.log(files_deleted)
 
         $.ajax({
             url: $('#edit_main_info_form').attr('action'),
@@ -73,8 +73,9 @@ $(document).ready(function (){
             contentType: false,
             data: post_data,
             // success: function (data, textStatus, jqXHR){
-            //     const response_json = jQuery.parseJSON(jqXHR.responseText)
-            //     window.location.href = response_json['url']
+            //     console.log(jqXHR)
+            //     // const response_json = jQuery.parseJSON(jqXHR.responseText)
+            //     // window.location.href = response_json['url']
             // },
             error: function (jqXHR){
                 const errors_json = jQuery.parseJSON(jqXHR.responseText)
@@ -82,7 +83,7 @@ $(document).ready(function (){
                 $([document.documentElement, document.body]).animate({
                     scrollTop: $("#errors").offset().top
                 }, 200);
-            }
+            },
         }).statusCode({
            302: function (response){
                console.log(typeof(response))
@@ -91,6 +92,13 @@ $(document).ready(function (){
             }
         });
     })
+
+    $(document).ajaxComplete(function(e, xhr, settings){
+        console.log(xhr.status)
+        if(xhr.status === 302){
+            //check for location header and redirect...
+        }
+    });
 
     function build_erros_list(errors){
         var result = ''
@@ -123,12 +131,14 @@ $(document).ready(function() {
             $(this).attr('data-order', new_order)
         });
 
+
         const id = container.find('input[id$=id]').attr('value')
         const form_name = container.find('input[id$=id]').attr('name').slice(0, -2)
 
         $('#edit_main_info_form').trigger('file_deleted', {[form_name + 'id']: id, [form_name + 'DELETE ']: 'on'}); // отправляем форму на удаление и id картинки
 
-        container.remove();         // удаляем контейнер с картикой из DOM
+        container.addClass('d-none')            // скрываем картинку и помечаем как не активную
+        container.removeAttr('data-active')
 
         $('#accordion_body_images').trigger('refresh_required');    // обновляем стелки
 
@@ -150,8 +160,8 @@ $(document).ready(function(){
     function update_arrows(){
         $('.move_prev, .move_next').removeClass('opacity-50');
 
-        const first_elem =$('#accordion_body_images').children('[data-order]:first');
-        const last_elem = $('#accordion_body_images').children('[data-order]:last');
+        const first_elem =$('#accordion_body_images').children('[data-active][data-order]:first');
+        const last_elem = $('#accordion_body_images').children('[data-active][data-order]:last');
 
         first_elem.find('.move_prev').first().addClass('opacity-50');       // обновляем стрелки
         last_elem.find('.move_next').last().addClass('opacity-50');
@@ -292,13 +302,17 @@ $(document).ready(function(){
 
     function register_new_img(){
         const container = $('[data-empty-container]')
-        const order = $('[data-order]').length + 1;                 // получаем порядковый номер, который будет у картинки
+        const order = $('[data-active][data-order]').length + 1;                 // получаем порядковый номер, который будет у картинки
 
         container.find('input[id$=order]').attr('value', order)     // устанавливаем порядковый номер
         container.attr('data-order', order)
         container.removeAttr('data-empty-container')                //  убираем признак 'пустого конрейнера (заготовки)'
+        container.attr('data-active', '')
 
-        $('#id_form-TOTAL_FORMS').attr('value', order)              // обновляем общее кол-во форм у формсета
+        //$('#id_form-TOTAL_FORMS').attr('value', order)              // обновляем общее кол-во форм у формсета
+
+        const old_total_forms = $('#id_form-TOTAL_FORMS').attr('value')
+        $('#id_form-TOTAL_FORMS').attr('value', parseInt(old_total_forms) + 1)
 
         container.removeClass('d-none')                             // отображаем елемент
 
@@ -342,7 +356,6 @@ $(document).ready(function(){
                         <input type="number" name="form-__prefix__-order" class="d-none" id="id_form-__prefix__-order">
                         <input type="file" name="form-__prefix__-path" class="upload_img_input d-none" accept="image/png, image/jpeg" id="id_form-__prefix__-path">
                         <input type="hidden" name="form-__prefix__-id" id="id_form-__prefix__-id">
-                        <input type="hidden"  name="form-__prefix__-DELETE" id="id_form-__prefix__-DELETE">
 
                     </div>
                 </div>
@@ -534,4 +547,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-34b2c4c18b61ae84a45b.bundle.js.map
+//# sourceMappingURL=admin-8d7d835bc564a6f51fdc.bundle.js.map

@@ -1,7 +1,8 @@
 import json
 
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.http import HttpResponse, Http404
+from django.core.paginator import Paginator, EmptyPage
+from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
@@ -16,19 +17,37 @@ from .models import *
 from .forms import *
 
 
+class SafePaginator(Paginator):
+    def validate_number(self, number):
+        try:
+            return super(SafePaginator, self).validate_number(number)
+        except EmptyPage:
+            if number > 1:
+                return self.num_pages
+            else:
+                return 1
+
 class RoomsCatalog(ListView):
     template_name = 'offer/rooms.html'
     model = Room
     context_object_name = 'rooms'
-    paginate_by = 12
+    paginator_class = SafePaginator
+    paginate_by = 1
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'rooms'
+        context['search_form'] = SearchRoomsForm(self.request.GET)
         return context
 
     def get_queryset(self):
-        return Room.objects.filter(date_deleted=None, is_hidden=False, main_room=None)
+        search_form = SearchRoomsForm(self.request.GET)
+        if search_form.is_valid():
+            return Room.objects.filter(
+                    date_deleted=None,
+                    is_hidden=False,
+                    main_room=None
+                ).order_by('default_price').search(**search_form.cleaned_data)
 
 
 class RoomDetail(DetailView):
@@ -55,6 +74,7 @@ class AdminRoomsList(PermissionRequiredMixin, ListView):
     model = Room
     context_object_name = 'rooms'
     paginate_by = 10
+    paginator_class = SafePaginator
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -119,8 +139,8 @@ def admin_edit_room(request, room_slug):
             for deleted_photo in formset.deleted_objects:
                 deleted_photo.delete()
 
-            url = reverse('admin_show_room', kwargs={'room_slug': changed_room.slug})
-            response_data = {'url': url, 'message': 'successfully updated'}
+            success_url = reverse('admin_show_room', kwargs={'room_slug': changed_room.slug})
+            response_data = {'message': 'successfully updated', 'url': success_url}
             response = HttpResponse(json.dumps(response_data), content_type="application/json")     # при успехе отправляем json, который обработам ajax
             response.status_code = 302          # 302, т.к. редериктим при успехе на просмотр
             return response

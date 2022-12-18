@@ -8,12 +8,14 @@ $(document).ready(function() {
             $(this).attr('data-order', new_order)
         });
 
+
         const id = container.find('input[id$=id]').attr('value')
         const form_name = container.find('input[id$=id]').attr('name').slice(0, -2)
 
         $('#edit_main_info_form').trigger('file_deleted', {[form_name + 'id']: id, [form_name + 'DELETE ']: 'on'}); // отправляем форму на удаление и id картинки
 
-        container.remove();         // удаляем контейнер с картикой из DOM
+        container.addClass('d-none')            // скрываем картинку и помечаем как не активную
+        container.removeAttr('data-active')
 
         $('#accordion_body_images').trigger('refresh_required');    // обновляем стелки
 

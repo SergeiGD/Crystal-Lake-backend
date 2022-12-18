@@ -13,47 +13,45 @@
                 <a href="#" class="breadcrumbs_item">Номера</a>
             </div>
 
-            <div class="offers">
+            <form class="offers" id="offers" action=".">
 
                 <div class="finder">
 
-                    <form class="mobile_filter_soring">
+                    <div class="mobile_filter_soring">
                         <div class="mobile_filter">
                             <i class="fa-solid fa-sliders"></i>
                             <p>Фильтр</p>
                         </div>
                         <div class="mobile_sorting">
                             <i class="fa-solid fa-arrow-up-wide-short"></i>
-                            <p>Сортировать по:</p>
-                            <select class="select_sortby">
-                                <option value="1" selected>убыванию цен</option>
-                                <option value="2">возрастанию цен</option>
-                                <option value="3">убыванию спальных мест</option>
-                                <option value="2">возрастанию спальных мест</option>
-                                <option value="3">убыванию кол-ва комнат</option>
-                                <option value="2">возрастанию кол-ва комнет</option>
-                            </select>
+{#                            <p>Сортировать по:</p>#}
+                            <label for="{{ search_form.sort_by.id_for_label }}">{{ search_form.sort_by.label }}</label>
+                            {{ search_form.sort_by }}
+{#                            <select class="select_sortby">#}
+{#                                <option value="1" selected>убыванию цен</option>#}
+{#                                <option value="2">возрастанию цен</option>#}
+{#                                <option value="3">убыванию спальных мест</option>#}
+{#                                <option value="2">возрастанию спальных мест</option>#}
+{#                                <option value="3">убыванию кол-ва комнат</option>#}
+{#                                <option value="2">возрастанию кол-ва комнет</option>#}
+{#                            </select>#}
                         </div>
-                    </form>
+                    </div>
 
-                    <form class="filter">
+                    <div class="filter">
 
                         <div class="filter_column">
                             <div class="filter_item">
-                                <label class="filter_name filter_name__long" for="name_field">Наименование:</label>
+                                <label class="filter_name filter_name__long" for="{{ search_form.name.id_for_label }}">{{ search_form.name.label }}:</label>
                                 <div class="filter_select filter_select__name">
-                                    <input type="text" name="" id="name_field" class="input_field input_field__name">
+                                    {{ search_form.name }}
                                 </div>
                             </div>
 
                             <div class="filter_item">
-                                <label class="filter_name filter_name__long" for="people_field">Спальных мест:</label>
+                                <label class="filter_name filter_name__long" for="{{ search_form.beds.id_for_label }}">{{ search_form.beds.label }}</label>
                                 <div class="filter_select">
-                                    <select id="people_field" class="input_field select_field">
-                                        <option value="1">1 человек(а)</option>
-                                        <option value="2" selected>3 человек(а)</option>
-                                        <option value="3">2 человек(а)</option>
-                                    </select>
+                                    {{ search_form.beds }}
                                 </div>
                             </div>
 
@@ -61,12 +59,12 @@
                                 <p class="filter_name filter_name__long">Даты прибывания:</p>
                                 <div class="filter_select">
                                     <div class="filter_select_subfiled">
-                                        <label class="filter_subname" for="date_from_field">с</label>
-                                        <input type="date" name="" id="date_from_field" class="input_field input_field__date">
+                                        <label class="filter_subname" for="{{ search_form.date_from.id_for_label }}">{{ search_form.date_from.label }}</label>
+                                        {{ search_form.date_from }}
                                     </div>
                                     <div class="filter_select_subfiled">
-                                        <label class="filter_subname" for="date_until_field">до</label>
-                                        <input type="date" name="" id="date_until_field" class="input_field input_field__date">
+                                        <label class="filter_subname" for="{{ search_form.date_until.id_for_label }}">{{ search_form.date_until.label }}</label>
+                                        {{ search_form.date_until }}
                                     </div>
                                 </div>
                             </div>
@@ -74,24 +72,16 @@
 
                         <div class="filter_column">
                             <div class="filter_item">
-                                <label class="filter_name filter_name__long" for="floors_field">Количество этажей:</label>
+                                <label class="filter_name filter_name__long" for="{{ search_form.floors.id_for_label }}">{{ search_form.floors.label }}</label>
                                 <div class="filter_select">
-                                    <select id="floors_field" class="input_field select_field">
-                                        <option value="1" selected>1 этаж(а)</option>
-                                        <option value="2">2 этаж(а)</option>
-                                        <option value="3">3 этаж(а)</option>
-                                    </select>
+                                    {{ search_form.floors }}
                                 </div>
                             </div>
 
                             <div class="filter_item">
-                                <label class="filter_name filter_name__long" for="rooms_field">Количество комнат:</label>
+                                <label class="filter_name filter_name__long" for="{{ search_form.rooms.id_for_label }}">{{ search_form.rooms.label }}</label>
                                 <div class="filter_select">
-                                    <select id="rooms_field" class="input_field select_field">
-                                        <option value="1" selected>1 комант(ы)</option>
-                                        <option value="2">2 комант(ы)</option>
-                                        <option value="3">3 комант(ы)</option>
-                                    </select>
+                                    {{ search_form.rooms }}
                                 </div>
                             </div>
 
@@ -99,12 +89,12 @@
                                 <p class="filter_name filter_name__long">Цена за 1 сутки:</p>
                                 <div class="filter_select">
                                     <div class="filter_select_subfiled">
-                                        <label class="filter_subname" for="price_from_field">от</label>
-                                        <input type="number" name="" id="price_from_field" class="input_field input_field__price">
+                                        <label class="filter_subname" for="{{ search_form.price_from.id_for_label }}">{{ search_form.price_from.label }}</label>
+                                        {{ search_form.price_from }}
                                     </div>
                                     <div class="filter_select_subfiled">
-                                        <label class="filter_subname" for="price_until_field">до</label>
-                                        <input type="number" name="" id="price_until_field" class="input_field input_field__price">
+                                        <label class="filter_subname" for="{{ search_form.price_until.id_for_label }}">{{ search_form.price_until.label }}</label>
+                                        {{ search_form.price_until }}
                                     </div>
                                 </div>
                             </div>
@@ -112,25 +102,26 @@
 
                         <div class="filter_column filter__buttons">
                             <button class="filter_button filter_button__find">Применить</button>
-                            <button class="filter_button filter_button__clean">Сбросить</button>
+                            <button class="filter_button filter_button__clean" id="clean_btn" type="button">Сбросить</button>
                         </div>
 
-                    </form>
+                    </div>
 
-                    <form class="sorting">
-                        <p class="sorting_item">
-                            <i class="fa-solid fa-arrow-up-short-wide sorting_icon_active"></i>
+                    <div class="sorting">
+                        <p class="sorting_item" data-sortby="default_price">
+                            <i class="fa-solid fa-arrow-down-short-wide sorting_icon_active"></i>
+{#                            <i class="fa-solid fa-arrow-up-short-wide sorting_icon_active"></i>#}
                             Цена
                         </p>
-                        <p class="sorting_item">
-                            <i class="fa-solid fa-arrow-down-wide-short"></i>
+                        <p class="sorting_item" data-sortby="beds">
+                            <i class="fa-solid fa-arrow-down-short-wide"></i>
                             Спальных мест
                         </p>
-                        <p class="sorting_item">
-                            <i class="fa-solid fa-arrow-down-wide-short"></i>
+                        <p class="sorting_item" data-sortby="rooms">
+                            <i class="fa-solid fa-arrow-down-short-wide"></i>
                             Кол-во комнат
                         </p>
-                    </form>
+                    </div>
 
 
 
@@ -162,36 +153,44 @@
 
                 <div class="pages">
                     {% if page_obj.has_previous %}
-                        <a href="?page={{ page_obj.previous_page_number }}" class="page_arrow page_arrow__prev"></a>
+{#                        <a href="?page={{ page_obj.previous_page_number }}" class="page_arrow page_arrow__prev"></a>#}
+                        <input type="submit" name="page" value="{{ page_obj.previous_page_number }}" class="page_arrow page_arrow__prev">
                     {% else %}
                         <p class="page_arrow page_arrow__prev page_disabled"></p>
                     {% endif %}
 
                     {% if page_obj.number|add:'-3' > 1 %}
-                        <a href="?page={{ 1 }}" class="page_item page_item_more">&hellip;</a>
+{#                        <a href="?page=1" class="page_item">1</a>#}
+                        <input type="submit" name="page" value="1" class="page_item">
+                        <span>&hellip;</span>
                     {% endif %}
 
                     {% for i in page_obj.paginator.page_range  %}
                         {% if i == page_obj.number %}
                             <p class="page_item page_item_active">{{ i }}</p>
                         {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
-                            <a href="?page={{ i }}" class="page_item">{{ i }}</a>
+{#                            <a href="?page={{ i }}" class="page_item">{{ i }}</a>#}
+                            <input type="submit" name="page" value="{{ i }}" class="page_item">
                         {% endif %}
                     {% endfor %}
 
                     {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
-                        <a href="?page={{ page_obj.paginator.num_pages }}" class="page_item page_item_more">&hellip;</a>
+                        <span>&hellip;</span>
+{#                        <a href="?page={{ page_obj.paginator.num_pages }}" class="page_item">{{ page_obj.paginator.num_pages }}</a>#}
+                        <input type="submit" name="page" value="{{ page_obj.paginator.num_pages }}" class="page_item">
                     {% endif %}
 
                     {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}" class="page_arrow page_arrow__next"></a>
+{#                        <a href="?page={{ page_obj.next_page_number }}" class="page_arrow page_arrow__next"></a>#}
+{#                        <button value="?page={{ page_obj.next_page_number }}">next</button>#}
+                        <input type="submit" name="page" value="{{ page_obj.next_page_number }}" class="page_arrow page_arrow__next">
                     {% else %}
                         <p class="page_arrow page_arrow__next page_disabled"></p>
                     {% endif %}
 
                 </div>
 
-            </div>
+            </form>
         </div>
     </section>
 

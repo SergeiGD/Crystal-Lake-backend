@@ -37,13 +37,17 @@ $(document).ready(function(){
 
     function register_new_img(){
         const container = $('[data-empty-container]')
-        const order = $('[data-order]').length + 1;                 // получаем порядковый номер, который будет у картинки
+        const order = $('[data-active][data-order]').length + 1;                 // получаем порядковый номер, который будет у картинки
 
         container.find('input[id$=order]').attr('value', order)     // устанавливаем порядковый номер
         container.attr('data-order', order)
         container.removeAttr('data-empty-container')                //  убираем признак 'пустого конрейнера (заготовки)'
+        container.attr('data-active', '')
 
-        $('#id_form-TOTAL_FORMS').attr('value', order)              // обновляем общее кол-во форм у формсета
+        //$('#id_form-TOTAL_FORMS').attr('value', order)              // обновляем общее кол-во форм у формсета
+
+        const old_total_forms = $('#id_form-TOTAL_FORMS').attr('value')
+        $('#id_form-TOTAL_FORMS').attr('value', parseInt(old_total_forms) + 1)
 
         container.removeClass('d-none')                             // отображаем елемент
 
@@ -87,7 +91,6 @@ $(document).ready(function(){
                         <input type="number" name="form-__prefix__-order" class="d-none" id="id_form-__prefix__-order">
                         <input type="file" name="form-__prefix__-path" class="upload_img_input d-none" accept="image/png, image/jpeg" id="id_form-__prefix__-path">
                         <input type="hidden" name="form-__prefix__-id" id="id_form-__prefix__-id">
-                        <input type="hidden"  name="form-__prefix__-DELETE" id="id_form-__prefix__-DELETE">
 
                     </div>
                 </div>

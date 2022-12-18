@@ -1255,7 +1255,6 @@ $(document).ready(function(){
     });
 
     $(".offers").on('click', function(e){
-        console.log("asd");
         const elem = e.target.closest('[data-goto]');                                       // в списке офферов (скидки) есть элементы, добавляющиеся диначимески.
         if(!elem) return;                                                                   // поэтому будет искать в его дочерних элементах
         if (elem.dataset.goto) window.location.href = elem.dataset.goto;
@@ -1265,4 +1264,4 @@ $(document).ready(function(){
 /***/ })
 
 }]);
-//# sourceMappingURL=src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-60fdbaf0969428c50dd3.bundle.js.map
+//# sourceMappingURL=src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-9d043ecaa8525c82dc01.bundle.js.map

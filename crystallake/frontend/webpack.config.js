@@ -39,6 +39,7 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/filter_mobile.js'),
             path.resolve(__dirname,'src/js/client/infinity_catalog.js'),
             path.resolve(__dirname,'src/js/client/picked_time.js'),
+            path.resolve(__dirname,'src/js/client/sortby.js'),
             path.resolve(__dirname,'src/js/client/slick-slider/slick_starter.js'),
             path.resolve(__dirname,'src/js/common/evo-calendar/evo-starter.js'),
         ],

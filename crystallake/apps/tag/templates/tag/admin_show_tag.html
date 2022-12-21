@@ -1,0 +1,142 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_tags' %}" class="link-hover text-dark text-decoration-none">
+                    Теги
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Просмотр тега</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
+
+
+        {% if perms.offer.delete_tag %}
+            <i class="fa-regular fa-square-minus text-danger card_icon card_icon__delete" data-bs-toggle="modal" data-bs-target="#delete_modal"></i>
+        {% endif %}
+        {% if perms.offer.change_tag %}
+            <i class="fa-regular fa-pen-to-square card_icon card_icon__edit" data-goto="{{ tag.get_admin_edit_url }}"></i>
+        {% endif %}
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">id: </span>
+            <span class="fw-bold fs-5">{{ tag.id }}</span>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12 row">
+                <p class="fw-bold col-lg-2  col-5">Наименование:</p>
+                <p class="opacity-75 col-lg-10 col-7">{{ tag.name }}</p>
+                <hr>
+            </div>
+
+        </div>
+
+    </form>
+
+
+    <!-- services -->
+
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
+
+        <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete"></i>
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">Прикреплен к:</span>
+        </div>
+
+        <div class="shadow p-3 rounded-2 justify-content-between row w-100 mx-auto">
+
+            <div class="col-12 row justify-content-between mx-auto p-0">
+
+                <div class="col-md-3 col-6">
+                    <div>
+                        <label for="service_id" class="form-label">id:</label>
+                        <input type="text" class="form-control " id="service_id">
+                    </div>
+                </div>
+
+                <div class="col-lg-8 col-12 mt-lg-0 mt-3">
+
+                    <label for="service_name" class="form-label">Наименование:</label>
+                    <input type="text" class="form-control" id="service_name">
+
+                </div>
+
+            </div>
+
+            <div class="col-12 mt-3">
+                <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+            </div>
+
+
+        </div>
+
+        <div class="overflow-auto mt-4">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button">
+                        id <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button">
+                        Наименование <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for offer in tag.offers.all %}
+
+                    <tr>
+                        <th scope="row">{{ offer.id }}</th>
+                        <td class="text-nowrap">
+                            <a href="#" class="link-hover">
+                                {{ offer.name }}
+                            </a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <nav class="d-flex justify-content-center mt-4">
+            <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            </ul>
+        </nav>
+    </form>
+
+    <!-- services end -->
+
+{% endblock content %}

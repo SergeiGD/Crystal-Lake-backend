@@ -2,14 +2,18 @@
 
 {% block content %}
 
-    {% block breadcrumbs %}
-    {% endblock breadcrumbs %}
+
 
     <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative main_info_container">
 
-        <i class="fa-regular fa-pen-to-square card_icon" data-goto="{{ offer.get_admin_edit_url }}"></i>
+        {% if perms.offer.delete_room %}
+            <i class="fa-regular fa-square-minus text-danger card_icon card_icon__delete" data-bs-toggle="modal" data-bs-target="#delete_modal"></i>
+        {% endif %}
+        {% if perms.offer.change_room %}
+            <i class="fa-regular fa-pen-to-square card_icon card_icon__edit" data-goto="{{ offer.get_admin_edit_url }}"></i>
+        {% endif %}
         {% if not offer.is_hidden %}
-            <i class="fa-solid fa-eye show_icon" data-goto="{{ offer.get_absolute_url }}"></i>
+            <i class="fa-solid fa-eye card_icon card_icon__show" data-goto="{{ offer.get_absolute_url }}"></i>
         {% endif %}
 
         <div class="text-center">
@@ -30,44 +34,10 @@
 
                 <div class="col-12">
                     <p class="fw-bold col-5">Описание:</p>
-                    <p name="" id="manage_info" class="opacity-75">{{ offer.description }}</p>
+                    <p id="manage_info" class="opacity-75">{{ offer.description|linebreaks }}</p>
                     <hr>
                 </div>
 
-                <div class="col-12">
-                    <div class="d-flex flex-column">
-                        <p class="fw-bold col-5">Теги:</p>
-                        <div class="border-1 border-0 flex-grow-1">
-
-                                <div class="d-flex gap-4 flex-wrap mt-3 p-0 border-0">
-                                    <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                        <span class="py-1 px-3">Два этажа</span>
-                                    </div>
-                                    <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                        <span class="py-1 px-3">Беседка</span>
-                                    </div>
-                                    <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                        <span class="py-1 px-3">Два этажа</span>
-                                    </div>
-                                    <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                        <span class="py-1 px-3">Два этажа</span>
-                                    </div>
-                                    <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                        <span class="py-1 px-3">Два этажа</span>
-                                    </div>
-                                    <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                        <span class="py-1 px-3">Два этажа</span>
-                                    </div>
-                                    <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                        <span class="py-1 px-3">Два этажа</span>
-                                    </div>
-                                    <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                        <span class="py-1 px-3">Два этажа</span>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
 
             </div>
             <div class="col-lg-6 col-12 mt-lg-0 mt-4">
@@ -290,4 +260,7 @@
           </div>
         </div>
     </div>
+
+    {% include 'core/delete_popup.html' %}
+
 {% endblock popups %}

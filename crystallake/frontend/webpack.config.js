@@ -53,7 +53,10 @@ module.exports = {
             path.resolve(__dirname,'src/js/admin/upload_img.js'),
             path.resolve(__dirname,'src/js/admin/delete_img.js'),
             path.resolve(__dirname,'src/js/admin/new_offer_main_img.js'),
-            path.resolve(__dirname,'src/js/admin/ajax/edit_room_ajax.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/offer_ajax.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/search_tags_for_offer.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/delete_tag_from_offer.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/add_tag_to_offer.js'),
         ]
     },
     output: {

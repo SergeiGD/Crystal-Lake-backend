@@ -75,7 +75,7 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item {% if current_page == 'tags' %} link-active {% endif %}" href="admin_tags.html">Теги</a></li>
+                          <li><a class="dropdown-item {% if current_page == 'tags' %} link-active {% endif %}" href="{% url 'admin_tags' %}">Теги</a></li>
                           <li><a class="dropdown-item {% if current_page == 'properties' %} link-active {% endif %}" href="admin_properties.html">Доп. свойства</a></li>
                           <li><a class="dropdown-item {% if current_page == 'weekends' %} link-active {% endif %}" href="admin_weekends.html">Даты праздников</a></li>
                           <li><a class="dropdown-item {% if current_page == 'set_main' %} link-active {% endif %}" href="admin_set_main.html">Настройка главной</a></li>
@@ -87,6 +87,9 @@
         </div>
 
         <div class="container-xl d-flex flex-column gap-3 mt-5">
+
+            {% block breadcrumbs %}
+            {% endblock breadcrumbs %}
 
             {% block content %}
             {% endblock content %}
@@ -119,7 +122,7 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="admin_tags.html">Теги</a></li>
+                          <li><a class="dropdown-item" href="{% url 'admin_tags' %}">Теги</a></li>
                           <li><a class="dropdown-item" href="admin_properties.html">Доп. свойства</a></li>
                           <li><a class="dropdown-item" href="admin_weekends.html">Даты праздников</a></li>
                           <li><a class="dropdown-item" href="admin_set_main.html">Настройка главной</a></li>

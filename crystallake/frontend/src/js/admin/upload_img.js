@@ -22,6 +22,8 @@ $(document).ready(function(){
             reader.onloadend = function(){
                 const img_src = reader.result;                            // получаем base64 картинки
 
+                // ВОТ ТУТ ЗАПРОС НА ПОЛУЧЕНИЕК
+
                 img_elem.attr('src', img_src);                          // устанавливаем img новый src
 
                 if (is_new_img) register_new_img();                     // если новая, то также обновляем все необходимые инпуты

@@ -1,7 +1,6 @@
 {% extends 'core/admin_base.html' %}
 
-{% block content %}
-
+{% block breadcrumbs %}
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
             <li class="breadcrumb-item">
@@ -12,10 +11,14 @@
             <li class="breadcrumb-item active" aria-current="page">Номера</li>
         </ol>
     </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
 
     <form class="shadow p-3 rounded-2 position-relative">
 
-        <i class="fa-regular fa-trash-can text-danger card_icon"></i>
+        <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete"></i>
 
         <div class="row align-items-start justify-content-between">
 
@@ -185,21 +188,27 @@
 
             {% if page_obj.number|add:'-3' > 1 %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ 1 }}">&hellip;</a>
+                    <a class="page-link" href="?page=1">1</a>
+                </li>
+                <li class="page-item">
+                    <p class="page-link">&hellip;</p>
                 </li>
             {% endif %}
 
             {% for i in page_obj.paginator.page_range %}
                 {% if i == page_obj.number %}
                     <li class="page-item"><a class="page-link bg-c_yellow-700 text-black" href="#">{{ i }}</a></li>
-                {% elif i|add:'2' >= page_obj.number and i|add:'-2' <= page_obj.number%}
+                {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
                     <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
                 {% endif %}
             {% endfor %}
 
             {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&hellip;</a>
+                    <p class="page-link">&hellip;</p>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
                 </li>
             {% endif %}
 

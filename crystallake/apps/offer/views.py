@@ -1,6 +1,8 @@
 import json
+from datetime import datetime
 
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -10,22 +12,25 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.forms.models import modelformset_factory
 from django.contrib.auth.decorators import permission_required
 from django.contrib.admin.views.decorators import staff_member_required
+from .models import *
+from .forms import *
+from django.db import connection
+from ..core.save_paginator import SafePaginator
+from ..tag.forms import SearchTagForm
+
 
 # Create your views here.
 
-from .models import *
-from .forms import *
+# class SafePaginator(Paginator):
+#     def validate_number(self, number):
+#         try:
+#             return super(SafePaginator, self).validate_number(number)
+#         except EmptyPage:
+#             if number > 1:
+#                 return self.num_pages
+#             else:
+#                 return 1
 
-
-class SafePaginator(Paginator):
-    def validate_number(self, number):
-        try:
-            return super(SafePaginator, self).validate_number(number)
-        except EmptyPage:
-            if number > 1:
-                return self.num_pages
-            else:
-                return 1
 
 class RoomsCatalog(ListView):
     template_name = 'offer/rooms.html'
@@ -44,10 +49,10 @@ class RoomsCatalog(ListView):
         search_form = SearchRoomsForm(self.request.GET)
         if search_form.is_valid():
             return Room.objects.filter(
-                    date_deleted=None,
-                    is_hidden=False,
-                    main_room=None
-                ).order_by('default_price').search(**search_form.cleaned_data)
+                date_deleted=None,
+                is_hidden=False,
+                main_room=None
+            ).order_by('default_price').search(**search_form.cleaned_data)
 
 
 class RoomDetail(DetailView):
@@ -95,6 +100,7 @@ class AdminRoomDetail(PermissionRequiredMixin, DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'rooms'
+        context['delete_link'] = self.object.get_admin_delete_url()
         return context
 
     def get_object(self, queryset=None):
@@ -113,12 +119,16 @@ def admin_edit_room(request, room_slug):
 
     formset = PhotoFormset(request.POST or None, files=request.FILES or None, queryset=room.photos.all())
 
+    form_tags = SearchTagForm(request.POST or None)
+
     context = {
         'form_room': form_room,
         'formset': formset,
         'current_page': 'rooms',
         'room': room,
-        'photo_form': zip(formset.queryset, formset.forms)          # пакуем формы и экземпляры модели в один объект, для удобной обработки в темплейте
+        'photo_form': zip(formset.queryset, formset.forms),
+        # пакуем формы и экземпляры модели в один объект, для удобной обработки в темплейте
+        'form_tags': form_tags
     }
 
     if request.method == 'POST':
@@ -130,7 +140,7 @@ def admin_edit_room(request, room_slug):
             formset.save(commit=False)
 
             for created_photo in formset.new_objects:
-                created_photo.offer = changed_room                  # если новая картинки, то присваиваем номер, к которому она относится
+                created_photo.offer = changed_room  # если новая картинки, то присваиваем номер, к которому она относится
                 created_photo.save()
 
             for changed_photo in formset.changed_objects:
@@ -141,21 +151,21 @@ def admin_edit_room(request, room_slug):
 
             success_url = reverse('admin_show_room', kwargs={'room_slug': changed_room.slug})
             response_data = {'message': 'successfully updated', 'url': success_url}
-            response = HttpResponse(json.dumps(response_data), content_type="application/json")     # при успехе отправляем json, который обработам ajax
-            response.status_code = 302          # 302, т.к. редериктим при успехе на просмотр
+            response = HttpResponse(json.dumps(response_data),
+                                    content_type="application/json")  # при успехе отправляем json, который обработает ajax
+            response.status_code = 302  # 302, т.к. редериктим при успехе на просмотр
             return response
 
         else:
-            response = HttpResponse(form_room.errors.as_json())     # отправляем ошибки в виде json'a
+            response = HttpResponse(form_room.errors.as_json())  # отправляем ошибки в виде json'a
             response.status_code = 400
             return response
 
-    return render(request, 'offer/admin_edit_room.html', context)      # если GET, то просто рендерим темплейт
+    return render(request, 'offer/admin_edit_room.html', context)  # если GET, то просто рендерим темплейт
 
 
 @permission_required('offer.add_room')
 def admin_create_room(request):
-
     form_room = RoomForm(request.POST or None, files=request.FILES or None)
     PhotoFormset = modelformset_factory(Photo, form=PhotoForm, extra=0, can_delete=True)
 
@@ -176,21 +186,72 @@ def admin_create_room(request):
             formset.save(commit=False)
 
             for created_photo in formset.new_objects:
-                created_photo.offer = created_room                  # если новая картинки, то присваиваем номер, к которому она относится
+                created_photo.offer = created_room  # если новая картинки, то присваиваем номер, к которому она относится
                 created_photo.save()
 
-            url = reverse('admin_show_room', kwargs={'room_slug': created_room.slug})
-            response_data = {'url': url, 'message': 'successfully created'}
-            response = HttpResponse(json.dumps(response_data), content_type="application/json")     # при успехе отправляем json, который обработам ajax
-            response.status_code = 302          # 302, т.к. редериктим при успехе на просмотр
+            success_url = reverse('admin_show_room', kwargs={'room_slug': created_room.slug})
+            response_data = {'message': 'successfully updated', 'url': success_url}
+            response = HttpResponse(json.dumps(response_data),
+                                    content_type="application/json")  # при успехе отправляем json, который обработает ajax
+            response.status_code = 302  # 302, т.к. редериктим при успехе на просмотр
             return response
 
         else:
-            print(form_room.errors)
-            print('asd')
-            response = HttpResponse(form_room.errors.as_json())     # отправляем ошибки в виде json'a
+            response = HttpResponse(form_room.errors.as_json())  # отправляем ошибки в виде json'a
             response.status_code = 400
             return response
 
-    return render(request, 'offer/admin_create_room.html', context)      # если GET, то просто рендерим темплейт
+    return render(request, 'offer/admin_create_room.html', context)  # если GET, то просто рендерим темплейт
 
+
+@permission_required('offer.delete_room')
+def admin_delete_room(request, room_slug):
+    room = get_object_or_404(Room, slug=room_slug)
+    # ТУТ ВСЯКИЕ ПРОВЕРКИ
+    room.date_deleted = datetime.now()
+    room.save()
+    return redirect('admin_rooms')
+
+
+def get_tags(request, offer_id):
+    #if request.method == 'GET':
+    offer = get_object_or_404(Offer, pk=offer_id)
+    tags = Tag.objects.exclude(pk__in=[offer.tags.values('pk')]).search(**request.POST.dict())
+    tags_paginator = SafePaginator(tags, 1)
+    page = request.POST.get('page_number', 1)
+    tags_page = tags_paginator.get_page(page)
+    num_pages = tags_paginator.num_pages
+
+    data = {'pages': {
+        'pages_count': num_pages,
+        'current_page': tags_page.number,
+    }, 'tags': []}
+
+    for tag in tags_page.object_list:
+        item = {'name': tag.name, 'id': tag.pk}
+        data['tags'].append(item)
+
+    return HttpResponse(json.dumps(data), content_type="application/json", status=200)
+
+
+def add_tag_to_offer(request, offer_id):
+    if request.method == 'POST':
+        offer = get_object_or_404(Offer, pk=offer_id)
+        tag_id = request.POST.get('tag_id', -1)
+        tag = get_object_or_404(Tag, pk=tag_id)
+        offer.tags.add(tag)
+        offer.save()
+        #data = serializers.serialize('json', [tag])
+        data = {'name': tag.name, 'id': tag.pk, 'link': tag.get_admin_show_url()}
+        return HttpResponse(json.dumps(data), content_type="application/json", status=200)
+
+
+def del_tag_from_offer(request, offer_id):
+    if request.method == 'POST':
+        offer = get_object_or_404(Offer, pk=offer_id)
+        tag_id = request.POST.get('tag_id', -1)
+        tag = get_object_or_404(Tag, pk=tag_id)
+        offer.tags.remove(tag)
+        offer.save()
+        data = serializers.serialize('json', [tag])
+        return HttpResponse(data, content_type="application/json", status=200)

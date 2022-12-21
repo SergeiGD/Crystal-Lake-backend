@@ -99,7 +99,7 @@
 //     opacity: 0
 // }
 
-.card_icon, .show_icon{
+.card_icon{
     position: absolute;
     top: 8px;
     font-size: 2rem;
@@ -110,12 +110,16 @@
     }
 }
 
-.card_icon{
-    right: 8px;
+.card_icon__delete{
+    right: 10px;
 }
 
-.show_icon{
-    right: 70px;
+.card_icon__edit{
+    right: 65px;
+}
+
+.card_icon__show{
+    right: 130px;
 }
 
 .img_wrapper__temp{

@@ -87,23 +87,27 @@
   top: 20px;
 }
 
-.card_icon, .show_icon {
+.card_icon {
   position: absolute;
   top: 8px;
   font-size: 2rem;
   cursor: pointer;
   opacity: 0.6;
 }
-.card_icon:hover, .show_icon:hover {
+.card_icon:hover {
   opacity: 1;
 }
 
-.card_icon {
-  right: 8px;
+.card_icon__delete {
+  right: 10px;
 }
 
-.show_icon {
-  right: 70px;
+.card_icon__edit {
+  right: 65px;
+}
+
+.card_icon__show {
+  right: 130px;
 }
 
 /*!
@@ -12515,4 +12519,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=admin-2e2154f9b76e197838ef.bundle.css.map*/
+/*# sourceMappingURL=admin-8fedbec253e35def4b31.bundle.css.map*/

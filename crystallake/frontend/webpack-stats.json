@@ -1,13 +1,13 @@
 {
   "status": "done",
   "assets": {
-    "css/admin-2e2154f9b76e197838ef.bundle.css": {
-      "name": "css/admin-2e2154f9b76e197838ef.bundle.css",
-      "path": "/app/apps/core/static/css/admin-2e2154f9b76e197838ef.bundle.css"
+    "css/admin-8fedbec253e35def4b31.bundle.css": {
+      "name": "css/admin-8fedbec253e35def4b31.bundle.css",
+      "path": "/app/apps/core/static/css/admin-8fedbec253e35def4b31.bundle.css"
     },
-    "css/admin-2e2154f9b76e197838ef.bundle.css.map": {
-      "name": "css/admin-2e2154f9b76e197838ef.bundle.css.map",
-      "path": "/app/apps/core/static/css/admin-2e2154f9b76e197838ef.bundle.css.map"
+    "css/admin-8fedbec253e35def4b31.bundle.css.map": {
+      "name": "css/admin-8fedbec253e35def4b31.bundle.css.map",
+      "path": "/app/apps/core/static/css/admin-8fedbec253e35def4b31.bundle.css.map"
     },
     "css/client-a5093423cc35b3d8177e.bundle.css": {
       "name": "css/client-a5093423cc35b3d8177e.bundle.css",
@@ -25,37 +25,21 @@
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
       "path": "/app/apps/core/static/images/why_is-8d9483bc8b97327e78b1.webp"
     },
-    "js/admin-1fb56446d5e0d1d4a299.bundle.js": {
-      "name": "js/admin-1fb56446d5e0d1d4a299.bundle.js",
-      "path": "/app/apps/core/static/js/admin-1fb56446d5e0d1d4a299.bundle.js"
+    "js/admin-9549f5a9554aa410bc24.bundle.js": {
+      "name": "js/admin-9549f5a9554aa410bc24.bundle.js",
+      "path": "/app/apps/core/static/js/admin-9549f5a9554aa410bc24.bundle.js"
     },
-    "js/admin-1fb56446d5e0d1d4a299.bundle.js.map": {
-      "name": "js/admin-1fb56446d5e0d1d4a299.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-1fb56446d5e0d1d4a299.bundle.js.map"
+    "js/admin-9549f5a9554aa410bc24.bundle.js.map": {
+      "name": "js/admin-9549f5a9554aa410bc24.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-9549f5a9554aa410bc24.bundle.js.map"
     },
-    "js/admin-87f34fff7b837c5c34f9.bundle.js": {
-      "name": "js/admin-87f34fff7b837c5c34f9.bundle.js",
-      "path": "/app/apps/core/static/js/admin-87f34fff7b837c5c34f9.bundle.js"
+    "js/admin-b990154c20bb91cfd023.bundle.js": {
+      "name": "js/admin-b990154c20bb91cfd023.bundle.js",
+      "path": "/app/apps/core/static/js/admin-b990154c20bb91cfd023.bundle.js"
     },
-    "js/admin-87f34fff7b837c5c34f9.bundle.js.map": {
-      "name": "js/admin-87f34fff7b837c5c34f9.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-87f34fff7b837c5c34f9.bundle.js.map"
-    },
-    "js/admin-8d7d835bc564a6f51fdc.bundle.js": {
-      "name": "js/admin-8d7d835bc564a6f51fdc.bundle.js",
-      "path": "/app/apps/core/static/js/admin-8d7d835bc564a6f51fdc.bundle.js"
-    },
-    "js/admin-8d7d835bc564a6f51fdc.bundle.js.map": {
-      "name": "js/admin-8d7d835bc564a6f51fdc.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-8d7d835bc564a6f51fdc.bundle.js.map"
-    },
-    "js/client-04328a2d78d0198fe075.bundle.js": {
-      "name": "js/client-04328a2d78d0198fe075.bundle.js",
-      "path": "/app/apps/core/static/js/client-04328a2d78d0198fe075.bundle.js"
-    },
-    "js/client-04328a2d78d0198fe075.bundle.js.map": {
-      "name": "js/client-04328a2d78d0198fe075.bundle.js.map",
-      "path": "/app/apps/core/static/js/client-04328a2d78d0198fe075.bundle.js.map"
+    "js/admin-b990154c20bb91cfd023.bundle.js.map": {
+      "name": "js/admin-b990154c20bb91cfd023.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-b990154c20bb91cfd023.bundle.js.map"
     },
     "js/client-e5e80c1a1a34444cb806.bundle.js": {
       "name": "js/client-e5e80c1a1a34444cb806.bundle.js",
@@ -95,8 +79,8 @@
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
       "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
       "js/src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js-9d043ecaa8525c82dc01.bundle.js",
-      "css/admin-2e2154f9b76e197838ef.bundle.css",
-      "js/admin-8d7d835bc564a6f51fdc.bundle.js"
+      "css/admin-8fedbec253e35def4b31.bundle.css",
+      "js/admin-9549f5a9554aa410bc24.bundle.js"
     ],
     "client": [
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",

@@ -1,5 +1,27 @@
 {% extends 'core/admin_base.html' %}
 
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_rooms' %}" class="link-hover text-dark text-decoration-none">
+                    Номера
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ room.get_admin_show_url }}" class="link-hover text-dark text-decoration-none">
+                    Просмотр номера
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Редактирование номера</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
 
 {% block content %}
 <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative main_info_container" id="edit_main_info_form" action="{{ room.get_admin_edit_url }}" method="POST" enctype="multipart/form-data">
@@ -12,7 +34,7 @@
         </ul>
     </div>
 
-    <i class="fa-regular fa-square-minus text-danger card_icon" data-bs-toggle="modal" data-bs-target="#delete_modal"></i>
+
 
     <div class="text-center">
         <span class="fw-bold fs-5">id: </span>
@@ -109,73 +131,33 @@
 
     <div class="row">
 
-        <div class="col-lg-6 col-12">
+        <div class="col-lg-6 col-12 ">
 
-            <div class="col-12">
+            <div class="col-12 d-flex flex-column h-100">
                 <label class="input-group-text rounded-top rounded-0" for="{{ form_room.description.id_for_label }}">{{ form_room.description.label }}</label>
                 {{ form_room.description }}
             </div>
 
-            <div class="col-12">
-                <div class="d-flex flex-column">
-                    <span class="input-group-text rounded-top rounded-0 mt-3">Теги:</span>
-                    <div class="border-1 border rounded-bottom border-top-0 flex-grow-1 p-2">
-
-                        <button class="btn btn-c_grey-100 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add_tag_modal">+ Добавить</button>
-
-                            <div class="d-flex gap-4 flex-wrap mt-3">
-                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                    <span class="py-1 px-3">Два этажа</span>
-                                    <button class="btn btn-danger rounded-0">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
-                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                    <span class="py-1 px-3">Беседка</span>
-                                    <button class="btn btn-danger rounded-0">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
-                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                    <span class="py-1 px-3">Два этажа</span>
-                                    <button class="btn btn-danger rounded-0">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
-                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                    <span class="py-1 px-3">Два этажа</span>
-                                    <button class="btn btn-danger rounded-0">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
-                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                    <span class="py-1 px-3">Два этажа</span>
-                                    <button class="btn btn-danger rounded-0">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
-                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                    <span class="py-1 px-3">Два этажа</span>
-                                    <button class="btn btn-danger rounded-0">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
-                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                    <span class="py-1 px-3">Два этажа</span>
-                                    <button class="btn btn-danger rounded-0">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
-                                <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">
-                                    <span class="py-1 px-3">Два этажа</span>
-                                    <button class="btn btn-danger rounded-0">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            </div>
+{#            <div class="col-12">#}
+{#                <div class="d-flex flex-column">#}
+{#                    <span class="input-group-text rounded-top rounded-0 mt-3">Теги:</span>#}
+{#                    <div class="border-1 border rounded-bottom border-top-0 flex-grow-1 p-2">#}
+{##}
+{#                        <button class="btn btn-c_grey-100 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add_tag_modal">+ Добавить</button>#}
+{##}
+{#                            <div class="d-flex gap-4 flex-wrap mt-3">#}
+{#                                {% for tag in room.tags.all %}#}
+{#                                    <div class="d-flex text-bg-c_blue_100 fs-6 rounded overflow-hidden">#}
+{#                                        <span class="py-1 px-3">{{ tag.name }}</span>#}
+{#                                        <button class="btn btn-danger rounded-0">#}
+{#                                            <i class="fa-solid fa-xmark"></i>#}
+{#                                        </button>#}
+{#                                    </div>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
 
         </div>
         <div class="col-lg-6 col-12 mt-lg-0 mt-4">
@@ -317,16 +299,64 @@
 
     <div class="col-12 mt-4">
         <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-lg btn-c_yellow-700" id="button_save">Сохранить</button>
+            <button type="button" class="btn btn-lg btn-c_yellow-700" id="save_main_btn">Сохранить</button>
             <button type="button" class="btn btn-lg btn-c_grey-100"  data-goto="{{ room.get_admin_show_url }}">Назад</button>
         </div>
     </div>
 
 </form>
 
+<!-- tags -->
+
+<div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5">
+
+    <div class="text-center">
+        <span class="fw-bold fs-5">Теги</span>
+    </div>
+
+    <form class="overflow-auto mt-4" method="post" action="{% url 'tag_from_offer' offer_id=room.pk %}" id="offer_tags">
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">id тега</th>
+                <th scope="col">Наименование</th>
+                <th scope="col" class="px-3 text-center" type="button">Убрать</th>
+            </tr>
+            </thead>
+            <tbody id="tags_list_body">
+                <tr>
+                    <td class="p-0" colspan="3">
+                        <button id="open_tag_modal" class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add_tag_modal">
+                            + Добавить
+                        </button>
+                    </td>
+                </tr>
+
+                    {% for tag in room.tags.all %}
+                        <tr>
+                            <th scope="row">{{ tag.id }}</th>
+                            <td>
+                                <a href="{{ tag.get_admin_show_url }}" class="link-hover d-block">{{ tag.name }}</a>
+                            </td>
+                            <td class="p-0 position-relative w-10r">
+                                <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ tag.pk }}">Убрать</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+            </tbody>
+        </table>
+    </form>
+
+
+</div>
+
+<!-- end tags -->
+
 {% endblock content %}
 
 {% block popups %}
+
     <div class="modal fade" id="show_img_modal" tabindex="-1" aria-labelledby="show_img_label" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -340,4 +370,86 @@
           </div>
         </div>
     </div>
+
+     <!-- add tag modal -->
+    <div class="modal fade" id="add_tag_modal" tabindex="-1" aria-labelledby="add_tag_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="add_tag_label">Добавление тега</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form class="shadow p-3 rounded-2 position-relative" id="search_tag" method="POST" action="{{ room.get_tags_url }}">
+
+                    {% csrf_token %}
+
+                    <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete" id="clean_tags_btn"></i>
+
+                    <div class="row align-items-start justify-content-between py-3">
+
+                        <div class="col-12 row justify-content-between mx-auto p-0">
+
+                            <div class="col-md-3 col-6">
+                                <div>
+                                    <label for="{{ form_tags.id.id_for_label }}" class="form-label">{{ form_tags.id.label }}</label>
+                                    {{ form_tags.id }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-12 mt-md-0 mt-3">
+                                <label for="{{ form_tags.name.id_for_label }}" class="form-label">{{ form_tags.name.label }}</label>
+                                {{ form_tags.name }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-c_yellow-700 w-100" type="button" id="find_tags_btn">Найти</button>
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <form class="shadow mt-4 rounded-2 overflow-auto" id="select_tag" action="{% url 'tag_to_offer' offer_id=room.pk %}">
+
+                    {% csrf_token %}
+
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                                <tr>
+                                    <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button" data-sortby="id" data-sortby-active>
+                                        id <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                                    </th>
+                                    <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="name">
+                                        Наименование <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                                    </th>
+                                    <th scope="col" class="text-nowrap">
+                                        Выбрать
+                                    </th>
+                                </tr>
+                        </thead>
+                        <tbody id="tags_add_body">
+
+
+                        </tbody>
+                    </table>
+                </form>
+
+                <nav class="d-flex justify-content-center mt-4">
+                    <ul class="pagination" id="tags_pagination"></ul>
+                </nav>
+
+
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- add tag modal end -->
+
+
 {% endblock popups %}

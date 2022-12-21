@@ -10,6 +10,8 @@ from pytils.translit import slugify
 #from ..order.models import Purchase
 from polymorphic.models import PolymorphicModel
 from django.db.models import Q
+from ..tag.models import Tag
+from polymorphic.query import PolymorphicQuerySet
 
 # Create your models here.
 
@@ -33,7 +35,7 @@ def build_photo_path(instance, filename):
 #         return self.get_queryset().filter(lookups)
 
 
-class RoomQuerySet(models.QuerySet):
+class RoomQuerySet(PolymorphicQuerySet):
     def search(self, **kwargs):
         qs = self
         if kwargs.get('name', ''):
@@ -55,17 +57,76 @@ class RoomQuerySet(models.QuerySet):
 
 
 class Offer(PolymorphicModel):
-    name = models.CharField(verbose_name="наименование", max_length=255, unique=True)
-    description = models.TextField(verbose_name="описание")
-    default_price = models.DecimalField(verbose_name="стандартная цена", max_digits=12, decimal_places=2)
-    weekend_price = models.DecimalField(verbose_name="праздничная цена", max_digits=12, decimal_places=2, )
-    prepayment_percent = models.FloatField(verbose_name="предоплата")
-    refund_percent = models.FloatField(verbose_name="возврат")
-    main_photo = models.ImageField(upload_to=build_photo_path)
-    date_create = models.DateTimeField(verbose_name="дата создания", auto_now_add=True)
-    date_deleted = models.DateTimeField(verbose_name="дата удаления", blank=True, null=True)
-    is_hidden = models.BooleanField(verbose_name="скрыто", default=False)
-    slug = models.SlugField(max_length=255, unique=True)
+    name = models.CharField(
+        verbose_name='наименование',
+        max_length=255,
+        unique=True,
+        blank=False,
+        null=False
+    )
+    description = models.TextField(
+        verbose_name='описание',
+        blank=False,
+        null=False
+    )
+    default_price = models.DecimalField(
+        verbose_name='стандартная цена',
+        max_digits=12,
+        decimal_places=2,
+        blank=False,
+        null=False
+    )
+    weekend_price = models.DecimalField(
+        verbose_name='праздничная цена',
+        max_digits=12,
+        decimal_places=2,
+        blank=False,
+        null=False
+    )
+    prepayment_percent = models.FloatField(
+        verbose_name='предоплата',
+        blank=False,
+        null=False
+    )
+    refund_percent = models.FloatField(
+        verbose_name='возврат',
+        blank=False,
+        null=False
+    )
+    main_photo = models.ImageField(
+        upload_to=build_photo_path,
+        blank=False,
+        null=False
+    )
+    date_create = models.DateTimeField(
+        verbose_name='дата создания',
+        auto_now_add=True,
+        blank=False,
+        null=False
+    )
+    date_deleted = models.DateTimeField(
+        verbose_name='дата удаления',
+        blank=True,
+        null=True
+    )
+    is_hidden = models.BooleanField(
+        verbose_name='скрыто',
+        default=False,
+        blank=False,
+        null=False
+    )
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        blank=False,
+        null=False
+    )
+    tags = models.ManyToManyField(
+        Tag,
+        related_name='offers',
+        related_query_name='offer',
+        blank=True
+    )
 
     class Meta:
         indexes = [
@@ -76,6 +137,9 @@ class Offer(PolymorphicModel):
 
     def __str__(self):
         return self.name
+
+    def get_tags_url(self):
+        return reverse('get_tags', kwargs={'offer_id': self.pk})
 
     def get_orders_count(self):
         pass
@@ -105,18 +169,18 @@ class Offer(PolymorphicModel):
 
 
 class Room(Offer):
-    rooms = models.SmallIntegerField(verbose_name="комнат")
-    floors = models.SmallIntegerField(verbose_name="этажей")
-    beds = models.SmallIntegerField(verbose_name="спальных мест")
-    square = models.FloatField(verbose_name="площадь")
+    rooms = models.SmallIntegerField(verbose_name='комнат')
+    floors = models.SmallIntegerField(verbose_name='этажей')
+    beds = models.SmallIntegerField(verbose_name='спальных мест')
+    square = models.FloatField(verbose_name='площадь')
     main_room = models.ForeignKey(
         "self",
         on_delete=models.PROTECT,
         blank=True,
         null=True,
-        verbose_name="номер представитель",
-        related_name="child_rooms",
-        related_query_name="child_room"
+        verbose_name='номер представитель',
+        related_name='child_rooms',
+        related_query_name='child_room'
     )
 
     def get_absolute_url(self):
@@ -128,16 +192,21 @@ class Room(Offer):
     def get_admin_edit_url(self):
         return reverse('admin_edit_room', kwargs={'room_slug': self.slug})
 
+    def get_admin_delete_url(self):
+        return reverse('admin_delete_room', kwargs={'room_slug': self.slug})
+
+
+
     objects = RoomQuerySet.as_manager()
 
 
 class Service(Offer):
-    max_for_moment = models.SmallIntegerField(verbose_name="макс. единовременно")
-    dynamic_timetable = models.BooleanField(verbose_name="динамическое расписание")
+    max_for_moment = models.SmallIntegerField(verbose_name='макс. единовременно')
+    dynamic_timetable = models.BooleanField(verbose_name='динамическое расписание')
 
 
 class Photo(models.Model):
-    offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name="photos")
+    offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='photos', related_query_name='photo')
     order = models.SmallIntegerField()
     path = models.ImageField(upload_to=build_photo_path)
 
@@ -148,8 +217,6 @@ class Photo(models.Model):
         base64_str = base64.b64encode(self.path.read()).decode('utf-8')
         ext = self.path.url.split('.')[-1]
         return f'data:image/{ext};base64,{base64_str}'
-        # with open(self.path.url, 'rb') as image:
-        #     return base64.b64encode(image.read())
 
 
 

@@ -14,10 +14,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/js/admin/ajax/edit_room_ajax.js":
-/*!*********************************************!*\
-  !*** ./src/js/admin/ajax/edit_room_ajax.js ***!
-  \*********************************************/
+/***/ "./src/js/admin/ajax/add_tag_to_offer.js":
+/*!***********************************************!*\
+  !*** ./src/js/admin/ajax/add_tag_to_offer.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+    $('#tags_add_body').on('click', '[data-id]', function (){
+        $('#select_tag').trigger('submit', $(this).attr('data-id'));
+    });
+
+    $('#select_tag').on('submit', function (event, tag_id){
+        event.preventDefault();
+
+        const csrf_token = $('[name=csrfmiddlewaretoken]').attr('value')
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: {'tag_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
+            success: function (data){
+                const new_tag = {name: data.name, id: data.id, link: data.link}
+                console.log(data)
+                append_row(new_tag)
+            }
+        });
+
+        function append_row(tag){
+            const row = `
+                <tr>
+                    <th scope="row">${tag.id}</th>
+                    <td>
+                        <a href="${tag.link}" class="link-hover d-block">${tag.name}</a>
+                    </td>
+                    <td class="p-0 position-relative w-10r">
+                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${tag.id}">Убрать</button>
+                    </td>
+                </tr>
+            `
+            $('#tags_list_body').append(row);
+
+        }
+
+    });
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/delete_tag_from_offer.js":
+/*!****************************************************!*\
+  !*** ./src/js/admin/ajax/delete_tag_from_offer.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+    $('#tags_list_body').on('click', '[data-id]', function (){
+        $('#offer_tags').trigger('submit', $(this).attr('data-id'));
+    });
+
+    $('#offer_tags').on('submit', function (event, tag_id){
+        event.preventDefault();
+
+        const csrf_token = $('[name=csrfmiddlewaretoken]').attr('value')
+
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: {'tag_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
+            success: function (data){
+                const table = $('#tags_list_body');
+                const row = table.find(`[data-id=${tag_id}]`).closest('tr')
+                row.remove()
+            }
+        });
+
+    });
+});
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/offer_ajax.js":
+/*!*****************************************!*\
+  !*** ./src/js/admin/ajax/offer_ajax.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
@@ -28,8 +111,6 @@ $(document).ready(function (){
 
     var files_deleted = []
 
-    //const csrf_token = $('input[name=csrfmiddlewaretoken]').attr('value')
-
     $('#edit_main_info_form').on('file_uploaded', function (event, file_params){
         files_uploaded = [...files_uploaded, file_params]
     })
@@ -37,6 +118,10 @@ $(document).ready(function (){
     $('#edit_main_info_form').on('file_deleted', function (event, file_id){
         files_deleted = [...files_deleted, file_id]
     })
+
+    $('#save_main_btn').on('click', function (){
+        $('#edit_main_info_form').trigger('submit')
+    });
 
     $('#edit_main_info_form').on('submit', function (event){
         event.preventDefault();
@@ -60,10 +145,6 @@ $(document).ready(function (){
             }
         });
 
-        // console.log(post_data)
-        // console.log(raw_data)
-        // console.log(files_uploaded)
-        // console.log(files_deleted)
 
         $.ajax({
             url: $('#edit_main_info_form').attr('action'),
@@ -72,45 +153,205 @@ $(document).ready(function (){
             processData: false,
             contentType: false,
             data: post_data,
-            // success: function (data, textStatus, jqXHR){
-            //     console.log(jqXHR)
-            //     // const response_json = jQuery.parseJSON(jqXHR.responseText)
-            //     // window.location.href = response_json['url']
-            // },
             error: function (jqXHR){
                 const errors_json = jQuery.parseJSON(jqXHR.responseText)
-                $('#errors').html(build_erros_list(errors_json));
+                build_errors_list(errors_json);
                 $([document.documentElement, document.body]).animate({
                     scrollTop: $("#errors").offset().top
                 }, 200);
             },
         }).statusCode({
            302: function (response){
-               console.log(typeof(response))
                 const response_json = jQuery.parseJSON(response.responseText)
                 window.location.href = response_json['url']
             }
         });
     })
 
-    $(document).ajaxComplete(function(e, xhr, settings){
-        console.log(xhr.status)
-        if(xhr.status === 302){
-            //check for location header and redirect...
-        }
-    });
 
-    function build_erros_list(errors){
+    function build_errors_list(errors){
         var result = ''
         for (var field in errors){
             const message = errors[field][0].message
             result += `<li>${message}</li>`
         }
-        return result
+        $('#errors').html(result);
     }
 
 
 });
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/search_tags_for_offer.js":
+/*!****************************************************!*\
+  !*** ./src/js/admin/ajax/search_tags_for_offer.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#open_tag_modal').on('click', function (){
+        $('#find_tags_btn').trigger('click');
+    })
+
+    $('#find_tags_btn').on('click', function (){
+        $('#search_tag').trigger('submit');
+    })
+
+    $('#tags_pagination').on('click', '[data-page]', function (){
+        $('#search_tag').trigger('submit', $(this).attr('data-page'));
+    })
+
+    $('#clean_tags_btn').on('click', function (){
+        const form = $('#search_tag')
+        form.find('input').not('[name=csrfmiddlewaretoken]').val('')
+        form.trigger('submit')
+    })
+
+    $('#add_tag_modal').on('click', '[data-sortby]', function (){
+        var picked_sortby = $(this).attr('data-sortby');
+        const icon = $(this).find('i');
+        const active_sortby_elem = $('[data-sortby-active]');
+        const active_sortby = active_sortby_elem.attr('data-sortby');
+
+
+        if (picked_sortby === active_sortby){
+            if (picked_sortby[0] === '-'){
+                picked_sortby = picked_sortby.replace('-', '');
+                icon.removeClass('fa-arrow-down-wide-short');
+                icon.addClass('fa-arrow-down-short-wide');
+            }
+            else{
+                picked_sortby = '-' + picked_sortby;
+                icon.removeClass('fa-arrow-down-short-wide');
+                icon.addClass('fa-arrow-down-wide-short');
+            }
+        }
+        else{
+            $(this).attr('data-sortby-active', '');
+            active_sortby_elem.removeAttr('data-sortby-active');
+            $(this).addClass('bg-c_yellow-700');
+            active_sortby_elem.removeClass('bg-c_yellow-700');
+
+        }
+
+        $(this).attr('data-sortby', picked_sortby);
+        $('#search_tag').trigger('submit');
+    })
+
+    $('#search_tag').on('submit', function (event, page='1'){
+        event.preventDefault();
+
+        var raw_data = $(this).serializeArray();
+        var post_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            post_data.append(n['name'], n['value']);
+        });
+
+        const sort_by = $('#add_tag_modal').find('[data-sortby-active]').attr('data-sortby')
+        post_data.append('sort_by', sort_by)
+        post_data.append('page_number', page)
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'GET',
+            data: post_data,
+            processData: false,
+            contentType: false,
+            success: function (data){
+                console.log(data)
+                build_rows(data['tags'])
+                build_pages(data['pages'])
+            },
+        });
+
+        function build_rows(data){
+            var result = ''
+            for(const item of data){
+                const row = `
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>${item.name}</td>
+                        <td class="p-0 position-relative w-10r">
+                            <button data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button">
+                                Выбрать
+                            </button>
+                        </td>
+                    </tr>
+                `
+                result += row
+            }
+            $('#tags_add_body').html(result);
+        }
+
+        function build_pages(data){
+
+            var result = ''
+
+            if (data.current_page > 1){
+                result += `
+                    <li class="page-item">
+                        <button class="page-link" type="button" data-page="${data.current_page - 1}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                `
+            }
+
+            if (data.current_page - 3 > 1){
+                result += `
+                    <li class="page-item">
+                        <button class="page-link" type="button" data-page="1">1</button>
+                    </li>
+                    <li class="page-item">
+                        <p class="page-link">&hellip;</p>
+                    </li>
+                `
+            }
+
+            for (var i = 1; i <= data.pages_count; i++){
+                if (i == data.current_page){
+                    result += `
+                        <li class="page-item"><p class="page-link bg-c_yellow-700 text-black">${i}</p></li>
+                    `
+                }
+                else if (i > data.current_page - 4 && i < data.current_page + 4){
+                    result += `
+                        <li class="page-item"><button class="page-link" type="button" data-page="${i}">${i}</button></li>
+                    `
+                }
+            }
+
+            if (data.current_page + 3 < data.pages_count){
+                result += `
+                    <li class="page-item">
+                        <p class="page-link">&hellip;</p>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" type="button" data-page="${data.pages_count}">${data.pages_count}</button>
+                    </li>
+                `
+            }
+
+            if (data.current_page < data.pages_count){
+                result += `
+                    <li class="page-item">
+                        <button class="page-link" type="button" data-page="${data.current_page + 1}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                `
+            }
+
+            $('#tags_pagination').html(result);
+
+        }
+    });
+
+})
 
 /***/ }),
 
@@ -286,6 +527,8 @@ $(document).ready(function(){
 
             reader.onloadend = function(){
                 const img_src = reader.result;                            // получаем base64 картинки
+
+                // ВОТ ТУТ ЗАПРОС НА ПОЛУЧЕНИЕК
 
                 img_elem.attr('src', img_src);                          // устанавливаем img новый src
 
@@ -542,9 +785,12 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/upload_img.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/delete_img.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/new_offer_main_img.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/edit_room_ajax.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/offer_ajax.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_tags_for_offer.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/delete_tag_from_offer.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_tag_to_offer.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-8d7d835bc564a6f51fdc.bundle.js.map
+//# sourceMappingURL=admin-9549f5a9554aa410bc24.bundle.js.map

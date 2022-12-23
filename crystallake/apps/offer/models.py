@@ -1,51 +1,31 @@
 import itertools
-import uuid
-import base64
+from pytils.translit import slugify
 
-from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse
-from pytils.translit import slugify
-#from django.utils.text import slugify
-#from ..order.models import Purchase
+
 from polymorphic.models import PolymorphicModel
-from django.db.models import Q
+from polymorphic.query import PolymorphicQuerySet
+
 from ..tag.models import Tag
 from ..core.build_photo_path import build_photo_path
-from polymorphic.query import PolymorphicQuerySet
 
 # Create your models here.
 
 
+class OfferQuerySet(PolymorphicQuerySet):
+    def search(self, **kwargs):
+        qs = self
+        if kwargs.get('name', ''):
+            qs = qs.filter(name__icontains=kwargs['name'])
+        if kwargs.get('price_from', ''):
+            qs = qs.filter(default_price__gte=kwargs['price_from'])
+        if kwargs.get('price_until', ''):
+            qs = qs.filter(default_price__lte=kwargs['price_from'])
+        if kwargs.get('sort_by', ''):
+            qs = qs.order_by(kwargs['sort_by'])
 
-
-
-# class RoomManager(models.Manager):
-#     def search(self, query):
-#         lookups = Q(name__icontains=query)
-#         #return Room.objects.filter(lookups)
-#         return self.get_queryset().filter(lookups)
-
-
-# class RoomQuerySet(PolymorphicQuerySet):
-#     def search(self, **kwargs):
-#         qs = self
-#         if kwargs.get('name', ''):
-#             qs = qs.filter(name__icontains=kwargs['name'])
-#         if kwargs.get('rooms', ''):
-#             qs = qs.filter(rooms=kwargs['rooms'])
-#         if kwargs.get('floors', ''):
-#             qs = qs.filter(floors=kwargs['floors'])
-#         if kwargs.get('beds', ''):
-#             qs = qs.filter(beds=kwargs['beds'])
-#         if kwargs.get('price_from', ''):
-#             qs = qs.filter(default_price__gte=kwargs['price_from'])
-#         if kwargs.get('price_until', ''):
-#             qs = qs.filter(default_price__lte=kwargs['price_from'])
-#         if kwargs.get('sort_by', ''):
-#             qs = qs.order_by(kwargs['sort_by'])
-#
-#         return qs
+        return qs
 
 
 class Offer(PolymorphicModel):
@@ -120,6 +100,8 @@ class Offer(PolymorphicModel):
         blank=True
     )
 
+    objects = OfferQuerySet.as_manager()
+
     class Meta:
         indexes = [
             models.Index(fields=['date_deleted', 'is_hidden']),
@@ -159,54 +141,6 @@ class Offer(PolymorphicModel):
 
         super().save(*args, **kwargs)
 
-
-# class Room(Offer):
-#     rooms = models.SmallIntegerField(verbose_name='комнат')
-#     floors = models.SmallIntegerField(verbose_name='этажей')
-#     beds = models.SmallIntegerField(verbose_name='спальных мест')
-#     square = models.FloatField(verbose_name='площадь')
-#     main_room = models.ForeignKey(
-#         "self",
-#         on_delete=models.PROTECT,
-#         blank=True,
-#         null=True,
-#         verbose_name='номер представитель',
-#         related_name='child_rooms',
-#         related_query_name='child_room'
-#     )
-#
-#     def get_absolute_url(self):
-#         return reverse('room', kwargs={'room_slug': self.slug})
-#
-#     def get_admin_show_url(self):
-#         return reverse('admin_show_room', kwargs={'room_slug': self.slug})
-#
-#     def get_admin_edit_url(self):
-#         return reverse('admin_edit_room', kwargs={'room_slug': self.slug})
-#
-#     def get_admin_delete_url(self):
-#         return reverse('admin_delete_room', kwargs={'room_slug': self.slug})
-#
-#     objects = RoomQuerySet.as_manager()
-
-
-# class Service(Offer):
-#     max_for_moment = models.SmallIntegerField(verbose_name='макс. единовременно')
-#     dynamic_timetable = models.BooleanField(verbose_name='динамическое расписание')
-
-
-# class Photo(models.Model):
-#     offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='photos', related_query_name='photo')
-#     order = models.SmallIntegerField()
-#     path = models.ImageField(upload_to=build_photo_path)
-#
-#     class Meta:
-#         ordering = ['order']
-#
-#     def get_base64(self):
-#         base64_str = base64.b64encode(self.path.read()).decode('utf-8')
-#         ext = self.path.url.split('.')[-1]
-#         return f'data:image/{ext};base64,{base64_str}'
 
 
 

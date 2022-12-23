@@ -1,11 +1,7 @@
-import json
-
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
-from ..core.save_paginator import SafePaginator
 
+from ..core.save_paginator import SafePaginator
 from .models import Tag
 from .forms import TagForm
 

@@ -1,29 +1,21 @@
 from django.db import models
-from polymorphic.query import PolymorphicQuerySet
 from django.urls import reverse
 
-from ..offer.models import Offer
+from ..offer.models import Offer, OfferQuerySet
 
 # Create your models here.
 
 
-class RoomQuerySet(PolymorphicQuerySet):
+class RoomQuerySet(OfferQuerySet):
     def search(self, **kwargs):
-        qs = self
-        if kwargs.get('name', ''):
-            qs = qs.filter(name__icontains=kwargs['name'])
+        qs = super().search(**kwargs)
+
         if kwargs.get('rooms', ''):
             qs = qs.filter(rooms=kwargs['rooms'])
         if kwargs.get('floors', ''):
             qs = qs.filter(floors=kwargs['floors'])
         if kwargs.get('beds', ''):
             qs = qs.filter(beds=kwargs['beds'])
-        if kwargs.get('price_from', ''):
-            qs = qs.filter(default_price__gte=kwargs['price_from'])
-        if kwargs.get('price_until', ''):
-            qs = qs.filter(default_price__lte=kwargs['price_from'])
-        if kwargs.get('sort_by', ''):
-            qs = qs.order_by(kwargs['sort_by'])
 
         return qs
 

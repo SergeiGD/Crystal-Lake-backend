@@ -1,0 +1,128 @@
+{% extends 'core/admin_base.html' %}
+
+{% block content %}
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative main_info_container" id="edit_main_info_form" action="{{ offer.get_admin_edit_url }}" method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+
+        <div>
+            <ul id="errors">
+            </ul>
+        </div>
+
+
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">id: </span>
+            <span class="fw-bold fs-5">{{ offer.id }}</span>
+        </div>
+
+        <div class="row">
+
+            {% block properties %}
+            {% endblock properties %}
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-6 col-12 ">
+
+                <div class="col-12 d-flex flex-column h-100">
+                    <label class="input-group-text rounded-top rounded-0" for="{{ form_offer.description.id_for_label }}">{{ form_offer.description.label }}</label>
+                    {{ form_offer.description }}
+                </div>
+
+            </div>
+            <div class="col-lg-6 col-12 mt-lg-0 mt-4">
+                <span class="input-group-text rounded-top rounded-0">Главное фото:</span>
+                <div class="img_wrapper">
+                    <img src="{{ offer.main_photo.url }}" alt="Главное фото" class="img-fluid w-100 img">
+
+                    <button class="btn btn-primary upload_img upload_img_button" type="button" >
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        Загрузить фотографию
+                    </button>
+
+                    <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                        <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                    </button>
+
+                    {{ form_offer.main_photo }}
+
+                </div>
+            </div>
+
+        </div>
+
+        {% include 'offer/images_accordion_edit.html' %}
+
+        <div class="col-12 mt-4">
+            <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-lg btn-c_yellow-700" id="save_main_btn">Сохранить</button>
+                <button type="button" class="btn btn-lg btn-c_grey-100"  data-goto="{{ offer.get_admin_show_url }}">Назад</button>
+            </div>
+        </div>
+
+    </form>
+
+    {% block additional_info %}
+    {% endblock additional_info %}
+
+    <!-- tags -->
+
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5">
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">Теги</span>
+        </div>
+
+        <form class="overflow-auto mt-4" method="post" action="{% url 'tag_from_offer' offer_id=offer.pk %}" id="offer_tags">
+
+            {% csrf_token %}
+
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">id тега</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col" class="px-3 text-center" type="button">Убрать</th>
+                </tr>
+                </thead>
+                <tbody id="tags_list_body">
+                    <tr>
+                        <td class="p-0" colspan="3">
+                            <button id="open_tag_modal" class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add_tag_modal">
+                                + Добавить
+                            </button>
+                        </td>
+                    </tr>
+
+                        {% for tag in offer.tags.all %}
+                            <tr>
+                                <th scope="row">{{ tag.id }}</th>
+                                <td>
+                                    <a href="{{ tag.get_admin_show_url }}" class="link-hover d-block">{{ tag.name }}</a>
+                                </td>
+                                <td class="p-0 position-relative w-10r">
+                                    <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ tag.pk }}">Убрать</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                </tbody>
+            </table>
+        </form>
+
+
+    </div>
+
+    <!-- end tags -->
+
+{% endblock content %}
+
+{% block popups %}
+    {% include 'offer/unattached_tags_popup.html' %}
+    {% include 'core/show_image_popup.html' %}
+{% endblock popups %}

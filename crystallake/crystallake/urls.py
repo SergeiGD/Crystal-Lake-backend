@@ -24,8 +24,9 @@ urlpatterns = [
     path('admin_django/', admin.site.urls),
     path('', include('apps.core.urls')),
     re_path('^accounts/', admin.site.urls, name='temp_login'),
-    path('rooms/', include('apps.offer.urls')),
-    path('admin/rooms/', include('apps.offer.admin_urls')),
+    path('rooms/', include('apps.room.urls')),
+    path('admin/rooms/', include('apps.room.admin_urls')),
+    path('admin/offers/', include('apps.offer.admin_urls')),
     path('admin/tags/', include('apps.tag.urls')),
 ]
 

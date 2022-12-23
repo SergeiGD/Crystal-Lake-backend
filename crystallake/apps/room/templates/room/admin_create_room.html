@@ -1,0 +1,111 @@
+{% extends 'offer/base_admin_create_offer.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_rooms' %}" class="link-hover text-dark text-decoration-none">
+                    Номера
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Добавление номера</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block properties %}
+
+    {% with form_offer as form_room %}
+
+        <div class="col-lg-6 col-12">
+            <div class="input-group">
+                <label class="input-group-text w-10r" for="{{ form_room.name.id_for_label }}">{{ form_room.name.label }}</label>
+                {{ form_room.name }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-lg-0 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.beds.id_for_label }}">{{ form_room.beds.label }}</label>
+                {{ form_room.beds }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.default_price.id_for_label }}">{{ form_room.default_price.label }}</label>
+                {{ form_room.default_price }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.weekend_price.id_for_label }}">{{ form_room.weekend_price.label }}</label>
+                {{ form_room.weekend_price }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.rooms.id_for_label }}">{{ form_room.rooms.label }}</label>
+                {{ form_room.rooms }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.square.id_for_label }}">{{ form_room.square.label }}</label>
+                {{ form_room.square }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.floors.id_for_label }}">{{ form_room.floors.label }}</label>
+                {{ form_room.floors }}
+            </div>
+        </div>
+
+{#        <div class="col-md-6 col-12 mt-4">#}
+{#            <div class="input-group flex-nowrap w-auto">#}
+{#                <label for="manage_bonus" class="input-group-text w-10r" id="basic-addon1">Макс. бонусов (%)</label>#}
+{#                <input id="manage_bonus" type="number" class="form-control " value="40">#}
+{#            </div>#}
+{#        </div>#}
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.prepayment_percent.id_for_label }}">{{ form_room.prepayment_percent.label }}</label>
+                {{ form_room.prepayment_percent }}
+            </div>
+        </div>
+
+{#        <div class="col-md-6 col-12 mt-4">#}
+{#            <div class="input-group flex-nowrap w-auto">#}
+{#                <label for="manage_prepayment_money" class="input-group-text w-10r" id="basic-addon1">Предоплата (&#8381;)</label>#}
+{#                <input id="manage_prepayment_money" type="number" class="form-control " value="">#}
+{#            </div>#}
+{#        </div>#}
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-10r" for="{{ form_room.refund_percent.id_for_label }}">{{ form_room.refund_percent.label }}</label>
+                {{ form_room.refund_percent }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="form-check">
+                <label class="form-check-label" for="{{ form_room.is_hidden.id_for_label }}">{{ form_room.is_hidden.label }}</label>
+                {{ form_room.is_hidden }}
+            </div>
+        </div>
+
+    {% endwith %}
+
+{% endblock properties %}

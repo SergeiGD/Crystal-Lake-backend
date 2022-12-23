@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
-from ..offer.models import *
+
+from ..room.models import Room
+from ..service.models import Service
 
 # Create your views here.
 

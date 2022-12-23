@@ -20,70 +20,72 @@
 
 {% block properties %}
 
+    {% with offer as room %}
+
     <div class="col-md-6 col-12 row">
         <p class="fw-bold col-5">Наименование:</p>
-        <p class="opacity-75 col-7">{{ offer.name }}</p>
+        <p class="opacity-75 col-7">{{ room.name }}</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 row">
         <p class="fw-bold col-5">URL:</p>
-        <p class="opacity-75 col-7">{{ offer.slug }}</p>
+        <p class="opacity-75 col-7">{{ room.slug }}</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 mt-md-0 mt-2 row">
         <p class="fw-bold col-5">Спальных мест:</p>
-        <p class="opacity-75 col-7">{{ offer.beds }}</p>
+        <p class="opacity-75 col-7">{{ room.beds }}</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 mt-2 row">
         <p class="fw-bold col-5">Обычная цена:</p>
-        <p class="opacity-75 col-7">{{ offer.default_price.to_integral_value }}&#8381;</p>
+        <p class="opacity-75 col-7">{{ room.default_price.to_integral_value }}&#8381;</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 mt-2 row">
         <p class="fw-bold col-5">Праздничная цена:</p>
-        <p class="opacity-75 col-7">{{ offer.weekend_price.to_integral_value }}&#8381;</p>
+        <p class="opacity-75 col-7">{{ room.weekend_price.to_integral_value }}&#8381;</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 mt-2 row">
         <p class="fw-bold col-5">Комнат:</p>
-        <p class="opacity-75 col-7">{{ offer.rooms }}</p>
+        <p class="opacity-75 col-7">{{ room.rooms }}</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 mt-2 row">
         <p class="fw-bold col-5">Площадь (м&#178;):</p>
-        <p class="opacity-75 col-7">{{ offer.square }}</p>
+        <p class="opacity-75 col-7">{{ room.square }}</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 mt-2 row">
         <p class="fw-bold col-5">Этажей:</p>
-        <p class="opacity-75 col-7">{{ offer.floors }}</p>
+        <p class="opacity-75 col-7">{{ room.floors }}</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 mt-2 row">
         <p class="fw-bold col-5">Предоплата:</p>
-        <p class="opacity-75 col-7">{{ offer.prepayment_percent }}%</p>
+        <p class="opacity-75 col-7">{{ room.prepayment_percent }}%</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 mt-2 row">
         <p class="fw-bold col-5">Возврат:</p>
-        <p class="opacity-75 col-7">{{ offer.refund_percent }}%</p>
+        <p class="opacity-75 col-7">{{ room.refund_percent }}%</p>
         <hr>
     </div>
 
     <div class="col-md-6 col-12 mt-2 row">
         <p class="fw-bold col-5">Скрыто:</p>
         <p class="opacity-75 col-7">
-            {% if offer.is_hidden %}
+            {% if room.is_hidden %}
                 Да
             {% else %}
                 Нет
@@ -91,6 +93,9 @@
         </p>
         <hr>
     </div>
+
+    {% endwith %}
+
 
 {% endblock properties %}
 

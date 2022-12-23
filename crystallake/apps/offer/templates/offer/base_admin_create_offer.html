@@ -1,0 +1,67 @@
+{% extends 'core/admin_base.html' %}
+
+{% block content %}
+<form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative main_info_container" id="edit_main_info_form" action="." method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+
+    <div>
+        <ul id="errors">
+        </ul>
+    </div>
+
+    <div class="row">
+
+        {% block properties %}
+        {% endblock properties %}
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-6 col-12">
+
+            <div class="col-12 d-flex flex-column h-100">
+                <label class="input-group-text rounded-top rounded-0" for="{{ form_offer.description.id_for_label }}">{{ form_offer.description.label }}</label>
+                {{ form_offer.description }}
+            </div>
+
+        </div>
+        <div class="col-lg-6 col-12 mt-lg-0 mt-4">
+            <span class="input-group-text rounded-top rounded-0">Главное фото:</span>
+            <div id="img_wrapper__temp">
+                <img src="" alt="Главное фото" class="img-fluid w-100 img d-none">
+
+                <button class="btn btn-primary upload_img upload_img_button d-none" type="button">
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    Загрузить фотографию
+                </button>
+
+                <button class="btn open_img btn-dark d-none" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
+                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                </button>
+
+                <button class="btn btn-lg btn-primary upload_img_button w-100 rounded-0 rounded-bottom" type="button" id="upload_button__temp">
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    Загрузить фотографию
+                </button>
+
+                {{ form_offer.main_photo }}
+
+            </div>
+        </div>
+
+    </div>
+
+    {% include 'offer/images_accordion_create.html' %}
+
+    <div class="col-12 mt-4">
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-lg btn-c_yellow-700" id="button_save">Сохранить</button>
+            <button type="button" class="btn btn-lg btn-c_grey-100"  data-goto="{{ list_page }}">Назад</button>
+        </div>
+    </div>
+
+</form>
+{% endblock content %}

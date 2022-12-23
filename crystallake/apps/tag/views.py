@@ -13,6 +13,7 @@ from .forms import TagForm
 
 # Create your views here.
 
+
 class AdminTagsList(PermissionRequiredMixin, ListView):
     permission_required = 'tag.view_tag'
     model = Tag

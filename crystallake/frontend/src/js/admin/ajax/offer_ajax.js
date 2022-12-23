@@ -6,6 +6,7 @@ $(document).ready(function (){
 
     $('#edit_main_info_form').on('file_uploaded', function (event, file_params){
         files_uploaded = [...files_uploaded, file_params]
+        console.log(file_params)
     })
 
     $('#edit_main_info_form').on('file_deleted', function (event, file_id){
@@ -37,6 +38,8 @@ $(document).ready(function (){
                 post_data.append(file, n[file])
             }
         });
+
+        console.log(post_data)
 
 
         $.ajax({

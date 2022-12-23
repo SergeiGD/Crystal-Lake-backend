@@ -29,7 +29,8 @@ $(document).ready(function (){
     $('#select_tag').on('submit', function (event, tag_id){
         event.preventDefault();
 
-        const csrf_token = $('[name=csrfmiddlewaretoken]').attr('value')
+        //const csrf_token = $('[name=csrfmiddlewaretoken]').attr('value')
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
 
         $.ajax({
             url: $(this).attr('action'),
@@ -78,7 +79,8 @@ $(document).ready(function (){
     $('#offer_tags').on('submit', function (event, tag_id){
         event.preventDefault();
 
-        const csrf_token = $('[name=csrfmiddlewaretoken]').attr('value')
+        //const csrf_token =  $('[name=csrfmiddlewaretoken]').attr('value')
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
 
 
         $.ajax({
@@ -113,6 +115,7 @@ $(document).ready(function (){
 
     $('#edit_main_info_form').on('file_uploaded', function (event, file_params){
         files_uploaded = [...files_uploaded, file_params]
+        console.log(file_params)
     })
 
     $('#edit_main_info_form').on('file_deleted', function (event, file_id){
@@ -144,6 +147,8 @@ $(document).ready(function (){
                 post_data.append(file, n[file])
             }
         });
+
+        console.log(post_data)
 
 
         $.ajax({
@@ -255,9 +260,11 @@ $(document).ready(function (){
         post_data.append('sort_by', sort_by)
         post_data.append('page_number', page)
 
+        console.log(post_data)
+
         $.ajax({
             url: $(this).attr('action'),
-            type: 'GET',
+            type: 'POST',
             data: post_data,
             processData: false,
             contentType: false,
@@ -516,6 +523,8 @@ $(document).ready(function(){
     $('#edit_main_info_form').on('change', '.upload_img_input', function(){
         const file = $(this).get(0).files[0];                          // получаем загруженный файй
         const input = $(this);
+        //const csrf_token = $('#edit_main_info_form').find('[name=csrfmiddlewaretoken]').attr('value')
+        //const file_ext = file.name.split('.').pop().toLowerCase();
 
         var is_new_img = false;                                         // флаг, загружаем мы новую картинки или редактируем существующую
 
@@ -525,23 +534,120 @@ $(document).ready(function(){
             const img_elem = $(this).siblings('img');
             const reader = new FileReader();
 
+
+            // var post_data = new FormData();
+            // post_data.append('csrfmiddlewaretoken', csrf_token)
+            // post_data.append('image', file)
+
+            // $.ajax({
+            //     url: '/admin/rooms/resize_image/',
+            //     type: 'POST',
+            //     //data: {'image': file, 'csrfmiddlewaretoken': csrf_token},
+            //     data: post_data,
+            //     contentType: false,
+            //     processData: false,
+            //     success: function (data){
+            //         console.log(data)
+            //     }
+            // });
+
             reader.onloadend = function(){
-                const img_src = reader.result;                            // получаем base64 картинки
+                const img_src_temp = reader.result;                            // получаем base64 картинки
 
-                // ВОТ ТУТ ЗАПРОС НА ПОЛУЧЕНИЕК
+                const file_ext = img_src_temp.substring("data:image/".length, img_src_temp.indexOf(";base64"))
 
-                img_elem.attr('src', img_src);                          // устанавливаем img новый src
 
-                if (is_new_img) register_new_img();                     // если новая, то также обновляем все необходимые инпуты
+                var img_to_resize = new Image();
+                img_to_resize.src = img_src_temp;
 
-                const input_name = input.attr('name');
+                img_to_resize.onload = function (){
+                    const resized_src = resize_image(img_to_resize, file_ext); // !!
 
-                $('#edit_main_info_form').trigger('file_uploaded', {[input_name]: file});   // выгружаем имя и картинку, для POST ajax запроса
+                    img_elem.attr('src', resized_src);                          // устанавливаем img новый src
+
+                    if (is_new_img) register_new_img();                     // если новая, то также обновляем все необходимые инпуты
+
+                    const input_name = input.attr('name');
+
+                    const resized_file =  base64_to_file(resized_src, file_ext); // !!
+                    //$('#edit_main_info_form').trigger('file_uploaded', {[input_name]: file});   // выгружаем имя и картинку, для POST ajax запроса
+                    $('#edit_main_info_form').trigger('file_uploaded', {[input_name]: resized_file});
+                }
+
+
             }
 
             reader.readAsDataURL(file);
         }
     });
+
+    function resize_image(image, file_ext){
+        const canvas = document.createElement("canvas");
+        canvas.height = 500;
+        canvas.width = 500;
+        const canvas_context = canvas.getContext('2d');
+        canvas_context.drawImage(image, 0, 0, 500, 500);
+        //console.log(image.src) image/jpeg
+        //console.log(canvas.toDataURL(`image/jpeg`))
+        return canvas.toDataURL(`image/${file_ext}`);
+
+        // var image = new Image();
+        // image.src = base64;
+        //
+        // image.onload = function (){
+        //     var canvas = document.createElement("canvas");
+        //
+        //     //var octx = canvas.getContext('2d')
+        //
+        //     canvas.getContext('2d').drawImage(image, 0, 0, 500, 500);
+        //     console.log(canvas.toDataURL('image/png'))
+        //     return canvas.toDataURL('image/png');
+        // }
+        //var canvas = document.createElement('canvas')
+
+        // var canvas = document.createElement('canvas'),
+        //             //max_size = 544,// TODO : pull max size from a site config
+        //             width = 500,
+        //             height = 500;
+        // //max_size = 544;
+        // //const width = 500;
+        // //const height = 500;
+        //
+        // canvas.width = width;
+        // canvas.height = height;
+        // canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+        // //console.log(canvas.toDataURL('image/png'))
+        // return canvas.toDataURL('image/png');
+
+        //return dataUrl;
+    }
+
+    function base64_to_file(base64, file_ext){
+        var BASE64_MARKER = ';base64,';
+        // if (dataURL.indexOf(BASE64_MARKER) == -1) {
+        //     var parts = dataURL.split(',');
+        //     var contentType = parts[0].split(':')[1];
+        //     var raw = parts[1];
+        //     console.log(contentType)
+        //
+        //     return new File([raw], 'file1.png',{type: contentType});
+        // }
+
+        var parts = base64.split(BASE64_MARKER);
+        var contentType = parts[0].split(':')[1];
+        var raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+
+        var uInt8Array = new Uint8Array(rawLength);
+
+        for (var i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+        }
+
+        //console.log(contentType)
+
+        return new File([uInt8Array], `uploaded_img.${file_ext}`, {type: contentType});
+    }
 
     function register_new_img(){
         const container = $('[data-empty-container]')
@@ -597,7 +703,7 @@ $(document).ready(function(){
                         </button>
 
                         <input type="number" name="form-__prefix__-order" class="d-none" id="id_form-__prefix__-order">
-                        <input type="file" name="form-__prefix__-path" class="upload_img_input d-none" accept="image/png, image/jpeg" id="id_form-__prefix__-path">
+                        <input type="file" name="form-__prefix__-path" class="upload_img_input d-none" accept="image/png, image/jpeg, image/jpg" id="id_form-__prefix__-path">
                         <input type="hidden" name="form-__prefix__-id" id="id_form-__prefix__-id">
 
                     </div>
@@ -793,4 +899,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-9549f5a9554aa410bc24.bundle.js.map
+//# sourceMappingURL=admin-ea5c579a8a71f4daf225.bundle.js.map

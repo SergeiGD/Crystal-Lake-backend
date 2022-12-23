@@ -1,0 +1,79 @@
+<!-- add tag modal -->
+<div class="modal fade" id="add_tag_modal" tabindex="-1" aria-labelledby="add_tag_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="add_tag_label">Добавление тега</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+
+            <form class="shadow p-3 rounded-2 position-relative" id="search_tag" method="POST" action="{{ offer.get_unattached_tags_url }}">
+
+                {% csrf_token %}
+
+                <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete" id="clean_tags_btn"></i>
+
+                <div class="row align-items-start justify-content-between py-3">
+
+                    <div class="col-12 row justify-content-between mx-auto p-0">
+
+                        <div class="col-md-3 col-6">
+                            <div>
+                                <label for="{{ form_tags.id.id_for_label }}" class="form-label">{{ form_tags.id.label }}</label>
+                                {{ form_tags.id }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-12 mt-md-0 mt-3">
+                            <label for="{{ form_tags.name.id_for_label }}" class="form-label">{{ form_tags.name.label }}</label>
+                            {{ form_tags.name }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-c_yellow-700 w-100" type="button" id="find_tags_btn">Найти</button>
+                    </div>
+
+                </div>
+
+            </form>
+
+            <form class="shadow mt-4 rounded-2 overflow-auto" id="select_tag" action="{% url 'tag_to_offer' offer_id=offer.pk %}">
+
+                {% csrf_token %}
+
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                            <tr>
+                                <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button" data-sortby="id" data-sortby-active>
+                                    id <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                                </th>
+                                <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="name">
+                                    Наименование <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                                </th>
+                                <th scope="col" class="text-nowrap">
+                                    Выбрать
+                                </th>
+                            </tr>
+                    </thead>
+                    <tbody id="tags_add_body">
+
+
+                    </tbody>
+                </table>
+            </form>
+
+            <nav class="d-flex justify-content-center mt-4">
+                <ul class="pagination" id="tags_pagination"></ul>
+            </nav>
+
+
+        </div>
+      </div>
+    </div>
+</div>
+<!-- add tag modal end -->

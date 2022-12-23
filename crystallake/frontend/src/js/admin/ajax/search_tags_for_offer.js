@@ -63,9 +63,11 @@ $(document).ready(function (){
         post_data.append('sort_by', sort_by)
         post_data.append('page_number', page)
 
+        console.log(post_data)
+
         $.ajax({
             url: $(this).attr('action'),
-            type: 'GET',
+            type: 'POST',
             data: post_data,
             processData: false,
             contentType: false,

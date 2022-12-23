@@ -6,7 +6,8 @@ $(document).ready(function (){
     $('#select_tag').on('submit', function (event, tag_id){
         event.preventDefault();
 
-        const csrf_token = $('[name=csrfmiddlewaretoken]').attr('value')
+        //const csrf_token = $('[name=csrfmiddlewaretoken]').attr('value')
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
 
         $.ajax({
             url: $(this).attr('action'),

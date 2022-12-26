@@ -1,6 +1,7 @@
 {% extends 'offer/base_admin_edit_offer.html' %}
 
 {% block breadcrumbs %}
+    {% with offer as room %}
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
             <li class="breadcrumb-item">
@@ -21,11 +22,12 @@
             <li class="breadcrumb-item active" aria-current="page">Редактирование номера</li>
         </ol>
     </nav>
+    {% endwith %}
 {% endblock breadcrumbs %}
 
 {% block properties %}
 
-    {% with form_offer as form_room %}
+    {% with form as form_room %}
         <div class="col-lg-6 col-12">
             <div class="input-group">
                 <label class="input-group-text w-10r" for="{{ form_room.name.id_for_label }}">{{ form_room.name.label }}</label>

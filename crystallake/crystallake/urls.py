@@ -25,7 +25,9 @@ urlpatterns = [
     path('', include('apps.core.urls')),
     re_path('^accounts/', admin.site.urls, name='temp_login'),
     path('rooms/', include('apps.room.urls')),
+    path('services/', include('apps.service.urls')),
     path('admin/rooms/', include('apps.room.admin_urls')),
+    path('admin/services/', include('apps.service.admin_urls')),
     path('admin/offers/', include('apps.offer.admin_urls')),
     path('admin/tags/', include('apps.tag.urls')),
 ]

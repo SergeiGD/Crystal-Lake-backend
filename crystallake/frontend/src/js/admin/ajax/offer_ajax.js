@@ -6,7 +6,6 @@ $(document).ready(function (){
 
     $('#edit_main_info_form').on('file_uploaded', function (event, file_params){
         files_uploaded = [...files_uploaded, file_params]
-        console.log(file_params)
     })
 
     $('#edit_main_info_form').on('file_deleted', function (event, file_id){
@@ -39,9 +38,6 @@ $(document).ready(function (){
             }
         });
 
-        console.log(post_data)
-
-
         $.ajax({
             url: $('#edit_main_info_form').attr('action'),
             type: 'POST',
@@ -50,25 +46,27 @@ $(document).ready(function (){
             contentType: false,
             data: post_data,
             error: function (jqXHR){
-                const errors_json = jQuery.parseJSON(jqXHR.responseText)
-                build_errors_list(errors_json);
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                console.log(response)
+                build_errors_list(response['message']);
                 $([document.documentElement, document.body]).animate({
                     scrollTop: $("#errors").offset().top
                 }, 200);
             },
         }).statusCode({
-           302: function (response){
-                const response_json = jQuery.parseJSON(response.responseText)
-                window.location.href = response_json['url']
+           302: function (data){
+                const response = jQuery.parseJSON(data.responseText)
+                window.location.href = response['data']
             }
         });
     })
 
 
     function build_errors_list(errors){
+        console.log(errors)
         var result = ''
         for (var field in errors){
-            const message = errors[field][0].message
+            const message = errors[field][0]
             result += `<li>${message}</li>`
         }
         $('#errors').html(result);

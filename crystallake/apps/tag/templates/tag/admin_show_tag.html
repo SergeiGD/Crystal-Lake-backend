@@ -99,7 +99,20 @@
                 </thead>
                 <tbody>
 
-                {% for offer in tag.offers.all %}
+{#                {% for offer in tag.offers.all %}#}
+{##}
+{#                    <tr>#}
+{#                        <th scope="row">{{ offer.id }}</th>#}
+{#                        <td class="text-nowrap">#}
+{#                            <a href="{{ offer.get_admin_show_url }}" class="link-hover">#}
+{#                                {{ offer.name }}#}
+{#                            </a>#}
+{#                        </td>#}
+{#                    </tr>#}
+{##}
+{#                {% endfor %}#}
+
+                {% for offer in offers %}
 
                     <tr>
                         <th scope="row">{{ offer.id }}</th>
@@ -111,7 +124,6 @@
                     </tr>
 
                 {% endfor %}
-
 
                 </tbody>
             </table>
@@ -140,3 +152,7 @@
     <!-- services end -->
 
 {% endblock content %}
+
+{% block popups %}
+    {% include 'core/delete_popup.html' %}
+{% endblock popups %}

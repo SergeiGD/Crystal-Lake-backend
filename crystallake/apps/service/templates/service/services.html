@@ -1,0 +1,59 @@
+{% extends 'offer/base_offers.html' %}
+
+{% block page_title %}
+    <h2 class="section_title">Услуги</h2>
+{% endblock page_title %}
+
+{% block breadcrumbs %}
+    <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
+        <span>&#10148;</span>
+    <a href="#" class="breadcrumbs_item">Услуги</a>
+{% endblock breadcrumbs %}
+
+{% block filters %}
+    <div class="filter_column">
+        <div class="filter_item">
+            <label class="filter_name filter_name__long" for="{{ search_form.name.id_for_label }}">{{ search_form.name.label }}:</label>
+            <div class="filter_select filter_select__name">
+                {{ search_form.name }}
+            </div>
+        </div>
+
+        <div class="filter_item">
+            <label class="filter_name filter_name__long" for="{{ search_form.persons.id_for_label }}">{{ search_form.persons.label }}</label>
+            <div class="filter_select">
+                {{ search_form.persons }}
+            </div>
+        </div>
+
+        <div class="filter_item">
+            <p class="filter_name filter_name__long">Даты прибывания:</p>
+            <div class="filter_select">
+                <div class="filter_select_subfiled">
+                    <label class="filter_subname" for="{{ search_form.date_from.id_for_label }}">{{ search_form.date_from.label }}</label>
+                    {{ search_form.date_from }}
+                </div>
+                <div class="filter_select_subfiled">
+                    <label class="filter_subname" for="{{ search_form.date_until.id_for_label }}">{{ search_form.date_until.label }}</label>
+                    {{ search_form.date_until }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filter_column">
+        <div class="filter_item">
+            <p class="filter_name filter_name__long">Цена за 1 чел/шт:</p>
+            <div class="filter_select">
+                <div class="filter_select_subfiled">
+                    <label class="filter_subname" for="{{ search_form.price_from.id_for_label }}">{{ search_form.price_from.label }}</label>
+                    {{ search_form.price_from }}
+                </div>
+                <div class="filter_select_subfiled">
+                    <label class="filter_subname" for="{{ search_form.price_until.id_for_label }}">{{ search_form.price_until.label }}</label>
+                    {{ search_form.price_until }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock filters %}

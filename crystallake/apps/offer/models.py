@@ -1,8 +1,10 @@
+import datetime
 import itertools
 from pytils.translit import slugify
 
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from polymorphic.models import PolymorphicModel
 from polymorphic.query import PolymorphicQuerySet
@@ -21,7 +23,7 @@ class OfferQuerySet(PolymorphicQuerySet):
         if kwargs.get('price_from', ''):
             qs = qs.filter(default_price__gte=kwargs['price_from'])
         if kwargs.get('price_until', ''):
-            qs = qs.filter(default_price__lte=kwargs['price_from'])
+            qs = qs.filter(default_price__lte=kwargs['price_until'])
         if kwargs.get('sort_by', ''):
             qs = qs.order_by(kwargs['sort_by'])
 
@@ -32,7 +34,6 @@ class Offer(PolymorphicModel):
     name = models.CharField(
         verbose_name='наименование',
         max_length=255,
-        unique=True,
         blank=False,
         null=False
     )
@@ -112,8 +113,27 @@ class Offer(PolymorphicModel):
     def __str__(self):
         return self.name
 
+    def get_familiar(self):
+        tags_intersection = {}
+        for i in self.__class__.objects.filter(date_deleted=None, is_hidden=False):
+            tags_intersection[i] = len(self.tags.all() & i.tags.all())
+
+        sorted_familiar = [k for k, v in sorted(tags_intersection.items(), key=lambda item: item[1], reverse=True)]
+        return sorted_familiar[0:3]
+
+    def mark_as_deleted(self):
+        self.date_deleted = timezone.now()
+        self.name = self.name + '-DELETED'
+        self.save()
+
     def get_unattached_tags_url(self):
         return reverse('get_unattached_tags', kwargs={'offer_id': self.pk})
+
+    def get_add_tag_url(self):
+        return reverse('add_tag_to_offer', kwargs={'offer_id': self.pk})
+
+    def get_del_tag_url(self):
+        return reverse('del_tag_from_offer', kwargs={'offer_id': self.pk})
 
     def get_orders_count(self):
         pass

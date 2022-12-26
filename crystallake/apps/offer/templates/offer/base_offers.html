@@ -1,0 +1,121 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<main>
+
+    <section class="section">
+        <div class="content_container">
+
+            {% block page_title %}
+            {% endblock page_title %}
+
+            <div class="breadcrumbs">
+                {% block breadcrumbs %}
+                {% endblock breadcrumbs %}
+            </div>
+
+            <form class="offers" id="offers" action=".">
+
+                <div class="finder">
+
+                    <div class="mobile_filter_soring">
+                        <div class="mobile_filter">
+                            <i class="fa-solid fa-sliders"></i>
+                            <p>Фильтр</p>
+                        </div>
+                        <div class="mobile_sorting">
+                            <i class="fa-solid fa-arrow-up-wide-short"></i>
+                            <label for="{{ search_form.sort_by.id_for_label }}">{{ search_form.sort_by.label }}</label>
+                            {{ search_form.sort_by }}
+                        </div>
+                    </div>
+
+                    <div class="filter">
+
+                        {% block filters %}
+                        {% endblock filters %}
+
+                        <div class="filter_column filter__buttons">
+                            <button class="filter_button filter_button__find">Применить</button>
+                            <button class="filter_button filter_button__clean" id="clean_btn" type="button">Сбросить</button>
+                        </div>
+
+                    </div>
+
+                    <div class="sorting">
+                        {% block sorting %}
+                        {% endblock sorting %}
+                    </div>
+
+
+
+                </div>
+
+                <div class="catalog">
+
+                    {% for offer in page_obj %}
+                    <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ offer.get_absolute_url }}">
+                        <div class="card_inner">
+                            <img src="{{ offer.main_photo.url }}" alt="{{ offer.name }}" class="card_img">
+                            <div class="card_info">
+                                <p class="card_info_title">
+                                    {{ offer.name }}
+                                </p>
+                                <p class="card_info_text">Начиная от:
+                                    <span class="highlighted">
+                                        {{ offer.default_price.to_integral_value }}&#8381;
+                                    </span>
+                                </p>
+                                <button class="card_button card_button__long" data-goto="{{ offer.get_absolute_url }}#offer_book">Забронировать</button>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+
+
+                </div>
+
+                <div class="pages">
+                    {% if page_obj.has_previous %}
+                        <input type="submit" name="page" value="{{ page_obj.previous_page_number }}" class="page_arrow page_arrow__prev">
+                    {% else %}
+                        <p class="page_arrow page_arrow__prev page_disabled"></p>
+                    {% endif %}
+
+                    {% if page_obj.number|add:'-3' > 1 %}
+                        <input type="submit" name="page" value="1" class="page_item">
+                        <span>&hellip;</span>
+                    {% endif %}
+
+                    {% for i in page_obj.paginator.page_range  %}
+                        {% if i == page_obj.number %}
+                            <p class="page_item page_item_active">{{ i }}</p>
+                        {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
+                            <input type="submit" name="page" value="{{ i }}" class="page_item">
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
+                        <span>&hellip;</span>
+                        <input type="submit" name="page" value="{{ page_obj.paginator.num_pages }}" class="page_item">
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                        <input type="submit" name="page" value="{{ page_obj.next_page_number }}" class="page_arrow page_arrow__next">
+                    {% else %}
+                        <p class="page_arrow page_arrow__next page_disabled"></p>
+                    {% endif %}
+
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+</main>
+
+{% endblock content %}
+
+{% block popups %}
+    {% include 'core/login_popup.html' %}
+{% endblock popups %}

@@ -35,3 +35,7 @@ class Tag(models.Model):
     def get_admin_edit_url(self):
         return reverse('admin_edit_tag', kwargs={'tag_id': self.pk})
 
+    def get_admin_delete_url(self):
+        return reverse('admin_delete_tag', kwargs={'tag_id': self.pk})
+
+

@@ -1,4 +1,6 @@
  <!-- modal delete -->
+ <form action="{{ delete_link }}" method="POST">
+     {% csrf_token %}
     <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="delete_modal_label" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -10,10 +12,12 @@
                     <p>Вы уверены, что хотите выполнить удаление?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger w-10r" data-bs-dismiss="modal" data-goto="{{ delete_link }}">Да, удалить</button>
+{#                    <button type="button" class="btn btn-danger w-10r" data-bs-dismiss="modal" data-goto="{{ delete_link }}">Да, удалить</button>#}
+                    <button type="submit" class="btn btn-danger w-10r" data-bs-dismiss="modal">Да, удалить</button>
                     <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
                 </div>
             </div>
         </div>
     </div>
+ </form>
 <!-- modal delete end -->

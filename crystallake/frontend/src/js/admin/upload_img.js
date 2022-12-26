@@ -10,8 +10,6 @@ $(document).ready(function(){
     $('#edit_main_info_form').on('change', '.upload_img_input', function(){
         const file = $(this).get(0).files[0];                          // получаем загруженный файй
         const input = $(this);
-        //const csrf_token = $('#edit_main_info_form').find('[name=csrfmiddlewaretoken]').attr('value')
-        //const file_ext = file.name.split('.').pop().toLowerCase();
 
         var is_new_img = false;                                         // флаг, загружаем мы новую картинки или редактируем существующую
 
@@ -21,22 +19,6 @@ $(document).ready(function(){
             const img_elem = $(this).siblings('img');
             const reader = new FileReader();
 
-
-            // var post_data = new FormData();
-            // post_data.append('csrfmiddlewaretoken', csrf_token)
-            // post_data.append('image', file)
-
-            // $.ajax({
-            //     url: '/admin/rooms/resize_image/',
-            //     type: 'POST',
-            //     //data: {'image': file, 'csrfmiddlewaretoken': csrf_token},
-            //     data: post_data,
-            //     contentType: false,
-            //     processData: false,
-            //     success: function (data){
-            //         console.log(data)
-            //     }
-            // });
 
             reader.onloadend = function(){
                 const img_src_temp = reader.result;                            // получаем base64 картинки
@@ -74,8 +56,6 @@ $(document).ready(function(){
         canvas.width = 500;
         const canvas_context = canvas.getContext('2d');
         canvas_context.drawImage(image, 0, 0, 500, 500);
-        //console.log(image.src) image/jpeg
-        //console.log(canvas.toDataURL(`image/jpeg`))
         return canvas.toDataURL(`image/${file_ext}`);
 
         // var image = new Image();
@@ -93,7 +73,7 @@ $(document).ready(function(){
         //var canvas = document.createElement('canvas')
 
         // var canvas = document.createElement('canvas'),
-        //             //max_size = 544,// TODO : pull max size from a site config
+        //             //max_size = 544,
         //             width = 500,
         //             height = 500;
         // //max_size = 544;
@@ -111,14 +91,6 @@ $(document).ready(function(){
 
     function base64_to_file(base64, file_ext){
         var BASE64_MARKER = ';base64,';
-        // if (dataURL.indexOf(BASE64_MARKER) == -1) {
-        //     var parts = dataURL.split(',');
-        //     var contentType = parts[0].split(':')[1];
-        //     var raw = parts[1];
-        //     console.log(contentType)
-        //
-        //     return new File([raw], 'file1.png',{type: contentType});
-        // }
 
         var parts = base64.split(BASE64_MARKER);
         var contentType = parts[0].split(':')[1];
@@ -130,8 +102,6 @@ $(document).ready(function(){
         for (var i = 0; i < rawLength; ++i) {
             uInt8Array[i] = raw.charCodeAt(i);
         }
-
-        //console.log(contentType)
 
         return new File([uInt8Array], `uploaded_img.${file_ext}`, {type: contentType});
     }
@@ -154,9 +124,11 @@ $(document).ready(function(){
 
         const regex = RegExp('__prefix__', 'g')
 
+        const new_img_number = $('[data-order]').length - 1;
+
         container.find('input').each(function (index, element){
-            const new_id = $(this).attr('id').replace(regex, order - 1)             // заменяем id и имя пустой формы на нужный
-            const new_name = $(this).attr('name').replace(regex, order - 1)
+            const new_id = $(this).attr('id').replace(regex, new_img_number)             // заменяем id и имя пустой формы на нужный
+            const new_name = $(this).attr('name').replace(regex, new_img_number)
             $(this).attr('id', new_id)
             $(this).attr('name', new_name)
         });

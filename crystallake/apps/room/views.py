@@ -5,17 +5,17 @@ from django.forms import modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from django.http import HttpResponse, Http404
-from django.urls import reverse
 
 
-from ..core.save_paginator import SafePaginator
+from ..core.utils import SafePaginator, ResponseMessage
 from .models import Room
 from .forms import RoomForm, SearchRoomsForm
 from ..photo.forms import PhotoForm
 from ..photo.models import Photo
 from ..tag.forms import SearchTagForm
+from ..offer.utils import ManageOfferMixin
 
 # Create your views here.
 
@@ -35,12 +35,16 @@ class RoomsCatalog(ListView):
 
     def get_queryset(self):
         search_form = SearchRoomsForm(self.request.GET)
+        rooms = Room.objects.filter(
+            date_deleted=None,
+            is_hidden=False,
+            main_room=None
+        ).order_by('default_price')
+
         if search_form.is_valid():
-            return Room.objects.filter(
-                date_deleted=None,
-                is_hidden=False,
-                main_room=None
-            ).order_by('default_price').search(**search_form.cleaned_data)
+            rooms = rooms.search(**search_form.cleaned_data)
+
+        return rooms
 
 
 class RoomDetail(DetailView):
@@ -52,6 +56,7 @@ class RoomDetail(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'rooms'
+        context['familiar'] = self.object.get_familiar()
         return context
 
     def get_object(self, queryset=None):
@@ -82,7 +87,7 @@ class AdminRoomDetail(PermissionRequiredMixin, DetailView):
     permission_required = 'room.view_room'
     template_name = 'room/admin_show_room.html'
     model = Room
-    pk_url_kwarg = 'room_id'
+    pk_url_kwarg = 'offer_id'
     context_object_name = 'offer'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -98,104 +103,71 @@ class AdminRoomDetail(PermissionRequiredMixin, DetailView):
         return obj
 
 
-@permission_required('room.change_room')
-def admin_edit_room(request, room_id):
-    room = get_object_or_404(Room, pk=room_id)
+class AdminEditRoomView(ManageOfferMixin, UpdateView):
+    model = Room
+    template_name = 'room/admin_edit_room.html'
+    form_class = RoomForm
+    pk_url_kwarg = 'offer_id'
+    context_object_name = 'offer'
 
-    form_room = RoomForm(request.POST or None, files=request.FILES or None, instance=room)
-    PhotoFormset = modelformset_factory(Photo, form=PhotoForm, extra=0, can_delete=True)
+    def get_context_data(self, **kwargs):
+        context = super(AdminEditRoomView, self).get_context_data(**kwargs)
+        common_context = self.get_common_context(
+            request=self.request,
+            photos_qs=self.object.photos.all(),
+            form_tags=SearchTagForm(self.request.POST or None),
+            current_page='rooms'
+        )
+        return {**context, **common_context}
 
-    formset = PhotoFormset(request.POST or None, files=request.FILES or None, queryset=room.photos.all())
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset_photos = context['formset_photos']
+        if formset_photos.is_valid():
+            offer = form.instance
+            return self.save_offer(
+                formset_photos=formset_photos,
+                offer=offer
+            )
 
-    form_tags = SearchTagForm(request.POST or None)
-
-    context = {
-        'form_offer': form_room,
-        'formset': formset,
-        'current_page': 'rooms',
-        'offer': room,
-        'photo_form': zip(formset.queryset, formset.forms),
-        'form_tags': form_tags  # пакуем формы и экземпляры модели в один объект, для удобной обработки в темплейте
-    }
-
-    if request.method == 'POST':
-
-        if all([form_room.is_valid(), formset.is_valid()]):
-
-            changed_room = form_room.save(commit=True)
-
-            formset.save(commit=False)
-
-            for created_photo in formset.new_objects:
-                created_photo.offer = changed_room  # если новая картинки, то присваиваем номер, к которому она относится
-                created_photo.save()
-
-            for changed_photo in formset.changed_objects:
-                changed_photo[0].save()
-
-            for deleted_photo in formset.deleted_objects:
-                deleted_photo.delete()
-
-            success_url = reverse('admin_show_room', kwargs={'room_id': changed_room.pk})
-            response_data = {'message': 'successfully updated', 'url': success_url}
-            response = HttpResponse(json.dumps(response_data),
-                                    content_type="application/json")  # при успехе отправляем json, который обработает ajax
-            response.status_code = 302      # 302, т.к. редериктим при успехе на просмотр
-            return response
-
-        else:
-            response = HttpResponse(form_room.errors.as_json())  # отправляем ошибки в виде json'a
-            response.status_code = 400
-            return response
-
-    return render(request, 'room/admin_edit_room.html', context)  # если GET, то просто рендерим темплейт
+    def form_invalid(self, form):
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
 
 
-@permission_required('room.add_room')
-def admin_create_room(request):
-    form_room = RoomForm(request.POST or None, files=request.FILES or None)
-    PhotoFormset = modelformset_factory(Photo, form=PhotoForm, extra=0, can_delete=True)
+class AdminCreateRoomView(ManageOfferMixin, CreateView):
+    model = Room
+    template_name = 'room/admin_create_room.html'
+    form_class = RoomForm
 
-    formset = PhotoFormset(request.POST or None, files=request.FILES or None, queryset=Photo.objects.none())
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        common_context = self.get_common_context(
+            request=self.request,
+            photos_qs=Photo.objects.none(),
+            current_page='rooms'
+        )
+        return {**context, **common_context}
 
-    context = {
-        'form_offer': form_room,
-        'list_page': reverse('admin_rooms'),
-        'formset': formset,
-        'current_page': 'rooms',
-    }
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset_photos = context['formset_photos']
+        if formset_photos.is_valid():
+            offer = form.instance
+            return self.save_offer(
+                formset_photos=formset_photos,
+                offer=offer,
+            )
 
-    if request.method == 'POST':
-
-        if all([form_room.is_valid(), formset.is_valid()]):
-
-            created_room = form_room.save(commit=True)
-
-            formset.save(commit=False)
-
-            for created_photo in formset.new_objects:
-                created_photo.offer = created_room  # если новая картинки, то присваиваем номер, к которому она относится
-                created_photo.save()
-
-            success_url = reverse('admin_show_room', kwargs={'room_id': created_room.pk})
-            response_data = {'message': 'successfully updated', 'url': success_url}
-            response = HttpResponse(json.dumps(response_data),
-                                    content_type="application/json")  # при успехе отправляем json, который обработает ajax
-            response.status_code = 302      # 302, т.к. редериктим при успехе на просмотр
-            return response
-
-        else:
-            response = HttpResponse(form_room.errors.as_json())  # отправляем ошибки в виде json'a
-            response.status_code = 400
-            return response
-
-    return render(request, 'room/admin_create_room.html', context)  # если GET, то просто рендерим темплейт
+    def form_invalid(self, form):
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
 
 
 @permission_required('room.delete_room')
-def admin_delete_room(request, room_slug):
-    room = get_object_or_404(Room, slug=room_slug)
-    # ТУТ ВСЯКИЕ ПРОВЕРКИ
-    room.date_deleted = datetime.now()
-    room.save()
+def admin_delete_room(request, offer_id):
+    room = get_object_or_404(Room, pk=offer_id)
+    room.mark_as_deleted()
     return redirect('admin_rooms')

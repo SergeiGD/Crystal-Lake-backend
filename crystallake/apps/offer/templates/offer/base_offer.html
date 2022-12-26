@@ -193,38 +193,23 @@
 
         <div class="tablet-slider-required"></div>
 
-        <article class="card_short recomendations_item slider_content slider_content__active">
-            <div class="card_inner">
-                <img src="../../img/card/house.jpg" alt="Номер" class="card_img">
-                <div class="card_info">
-                    <p class="card_info_title">Двухэтажный домик у озера 1</p>
-                    <p class="card_info_text">Начиная от: <span class="highlighted">8.999&#8381;</span></p>
-                    <button class="card_button card_button__long">Забронировать</button>
+        {% for familiar_offer in familiar %}
+            <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ familiar_offer.get_absolute_url }}">
+                <div class="card_inner">
+                    <img src="{{ familiar_offer.main_photo.url }}" alt="{{ familiar_offer.name }}" class="card_img">
+                    <div class="card_info">
+                        <p class="card_info_title">{{ familiar_offer.name }}</p>
+                        <p class="card_info_text">
+                            Начиная от:
+                            <span class="highlighted">
+                                {{ familiar_offer.default_price }}&#8381;
+                            </span>
+                        </p>
+                        <button class="card_button card_button__long" data-goto="{{ familiar_offer.get_absolute_url }}#offer_book">Забронировать</button>
+                    </div>
                 </div>
-            </div>
-        </article>
-
-        <article class="card_short recomendations_item slider_content">
-            <div class="card_inner">
-                <img src="../../img/card/house.jpg" alt="Номер" class="card_img">
-                <div class="card_info">
-                    <p class="card_info_title">Двухэтажный домик у озера 2</p>
-                    <p class="card_info_text">Начиная от: <span class="highlighted">8.999&#8381;</span></p>
-                    <button class="card_button card_button__long">Забронировать</button>
-                </div>
-            </div>
-        </article>
-
-        <article class="card_short recomendations_item slider_content">
-            <div class="card_inner">
-                <img src="../../img/card/house.jpg" alt="Номер" class="card_img">
-                <div class="card_info">
-                    <p class="card_info_title">Двухэтажный домик у озера 3</p>
-                    <p class="card_info_text">Начиная от: <span class="highlighted">8.999&#8381;</span></p>
-                    <button class="card_button card_button__long">Забронировать</button>
-                </div>
-            </div>
-        </article>
+            </article>
+        {% endfor %}
 
         <div class="slider slider__hidden">
         </div>

@@ -39,12 +39,12 @@ class Room(Offer):
         return reverse('room', kwargs={'room_slug': self.slug})
 
     def get_admin_show_url(self):
-        return reverse('admin_show_room', kwargs={'room_id': self.pk})
+        return reverse('admin_show_room', kwargs={'offer_id': self.pk})
 
     def get_admin_edit_url(self):
-        return reverse('admin_edit_room', kwargs={'room_id': self.pk})
+        return reverse('admin_edit_room', kwargs={'offer_id': self.pk})
 
     def get_admin_delete_url(self):
-        return reverse('admin_delete_room', kwargs={'room_id': self.pk})
+        return reverse('admin_delete_room', kwargs={'offer_id': self.pk})
 
     objects = RoomQuerySet.as_manager()

@@ -1,10 +1,13 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import ListView, DetailView, UpdateView, CreateView
+from datetime import datetime
 
-from ..core.save_paginator import SafePaginator
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
+
+from ..core.utils import SafePaginator
 from .models import Tag
 from .forms import TagForm
-
 
 
 # Create your views here.
@@ -25,7 +28,7 @@ class AdminTagsList(PermissionRequiredMixin, ListView):
         return context
 
 
-class AdminTagsDetail(PermissionRequiredMixin, DetailView):
+class AdminTagDetail(PermissionRequiredMixin, DetailView):
     permission_required = 'tag.view_tag'
     model = Tag
     template_name = 'tag/admin_show_tag.html'
@@ -36,10 +39,12 @@ class AdminTagsDetail(PermissionRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'tags'
         context['additional_page'] = True
+        context['delete_link'] = self.object.get_admin_delete_url()
+        context['offers'] = self.object.offers.filter(date_deleted=None)    #TODO: МБ ПЕРЕДЕЛАТЬ КАК-ТО БОЛЕЕ КРАСИВО
         return context
 
 
-class AdminTagsUpdate(PermissionRequiredMixin, UpdateView):
+class AdminTagUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'tag.update_tag'
     model = Tag
     template_name = 'tag/admin_edit_tag.html'
@@ -57,7 +62,7 @@ class AdminTagsUpdate(PermissionRequiredMixin, UpdateView):
         return context
 
 
-class AdminTagsCreate(PermissionRequiredMixin, CreateView):
+class AdminTagCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'tag.create_tag'
     model = Tag
     template_name = 'tag/admin_add_tag.html'
@@ -73,6 +78,20 @@ class AdminTagsCreate(PermissionRequiredMixin, CreateView):
         context['additional_page'] = True
         return context
 
+
+# def admin_delete_tag(request, tag_id):
+#     tag = get_object_or_404(Tag, slug=tag_id)
+#     tag.date_deleted = datetime.now()
+#     tag.save()
+#     return redirect('admin_rooms')
+
+class AdminDeleteTagView(DeleteView):
+    model = Tag
+    pk_url_kwarg = 'tag_id'
+    success_url = reverse_lazy('admin_tags')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 
 

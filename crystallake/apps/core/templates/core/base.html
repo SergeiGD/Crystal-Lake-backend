@@ -62,7 +62,7 @@
                     <nav class="header_menu">
                         <a href="{% url 'index' %}" class="header_menu_item header_link {% if current_page == 'index' %} header_menu_item__active {% endif %}" data-text="Главная">Главная</a>
                         <a href="{% url 'rooms' %}" class="header_menu_item header_link {% if current_page == 'rooms' %} header_menu_item__active {% endif %}"  data-text="Номера">Номера</a>
-                        <a href="services.html" class="header_menu_item header_link {% if current_page == 'services' %} header_menu_item__active {% endif %}" data-text="Услуги">Услуги</a>
+                        <a href="{% url 'services' %}" class="header_menu_item header_link {% if current_page == 'services' %} header_menu_item__active {% endif %}" data-text="Услуги">Услуги</a>
                         <a href="sales.html" class="header_menu_item header_link {% if current_page == 'sales' %} header_menu_item__active {% endif %}" data-text="Акции">Акции</a>
                         <a href="contacts.html" class="header_menu_item header_link {% if current_page == 'contacts' %} header_menu_item__active {% endif %}" data-text="Контакты">Контакты</a>
                         <a href="cart.html" class="header_menu_item header_link {% if current_page == 'cart' %} header_menu_item__active {% endif %}" data-text="Корзина">Корзина</a>

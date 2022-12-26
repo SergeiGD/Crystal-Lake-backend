@@ -14,7 +14,7 @@ $(document).ready(function (){
             url: $(this).attr('action'),
             type: 'POST',
             data: {'tag_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
-            success: function (data){
+            success: function (response){
                 const table = $('#tags_list_body');
                 const row = table.find(`[data-id=${tag_id}]`).closest('tr')
                 row.remove()

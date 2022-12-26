@@ -54,7 +54,7 @@
                     <a class="nav-link text-dark link-hover {% if current_page == 'rooms' %} link-active {% endif %}" href="{% url 'admin_rooms' %}">Номера</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark link-hover {% if current_page == 'services' %} link-active {% endif %}" href="admin_services.html">Услуги</a>
+                    <a class="nav-link text-dark link-hover {% if current_page == 'services' %} link-active {% endif %}" href="{% url 'admin_services' %}">Услуги</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark link-hover {% if current_page == 'workers' %} link-active {% endif %}" href="admin_workers.html">Сотрудники</a>

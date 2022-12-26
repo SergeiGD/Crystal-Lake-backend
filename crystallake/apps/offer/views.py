@@ -1,10 +1,7 @@
-import json
-
-from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
-from ..core.save_paginator import SafePaginator
+from ..core.utils import SafePaginator, ResponseMessage
 from ..tag.models import Tag
 from .models import Offer
 
@@ -28,7 +25,8 @@ def get_unattached_tags(request, offer_id):
             item = {'name': tag.name, 'id': tag.pk}
             data['tags'].append(item)
 
-        return HttpResponse(json.dumps(data), content_type="application/json", status=200)
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
 def add_tag_to_offer(request, offer_id):
@@ -39,7 +37,8 @@ def add_tag_to_offer(request, offer_id):
         offer.tags.add(tag)
         offer.save()
         data = {'name': tag.name, 'id': tag.pk, 'link': tag.get_admin_show_url()}
-        return HttpResponse(json.dumps(data), content_type="application/json", status=200)
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
 def del_tag_from_offer(request, offer_id):
@@ -49,5 +48,6 @@ def del_tag_from_offer(request, offer_id):
         tag = get_object_or_404(Tag, pk=tag_id)
         offer.tags.remove(tag)
         offer.save()
-        data = serializers.serialize('json', [tag])
-        return HttpResponse(data, content_type="application/json", status=200)
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+

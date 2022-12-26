@@ -1,0 +1,97 @@
+{% extends 'offer/base_admin_create_offer.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_services' %}" class="link-hover text-dark text-decoration-none">
+                    Услуги
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Добавление услуги</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block properties %}
+
+    {% with form as form_service %}
+
+        <div class="col-lg-6 col-12">
+            <div class="input-group">
+                <label class="input-group-text w-12r" for="{{ form_service.name.id_for_label }}">{{ form_service.name.label }}</label>
+                {{ form_service.name }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-lg-0 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-12r" for="{{ form_service.max_for_moment.id_for_label }}">{{ form_service.max_for_moment.label }}</label>
+                {{ form_service.max_for_moment }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-12r" for="{{ form_service.default_price.id_for_label }}">{{ form_service.default_price.label }}</label>
+                {{ form_service.default_price }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-12r" for="{{ form_service.weekend_price.id_for_label }}">{{ form_service.weekend_price.label }}</label>
+                {{ form_service.weekend_price }}
+            </div>
+        </div>
+
+{#        <div class="col-md-6 col-12 mt-4">#}
+{#            <div class="input-group flex-nowrap w-auto">#}
+{#                <label for="manage_bonus" class="input-group-text w-10r" id="basic-addon1">Макс. бонусов (%)</label>#}
+{#                <input id="manage_bonus" type="number" class="form-control " value="40">#}
+{#            </div>#}
+{#        </div>#}
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-12r" for="{{ form_service.prepayment_percent.id_for_label }}">{{ form_service.prepayment_percent.label }}</label>
+                {{ form_service.prepayment_percent }}
+            </div>
+        </div>
+
+{#        <div class="col-md-6 col-12 mt-4">#}
+{#            <div class="input-group flex-nowrap w-auto">#}
+{#                <label for="manage_prepayment_money" class="input-group-text w-10r" id="basic-addon1">Предоплата (&#8381;)</label>#}
+{#                <input id="manage_prepayment_money" type="number" class="form-control " value="">#}
+{#            </div>#}
+{#        </div>#}
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-12r" for="{{ form_service.refund_percent.id_for_label }}">{{ form_service.refund_percent.label }}</label>
+                {{ form_service.refund_percent }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="form-check">
+                <label class="form-check-label" for="{{ form_service.dynamic_timetable.id_for_label }}">{{ form_service.dynamic_timetable.label }}</label>
+                {{ form_service.dynamic_timetable }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="form-check">
+                <label class="form-check-label" for="{{ form_service.is_hidden.id_for_label }}">{{ form_service.is_hidden.label }}</label>
+                {{ form_service.is_hidden }}
+            </div>
+        </div>
+
+    {% endwith %}
+
+{% endblock properties %}

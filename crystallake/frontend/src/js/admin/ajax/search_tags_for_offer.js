@@ -71,10 +71,9 @@ $(document).ready(function (){
             data: post_data,
             processData: false,
             contentType: false,
-            success: function (data){
-                console.log(data)
-                build_rows(data['tags'])
-                build_pages(data['pages'])
+            success: function (response){
+                build_rows(response['data']['tags'])
+                build_pages(response['data']['pages'])
             },
         });
 

@@ -42,7 +42,7 @@
 
             </form>
 
-            <form class="shadow mt-4 rounded-2 overflow-auto" id="select_tag" action="{% url 'tag_to_offer' offer_id=offer.pk %}">
+            <form class="shadow mt-4 rounded-2 overflow-auto" id="select_tag" action="{{ offer.get_add_tag_url }}">
 
                 {% csrf_token %}
 

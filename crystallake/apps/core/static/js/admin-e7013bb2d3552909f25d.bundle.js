@@ -29,16 +29,14 @@ $(document).ready(function (){
     $('#select_tag').on('submit', function (event, tag_id){
         event.preventDefault();
 
-        //const csrf_token = $('[name=csrfmiddlewaretoken]').attr('value')
         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
 
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
             data: {'tag_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
-            success: function (data){
-                const new_tag = {name: data.name, id: data.id, link: data.link}
-                console.log(data)
+            success: function (response){
+                const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
                 append_row(new_tag)
             }
         });
@@ -87,7 +85,7 @@ $(document).ready(function (){
             url: $(this).attr('action'),
             type: 'POST',
             data: {'tag_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
-            success: function (data){
+            success: function (response){
                 const table = $('#tags_list_body');
                 const row = table.find(`[data-id=${tag_id}]`).closest('tr')
                 row.remove()
@@ -115,7 +113,6 @@ $(document).ready(function (){
 
     $('#edit_main_info_form').on('file_uploaded', function (event, file_params){
         files_uploaded = [...files_uploaded, file_params]
-        console.log(file_params)
     })
 
     $('#edit_main_info_form').on('file_deleted', function (event, file_id){
@@ -148,9 +145,6 @@ $(document).ready(function (){
             }
         });
 
-        console.log(post_data)
-
-
         $.ajax({
             url: $('#edit_main_info_form').attr('action'),
             type: 'POST',
@@ -159,25 +153,27 @@ $(document).ready(function (){
             contentType: false,
             data: post_data,
             error: function (jqXHR){
-                const errors_json = jQuery.parseJSON(jqXHR.responseText)
-                build_errors_list(errors_json);
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                console.log(response)
+                build_errors_list(response['message']);
                 $([document.documentElement, document.body]).animate({
                     scrollTop: $("#errors").offset().top
                 }, 200);
             },
         }).statusCode({
-           302: function (response){
-                const response_json = jQuery.parseJSON(response.responseText)
-                window.location.href = response_json['url']
+           302: function (data){
+                const response = jQuery.parseJSON(data.responseText)
+                window.location.href = response['data']
             }
         });
     })
 
 
     function build_errors_list(errors){
+        console.log(errors)
         var result = ''
         for (var field in errors){
-            const message = errors[field][0].message
+            const message = errors[field][0]
             result += `<li>${message}</li>`
         }
         $('#errors').html(result);
@@ -268,10 +264,9 @@ $(document).ready(function (){
             data: post_data,
             processData: false,
             contentType: false,
-            success: function (data){
-                console.log(data)
-                build_rows(data['tags'])
-                build_pages(data['pages'])
+            success: function (response){
+                build_rows(response['data']['tags'])
+                build_pages(response['data']['pages'])
             },
         });
 
@@ -421,9 +416,9 @@ $(document).ready(function(){
         const current_item = $(this).closest('[data-order]');
         const number = current_item.attr('data-order');
 
-        if (number == $(current_item).siblings('[data-order]').length + 1) return;      // элемент является крайним, если число его братьев == его номеру + 1
+        if (number == $(current_item).siblings('[data-order][data-active]').length + 1) return;      // элемент является крайним, если число его братьев == его номеру + 1
 
-        const next_item = current_item.next();
+        const next_item = current_item.nextAll('[data-active]').first();
 
         current_item.insertAfter(next_item);
         current_item.attr('data-order', Number(number) + 1);
@@ -443,9 +438,11 @@ $(document).ready(function(){
 
         if (number == 1) return;                                                    // элемент первый, если его номер равен 1 (нулевой - главная картинки объекта offer)
 
-        const prev_item = current_item.prev();
+        const prev_item = current_item.prevAll('[data-active]').first();
 
         current_item.insertBefore(prev_item);
+
+        console.log(number)
 
         current_item.attr('data-order', Number(number) - 1);
         prev_item.attr('data-order', Number(number));
@@ -523,8 +520,6 @@ $(document).ready(function(){
     $('#edit_main_info_form').on('change', '.upload_img_input', function(){
         const file = $(this).get(0).files[0];                          // получаем загруженный файй
         const input = $(this);
-        //const csrf_token = $('#edit_main_info_form').find('[name=csrfmiddlewaretoken]').attr('value')
-        //const file_ext = file.name.split('.').pop().toLowerCase();
 
         var is_new_img = false;                                         // флаг, загружаем мы новую картинки или редактируем существующую
 
@@ -534,22 +529,6 @@ $(document).ready(function(){
             const img_elem = $(this).siblings('img');
             const reader = new FileReader();
 
-
-            // var post_data = new FormData();
-            // post_data.append('csrfmiddlewaretoken', csrf_token)
-            // post_data.append('image', file)
-
-            // $.ajax({
-            //     url: '/admin/rooms/resize_image/',
-            //     type: 'POST',
-            //     //data: {'image': file, 'csrfmiddlewaretoken': csrf_token},
-            //     data: post_data,
-            //     contentType: false,
-            //     processData: false,
-            //     success: function (data){
-            //         console.log(data)
-            //     }
-            // });
 
             reader.onloadend = function(){
                 const img_src_temp = reader.result;                            // получаем base64 картинки
@@ -587,8 +566,6 @@ $(document).ready(function(){
         canvas.width = 500;
         const canvas_context = canvas.getContext('2d');
         canvas_context.drawImage(image, 0, 0, 500, 500);
-        //console.log(image.src) image/jpeg
-        //console.log(canvas.toDataURL(`image/jpeg`))
         return canvas.toDataURL(`image/${file_ext}`);
 
         // var image = new Image();
@@ -606,7 +583,7 @@ $(document).ready(function(){
         //var canvas = document.createElement('canvas')
 
         // var canvas = document.createElement('canvas'),
-        //             //max_size = 544,// TODO : pull max size from a site config
+        //             //max_size = 544,
         //             width = 500,
         //             height = 500;
         // //max_size = 544;
@@ -624,14 +601,6 @@ $(document).ready(function(){
 
     function base64_to_file(base64, file_ext){
         var BASE64_MARKER = ';base64,';
-        // if (dataURL.indexOf(BASE64_MARKER) == -1) {
-        //     var parts = dataURL.split(',');
-        //     var contentType = parts[0].split(':')[1];
-        //     var raw = parts[1];
-        //     console.log(contentType)
-        //
-        //     return new File([raw], 'file1.png',{type: contentType});
-        // }
 
         var parts = base64.split(BASE64_MARKER);
         var contentType = parts[0].split(':')[1];
@@ -643,8 +612,6 @@ $(document).ready(function(){
         for (var i = 0; i < rawLength; ++i) {
             uInt8Array[i] = raw.charCodeAt(i);
         }
-
-        //console.log(contentType)
 
         return new File([uInt8Array], `uploaded_img.${file_ext}`, {type: contentType});
     }
@@ -667,9 +634,11 @@ $(document).ready(function(){
 
         const regex = RegExp('__prefix__', 'g')
 
+        const new_img_number = $('[data-order]').length - 1;
+
         container.find('input').each(function (index, element){
-            const new_id = $(this).attr('id').replace(regex, order - 1)             // заменяем id и имя пустой формы на нужный
-            const new_name = $(this).attr('name').replace(regex, order - 1)
+            const new_id = $(this).attr('id').replace(regex, new_img_number)             // заменяем id и имя пустой формы на нужный
+            const new_name = $(this).attr('name').replace(regex, new_img_number)
             $(this).attr('id', new_id)
             $(this).attr('name', new_name)
         });
@@ -899,4 +868,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-ea5c579a8a71f4daf225.bundle.js.map
+//# sourceMappingURL=admin-e7013bb2d3552909f25d.bundle.js.map

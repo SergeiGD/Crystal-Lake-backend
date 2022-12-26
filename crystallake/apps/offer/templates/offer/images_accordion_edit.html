@@ -1,13 +1,13 @@
 {% extends 'offer/images_accordion_create.html' %}
 
 {% block images_edit %}
-    {% for photo, form in photo_form %}
+    {% for photo_item, form_item_item in photo_form %}
 
-        <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="{{ photo.order }}" data-active>
+        <div class="col-lg-4 col-sm-6 col-12 mb-4" data-order="{{ photo_item.order }}" data-active>
             <div class="w-100">
                 <div class="img_wrapper">
 
-                    <img src="{{ photo.path.url }}" alt="Доп. фото" class="img-fluid w-100 img rounded">
+                    <img src="{{ photo_item.path.url }}" alt="Доп. фото" class="img-fluid w-100 img rounded">
 
                     <button class="btn open_img btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#show_img_modal">
                         <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
@@ -23,7 +23,7 @@
                         Удалить
                     </button>
 
-                    {% for field in form %}
+                    {% for field in form_item_item %}
                         {% if field.name == 'DELETE' %}
                             {{ field.as_hidden  }}
                         {% else %}

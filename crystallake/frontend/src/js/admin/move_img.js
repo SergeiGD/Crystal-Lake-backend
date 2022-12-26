@@ -15,9 +15,9 @@ $(document).ready(function(){
         const current_item = $(this).closest('[data-order]');
         const number = current_item.attr('data-order');
 
-        if (number == $(current_item).siblings('[data-order]').length + 1) return;      // элемент является крайним, если число его братьев == его номеру + 1
+        if (number == $(current_item).siblings('[data-order][data-active]').length + 1) return;      // элемент является крайним, если число его братьев == его номеру + 1
 
-        const next_item = current_item.next();
+        const next_item = current_item.nextAll('[data-active]').first();
 
         current_item.insertAfter(next_item);
         current_item.attr('data-order', Number(number) + 1);
@@ -37,9 +37,11 @@ $(document).ready(function(){
 
         if (number == 1) return;                                                    // элемент первый, если его номер равен 1 (нулевой - главная картинки объекта offer)
 
-        const prev_item = current_item.prev();
+        const prev_item = current_item.prevAll('[data-active]').first();
 
         current_item.insertBefore(prev_item);
+
+        console.log(number)
 
         current_item.attr('data-order', Number(number) - 1);
         prev_item.attr('data-order', Number(number));

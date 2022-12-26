@@ -6,16 +6,14 @@ $(document).ready(function (){
     $('#select_tag').on('submit', function (event, tag_id){
         event.preventDefault();
 
-        //const csrf_token = $('[name=csrfmiddlewaretoken]').attr('value')
         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
 
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
             data: {'tag_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
-            success: function (data){
-                const new_tag = {name: data.name, id: data.id, link: data.link}
-                console.log(data)
+            success: function (response){
+                const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
                 append_row(new_tag)
             }
         });

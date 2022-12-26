@@ -5,13 +5,10 @@
 
         {% csrf_token %}
 
-
         <div>
             <ul id="errors">
             </ul>
         </div>
-
-
 
         <div class="text-center">
             <span class="fw-bold fs-5">id: </span>
@@ -26,12 +23,11 @@
         </div>
 
         <div class="row">
-
             <div class="col-lg-6 col-12 ">
 
                 <div class="col-12 d-flex flex-column h-100">
-                    <label class="input-group-text rounded-top rounded-0" for="{{ form_offer.description.id_for_label }}">{{ form_offer.description.label }}</label>
-                    {{ form_offer.description }}
+                    <label class="input-group-text rounded-top rounded-0" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                    {{ form.description }}
                 </div>
 
             </div>
@@ -49,7 +45,7 @@
                         <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
                     </button>
 
-                    {{ form_offer.main_photo }}
+                    {{ form.main_photo }}
 
                 </div>
             </div>
@@ -78,7 +74,7 @@
             <span class="fw-bold fs-5">Теги</span>
         </div>
 
-        <form class="overflow-auto mt-4" method="post" action="{% url 'tag_from_offer' offer_id=offer.pk %}" id="offer_tags">
+        <form class="overflow-auto mt-4" method="post" action="{{ offer.get_del_tag_url }}" id="offer_tags">
 
             {% csrf_token %}
 

@@ -11,7 +11,7 @@
         <div class="accordion-body row" id="accordion_body_images">
 
 
-            {{ formset.management_form }}
+            {{ formset_photos.management_form }}
 
             {% block images_edit %}
             {% endblock images_edit %}
@@ -37,7 +37,7 @@
                             Удалить
                         </button>
 
-                        {% for field in formset.empty_form %}
+                        {% for field in formset_photos.empty_form %}
                             {% if not field.name == 'DELETE' %}
                                 {{ field }}
                             {% endif %}

@@ -34,7 +34,6 @@ class OfferForm(forms.ModelForm):
             {'class': 'upload_img_input d-none', 'accept': 'image/png, image/jpeg, image/jpg'}
         )
         self.fields['main_photo'].required = False
-        #self.fields['name'].error_messages = {'unique': 'предложение с таким названием уже существует'}
 
         for field in self.fields:
             if str(field) in self.short_fields:
@@ -42,15 +41,6 @@ class OfferForm(forms.ModelForm):
 
             if str(field) in self.number_fields:
                 self.fields[str(field)].widget.attrs.update({'min': 1})
-
-    def clean_name(self):
-        name = self.cleaned_data.get("name")
-        pk = self.instance.pk
-
-        if Offer.objects.filter(date_deleted=None, name=name).exclude(pk=pk):
-            raise forms.ValidationError('Предложение с таким наименованием уже существует', code='unique')
-
-        return name
 
     def clean_main_photo(self):
         photo = self.cleaned_data.get("main_photo")

@@ -116,4 +116,50 @@
 {% endblock properties %}
 
 {% block additional_info %}
+    <!-- rooms -->
+    {% with offer as room %}
+    <div class="shadow p-3 d-flex flex-column gap-4 mt-5">
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">Номера этого типа</span>
+        </div>
+
+        <div class="overflow-auto mt-4 rounded-2">
+            <form action="{{ room.get_create_same_room_url }}" method="POST" id="add_same_room">
+                {% csrf_token %}
+                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold">+ Добавить</button>
+            </form>
+
+            <form action="{{ room.get_del_same_room_url }}" method="POST" data-additional-form>
+
+                {% csrf_token %}
+
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Номер</th>
+                        <th scope="col" class="px-3 text-center" >Убрать</th>
+                    </tr>
+                    </thead>
+                    <tbody class="additional_info_tbody" id="same_rooms_list_body">
+                        {% for same_room in room.get_same_rooms %}
+                            <tr>
+                                <th scope="row">{{ same_room.pk }}</th>
+                                <td class="p-0 position-relative w-10r">
+                                    <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ same_room.pk }}">Убрать</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </form>
+
+        </div>
+
+
+    </div>
+    {% endwith %}
+
+    <!-- end rooms -->
 {% endblock additional_info %}

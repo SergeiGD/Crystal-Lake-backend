@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from django.forms import modelformset_factory
+from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required
@@ -103,7 +103,7 @@ class AdminRoomDetail(PermissionRequiredMixin, DetailView):
         return obj
 
 
-class AdminEditRoomView(ManageOfferMixin, UpdateView):
+class AdminEditRoomView(ManageOfferMixin, UpdateView):  # TODO: не давать возможность открыть удаленные/дочерние
     model = Room
     template_name = 'room/admin_edit_room.html'
     form_class = RoomForm
@@ -116,7 +116,7 @@ class AdminEditRoomView(ManageOfferMixin, UpdateView):
             request=self.request,
             photos_qs=self.object.photos.all(),
             form_tags=SearchTagForm(self.request.POST or None),
-            current_page='rooms'
+            current_page='rooms',
         )
         return {**context, **common_context}
 
@@ -155,14 +155,44 @@ class AdminCreateRoomView(ManageOfferMixin, CreateView):
         formset_photos = context['formset_photos']
         if formset_photos.is_valid():
             offer = form.instance
-            return self.save_offer(
+            response = self.save_offer(
                 formset_photos=formset_photos,
                 offer=offer,
             )
+            form.instance.create_same_room()
+            return response
 
     def form_invalid(self, form):
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
         response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
+
+
+def create_same_room_view(request, offer_id):
+    if request.method == 'POST':
+        base_room = get_object_or_404(Room, pk=offer_id, date_deleted=None, main_room=None)
+        same_room = base_room.create_same_room()
+        data = {'id': same_room.pk}
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+        response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
+        return response
+
+
+def del_same_room_view(request, **kwargs):
+    if request.method == 'POST':
+        room = get_object_or_404(Room, pk=request.POST['elem_id'], date_deleted=None)
+        if room.main_room is None:
+            response_message = ResponseMessage(
+                status=ResponseMessage.STATUSES.ERROR,
+                message=['Нельзя удалить номер-представитель']
+            )
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
+
+        room.mark_as_deleted()
+
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+        response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
         return response
 
 

@@ -19,12 +19,13 @@ class TagQuerySet(models.QuerySet):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=255, unique=True, blank=False, null=False)
+    name = models.CharField(max_length=255, unique=True, blank=False, null=False, verbose_name='наименование')
 
     objects = TagQuerySet.as_manager()
 
     class Meta:
         ordering = ['id']
+        verbose_name = 'Тег'
 
     def __str__(self):
         return self.name

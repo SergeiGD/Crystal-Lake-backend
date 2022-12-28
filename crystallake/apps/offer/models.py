@@ -40,7 +40,7 @@ class Offer(PolymorphicModel):
     description = models.TextField(
         verbose_name='описание',
         blank=False,
-        null=False
+        null=True
     )
     default_price = models.DecimalField(
         verbose_name='стандартная цена',
@@ -69,7 +69,7 @@ class Offer(PolymorphicModel):
     main_photo = models.ImageField(
         upload_to=build_photo_path,
         blank=False,
-        null=False
+        null=True
     )
     date_create = models.DateTimeField(
         verbose_name='дата создания',

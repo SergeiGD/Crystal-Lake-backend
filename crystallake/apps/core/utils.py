@@ -1,6 +1,7 @@
 import json
 
 from django.core.paginator import Paginator, EmptyPage
+from django.http import HttpResponse
 
 
 class SafePaginator(Paginator):
@@ -26,3 +27,10 @@ class ResponseMessage:
 
     def get_json(self):
         return json.dumps(self.__dict__)
+
+
+class RelocateResponseMixin:
+    def relocate(self, url):
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=url)
+        response = HttpResponse(response_message.get_json(), status=302, content_type='application/json')
+        return response

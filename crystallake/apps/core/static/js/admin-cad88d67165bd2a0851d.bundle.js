@@ -22,9 +22,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
-    $('#tags_add_body').on('click', '[data-id]', function (){
-        $('#select_tag').trigger('submit', $(this).attr('data-id'));
-    });
 
     $('#select_tag').on('submit', function (event, tag_id){
         event.preventDefault();
@@ -34,7 +31,7 @@ $(document).ready(function (){
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
-            data: {'tag_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
+            data: {'elem_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
                 const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
                 append_row(new_tag)
@@ -62,38 +59,149 @@ $(document).ready(function (){
 
 /***/ }),
 
-/***/ "./src/js/admin/ajax/delete_tag_from_offer.js":
-/*!****************************************************!*\
-  !*** ./src/js/admin/ajax/delete_tag_from_offer.js ***!
-  \****************************************************/
+/***/ "./src/js/admin/ajax/create_same_room.js":
+/*!***********************************************!*\
+  !*** ./src/js/admin/ajax/create_same_room.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
-    $('#tags_list_body').on('click', '[data-id]', function (){
-        $('#offer_tags').trigger('submit', $(this).attr('data-id'));
-    });
 
-    $('#offer_tags').on('submit', function (event, tag_id){
+    $('#add_same_room').on('submit', function (event, room_id){
         event.preventDefault();
 
-        //const csrf_token =  $('[name=csrfmiddlewaretoken]').attr('value')
         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
-
 
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
-            data: {'tag_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
+            data: {'elem_id': room_id, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                const table = $('#tags_list_body');
-                const row = table.find(`[data-id=${tag_id}]`).closest('tr')
+                const new_room = {id: response['data'].id}
+                append_row(new_room)
+            }
+        });
+
+        function append_row(room){
+            const row = `
+                <tr>
+                    <th scope="row">${room.id}</th>
+                    <td class="p-0 position-relative w-10r">
+                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${room.id}">Убрать</button>
+                    </td>
+                </tr>
+            `
+            $('#same_rooms_list_body').append(row);
+
+        }
+
+    });
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/default_set_main_info.js":
+/*!****************************************************!*\
+  !*** ./src/js/admin/ajax/default_set_main_info.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const main_info_errors = __webpack_require__(/*! ./main_info_errors */ "./src/js/admin/ajax/main_info_errors.js");
+
+$(document).ready(function (){
+    $('.default_ajax_edit').on('submit', function (event){
+        event.preventDefault();
+        const current_form = $(this);
+
+        $.ajax({
+            url: current_form.attr('action'),
+            type: 'POST',
+            data: $(current_form).serialize(),
+            error: function (jqXHR){
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                main_info_errors.handle_errors(response['message'])
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: $("#main_info_errors").offset().top
+                }, 200);
+            },
+        }).statusCode({
+           302: function (data){
+                const response = jQuery.parseJSON(data.responseText)
+                window.location.href = response['data']
+            }
+        });
+    })
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/delete_additional_elem.js":
+/*!*****************************************************!*\
+  !*** ./src/js/admin/ajax/delete_additional_elem.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $(document).on('click', '[data-id]', function (){
+        const form = $(this).closest('form');
+        form.trigger('submit', $(this).attr('data-id'));
+    });
+
+    $('[data-additional-form]').on('submit', function (event, elem_id){
+        const current_form = $(this);
+        event.preventDefault();
+
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: {'elem_id': elem_id, 'csrfmiddlewaretoken': csrf_token},
+            success: function (response){
+                const table = current_form.find('.additional_info_tbody');
+                const row = table.find(`[data-id=${elem_id}]`).closest('tr')
                 row.remove()
+            }
+        }).statusCode({
+           302: function (data){
+                const response = jQuery.parseJSON(data.responseText)
+                window.location.href = response['data']
             }
         });
 
     });
+
 });
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/main_info_errors.js":
+/*!***********************************************!*\
+  !*** ./src/js/admin/ajax/main_info_errors.js ***!
+  \***********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+ const handle_errors = function(errors){
+    var result = ''
+    for (var field in errors){
+        const message = errors[field][0]
+        result += `<li>${message}</li>`
+    }
+    $('#main_info_errors').html(result);
+
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $("#main_info_errors").offset().top
+    }, 200);
+}
+
+module.exports.handle_errors = handle_errors;
 
 /***/ }),
 
@@ -105,6 +213,7 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const main_info_errors = __webpack_require__(/*! ./main_info_errors */ "./src/js/admin/ajax/main_info_errors.js");
 $(document).ready(function (){
 
     var files_uploaded = []
@@ -154,10 +263,9 @@ $(document).ready(function (){
             data: post_data,
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                console.log(response)
-                build_errors_list(response['message']);
+                main_info_errors.handle_errors(response['message'])
                 $([document.documentElement, document.body]).animate({
-                    scrollTop: $("#errors").offset().top
+                    scrollTop: $("#main_info_errors").offset().top
                 }, 200);
             },
         }).statusCode({
@@ -169,15 +277,7 @@ $(document).ready(function (){
     })
 
 
-    function build_errors_list(errors){
-        console.log(errors)
-        var result = ''
-        for (var field in errors){
-            const message = errors[field][0]
-            result += `<li>${message}</li>`
-        }
-        $('#errors').html(result);
-    }
+
 
 
 });
@@ -862,10 +962,12 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/new_offer_main_img.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/offer_ajax.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_tags_for_offer.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/delete_tag_from_offer.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_tag_to_offer.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/delete_additional_elem.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_tag_to_offer.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/create_same_room.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/default_set_main_info.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-e7013bb2d3552909f25d.bundle.js.map
+//# sourceMappingURL=admin-cad88d67165bd2a0851d.bundle.js.map

@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin/services/', include('apps.service.admin_urls')),
     path('admin/offers/', include('apps.offer.admin_urls')),
     path('admin/tags/', include('apps.tag.urls')),
+    path('admin/clients/', include('apps.client.urls')),
 ]
 
 if DEBUG:

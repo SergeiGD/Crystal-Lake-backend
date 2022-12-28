@@ -8,8 +8,16 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractUser):
+
+    GENDER_CHOISES = (
+        ('male', 'мужской'),
+        ('female', 'женский'),
+        ('unknown', 'не выбрано'),
+    )
+
     phone = PhoneNumberField(null=False, blank=False, unique=True, region='RU', verbose_name='Номер телефона')
     username = None
+    gender = models.CharField(max_length=50, choices=GENDER_CHOISES, blank=False, null=False, verbose_name='Пол', default='unknown')
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = []
@@ -24,4 +32,4 @@ class CustomUser(AbstractUser):
         return self.full_name
 
     class Meta:
-        ordering = ['phone']
+        ordering = ['first_name']

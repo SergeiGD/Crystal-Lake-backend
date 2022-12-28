@@ -1,7 +1,4 @@
 $(document).ready(function (){
-    $('#tags_add_body').on('click', '[data-id]', function (){
-        $('#select_tag').trigger('submit', $(this).attr('data-id'));
-    });
 
     $('#select_tag').on('submit', function (event, tag_id){
         event.preventDefault();
@@ -11,7 +8,7 @@ $(document).ready(function (){
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
-            data: {'tag_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
+            data: {'elem_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
                 const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
                 append_row(new_tag)

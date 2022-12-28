@@ -1,11 +1,12 @@
 from datetime import datetime
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 
-from ..core.utils import SafePaginator
+from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin
 from .models import Tag
 from .forms import TagForm
 
@@ -44,7 +45,7 @@ class AdminTagDetail(PermissionRequiredMixin, DetailView):
         return context
 
 
-class AdminTagUpdate(PermissionRequiredMixin, UpdateView):
+class AdminTagUpdate(RelocateResponseMixin, PermissionRequiredMixin, UpdateView):
     permission_required = 'tag.update_tag'
     model = Tag
     template_name = 'tag/admin_edit_tag.html'
@@ -52,17 +53,23 @@ class AdminTagUpdate(PermissionRequiredMixin, UpdateView):
     pk_url_kwarg = 'tag_id'
     form_class = TagForm
 
-    def get_success_url(self):
-        return self.object.get_admin_show_url()
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'tags'
         context['additional_page'] = True
         return context
 
+    def form_invalid(self, form):
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
 
-class AdminTagCreate(PermissionRequiredMixin, CreateView):
+    def form_valid(self, form):         # TODO: перенести в миксин
+        form.instance.save()
+        return self.relocate(form.instance.get_admin_show_url())
+
+
+class AdminTagCreate(RelocateResponseMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'tag.create_tag'
     model = Tag
     template_name = 'tag/admin_add_tag.html'
@@ -77,6 +84,15 @@ class AdminTagCreate(PermissionRequiredMixin, CreateView):
         context['current_page'] = 'tags'
         context['additional_page'] = True
         return context
+
+    def form_invalid(self, form):
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
+
+    def form_valid(self, form):
+        form.instance.save()
+        return self.relocate(form.instance.get_admin_show_url())
 
 
 # def admin_delete_tag(request, tag_id):

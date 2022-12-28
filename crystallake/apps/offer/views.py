@@ -32,7 +32,7 @@ def get_unattached_tags(request, offer_id):
 def add_tag_to_offer(request, offer_id):
     if request.method == 'POST':
         offer = get_object_or_404(Offer, pk=offer_id)
-        tag_id = request.POST.get('tag_id', -1)
+        tag_id = request.POST.get('elem_id', -1)
         tag = get_object_or_404(Tag, pk=tag_id)
         offer.tags.add(tag)
         offer.save()
@@ -44,7 +44,7 @@ def add_tag_to_offer(request, offer_id):
 def del_tag_from_offer(request, offer_id):
     if request.method == 'POST':
         offer = get_object_or_404(Offer, pk=offer_id)
-        tag_id = request.POST.get('tag_id', -1)
+        tag_id = request.POST.get('elem_id', -1)
         tag = get_object_or_404(Tag, pk=tag_id)
         offer.tags.remove(tag)
         offer.save()

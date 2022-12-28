@@ -21,9 +21,14 @@
 {% block content %}
 
 
-    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative" method="POST" action=".">
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative default_ajax_edit" method="POST" action=".">
 
         {% csrf_token %}
+
+         <div>
+            <ul id="main_info_errors">
+            </ul>
+        </div>
 
         <div class="text-center">
             <span class="fw-bold fs-5">id: </span>

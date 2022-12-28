@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'apps.core.apps.CoreConfig',
     'apps.user.apps.UserConfig',
     'apps.tag.apps.TagConfig',
+    'apps.client.apps.ClientConfig',
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'

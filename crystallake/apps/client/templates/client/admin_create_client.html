@@ -1,0 +1,93 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_clients' %}" class="link-hover text-dark text-decoration-none">
+                    Клиенты
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Добавление клиента</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative default_ajax_edit" method="POST" action=".">
+
+        {% csrf_token %}
+
+        <div>
+            <ul id="main_info_errors">
+            </ul>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-6 col-12">
+                <div class="input-group">
+                    <label for="{{ form.first_name.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.first_name.label }}</label>
+                    {{ form.first_name }}
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="input-group">
+                    <label for="{{ form.last_name.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.last_name.label }}</label>
+                    {{ form.last_name }}
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-4">
+                <div class="input-group">
+                    <label for="{{ form.email.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.email.label }}</label>
+                    {{ form.email }}
+                </div>
+            </div>
+
+            <div class="col-md-6 col-12 mt-4">
+                <div class="input-group flex-nowrap w-auto">
+                    <label for="{{ form.phone.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.phone.label }}</label>
+                    {{ form.phone }}
+                </div>
+            </div>
+
+            <div class="col-md-6 col-12 mt-4">
+                <div class="input-group flex-nowrap w-auto">
+                    <label for="{{ form.gender.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.gender.label }}</label>
+                    {{ form.gender }}
+                </div>
+            </div>
+
+{#            <div class="col-md-6 col-12 mt-4">#}
+{#                <div class="input-group flex-nowrap w-auto">#}
+{#                    <label  for="manage_gender" class="input-group-text w-10r" id="basic-addon1">Пол</label>#}
+{#                    <select id="manage_gender" class="form-select">#}
+{#                        <option selected>Мужской</option>#}
+{#                        <option value="1">Женский</option>#}
+{#                        <option value="2">Не выбран</option>#}
+{#                    </select>#}
+{#                </div>#}
+{#            </div>#}
+
+            <div class="col-12 mt-4">
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-lg btn-c_yellow-700">Сохранить</button>
+                    <button type="button" class="btn btn-lg btn-c_grey-100" data-goto="{% url 'admin_clients' %}">Отмена</button>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+
+{% endblock content %}

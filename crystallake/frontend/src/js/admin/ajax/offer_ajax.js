@@ -1,3 +1,4 @@
+const main_info_errors = require('./main_info_errors');
 $(document).ready(function (){
 
     var files_uploaded = []
@@ -47,10 +48,9 @@ $(document).ready(function (){
             data: post_data,
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                console.log(response)
-                build_errors_list(response['message']);
+                main_info_errors.handle_errors(response['message'])
                 $([document.documentElement, document.body]).animate({
-                    scrollTop: $("#errors").offset().top
+                    scrollTop: $("#main_info_errors").offset().top
                 }, 200);
             },
         }).statusCode({
@@ -62,15 +62,7 @@ $(document).ready(function (){
     })
 
 
-    function build_errors_list(errors){
-        console.log(errors)
-        var result = ''
-        for (var field in errors){
-            const message = errors[field][0]
-            result += `<li>${message}</li>`
-        }
-        $('#errors').html(result);
-    }
+
 
 
 });

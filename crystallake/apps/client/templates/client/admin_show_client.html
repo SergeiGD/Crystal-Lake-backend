@@ -1,0 +1,90 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_clients' %}" class="link-hover text-dark text-decoration-none">
+                    Клиенты
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Просмотр клиента</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
+
+
+        {% if perms.client.delete_client %}
+            <i class="fa-regular fa-square-minus text-danger card_icon card_icon__delete" data-bs-toggle="modal" data-bs-target="#delete_modal"></i>
+        {% endif %}
+        {% if perms.client.change_client %}
+            <i class="fa-regular fa-pen-to-square card_icon card_icon__edit" data-goto="{{ client.get_admin_edit_url }}"></i>
+        {% endif %}
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">id: </span>
+            <span class="fw-bold fs-5">{{ client.pk }}</span>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-6 col-12 row">
+                <p class="fw-bold col-5">Ф.И.О.:</p>
+                <p class="opacity-75 col-7">{{ client.full_name }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-lg-0 mt-2 row">
+                <p class="fw-bold col-5">email:</p>
+                <p class="opacity-75 col-7">{{ client.email }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Номер телефона:</p>
+                <p class="opacity-75 col-7">{{ client.phone }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Пол:</p>
+                <p class="opacity-75 col-7">{{ client.get_gender_display }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Баллов:</p>
+                <p class="opacity-75 col-7">{{ client.bonuses }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Кол-во заказов:</p>
+                <p class="opacity-75 col-7">{{ client.get_orders_count }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Сумма заказов:</p>
+                <p class="opacity-75 col-7">{{ client.get_money_spent }}</p>
+                <hr>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+{% block popups %}
+    {% include 'core/delete_popup.html' %}
+{% endblock popups %}

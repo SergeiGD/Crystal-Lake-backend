@@ -103,7 +103,7 @@ class AdminRoomDetail(PermissionRequiredMixin, DetailView):
         return obj
 
 
-class AdminEditRoomView(ManageOfferMixin, UpdateView):  # TODO: не давать возможность открыть удаленные/дочерние
+class AdminUpdateRoom(ManageOfferMixin, UpdateView):  # TODO: не давать возможность открыть удаленные/дочерние
     model = Room
     template_name = 'room/admin_edit_room.html'
     form_class = RoomForm
@@ -111,7 +111,7 @@ class AdminEditRoomView(ManageOfferMixin, UpdateView):  # TODO: не дават�
     context_object_name = 'offer'
 
     def get_context_data(self, **kwargs):
-        context = super(AdminEditRoomView, self).get_context_data(**kwargs)
+        context = super(AdminUpdateRoom, self).get_context_data(**kwargs)
         common_context = self.get_common_context(
             request=self.request,
             photos_qs=self.object.photos.all(),
@@ -136,13 +136,13 @@ class AdminEditRoomView(ManageOfferMixin, UpdateView):  # TODO: не дават�
         return response
 
 
-class AdminCreateRoomView(ManageOfferMixin, CreateView):
+class AdminCreateRoom(ManageOfferMixin, CreateView):
     model = Room
     template_name = 'room/admin_create_room.html'
     form_class = RoomForm
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(AdminCreateRoom, self).get_context_data(**kwargs)
         common_context = self.get_common_context(
             request=self.request,
             photos_qs=Photo.objects.none(),

@@ -64,7 +64,7 @@ class AdminTagUpdate(RelocateResponseMixin, PermissionRequiredMixin, UpdateView)
         response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
         return response
 
-    def form_valid(self, form):         # TODO: перенести в миксин
+    def form_valid(self, form):
         form.instance.save()
         return self.relocate(form.instance.get_admin_show_url())
 

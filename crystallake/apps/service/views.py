@@ -77,13 +77,13 @@ class AdminServicesList(ListView):
         return Service.objects.filter(date_deleted=None)
 
 
-class AdminCreateServiceView(ManageOfferMixin, CreateView):
+class AdminCreateService(ManageOfferMixin, CreateView):
     model = Service
     template_name = 'service/admin_create_service.html'
     form_class = ServiceForm
 
     def get_context_data(self, **kwargs):
-        context = super(AdminCreateServiceView, self).get_context_data(**kwargs)
+        context = super(AdminCreateServiceView, self).AdminCreateService(**kwargs)
         common_context = self.get_common_context(
             request=self.request,
             photos_qs=Photo.objects.none(),
@@ -126,7 +126,7 @@ class AdminServiceDetail(DetailView):
         return obj
 
 
-class AdminEditServiceView(ManageOfferMixin, UpdateView):
+class AdminUpdateService(ManageOfferMixin, UpdateView):
     model = Service
     template_name = 'service/admin_edit_service.html'
     form_class = ServiceForm
@@ -134,7 +134,7 @@ class AdminEditServiceView(ManageOfferMixin, UpdateView):
     context_object_name = 'offer'
 
     def get_context_data(self, **kwargs):
-        context = super(AdminEditServiceView, self).get_context_data(**kwargs)
+        context = super(AdminUpdateService, self).get_context_data(**kwargs)
         common_context = self.get_common_context(
             request=self.request,
             photos_qs=self.object.photos.all(),

@@ -13,7 +13,12 @@
                     Клиенты
                 </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Добавление клиента</li>
+            <li class="breadcrumb-item">
+                <a href="{{ client.get_admin_show_url }}" class="link-hover text-dark text-decoration-none">
+                    Просмотр клиента
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Редактирование клиента</li>
         </ol>
     </nav>
 {% endblock breadcrumbs %}
@@ -25,9 +30,14 @@
 
         {% csrf_token %}
 
-        <div>
+         <div>
             <ul id="main_info_errors">
             </ul>
+        </div>
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">Клиент: </span>
+            <span class="fw-bold fs-5">{{ client.id }}</span>
         </div>
 
         <div class="row">
@@ -70,7 +80,7 @@
             <div class="col-12 mt-4">
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-lg btn-c_yellow-700">Сохранить</button>
-                    <button type="button" class="btn btn-lg btn-c_grey-100" data-goto="{% url 'admin_clients' %}">Отмена</button>
+                    <button type="button" class="btn btn-lg btn-c_grey-100" data-goto="{{ client.get_admin_show_url }}">Отмена</button>
                 </div>
             </div>
 

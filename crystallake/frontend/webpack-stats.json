@@ -25,101 +25,13 @@
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
       "path": "/app/apps/core/static/images/why_is-8d9483bc8b97327e78b1.webp"
     },
-    "js/admin-21ca7aeb77e0cf62163f.bundle.js": {
-      "name": "js/admin-21ca7aeb77e0cf62163f.bundle.js",
-      "path": "/app/apps/core/static/js/admin-21ca7aeb77e0cf62163f.bundle.js"
+    "js/admin-0ac57f4c31883f5511ba.bundle.js": {
+      "name": "js/admin-0ac57f4c31883f5511ba.bundle.js",
+      "path": "/app/apps/core/static/js/admin-0ac57f4c31883f5511ba.bundle.js"
     },
-    "js/admin-21ca7aeb77e0cf62163f.bundle.js.map": {
-      "name": "js/admin-21ca7aeb77e0cf62163f.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-21ca7aeb77e0cf62163f.bundle.js.map"
-    },
-    "js/admin-22aa9d2b5072cfba3876.bundle.js": {
-      "name": "js/admin-22aa9d2b5072cfba3876.bundle.js",
-      "path": "/app/apps/core/static/js/admin-22aa9d2b5072cfba3876.bundle.js"
-    },
-    "js/admin-22aa9d2b5072cfba3876.bundle.js.map": {
-      "name": "js/admin-22aa9d2b5072cfba3876.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-22aa9d2b5072cfba3876.bundle.js.map"
-    },
-    "js/admin-25757009b4c7b2b6b873.bundle.js": {
-      "name": "js/admin-25757009b4c7b2b6b873.bundle.js",
-      "path": "/app/apps/core/static/js/admin-25757009b4c7b2b6b873.bundle.js"
-    },
-    "js/admin-25757009b4c7b2b6b873.bundle.js.map": {
-      "name": "js/admin-25757009b4c7b2b6b873.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-25757009b4c7b2b6b873.bundle.js.map"
-    },
-    "js/admin-320b26f78c48feeb02a3.bundle.js": {
-      "name": "js/admin-320b26f78c48feeb02a3.bundle.js",
-      "path": "/app/apps/core/static/js/admin-320b26f78c48feeb02a3.bundle.js"
-    },
-    "js/admin-320b26f78c48feeb02a3.bundle.js.map": {
-      "name": "js/admin-320b26f78c48feeb02a3.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-320b26f78c48feeb02a3.bundle.js.map"
-    },
-    "js/admin-3a7e80c9d1ecae840560.bundle.js": {
-      "name": "js/admin-3a7e80c9d1ecae840560.bundle.js",
-      "path": "/app/apps/core/static/js/admin-3a7e80c9d1ecae840560.bundle.js"
-    },
-    "js/admin-3a7e80c9d1ecae840560.bundle.js.map": {
-      "name": "js/admin-3a7e80c9d1ecae840560.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-3a7e80c9d1ecae840560.bundle.js.map"
-    },
-    "js/admin-3afc5830ef8a7e125b18.bundle.js": {
-      "name": "js/admin-3afc5830ef8a7e125b18.bundle.js",
-      "path": "/app/apps/core/static/js/admin-3afc5830ef8a7e125b18.bundle.js"
-    },
-    "js/admin-3afc5830ef8a7e125b18.bundle.js.map": {
-      "name": "js/admin-3afc5830ef8a7e125b18.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-3afc5830ef8a7e125b18.bundle.js.map"
-    },
-    "js/admin-4ad0250702c1d26cdc5e.bundle.js": {
-      "name": "js/admin-4ad0250702c1d26cdc5e.bundle.js",
-      "path": "/app/apps/core/static/js/admin-4ad0250702c1d26cdc5e.bundle.js"
-    },
-    "js/admin-4ad0250702c1d26cdc5e.bundle.js.map": {
-      "name": "js/admin-4ad0250702c1d26cdc5e.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-4ad0250702c1d26cdc5e.bundle.js.map"
-    },
-    "js/admin-626e2389718a72aaf583.bundle.js": {
-      "name": "js/admin-626e2389718a72aaf583.bundle.js",
-      "path": "/app/apps/core/static/js/admin-626e2389718a72aaf583.bundle.js"
-    },
-    "js/admin-626e2389718a72aaf583.bundle.js.map": {
-      "name": "js/admin-626e2389718a72aaf583.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-626e2389718a72aaf583.bundle.js.map"
-    },
-    "js/admin-7cf2b0aaf1cf1bebaac6.bundle.js": {
-      "name": "js/admin-7cf2b0aaf1cf1bebaac6.bundle.js",
-      "path": "/app/apps/core/static/js/admin-7cf2b0aaf1cf1bebaac6.bundle.js"
-    },
-    "js/admin-7cf2b0aaf1cf1bebaac6.bundle.js.map": {
-      "name": "js/admin-7cf2b0aaf1cf1bebaac6.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-7cf2b0aaf1cf1bebaac6.bundle.js.map"
-    },
-    "js/admin-9f066c917ef601369ca2.bundle.js": {
-      "name": "js/admin-9f066c917ef601369ca2.bundle.js",
-      "path": "/app/apps/core/static/js/admin-9f066c917ef601369ca2.bundle.js"
-    },
-    "js/admin-9f066c917ef601369ca2.bundle.js.map": {
-      "name": "js/admin-9f066c917ef601369ca2.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-9f066c917ef601369ca2.bundle.js.map"
-    },
-    "js/admin-abdf64ca6e755fd741d4.bundle.js": {
-      "name": "js/admin-abdf64ca6e755fd741d4.bundle.js",
-      "path": "/app/apps/core/static/js/admin-abdf64ca6e755fd741d4.bundle.js"
-    },
-    "js/admin-abdf64ca6e755fd741d4.bundle.js.map": {
-      "name": "js/admin-abdf64ca6e755fd741d4.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-abdf64ca6e755fd741d4.bundle.js.map"
-    },
-    "js/admin-c85afd26fa74283cffa8.bundle.js": {
-      "name": "js/admin-c85afd26fa74283cffa8.bundle.js",
-      "path": "/app/apps/core/static/js/admin-c85afd26fa74283cffa8.bundle.js"
-    },
-    "js/admin-c85afd26fa74283cffa8.bundle.js.map": {
-      "name": "js/admin-c85afd26fa74283cffa8.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-c85afd26fa74283cffa8.bundle.js.map"
+    "js/admin-0ac57f4c31883f5511ba.bundle.js.map": {
+      "name": "js/admin-0ac57f4c31883f5511ba.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-0ac57f4c31883f5511ba.bundle.js.map"
     },
     "js/admin-cad88d67165bd2a0851d.bundle.js": {
       "name": "js/admin-cad88d67165bd2a0851d.bundle.js",
@@ -129,13 +41,13 @@
       "name": "js/admin-cad88d67165bd2a0851d.bundle.js.map",
       "path": "/app/apps/core/static/js/admin-cad88d67165bd2a0851d.bundle.js.map"
     },
-    "js/admin-f36792ecb017acdc06c4.bundle.js": {
-      "name": "js/admin-f36792ecb017acdc06c4.bundle.js",
-      "path": "/app/apps/core/static/js/admin-f36792ecb017acdc06c4.bundle.js"
+    "js/admin-dcd589aa160efc66d84c.bundle.js": {
+      "name": "js/admin-dcd589aa160efc66d84c.bundle.js",
+      "path": "/app/apps/core/static/js/admin-dcd589aa160efc66d84c.bundle.js"
     },
-    "js/admin-f36792ecb017acdc06c4.bundle.js.map": {
-      "name": "js/admin-f36792ecb017acdc06c4.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-f36792ecb017acdc06c4.bundle.js.map"
+    "js/admin-dcd589aa160efc66d84c.bundle.js.map": {
+      "name": "js/admin-dcd589aa160efc66d84c.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-dcd589aa160efc66d84c.bundle.js.map"
     },
     "js/client-e5e80c1a1a34444cb806.bundle.js": {
       "name": "js/client-e5e80c1a1a34444cb806.bundle.js",
@@ -184,7 +96,5 @@
       "css/client-a5093423cc35b3d8177e.bundle.css",
       "js/client-e5e80c1a1a34444cb806.bundle.js"
     ]
-  },
-  "error": "ModuleParseError",
-  "message": "Module parse failed: Unexpected token (3:1)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n| $(document).ready(function (){\n| \n> }"
+  }
 }

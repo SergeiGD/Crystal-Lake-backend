@@ -1,7 +1,3 @@
-import json
-from datetime import datetime
-
-from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required
@@ -12,9 +8,9 @@ from django.http import HttpResponse, Http404
 from ..core.utils import SafePaginator, ResponseMessage
 from .models import Room
 from .forms import RoomForm, SearchRoomsForm
-from ..photo.forms import PhotoForm
 from ..photo.models import Photo
-from ..tag.forms import SearchTagForm
+#from ..tag.forms import SearchTagForm
+from ..core.forms import ShortSearchForm
 from ..offer.utils import ManageOfferMixin
 
 # Create your views here.
@@ -115,7 +111,7 @@ class AdminUpdateRoom(ManageOfferMixin, UpdateView):  # TODO: не давать 
         common_context = self.get_common_context(
             request=self.request,
             photos_qs=self.object.photos.all(),
-            form_tags=SearchTagForm(self.request.POST or None),
+            form_tags=ShortSearchForm(self.request.POST or None),
             current_page='rooms',
         )
         return {**context, **common_context}

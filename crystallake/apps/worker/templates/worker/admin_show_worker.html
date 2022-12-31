@@ -1,0 +1,75 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_workers' %}" class="link-hover text-dark text-decoration-none">
+                    Сотрудники
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Просмотр сортудника</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
+
+
+        {% if perms.worker.delete_worker %}
+            <i class="fa-regular fa-square-minus text-danger card_icon card_icon__delete" data-bs-toggle="modal" data-bs-target="#delete_modal"></i>
+        {% endif %}
+        {% if perms.worker.change_worker %}
+            <i class="fa-regular fa-pen-to-square card_icon card_icon__edit" data-goto="{{ worker.get_admin_edit_url }}"></i>
+        {% endif %}
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">id: </span>
+            <span class="fw-bold fs-5">{{ worker.pk }}</span>
+        </div>
+
+        <div class="row justify-content-between">
+
+            <div class="col-lg-6 col-12 row justify-content-between">
+
+                <div class="col-12 row">
+                    <p class="fw-bold col-5">Ф.И.О.:</p>
+                    <p class="opacity-75 col-7">{{ worker.full_name }}</p>
+                    <hr>
+                </div>
+
+                <div class="col-12 mt-0 mt-md-2 row">
+                    <p class="fw-bold col-5">Номер телефона:</p>
+                    <p class="opacity-75 col-7">{{ worker.phone }}</p>
+                    <hr>
+                </div>
+
+                <div class="col-12 mt-2 row">
+                    <p class="fw-bold col-5">Зарплата:</p>
+                    <p class="opacity-75 col-7">{{ worker.salary }}&#8381;</p>
+                    <hr>
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 col-12 mt-lg-0 mt-2">
+                <p class="fw-bold col-5">Дополнительная информация:</p>
+                <p class="opacity-75">{{ worker.additional_info }}</p>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+{% block popups %}
+    {% include 'core/delete_popup.html' %}
+{% endblock popups %}

@@ -47,3 +47,19 @@ class SearchServicesForm(SearchOffersForm):
     persons = forms.ChoiceField(choices=PERSONS_CHOICES, label='Человек с вами', required=False, widget=forms.Select(attrs={
         'class': 'input_field select_field'
     }))
+
+
+class ShortServiceSearchForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = ['name', 'id']
+
+    id = forms.CharField(max_length=255, label='id', required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['name'].required = False

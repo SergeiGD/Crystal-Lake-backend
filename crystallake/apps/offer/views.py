@@ -11,7 +11,7 @@ from .models import Offer
 def get_unattached_tags(request, offer_id):
     if request.method == 'POST':
         offer = get_object_or_404(Offer, pk=offer_id)
-        tags = Tag.objects.exclude(pk__in=[offer.tags.values('pk')]).search(**request.POST.dict())
+        tags = Tag.objects.exclude(pk__in=offer.tags.values('pk')).search(**request.POST.dict())
         tags_paginator = SafePaginator(tags, 1)
         page = request.POST.get('page_number', 1)
         tags_page = tags_paginator.get_page(page)
@@ -22,7 +22,7 @@ def get_unattached_tags(request, offer_id):
             'current_page': tags_page.number,
         }, 'tags': []}
         for tag in tags_page.object_list:
-            item = {'name': tag.name, 'id': tag.pk}
+            item = {'name': tag.name, 'id': tag.pk, 'link': tag.get_admin_show_url()}
             data['tags'].append(item)
 
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)

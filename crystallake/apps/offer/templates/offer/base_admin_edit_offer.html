@@ -80,8 +80,7 @@
                 + Добавить
             </button>
 
-            <form method="post" action="{{ offer.get_del_tag_url }}" id="offer_tags" data-additional-form>
-
+            <form method="post" action="{{ offer.get_del_tag_url }}" id="offer_tags" class="delete_additional_form" >
 
                 {% csrf_token %}
 
@@ -94,25 +93,18 @@
                     </tr>
                     </thead>
                     <tbody class="additional_info_tbody" id="tags_list_body">
-    {#                    <tr>#}
-    {#                        <td class="p-0" colspan="3">#}
-    {#                            <button id="open_tag_modal" class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add_tag_modal">#}
-    {#                                + Добавить#}
-    {#                            </button>#}
-    {#                        </td>#}
-    {#                    </tr>#}
 
-                            {% for tag in offer.tags.all %}
-                                <tr>
-                                    <th scope="row">{{ tag.id }}</th>
-                                    <td>
-                                        <a href="{{ tag.get_admin_show_url }}" class="link-hover d-block">{{ tag.name }}</a>
-                                    </td>
-                                    <td class="p-0 position-relative w-10r">
-                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ tag.pk }}">Убрать</button>
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                        {% for tag in offer.tags.all %}
+                            <tr>
+                                <th scope="row">{{ tag.id }}</th>
+                                <td>
+                                    <a href="{{ tag.get_admin_show_url }}" class="link-hover d-block">{{ tag.name }}</a>
+                                </td>
+                                <td class="p-0 position-relative w-10r">
+                                    <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ tag.pk }}">Убрать</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
 
                     </tbody>
                 </table>

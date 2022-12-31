@@ -1,0 +1,193 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_workers' %}" class="link-hover text-dark text-decoration-none">
+                    Сотрудники
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ worker.get_admin_show_url }}" class="link-hover text-dark text-decoration-none">
+                    Просмотр сотрудника
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Редактирование сотрудника</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative default_ajax_edit" method="POST" action=".">
+
+        {% csrf_token %}
+
+         <div>
+            <ul id="main_info_errors">
+            </ul>
+        </div>
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">Сотрдуник: </span>
+            <span class="fw-bold fs-5">{{ worker.id }}</span>
+        </div>
+
+        <div class="row justify-content-between">
+
+            <div class="col-lg-6 col-12 row">
+
+                <div class="col-12">
+                    <div class="input-group">
+                        <label for="{{ form.first_name.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                    </div>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <div class="input-group">
+                        <label for="{{ form.last_name.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-12 mt-4">
+                    <div class="input-group flex-nowrap w-auto">
+                        <label for="{{ form.phone.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.phone.label }}</label>
+                        {{ form.phone }}
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-12 mt-4">
+                    <div class="input-group flex-nowrap w-auto">
+                        <label for="{{ form.salary.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.salary.label }}</label>
+                        {{ form.salary }}
+                    </div>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <div class="input-group flex-nowrap w-auto">
+                        <label for="{{ form.gender.id_for_label }}" class="input-group-text w-12r" id="basic-addon1">{{ form.gender.label }}</label>
+                        {{ form.gender }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 col-12 mt-lg-0 mt-4">
+                <label class="input-group-text rounded-top rounded-0" for="{{ form.additional_info.id_for_label }}">{{ form.additional_info.label }}</label>
+                {{ form.additional_info }}
+            </div>
+
+            <div class="col-12 mt-4">
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-lg btn-c_yellow-700">Сохранить</button>
+                    <button type="button" class="btn btn-lg btn-c_grey-100" data-goto="{{ worker.get_admin_show_url }}">Отмена</button>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+
+    <!-- services -->
+
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
+        <form action="." method="post">
+
+            <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete"></i>
+
+            <div class="text-center">
+                <span class="fw-bold fs-5">Услуги, которые может оказывать сотрудник</span>
+            </div>
+
+            <div class="shadow p-3 rounded-2">
+
+                <div class="row align-items-start justify-content-between">
+
+                    <div class="col-12 row mx-auto p-0">
+
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <label for="service_id" class="form-label">id услуги:</label>
+                            <input id="service_id" type="text" class="form-control w-auto mw-100">
+                        </div>
+
+                        <div class="col-md-10 col-12 mt-md-0 mt-3">
+                            <label for="service_name" class="form-label">Наименование:</label>
+                            <input type="text" class="form-control" id="service_name">
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </form>
+
+        <div class="rounded-2 overflow-hidden">
+
+            <button id="open_services_modal" class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#pick_service_modal">
+                + Добавить
+            </button>
+
+            <form class="overflow-auto delete_additional_form" method="POST" action="{{ worker.get_del_service_url }}">
+
+                {% csrf_token %}
+
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button">
+                            id <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                        </th>
+                        <th scope="col" class="text-nowrap col-hover" role="button">
+                            Наименование <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                        </th>
+                        <th scope="col" class="px-3 text-center" >Убрать</th>
+                    </tr>
+                    </thead>
+                    <tbody class="additional_info_tbody" id="services_list_body">
+
+                        {% for service in worker.qualifications.all %}
+                            <tr>
+                                <th scope="row">{{ service.id }}</th>
+                                <td class="text-nowrap">
+                                    <a href="{{ service.get_admin_show_url }}" class="link-hover">
+                                        {{ service.name }}
+                                    </a>
+                                </td>
+                                <td class="p-0 position-relative w-10r">
+                                    <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ service.pk }}">Убрать</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- services end -->
+
+
+{% endblock content %}
+
+{% block popups %}
+    {% include 'worker/unattached_services_popup.html' %}
+{% endblock popups %}

@@ -25,10 +25,9 @@ class Worker(CustomUser):
     )
     additional_info = models.TextField(
         verbose_name='доп. информация',
-        null=False,
-        blank=False
+        null=True,
+        blank=True
     )
-
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -37,13 +36,22 @@ class Worker(CustomUser):
         super().save(*args, **kwargs)
 
     def get_admin_show_url(self):
-        return reverse('admin_workers')
+        return reverse('admin_show_worker', kwargs={'worker_id': self.pk})
 
     def get_admin_edit_url(self):
         return reverse('admin_edit_worker', kwargs={'worker_id': self.pk})
 
     def get_admin_delete_url(self):
         return reverse('admin_delete_worker', kwargs={'worker_id': self.pk})
+
+    def get_unattached_services_url(self):
+        return reverse('get_unattached_services', kwargs={'worker_id': self.pk})
+
+    def get_add_service_url(self):
+        return reverse('add_service_to_worker', kwargs={'worker_id': self.pk})
+
+    def get_del_service_url(self):
+        return reverse('del_service_from_worker', kwargs={'worker_id': self.pk})
 
 
 

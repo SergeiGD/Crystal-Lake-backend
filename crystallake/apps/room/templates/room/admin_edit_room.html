@@ -130,7 +130,7 @@
                 <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold">+ Добавить</button>
             </form>
 
-            <form action="{{ room.get_del_same_room_url }}" method="POST" data-additional-form>
+            <form action="{{ room.get_del_same_room_url }}" method="POST" class="delete_additional_form">
 
                 {% csrf_token %}
 

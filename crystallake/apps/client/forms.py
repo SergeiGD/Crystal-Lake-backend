@@ -8,7 +8,7 @@ from phonenumber_field.formfields import PhoneNumberField
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ('first_name', 'last_name', 'email', 'phone', 'gender')
+        fields = ['first_name', 'last_name', 'email', 'phone', 'gender']
 
     phone = PhoneNumberField(region='RU')
 

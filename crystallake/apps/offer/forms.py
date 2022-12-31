@@ -86,6 +86,7 @@ class SearchOffersForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['sort_by'].choices = self.get_sort_choices()
+        
 
 
 

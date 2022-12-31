@@ -5,7 +5,7 @@ $(document).ready(function (){
         form.trigger('submit', $(this).attr('data-id'));
     });
 
-    $('[data-additional-form]').on('submit', function (event, elem_id){
+    $('.delete_additional_form').on('submit', function (event, elem_id){
         const current_form = $(this);
         event.preventDefault();
 

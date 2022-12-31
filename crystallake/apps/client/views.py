@@ -83,6 +83,5 @@ class AdminClientUpdate(RelocateResponseMixin, UpdateView):
 
 
 def admin_delete_client(request, client_id):
-    client = get_object_or_404(Client, pk=client_id)
-    client.mark_as_deleted()
+    get_object_or_404(Client, pk=client_id).mark_as_deleted()
     return redirect('admin_clients')

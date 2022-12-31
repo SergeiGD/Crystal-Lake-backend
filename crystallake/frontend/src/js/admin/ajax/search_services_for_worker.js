@@ -1,11 +1,11 @@
 const find_items = require("../find_items");
 $(document).ready(function (){
 
-    $('#open_tag_modal').on('click', function (){
-        $('#find_tags_btn').trigger('click');
+    $('#open_services_modal').on('click', function (){
+        $('#search_service').trigger('submit');
     })
 
-    $('#search_tag').on('submit', function (event, page='1'){
+    $('#search_service').on('submit', function (event, page='1'){
         event.preventDefault();
 
         var raw_data = $(this).serializeArray();
@@ -15,7 +15,7 @@ $(document).ready(function (){
             post_data.append(n['name'], n['value']);
         });
 
-        const sort_by = $('#add_tag_modal').find('[data-sortby-active]').attr('data-sortby')
+        const sort_by = $('#pick_service_modal').find('[data-sortby-active]').attr('data-sortby')
         post_data.append('sort_by', sort_by)
         post_data.append('page_number', page)
 
@@ -27,7 +27,7 @@ $(document).ready(function (){
             contentType: false,
             success: function (response){
                 build_rows(response['data']['tags'])
-                find_items.build_pages(response['data']['pages'], $('#tags_pagination'))
+                find_items.build_pages(response['data']['pages'], $('#services_pagination'))
             },
         });
 
@@ -49,7 +49,7 @@ $(document).ready(function (){
                 `
                 result += row
             }
-            $('#tags_add_body').html(result);
+            $('#services_tbody').html(result);
         }
 
     });

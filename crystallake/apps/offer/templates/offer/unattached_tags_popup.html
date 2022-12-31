@@ -1,4 +1,4 @@
-<!-- add tag modal -->
+<!-- tags modal -->
 <div class="modal fade" id="add_tag_modal" tabindex="-1" aria-labelledby="add_tag_label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -9,11 +9,11 @@
         <div class="modal-body">
 
 
-            <form class="shadow p-3 rounded-2 position-relative" id="search_tag" method="POST" action="{{ offer.get_unattached_tags_url }}">
+            <form class="shadow p-3 rounded-2 position-relative find_form" id="search_tag" method="POST" action="{{ offer.get_unattached_tags_url }}">
 
                 {% csrf_token %}
 
-                <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete" id="clean_tags_btn"></i>
+                <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete clean_btn" id="clean_tags_btn"></i>
 
                 <div class="row align-items-start justify-content-between py-3">
 
@@ -35,7 +35,7 @@
 
 
                     <div class="col-12 mt-3">
-                        <button class="btn btn-c_yellow-700 w-100" type="button" id="find_tags_btn">Найти</button>
+                        <button class="btn btn-c_yellow-700 w-100 find_btn" id="find_tags_btn" type="button">Найти</button>
                     </div>
 
                 </div>
@@ -76,4 +76,4 @@
       </div>
     </div>
 </div>
-<!-- add tag modal end -->
+<!-- tags modal end -->

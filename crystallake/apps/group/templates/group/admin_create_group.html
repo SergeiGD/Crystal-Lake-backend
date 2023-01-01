@@ -1,0 +1,54 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_groups' %}" class="link-hover text-dark text-decoration-none">
+                    Группы
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Добавление группы</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative default_ajax_edit" method="POST" action=".">
+
+        {% csrf_token %}
+
+        <div>
+            <ul id="main_info_errors">
+            </ul>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+                <div class="input-group">
+                    <label for="{{ form.name.id_for_label}}" class="input-group-text w-10r" id="basic-addon1">{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-lg btn-c_yellow-700">Сохранить</button>
+                    <button type="button" class="btn btn-lg btn-c_grey-100" data-goto="{% url 'admin_tags' %}">Отмена</button>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+
+{% endblock content %}

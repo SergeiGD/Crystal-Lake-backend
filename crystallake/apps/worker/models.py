@@ -53,6 +53,15 @@ class Worker(CustomUser):
     def get_del_service_url(self):
         return reverse('del_service_from_worker', kwargs={'worker_id': self.pk})
 
+    def get_unattached_groups_url(self):
+        return reverse('get_unattached_groups', kwargs={'worker_id': self.pk})
+
+    def get_add_group_url(self):
+        return reverse('add_group_to_worker', kwargs={'worker_id': self.pk})
+
+    def get_del_group_url(self):
+        return reverse('del_group_from_worker', kwargs={'worker_id': self.pk})
+
 
 
 

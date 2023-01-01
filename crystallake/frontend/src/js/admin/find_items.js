@@ -1,11 +1,14 @@
 $(document).ready(function (){
+
+    $('.open_search_btn').on('click', function (){
+        const find_form_id = $(this).attr('data-form');
+        $(find_form_id).trigger('submit');
+    })
+
     $('.find_btn').on('click', function (){
         $(this).closest('.find_form').trigger('submit')
     })
 
-    // $('#tags_pagination').on('click', '[data-page]', function (){
-    //     $('#search_tag').trigger('submit', $(this).attr('data-page'));
-    // })
 
     $('.pagination').on('click', '[data-page]', function (){
         const page = $(this).attr('data-page')

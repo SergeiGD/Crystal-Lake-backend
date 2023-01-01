@@ -1,7 +1,7 @@
 const find_items = require("../find_items");
 $(document).ready(function (){
 
-    $('#search_service').on('submit', function (event, page='1'){
+    $('#search_groups').on('submit', function (event, page='1'){
         event.preventDefault();
 
         var raw_data = $(this).serializeArray();
@@ -11,7 +11,7 @@ $(document).ready(function (){
             post_data.append(n['name'], n['value']);
         });
 
-        const sort_by = $('#pick_service_modal').find('[data-sortby-active]').attr('data-sortby')
+        const sort_by = $('#pick_group_modal').find('[data-sortby-active]').attr('data-sortby')
         post_data.append('sort_by', sort_by)
         post_data.append('page_number', page)
 
@@ -23,7 +23,7 @@ $(document).ready(function (){
             contentType: false,
             success: function (response){
                 build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#services_pagination'))
+                find_items.build_pages(response['data']['pages'], $('#groups_pagination'))
             },
         });
 
@@ -45,7 +45,7 @@ $(document).ready(function (){
                 `
                 result += row
             }
-            $('#services_tbody').html(result);
+            $('#groups_tbody').html(result);
         }
 
     });

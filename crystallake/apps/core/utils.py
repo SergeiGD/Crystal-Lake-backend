@@ -34,3 +34,11 @@ class RelocateResponseMixin:
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=url)
         response = HttpResponse(response_message.get_json(), status=302, content_type='application/json')
         return response
+
+
+def get_paginator_data(data_list, page_number):
+    paginator = SafePaginator(data_list, 8)
+    data_page = paginator.get_page(page_number)
+    num_pages = paginator.num_pages
+
+    return data_page, num_pages

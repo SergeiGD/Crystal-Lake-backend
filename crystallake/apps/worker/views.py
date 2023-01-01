@@ -3,12 +3,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 
 from .models import Worker
-from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin
-from ..user.models import CustomUser
-from ..user.forms import UserForm
+from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data
 from .forms import WorkerForm
 from ..core.forms import ShortSearchForm
 from ..service.models import Service
+from ..group.models import GroupProxy
 
 
 # Create your views here.
@@ -73,7 +72,8 @@ class AdminWorkerUpdate(RelocateResponseMixin, UpdateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(AdminWorkerUpdate, self).get_context_data(**kwargs)
         context['current_page'] = 'workers'
-        context['form_services'] = ShortSearchForm(self.request.POST or None)
+        context['form_services'] = ShortSearchForm()
+        context['form_groups'] = ShortSearchForm()
         return context
 
     def form_invalid(self, form):
@@ -95,18 +95,15 @@ def get_unattached_services(request, worker_id):
     if request.method == 'POST':
         worker = get_object_or_404(Worker, pk=worker_id)
         services = Service.objects.filter(date_deleted=None).exclude(pk__in=worker.qualifications.values('pk')).search(**request.POST.dict())
-        tags_paginator = SafePaginator(services, 1)
-        page = request.POST.get('page_number', 1)
-        services_page = tags_paginator.get_page(page)
-        num_pages = tags_paginator.num_pages
+        services_page, num_pages = get_paginator_data(services, request.POST.get('page_number', 1))
 
         data = {'pages': {
             'pages_count': num_pages,
             'current_page': services_page.number,
-        }, 'tags': []}
+        }, 'items': []}
         for service in services_page.object_list:
             item = {'name': service.name, 'id': service.pk, 'link': service.get_admin_show_url()}
-            data['tags'].append(item)
+            data['items'].append(item)
 
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
@@ -118,7 +115,6 @@ def add_service_to_worker(request, worker_id):
         service_id = request.POST.get('elem_id', -1)
         service = get_object_or_404(Service, pk=service_id)
         worker.qualifications.add(service)
-        #worker.save()
         data = {'name': service.name, 'id': service.pk, 'link': service.get_admin_show_url()}
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
@@ -130,6 +126,45 @@ def del_service_from_worker(request, worker_id):
         service_id = request.POST.get('elem_id', -1)
         service = get_object_or_404(Service, pk=service_id)
         worker.qualifications.remove(service)
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+
+def get_unattached_groups(request, worker_id):
+    if request.method == 'POST':
+        worker = get_object_or_404(Worker, pk=worker_id)
+        groups = GroupProxy.objects.exclude(pk__in=worker.groups.values('pk')).search(**request.POST.dict())
+        groups_page, num_pages = get_paginator_data(groups, request.POST.get('page_number', 1))
+
+        data = {'pages': {
+            'pages_count': num_pages,
+            'current_page': groups_page.number,
+        }, 'items': []}
+        for group in groups_page.object_list:
+            item = {'name': group.name, 'id': group.pk, 'link': group.get_admin_show_url()}
+            data['items'].append(item)
+
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+
+def add_group_to_worker(request, worker_id):
+    if request.method == 'POST':
+        worker = get_object_or_404(Worker, pk=worker_id)
+        group_id = request.POST.get('elem_id', -1)
+        group = get_object_or_404(GroupProxy, pk=group_id)
+        worker.groups.add(group)
+        data = {'name': group.name, 'id': group.pk, 'link': group.get_admin_show_url()}
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+
+def del_group_from_worker(request, worker_id):
+    if request.method == 'POST':
+        worker = get_object_or_404(Worker, pk=worker_id)
+        group_id = request.POST.get('elem_id', -1)
+        group = get_object_or_404(GroupProxy, pk=group_id)
+        worker.groups.remove(group)
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 

@@ -57,9 +57,13 @@ module.exports = {
             path.resolve(__dirname,'src/js/admin/find_items.js'),
             path.resolve(__dirname,'src/js/admin/ajax/search_tags_for_offer.js'),
             path.resolve(__dirname,'src/js/admin/ajax/search_services_for_worker.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/search_groups_for_worker.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/search_permissions_for_group.js'),
             path.resolve(__dirname,'src/js/admin/ajax/delete_additional_elem.js'),
             path.resolve(__dirname,'src/js/admin/ajax/add_tag_to_offer.js'),
             path.resolve(__dirname,'src/js/admin/ajax/add_service_to_worker.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/add_group_to_worker.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/add_permission_to_group.js'),
             path.resolve(__dirname,'src/js/admin/ajax/create_same_room.js'),
             path.resolve(__dirname,'src/js/admin/ajax/default_set_main_info.js'),
         ]

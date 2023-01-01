@@ -1,10 +1,6 @@
 const find_items = require("../find_items");
 $(document).ready(function (){
 
-    $('#open_tag_modal').on('click', function (){
-        $('#find_tags_btn').trigger('click');
-    })
-
     $('#search_tag').on('submit', function (event, page='1'){
         event.preventDefault();
 
@@ -26,7 +22,7 @@ $(document).ready(function (){
             processData: false,
             contentType: false,
             success: function (response){
-                build_rows(response['data']['tags'])
+                build_rows(response['data']['items'])
                 find_items.build_pages(response['data']['pages'], $('#tags_pagination'))
             },
         });

@@ -95,12 +95,6 @@ class AdminTagCreate(RelocateResponseMixin, PermissionRequiredMixin, CreateView)
         return self.relocate(form.instance.get_admin_show_url())
 
 
-# def admin_delete_tag(request, tag_id):
-#     tag = get_object_or_404(Tag, slug=tag_id)
-#     tag.date_deleted = datetime.now()
-#     tag.save()
-#     return redirect('admin_rooms')
-
 class AdminDeleteTagView(DeleteView):
     model = Tag
     pk_url_kwarg = 'tag_id'

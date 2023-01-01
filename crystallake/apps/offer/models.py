@@ -18,6 +18,8 @@ from ..core.build_photo_path import build_photo_path
 class OfferQuerySet(PolymorphicQuerySet):
     def search(self, **kwargs):
         qs = self
+        if kwargs.get('id', ''):
+            qs = qs.filter(id=kwargs['id'])
         if kwargs.get('name', ''):
             qs = qs.filter(name__icontains=kwargs['name'])
         if kwargs.get('price_from', ''):

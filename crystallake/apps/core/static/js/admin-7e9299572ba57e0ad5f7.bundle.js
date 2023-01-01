@@ -14,6 +14,94 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/js/admin/ajax/add_group_to_worker.js":
+/*!**************************************************!*\
+  !*** ./src/js/admin/ajax/add_group_to_worker.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#select_group').on('submit', function (event, service_id){
+        event.preventDefault();
+
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: {'elem_id': service_id, 'csrfmiddlewaretoken': csrf_token},
+            success: function (response){
+                const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
+                append_row(new_tag)
+            }
+        });
+
+        function append_row(tag){
+            const row = `
+                <tr>
+                    <th scope="row">${tag.id}</th>
+                    <td>
+                        <a href="${tag.link}" class="link-hover d-block">${tag.name}</a>
+                    </td>
+                    <td class="p-0 position-relative w-10r">
+                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${tag.id}">Убрать</button>
+                    </td>
+                </tr>
+            `
+            $('#groups_list_body').append(row);
+
+        }
+
+    });
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/add_permission_to_group.js":
+/*!******************************************************!*\
+  !*** ./src/js/admin/ajax/add_permission_to_group.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#select_permission').on('submit', function (event, service_id){
+        event.preventDefault();
+
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: {'elem_id': service_id, 'csrfmiddlewaretoken': csrf_token},
+            success: function (response){
+                const new_permissions = {name: response['data'].name, id: response['data'].id}
+                append_row(new_permissions)
+            }
+        });
+
+        function append_row(permission){
+            const row = `
+                <tr>
+                    <th scope="row">${permission.id}</th>
+                    <td>${permission.name}</td>
+                    <td class="p-0 position-relative w-10r">
+                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${permission.id}">Убрать</button>
+                    </td>
+                </tr>
+            `
+            $('#permissions_list_body').append(row);
+
+        }
+
+    });
+})
+
+/***/ }),
+
 /***/ "./src/js/admin/ajax/add_service_to_worker.js":
 /*!****************************************************!*\
   !*** ./src/js/admin/ajax/add_service_to_worker.js ***!
@@ -329,6 +417,130 @@ $(document).ready(function (){
 
 /***/ }),
 
+/***/ "./src/js/admin/ajax/search_groups_for_worker.js":
+/*!*******************************************************!*\
+  !*** ./src/js/admin/ajax/search_groups_for_worker.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
+$(document).ready(function (){
+
+    $('#search_groups').on('submit', function (event, page='1'){
+        event.preventDefault();
+
+        var raw_data = $(this).serializeArray();
+        var post_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            post_data.append(n['name'], n['value']);
+        });
+
+        const sort_by = $('#pick_group_modal').find('[data-sortby-active]').attr('data-sortby')
+        post_data.append('sort_by', sort_by)
+        post_data.append('page_number', page)
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: post_data,
+            processData: false,
+            contentType: false,
+            success: function (response){
+                build_rows(response['data']['items'])
+                find_items.build_pages(response['data']['pages'], $('#groups_pagination'))
+            },
+        });
+
+        function build_rows(data){
+            var result = ''
+            for(const item of data){
+                const row = `
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>
+                            <a class="link-hover" href="${item.link}">${item.name}</a>   
+                        </td>
+                        <td class="p-0 position-relative w-10r">
+                            <button data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button">
+                                Выбрать
+                            </button>
+                        </td>
+                    </tr>
+                `
+                result += row
+            }
+            $('#groups_tbody').html(result);
+        }
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/search_permissions_for_group.js":
+/*!***********************************************************!*\
+  !*** ./src/js/admin/ajax/search_permissions_for_group.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
+$(document).ready(function (){
+
+    $('#search_permissions').on('submit', function (event, page='1'){
+        event.preventDefault();
+
+        var raw_data = $(this).serializeArray();
+        var post_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            post_data.append(n['name'], n['value']);
+        });
+
+        const sort_by = $('#pick_permission_modal').find('[data-sortby-active]').attr('data-sortby')
+        post_data.append('sort_by', sort_by)
+        post_data.append('page_number', page)
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: post_data,
+            processData: false,
+            contentType: false,
+            success: function (response){
+                build_rows(response['data']['items'])
+                find_items.build_pages(response['data']['pages'], $('#permissions_pagination'))
+            },
+        });
+
+        function build_rows(data){
+            var result = ''
+            for(const item of data){
+                const row = `
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>${item.name}</td>
+                        <td class="p-0 position-relative w-10r">
+                            <button data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button">
+                                Выбрать
+                            </button>
+                        </td>
+                    </tr>
+                `
+                result += row
+            }
+            $('#permissions_tbody').html(result);
+        }
+
+    });
+
+})
+
+/***/ }),
+
 /***/ "./src/js/admin/ajax/search_services_for_worker.js":
 /*!*********************************************************!*\
   !*** ./src/js/admin/ajax/search_services_for_worker.js ***!
@@ -338,10 +550,6 @@ $(document).ready(function (){
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
 $(document).ready(function (){
-
-    $('#open_services_modal').on('click', function (){
-        $('#search_service').trigger('submit');
-    })
 
     $('#search_service').on('submit', function (event, page='1'){
         event.preventDefault();
@@ -364,7 +572,7 @@ $(document).ready(function (){
             processData: false,
             contentType: false,
             success: function (response){
-                build_rows(response['data']['tags'])
+                build_rows(response['data']['items'])
                 find_items.build_pages(response['data']['pages'], $('#services_pagination'))
             },
         });
@@ -406,10 +614,6 @@ $(document).ready(function (){
 const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
 $(document).ready(function (){
 
-    $('#open_tag_modal').on('click', function (){
-        $('#find_tags_btn').trigger('click');
-    })
-
     $('#search_tag').on('submit', function (event, page='1'){
         event.preventDefault();
 
@@ -431,7 +635,7 @@ $(document).ready(function (){
             processData: false,
             contentType: false,
             success: function (response){
-                build_rows(response['data']['tags'])
+                build_rows(response['data']['items'])
                 find_items.build_pages(response['data']['pages'], $('#tags_pagination'))
             },
         });
@@ -506,13 +710,16 @@ $(document).ready(function() {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
+
+    $('.open_search_btn').on('click', function (){
+        const find_form_id = $(this).attr('data-form');
+        $(find_form_id).trigger('submit');
+    })
+
     $('.find_btn').on('click', function (){
         $(this).closest('.find_form').trigger('submit')
     })
 
-    // $('#tags_pagination').on('click', '[data-page]', function (){
-    //     $('#search_tag').trigger('submit', $(this).attr('data-page'));
-    // })
 
     $('.pagination').on('click', '[data-page]', function (){
         const page = $(this).attr('data-page')
@@ -1096,13 +1303,17 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/find_items.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_tags_for_offer.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_services_for_worker.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_groups_for_worker.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_permissions_for_group.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/delete_additional_elem.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_tag_to_offer.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_service_to_worker.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_group_to_worker.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_permission_to_group.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/create_same_room.js")))
 /******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/default_set_main_info.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-7eb49d6b4228387560a3.bundle.js.map
+//# sourceMappingURL=admin-7e9299572ba57e0ad5f7.bundle.js.map

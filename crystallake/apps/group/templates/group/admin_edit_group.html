@@ -1,0 +1,153 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_groups' %}" class="link-hover text-dark text-decoration-none">
+                    Группы
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ group.get_admin_edit_url }}" class="link-hover text-dark text-decoration-none">
+                    Просмотр группы
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Редактирование группы</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative default_ajax_edit" method="POST" action=".">
+
+        {% csrf_token %}
+
+         <div>
+            <ul id="main_info_errors">
+            </ul>
+        </div>
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">id: </span>
+            <span class="fw-bold fs-5">{{ group.id }}</span>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+                <div class="input-group">
+                    <label for="{{ form.name.id_for_label}}" class="input-group-text w-10r" id="basic-addon1">{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-lg btn-c_yellow-700">Сохранить</button>
+                    <button type="button" class="btn btn-lg btn-c_grey-100" data-goto="{{ group.get_admin_show_url }}">Отмена</button>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+
+    <!-- permissions -->
+
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
+        <form action="." method="post">
+
+            <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete"></i>
+
+            <div class="text-center">
+                <span class="fw-bold fs-5">Права с этой ролью</span>
+            </div>
+
+            <div class="shadow p-3 rounded-2">
+
+                <div class="row align-items-start justify-content-between">
+
+                    <div class="col-12 row mx-auto p-0">
+
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <label for="permission_id" class="form-label">id права:</label>
+                            <input id="permission_id" type="text" class="form-control w-auto mw-100">
+                        </div>
+
+                        <div class="col-md-10 col-12 mt-md-0 mt-3">
+                            <label for="permission_name" class="form-label">Наименование:</label>
+                            <input type="text" class="form-control" id="permission_name">
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </form>
+
+        <div class="rounded-2 overflow-hidden">
+
+            <button type="button" class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold open_search_btn" data-form="#search_permissions" data-bs-toggle="modal" data-bs-target="#pick_permission_modal">
+                + Добавить
+            </button>
+
+            <form class="overflow-auto delete_additional_form" method="POST" action="{{ group.get_del_permission_url }}">
+
+                {% csrf_token %}
+
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button">
+                            id <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                        </th>
+                        <th scope="col" class="text-nowrap col-hover" role="button">
+                            Наименование <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
+                        </th>
+                        <th scope="col" class="px-3 text-center" >Убрать</th>
+                    </tr>
+                    </thead>
+                    <tbody class="additional_info_tbody" id="permissions_list_body">
+
+                        {% for permission in group.permissions.all %}
+                            <tr>
+                                <th scope="row">{{ permission.id }}</th>
+                                <td class="text-nowrap">{{ permission.name }}
+                                </td>
+                                <td class="p-0 position-relative w-10r">
+                                    <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ permission.pk }}">Убрать</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- workers end -->
+
+
+{% endblock content %}
+
+{% block popups %}
+    {% include 'group/permissions_popup.html' %}
+{% endblock popups %}

@@ -3,7 +3,7 @@ from django.db.models import Q
 
 
 from .models import Room
-from ..offer.forms import SearchOffersForm, OfferForm
+from ..offer.forms import SearchOffersForm, OfferForm, SearchOffersAdmin
 
 
 class RoomForm(OfferForm):
@@ -76,5 +76,20 @@ class SearchRoomsForm(SearchOffersForm):
     }))
     beds = forms.ChoiceField(choices=BEDS_CHOICES, label='Количество спальных мест', required=False, widget=forms.Select(attrs={
         'class': 'input_field select_field',
+    }))
+
+
+class SearchRoomsAdmin(SearchOffersAdmin):
+    beds_from = forms.IntegerField(label='от', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
+    beds_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
+    rooms_from = forms.IntegerField(label='от', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
+    rooms_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
     }))
 

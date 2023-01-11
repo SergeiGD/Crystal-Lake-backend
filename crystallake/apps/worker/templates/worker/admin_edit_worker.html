@@ -143,9 +143,7 @@
                 + Добавить
             </button>
 
-            <form class="overflow-auto delete_additional_form" method="POST" action="{{ worker.get_del_service_url }}">
 
-                {% csrf_token %}
 
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
@@ -170,7 +168,10 @@
                                     </a>
                                 </td>
                                 <td class="p-0 position-relative w-10r">
-                                    <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ service.pk }}">Убрать</button>
+                                    <form class="overflow-auto delete_additional_form" method="POST" action="{{ worker.get_del_service_url }}">
+                                        {% csrf_token %}
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ service.pk }}">Убрать</button>
+                                     </form>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -178,7 +179,6 @@
 
                     </tbody>
                 </table>
-            </form>
         </div>
 
     </div>
@@ -231,9 +231,7 @@
                 + Добавить
             </button>
 
-            <form class="overflow-auto delete_additional_form" method="POST" action="{{ worker.get_del_group_url }}">
 
-                {% csrf_token %}
 
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
@@ -258,7 +256,10 @@
                                     </a>
                                 </td>
                                 <td class="p-0 position-relative w-10r">
-                                    <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ group.pk }}">Убрать</button>
+                                    <form class="overflow-auto delete_additional_form" method="POST" action="{{ worker.get_del_group_url }}">
+                                        {% csrf_token %}
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ group.pk }}">Убрать</button>
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -266,7 +267,6 @@
 
                     </tbody>
                 </table>
-            </form>
         </div>
 
     </div>

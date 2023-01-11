@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils import timezone
 
@@ -11,7 +11,8 @@ from .managers import CustomUserManager
 class CustomUser(AbstractUser):
 
     username = None
-    GENDER_CHOISES = (
+
+    GENDER_CHOICES = (
         ('male', 'мужской'),
         ('female', 'женский'),
         ('unknown', 'не выбрано'),
@@ -23,7 +24,7 @@ class CustomUser(AbstractUser):
         verbose_name='Номер телефона'
     )
     gender = models.CharField(
-        max_length=50, choices=GENDER_CHOISES,
+        max_length=50, choices=GENDER_CHOICES,
         blank=False, null=False,
         verbose_name='Пол',
         default='unknown'

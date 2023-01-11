@@ -1,0 +1,74 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_orders' %}" class="link-hover text-dark text-decoration-none">
+                    Заказы
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Добавление заказа</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+
+    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative default_ajax_edit" method="POST" action=".">
+
+        {% csrf_token %}
+
+        <div>
+            <ul id="main_info_errors">
+            </ul>
+        </div>
+
+        <div class="row justify-content-between">
+
+            <div class="col-lg-6 col-12">
+
+                <div class="w-100">
+                    <div class="input-group d-flex flex-nowrap">
+                        <label for="{{ form.client_name.id_for_label }}" class="input-group-text w-7r">{{ form.client_name.label }}</label>
+                        <div class="d-flex flex-grow-1">
+                            {{ form.client_name }}
+                            {{ form.client_id }}
+                            <button class="btn btn-primary w-5r rounded-0 rounded-end open_search_btn" data-form="#search_clients"  type="button" data-bs-toggle="modal" data-bs-target="#pick_client_modal">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 col-12 mt-lg-0 mt-4">
+                <label class="input-group-text rounded-top rounded-0" for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
+                {{ form.comment }}
+            </div>
+
+            <div class="col-12 mt-4">
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-lg btn-c_yellow-700">Продолжить</button>
+                    <button type="button" class="btn btn-lg btn-c_grey-100" data-goto="{% url 'admin_workers' %}">Отмена</button>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+
+{% endblock content %}
+
+{% block popups %}
+    {% include 'order/clients_popup.html' %}
+{% endblock popups %}

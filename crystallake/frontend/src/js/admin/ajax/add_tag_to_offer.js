@@ -10,8 +10,9 @@ $(document).ready(function (){
             type: 'POST',
             data: {'elem_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
-                append_row(new_tag)
+                window.location.reload();
+                // const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
+                // append_row(new_tag)
             }
         });
 

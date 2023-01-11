@@ -80,9 +80,9 @@
                 + Добавить
             </button>
 
-            <form method="post" action="{{ offer.get_del_tag_url }}" id="offer_tags" class="delete_additional_form" >
+{#            <form method="post" action="{{ offer.get_del_tag_url }}" class="delete_additional_form" >#}
 
-                {% csrf_token %}
+{#                {% csrf_token %}#}
 
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
@@ -101,7 +101,10 @@
                                     <a href="{{ tag.get_admin_show_url }}" class="link-hover d-block">{{ tag.name }}</a>
                                 </td>
                                 <td class="p-0 position-relative w-10r">
-                                    <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ tag.pk }}">Убрать</button>
+                                    <form method="post" action="{{ offer.get_del_tag_url }}" class="delete_additional_form" >
+                                    {% csrf_token %}
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ tag.pk }}">Убрать</button>
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -109,7 +112,7 @@
                     </tbody>
                 </table>
 
-            </form>
+{#            </form>#}
 
         </div>
 
@@ -123,4 +126,6 @@
 {% block popups %}
     {% include 'offer/unattached_tags_popup.html' %}
     {% include 'core/show_image_popup.html' %}
+    {% block additional_popups %}
+    {% endblock additional_popups %}
 {% endblock popups %}

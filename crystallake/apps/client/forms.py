@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import IntegerField
 
 from .models import Client
 
@@ -24,3 +25,6 @@ class ClientForm(forms.ModelForm):
         self.fields['phone'].widget.attrs.update({'type': 'tel'})
         self.fields['phone'].label = 'Телефон'
         self.fields['phone'].widget.attrs.update({'placeholder': '+79999999999'})
+
+
+

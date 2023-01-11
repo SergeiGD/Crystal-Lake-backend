@@ -1,0 +1,97 @@
+<!-- modal timetable -->
+    <div class="modal fade edit_popup" id="manage_timetable_modal" tabindex="-1" aria-labelledby="manage_timetable_modal_label" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="manage_timetable_modal_label">Изменение расписания</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+{#                <form action="{{ service.get_add_timetable_url }}" id="edit_timetable">#}
+                <form action="{{ offer.get_create_timetable_url }}" id="edit_timetable" method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form_timetable.timetable_id }}
+
+                    <div class="modal-body">
+
+                        <div class="row">
+
+                            <div id="timetable_errors"></div>
+
+                            <div class="col-lg-4 col-12">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_timetable.date.id_for_label }}" class="input-group-text w-10r">{{ form_timetable.date.label }}</label>
+                                    {{ form_timetable.date }}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-12">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_timetable.start.id_for_label }}" class="input-group-text w-10r">{{ form_timetable.start.label }}</label>
+                                    {{ form_timetable.start }}
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_timetable.end.id_for_label }}" class="input-group-text w-10r">{{ form_timetable.end.label }}</label>
+                                    {{ form_timetable.end }}
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold open_search_btn" data-form="#search_worker" type="button" data-bs-toggle="modal" data-bs-target="#pick_worker_modal">+ Добавить</button>
+                                <table class="table table-striped table-hover table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            id
+                                        </th>
+                                        <th scope="col">
+                                            Ф.И.О.
+                                        </th>
+                                        <th scope="col">
+                                            Номер телефона
+                                        </th>
+                                        <th scope="col">
+                                            Убрать
+                                        </th>
+{#                                        <td class="p-0 position-relative w-10r">#}
+{#                                            <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ timetable.pk }}">Убрать</button>#}
+{#                                        </td>#}
+                                    </tr>
+                                    </thead>
+                                    <tbody id="timetable_workers_tbody">
+
+{#                                        {% for worker in page_obj %}#}
+{##}
+{#                                            <tr>#}
+{#                                                <th scope="row">{{ worker.pk }}</th>#}
+{#                                                <td>#}
+{#                                                    <a href="{{ worker.get_admin_show_url }}" class="link-hover d-block">{{ worker.full_name }}</a>#}
+{#                                                </td>#}
+{#                                                <td>{{ worker.phone }}</td>#}
+{#                                                <td>{{ worker.salary }}&#8381;</td>#}
+{#                                            </tr>#}
+{##}
+{#                                        {% endfor %}#}
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary w-10r">Сохранить</button>
+                        <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+<!-- modal timetable end -->

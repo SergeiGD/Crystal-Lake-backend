@@ -1,0 +1,23 @@
+<!-- modal timetable -->
+    <div class="modal fade edit_popup" id="edit_timetable_modal" tabindex="-1" aria-labelledby="edit_timetable_modal_label" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="edit_timetable_modal_label">Изменение расписания</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form action="{{ offer.get_edit_timetable_url }}" id="edit_timetable" method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form_timetable.timetable_id }}
+
+                    {% include 'service/timetable_body_popup.html' %}
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+<!-- modal timetable end -->

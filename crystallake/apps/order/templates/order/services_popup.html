@@ -1,0 +1,160 @@
+<!-- services popup -->
+<div class="modal fade" id="pick_service_modal" tabindex="-1" aria-labelledby="pick_service_modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="pick_service_modal">Выбор услуги</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
+
+                <form action="{% url 'get_services_for_order'  order_id=order.id  %}" method="POST" class="find_form" id="search_services">
+
+                    {% csrf_token %}
+
+                    <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete clean_btn"></i>
+
+                    <div class="text-center">
+                        <span class="fw-bold fs-5">Услуги</span>
+                    </div>
+
+                    <div class="shadow p-3 rounded-2">
+
+                        <div class="row align-items-start justify-content-between">
+
+                            <div class="col-12 row mx-auto p-0">
+
+                                <div class="col-lg-3 col-6">
+                                    <label for="{{ form_services.id.id_for_label }}" class="form-label">{{ form_services.id.label }}</label>
+                                    {{ form_services.id }}
+                                </div>
+
+                                <div class="col-lg-3 col-6 mt-lg-0 mt-3">
+                                    <label for="{{ form_services.dynamic_timetable.id_for_label }}" class="form-label">{{ form_services.dynamic_timetable.label }}</label>
+                                    {{ form_services.persons }}
+                                </div>
+
+                                <div class="col-lg-6 col-12 mt-md-0 mt-3">
+                                    <label for="{{ form_services.name.id_for_label }}" class="form-label">{{ form_services.name.label }}</label>
+                                    {{ form_services.name }}
+                                </div>
+
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <label for="service_date_from" class="form-label">Запись на (дата):</label>
+
+                                    <div class="d-flex justify-content-start gap-0">
+                                        <div class="input-group flex-nowrap w-auto">
+                                             <label for="{{ form_services.dates_from.id_for_label }}" class="input-group-text rounded-start" >{{ form_services.dates_from.label }}</label>
+                                            {{ form_services.dates_from }}
+                                        </div>
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="{{ form_services.dates_until.id_for_label }}" class="input-group-text rounded-start" >{{ form_services.dates_until.label }}</label>
+                                            {{ form_services.dates_until }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <label for="service_time_from" class="form-label">Запись на (время):</label>
+
+                                    <div class="d-flex justify-content-start gap-0">
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="{{ form_services.time_from.id_for_label }}" class="input-group-text rounded-start" >{{ form_services.time_from.label }}</label>
+                                            {{ form_services.time_from }}
+                                        </div>
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="{{ form_services.time_until.id_for_label }}" class="input-group-text rounded-start" >{{ form_services.time_until.label }}</label>
+                                            {{ form_services.time_until }}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <label for="service_def_from" class="form-label">Обычная цена:</label>
+
+                                    <div class="d-flex justify-content-start gap-0">
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="{{ form_services.price_from.id_for_label }}" class="input-group-text rounded-start" >{{ form_services.price_from.label }}</label>
+                                            {{ form_services.price_from }}
+                                        </div>
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="{{ form_services.price_until.id_for_label }}" class="input-group-text rounded-start" >{{ form_services.price_until.label }}</label>
+                                            {{ form_services.price_until }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <label for="service_weekend_from" class="form-label">Цена по праздникам:</label>
+
+                                    <div class="d-flex justify-content-start gap-0">
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="{{ form_services.weekend_price_from.id_for_label }}" class="input-group-text rounded-start" >{{ form_services.weekend_price_from.label }}</label>
+                                            {{ form_services.weekend_price_from }}
+                                        </div>
+                                        <div class="input-group flex-nowrap w-auto">
+                                            <label for="{{ form_services.weekend_price_until.id_for_label }}" class="input-group-text rounded-start" >{{ form_services.weekend_price_until.label }}</label>
+                                            {{ form_services.weekend_price_until }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </form>
+
+                <form class="rounded-2 overflow-hidden" method="post" action="." id="select_service_purchase">
+
+                    {% csrf_token %}
+
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr id="services_sorting">
+                            <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button" data-sortby="id" data-sortby-active>
+                                id <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="name">
+                                Наименование <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="dynamic_timetable">
+                                Тип расписания <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="default_price">
+                                Обычная цена <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="weekend_price">
+                                Праздничная цена <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap">
+                                Выбрать
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="services_tbody">
+
+                        </tbody>
+                    </table>
+
+                </form>
+
+                <nav class="d-flex justify-content-center">
+                    <ul class="pagination" id="services_pagination"></ul>
+                </nav>
+
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- services popup end -->

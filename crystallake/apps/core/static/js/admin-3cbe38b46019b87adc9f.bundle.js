@@ -14,16 +14,58 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/js/admin/ajax/add_group_to_worker.js":
+/***/ "./src/js/admin/add_worker_to_timetable.js":
+/*!*************************************************!*\
+  !*** ./src/js/admin/add_worker_to_timetable.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#select_worker').on('submit', function (event, worker_id, worker_name, worker_link, additional_data){
+        event.preventDefault();
+
+        const same_elem = $('#timetable_workers_tbody').find(`[data-id="${worker_id}"]`).length
+
+        if(same_elem){
+            return
+        }
+
+        const row = `
+                <tr>
+                    <th scope="row">${worker_id}</th>
+                    <td>
+                        <a href="${worker_link}" class="link-hover d-block">${worker_name}</a>
+                    </td>
+                    <td>${additional_data.phone}</td>
+                    <td class="p-0 position-relative w-10r">
+                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-temp-elem-id="${worker_id}">Убрать</button>
+                    </td>
+                </tr>
+            `
+        $('#timetable_workers_tbody').append(row);
+
+        $('#edit_timetable').trigger('worker_added', worker_id)
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/add_additional_elem.js":
 /*!**************************************************!*\
-  !*** ./src/js/admin/ajax/add_group_to_worker.js ***!
+  !*** ./src/js/admin/ajax/add_additional_elem.js ***!
   \**************************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
 $(document).ready(function (){
 
-    $('#select_group').on('submit', function (event, service_id){
+    $('.add_additional_form').on('submit', function (event, data){
         event.preventDefault();
 
         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
@@ -31,161 +73,15 @@ $(document).ready(function (){
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
-            data: {'elem_id': service_id, 'csrfmiddlewaretoken': csrf_token},
+            data: {'elem_id': data.id, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
-                append_row(new_tag)
-            }
+                window.location.reload();
+            },
+            error: function (jqXHR){
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                errors.handle_errors(response['message'], $('.errors_list'))
+            },
         });
-
-        function append_row(tag){
-            const row = `
-                <tr>
-                    <th scope="row">${tag.id}</th>
-                    <td>
-                        <a href="${tag.link}" class="link-hover d-block">${tag.name}</a>
-                    </td>
-                    <td class="p-0 position-relative w-10r">
-                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${tag.id}">Убрать</button>
-                    </td>
-                </tr>
-            `
-            $('#groups_list_body').append(row);
-
-        }
-
-    });
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/add_permission_to_group.js":
-/*!******************************************************!*\
-  !*** ./src/js/admin/ajax/add_permission_to_group.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-$(document).ready(function (){
-
-    $('#select_permission').on('submit', function (event, service_id){
-        event.preventDefault();
-
-        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: {'elem_id': service_id, 'csrfmiddlewaretoken': csrf_token},
-            success: function (response){
-                const new_permissions = {name: response['data'].name, id: response['data'].id}
-                append_row(new_permissions)
-            }
-        });
-
-        function append_row(permission){
-            const row = `
-                <tr>
-                    <th scope="row">${permission.id}</th>
-                    <td>${permission.name}</td>
-                    <td class="p-0 position-relative w-10r">
-                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${permission.id}">Убрать</button>
-                    </td>
-                </tr>
-            `
-            $('#permissions_list_body').append(row);
-
-        }
-
-    });
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/add_service_to_worker.js":
-/*!****************************************************!*\
-  !*** ./src/js/admin/ajax/add_service_to_worker.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-$(document).ready(function (){
-
-    $('#select_service').on('submit', function (event, service_id){
-        event.preventDefault();
-
-        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: {'elem_id': service_id, 'csrfmiddlewaretoken': csrf_token},
-            success: function (response){
-                const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
-                append_row(new_tag)
-            }
-        });
-
-        function append_row(tag){
-            const row = `
-                <tr>
-                    <th scope="row">${tag.id}</th>
-                    <td>
-                        <a href="${tag.link}" class="link-hover d-block">${tag.name}</a>
-                    </td>
-                    <td class="p-0 position-relative w-10r">
-                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${tag.id}">Убрать</button>
-                    </td>
-                </tr>
-            `
-            $('#services_list_body').append(row);
-
-        }
-
-    });
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/add_tag_to_offer.js":
-/*!***********************************************!*\
-  !*** ./src/js/admin/ajax/add_tag_to_offer.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-$(document).ready(function (){
-
-    $('#select_tag').on('submit', function (event, tag_id){
-        event.preventDefault();
-
-        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: {'elem_id': tag_id, 'csrfmiddlewaretoken': csrf_token},
-            success: function (response){
-                const new_tag = {name: response['data'].name, id: response['data'].id, link: response['data'].link}
-                append_row(new_tag)
-            }
-        });
-
-        function append_row(tag){
-            const row = `
-                <tr>
-                    <th scope="row">${tag.id}</th>
-                    <td>
-                        <a href="${tag.link}" class="link-hover d-block">${tag.name}</a>
-                    </td>
-                    <td class="p-0 position-relative w-10r">
-                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${tag.id}">Убрать</button>
-                    </td>
-                </tr>
-            `
-            $('#tags_list_body').append(row);
-
-        }
 
     });
 })
@@ -242,7 +138,7 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const main_info_errors = __webpack_require__(/*! ./main_info_errors */ "./src/js/admin/ajax/main_info_errors.js");
+const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
 
 $(document).ready(function (){
     $('.default_ajax_edit').on('submit', function (event){
@@ -255,10 +151,7 @@ $(document).ready(function (){
             data: $(current_form).serialize(),
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                main_info_errors.handle_errors(response['message'])
-                $([document.documentElement, document.body]).animate({
-                    scrollTop: $("#main_info_errors").offset().top
-                }, 200);
+                errors.handle_errors(response['message'], $('#main_info_errors'))
             },
         }).statusCode({
            302: function (data){
@@ -281,11 +174,6 @@ $(document).ready(function (){
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
 
-    $(document).on('click', '[data-id]', function (){
-        const form = $(this).closest('form');
-        form.trigger('submit', $(this).attr('data-id'));
-    });
-
     $('.delete_additional_form').on('submit', function (event, elem_id){
         const current_form = $(this);
         event.preventDefault();
@@ -297,9 +185,11 @@ $(document).ready(function (){
             type: 'POST',
             data: {'elem_id': elem_id, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                const table = current_form.find('.additional_info_tbody');
-                const row = table.find(`[data-id=${elem_id}]`).closest('tr')
-                row.remove()
+                // window.location = window.location
+                window.location.reload();
+                // const table = current_form.closest('.additional_info_tbody');
+                // const row = table.find(`[data-id=${elem_id}]`).closest('tr')
+                // row.remove()
             }
         }).statusCode({
            302: function (data){
@@ -310,31 +200,140 @@ $(document).ready(function (){
 
     });
 
+    // $(document).ajaxStop(function(){
+    //     window.location.reload();
+    // });
+
 });
 
 /***/ }),
 
-/***/ "./src/js/admin/ajax/main_info_errors.js":
-/*!***********************************************!*\
-  !*** ./src/js/admin/ajax/main_info_errors.js ***!
-  \***********************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ "./src/js/admin/ajax/edit_additional_elem.js":
+/*!***************************************************!*\
+  !*** ./src/js/admin/ajax/edit_additional_elem.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
- const handle_errors = function(errors){
-    var result = ''
-    for (var field in errors){
-        const message = errors[field][0]
-        result += `<li>${message}</li>`
-    }
-    $('#main_info_errors').html(result);
+/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+    $('.edit_additional_form').on('submit', function (event, elem_id) {
+        event.preventDefault();
+        const popup = $(this).find('[data-popup]').attr('data-popup')
 
-    $([document.documentElement, document.body]).animate({
-        scrollTop: $("#main_info_errors").offset().top
-    }, 200);
-}
 
-module.exports.handle_errors = handle_errors;
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: {'elem_id': elem_id, 'csrfmiddlewaretoken': csrf_token},
+            success: function (response){
+                $(popup).trigger('popup_open', response.data)
+            }
+        }).statusCode({
+           302: function (data){
+                const response = jQuery.parseJSON(data.responseText)
+                window.location.href = response['data']
+            }
+        });
+
+    })
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/manage_purchase.js":
+/*!**********************************************!*\
+  !*** ./src/js/admin/ajax/manage_purchase.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
+$(document).ready(function (){
+
+    $('.manage_purchase').on('submit', function (event){
+        event.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (){
+                window.location.reload();
+            },
+            error: function (jqXHR){
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                errors.handle_errors(response['message'], $('.errors_list'))
+            },
+        });
+
+    });
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/manage_timetable.js":
+/*!***********************************************!*\
+  !*** ./src/js/admin/ajax/manage_timetable.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
+$(document).ready(function (){
+    //var workers = []
+    var workers = {}
+    //var deleted_workers = []
+
+    const form = $('#edit_timetable, #create_timetable');
+
+    form.on('worker_added', function (event, worker_id){
+        //added_workers.push(worker_id)
+        //workers.push({[worker_id]: true})
+        workers[worker_id] = true
+    })
+
+    form.on('worker_deleted', function (event, worker_id){
+        //deleted_workers.push(worker_id)
+        //workers.push({worker_id: false})
+        workers[worker_id] = false
+    })
+
+    form.on('submit', function (event){
+        event.preventDefault();
+
+        var raw_data = $(this).serializeArray();
+        var form_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            form_data.append(n['name'], n['value'])
+        });
+
+        form_data.append('workers', JSON.stringify(workers))
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: form_data,
+            error: function (jqXHR){
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                errors.handle_errors(response['message'], $("#timetable_errors"))
+            },
+            success: function (){
+                document.location.reload()
+            }
+
+        });
+
+    })
+})
 
 /***/ }),
 
@@ -346,7 +345,7 @@ module.exports.handle_errors = handle_errors;
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const main_info_errors = __webpack_require__(/*! ./main_info_errors */ "./src/js/admin/ajax/main_info_errors.js");
+const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
 $(document).ready(function (){
 
     var files_uploaded = []
@@ -396,10 +395,7 @@ $(document).ready(function (){
             data: post_data,
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                main_info_errors.handle_errors(response['message'])
-                $([document.documentElement, document.body]).animate({
-                    scrollTop: $("#main_info_errors").offset().top
-                }, 200);
+                errors.handle_errors(response['message'], $("#main_info_errors"))
             },
         }).statusCode({
            302: function (data){
@@ -414,6 +410,72 @@ $(document).ready(function (){
 
 
 });
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/search_clients_for_order.js":
+/*!*******************************************************!*\
+  !*** ./src/js/admin/ajax/search_clients_for_order.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
+$(document).ready(function (){
+
+    $('#search_clients').on('submit', function (event, page='1'){
+        event.preventDefault();
+
+        var raw_data = $(this).serializeArray();
+        var post_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            post_data.append(n['name'], n['value']);
+        });
+
+        const sort_by = $('#pick_client_modal').find('[data-sortby-active]').attr('data-sortby')
+        post_data.append('sort_by', sort_by)
+        post_data.append('page_number', page)
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: post_data,
+            processData: false,
+            contentType: false,
+            success: function (response){
+                build_rows(response['data']['items'])
+                find_items.build_pages(response['data']['pages'], $('#clients_pagination'))
+            },
+        });
+
+        function build_rows(data){
+            var result = ''
+            for(const item of data){
+                const row = `
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>
+                            <a class="link-hover" href="${item.link}">${item.name}</a>   
+                        </td>
+                        <td>
+                            ${item.phone}
+                        </td>
+                        <td class="p-0 position-relative w-10r">
+                            <button data-id="${item.id}" data-name="${item.name}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button">
+                                Выбрать
+                            </button>
+                        </td>
+                    </tr>
+                `
+                result += row
+            }
+            $('#clients_tbody').html(result);
+        }
+
+    });
+
+})
 
 /***/ }),
 
@@ -533,6 +595,152 @@ $(document).ready(function (){
                 result += row
             }
             $('#permissions_tbody').html(result);
+        }
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/search_rooms.js":
+/*!*******************************************!*\
+  !*** ./src/js/admin/ajax/search_rooms.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
+$(document).ready(function (){
+
+    $('#search_rooms').on('submit', function (event, page='1'){
+        event.preventDefault();
+
+        var raw_data = $(this).serializeArray();
+        var post_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            post_data.append(n['name'], n['value']);
+        });
+
+        const sort_by = $('#rooms_sorting').find('[data-sortby-active]').attr('data-sortby')
+        post_data.append('sort_by', sort_by)
+        post_data.append('page_number', page)
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: post_data,
+            processData: false,
+            contentType: false,
+            success: function (response){
+                build_rows(response['data']['items'])
+                find_items.build_pages(response['data']['pages'], $('#rooms_pagination'))
+            },
+        });
+
+        function build_rows(data){
+            var result = ''
+            for(const item of data){
+                const row = `
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>
+                            <a class="link-hover" href="${item.link}">${item.name}</a>   
+                        </td>
+                        <td>
+                            ${item.beds}
+                        </td>
+                        <td>
+                            ${item.rooms}
+                        </td>
+                        <td>
+                            ${item.default_price}
+                        </td><td>
+                            ${item.weekend_price}
+                        </td>
+                        <td class="p-0 position-relative w-10r">
+                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal" data-bs-target="#room_purchase_modal" type="button">
+                                Выбрать
+                            </button>
+                        </td>
+                    </tr>
+                `
+                result += row
+            }
+            $('#rooms_tbody').html(result);
+        }
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/search_services.js":
+/*!**********************************************!*\
+  !*** ./src/js/admin/ajax/search_services.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
+$(document).ready(function (){
+
+    $('#search_services').on('submit', function (event, page='1'){
+        event.preventDefault();
+
+        var raw_data = $(this).serializeArray();
+        var post_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            post_data.append(n['name'], n['value']);
+        });
+
+        const sort_by = $('#services_sorting').find('[data-sortby-active]').attr('data-sortby')
+        post_data.append('sort_by', sort_by)
+        post_data.append('page_number', page)
+
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: post_data,
+            processData: false,
+            contentType: false,
+            success: function (response){
+                build_rows(response['data']['items'])
+                find_items.build_pages(response['data']['pages'], $('#services_pagination'))
+            },
+        });
+
+        function build_rows(data){
+            var result = ''
+            for(const item of data){
+                const row = `
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>
+                            <a class="link-hover" href="${item.link}">${item.name}</a>   
+                        </td>
+                        <td>
+                            ${item.dynamic_timetable}
+                        </td>
+                        <td>
+                            ${item.default_price}
+                        </td><td>
+                            ${item.weekend_price}
+                        </td>
+                        <td class="p-0 position-relative w-10r">
+                            <button data-id="${item.id}" data-dynamic="${item.dynamic_timetable}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="#service_purchase_modal" type="button">
+                                Выбрать
+                            </button>
+                        </td>
+                    </tr>
+                `
+                result += row
+            }
+            $('#services_tbody').html(result);
         }
 
     });
@@ -667,6 +875,161 @@ $(document).ready(function (){
 
 /***/ }),
 
+/***/ "./src/js/admin/ajax/search_timetables_for_service.js":
+/*!************************************************************!*\
+  !*** ./src/js/admin/ajax/search_timetables_for_service.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
+const form_date = __webpack_require__(/*! ../form_date */ "./src/js/admin/form_date.js");
+
+$(document).ready(function (){
+
+    $('#search_timetables').on('submit', function (event, page='1'){
+        event.preventDefault();
+
+
+        var raw_data = $(this).serializeArray();
+        var post_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            post_data.append(n['name'], n['value']);
+        });
+
+        const sort_by = $('#pick_timetable_modal').find('[data-sortby-active]').attr('data-sortby')
+        post_data.append('sort_by', sort_by)
+        post_data.append('page_number', page)
+        post_data.append('service_id', $('#id_service_id').attr('value'))
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: post_data,
+            processData: false,
+            contentType: false,
+            success: function (response){
+                build_rows(response['data']['items'])
+                find_items.build_pages(response['data']['pages'], $('#timetables_pagination'))
+            },
+        });
+
+        function build_rows(data){
+            var result = ''
+            for(const item of data){
+                const start = new Date(item.start * 1000)   // на 1000, т.к. получаем в секундах, а джесу нужно в мс
+                const end = new Date(item.end * 1000)
+                const formated_start = form_date.form_date(start)
+                const formated_end = form_date.form_date(start)
+                const day = start.toISOString().substring(0,10)
+                const start_time = start.toISOString().substring(11,16)
+                const end_time = end.toISOString().substring(11,16)
+                const row = `
+                    <tr>
+                        <td scope="row">${formated_start}</td>
+                        <td scope="row">${formated_end}</td>
+                        <td class="p-0 position-relative w-10r">
+                            <button data-day="${day}" data-time-start="${start_time}" data-time-end="${end_time}" data-time-str="${formated_start} - ${formated_end}" data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="#service_purchase_modal" type="button">
+                                Выбрать
+                            </button>
+                        </td>
+                    </tr>
+                `
+                result += row
+            }
+            $('#timetables_tbody').html(result);
+        }
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/search_workers_for_timetable.js":
+/*!***********************************************************!*\
+  !*** ./src/js/admin/ajax/search_workers_for_timetable.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
+$(document).ready(function (){
+
+    $('#search_worker').on('submit', function (event, page='1', called_by){
+        event.preventDefault();
+
+        var raw_data = $(this).serializeArray();
+        var post_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            post_data.append(n['name'], n['value']);
+        });
+
+        const sort_by = $('#pick_worker_modal').find('[data-sortby-active]').attr('data-sortby')
+        post_data.append('sort_by', sort_by)
+        post_data.append('page_number', page)
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: post_data,
+            processData: false,
+            contentType: false,
+            success: function (response){
+                build_rows(response['data']['items'])
+                find_items.build_pages(response['data']['pages'], $('#workers_pagination'))
+            },
+        });
+
+        function build_rows(data){
+            var result = ''
+            for(const item of data){
+                const row = `
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>
+                            <a class="link-hover" href="${item.link}">${item.name}</a>   
+                        </td>
+                        <td>
+                            ${item.phone}
+                        </td>
+                        <td class="p-0 position-relative w-10r">
+                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" data-phone="${item.phone}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target="#manage_timetable_modal">
+                                Выбрать
+                            </button>
+                        </td>
+                    </tr>
+                `
+                result += row
+            }
+            $('#workers_tbody').html(result);
+        }
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/clean_popup.js":
+/*!*************************************!*\
+  !*** ./src/js/admin/clean_popup.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+    $('[data-popup-to-clean]').on('click', function (){
+        const popup = $(this).attr('data-popup-to-clean')
+        $(popup).find('input').not('[name="csrfmiddlewaretoken"]').val('').prop('checked', false)
+        $(popup).find('tbody').html('')
+    })
+})
+
+/***/ }),
+
 /***/ "./src/js/admin/delete_img.js":
 /*!************************************!*\
   !*** ./src/js/admin/delete_img.js ***!
@@ -699,6 +1062,30 @@ $(document).ready(function() {
     });
 });
 
+
+/***/ }),
+
+/***/ "./src/js/admin/errors.js":
+/*!********************************!*\
+  !*** ./src/js/admin/errors.js ***!
+  \********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+ const handle_errors = function(errors, elem){
+    var result = ''
+    for (var field in errors){
+        const message = errors[field][0]
+        result += `<li>${message}</li>`
+    }
+    elem.html(result);
+
+    $([document.documentElement, document.body]).animate({
+        scrollTop: elem.offset().top
+    }, 200);
+}
+
+module.exports.handle_errors = handle_errors;
 
 /***/ }),
 
@@ -831,6 +1218,64 @@ module.exports.build_pages = build_pages;
 
 /***/ }),
 
+/***/ "./src/js/admin/form_date.js":
+/*!***********************************!*\
+  !*** ./src/js/admin/form_date.js ***!
+  \***********************************/
+/***/ ((module) => {
+
+const form_date = function(date) {
+        const year = date.toISOString().substring(0,4),
+            month = date.toISOString().substring(5,7),
+            day = date.toISOString().substring(8,10),
+            hours = date.toISOString().substring(11,13),
+            minutes = date.toISOString().substring(14,16);
+
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
+    }
+
+
+module.exports.form_date = form_date;
+
+/***/ }),
+
+/***/ "./src/js/admin/item_select.js":
+/*!*************************************!*\
+  !*** ./src/js/admin/item_select.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+    $(document).on('click', '[data-id]', function (){
+
+        const form = $(this).closest('form');
+        form.trigger('submit', {
+            'is_dynamic': $(this).attr('data-dynamic'),
+            'phone': $(this).attr('data-phone'),
+            'name': $(this).attr('data-name'),
+            'id': $(this).attr('data-id'),
+            'link': $(this).attr('data-link'),
+            'time_str': $(this).attr('data-time-str'),
+            'time_start': $(this).attr('data-time-start'),
+            'time_end': $(this).attr('data-time-end'),
+            'day': $(this).attr('data-day')
+            }
+        );
+        // form.trigger('submit', [
+        //     $(this).attr('data-id'),
+        //     $(this).attr('data-name'),
+        //     $(this).attr('data-link'),
+        //     {
+        //         'is_dynamic': $(this).attr('data-dynamic'),
+        //         'phone': $(this).attr('data-phone'),
+        //     }
+        // ]);
+    });
+})
+
+/***/ }),
+
 /***/ "./src/js/admin/move_img.js":
 /*!**********************************!*\
   !*** ./src/js/admin/move_img.js ***!
@@ -921,6 +1366,201 @@ $(document).ready(function (){
 
 /***/ }),
 
+/***/ "./src/js/admin/remove_worker_from_timetable.js":
+/*!******************************************************!*\
+  !*** ./src/js/admin/remove_worker_from_timetable.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+    $('#timetable_workers_tbody').on('click', '[data-temp-elem-id]', function (){
+        event.preventDefault()
+        const worker_id = $(this).attr('data-temp-elem-id')
+        // const table = $('#timetable_workers_tbody');
+        // const row = table.find(`[data-id=${worker_id}]`).closest('tr')
+        // row.remove()
+        $(this).closest('tr').remove()
+        $('#edit_timetable').trigger('worker_deleted', worker_id)
+    })
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/room_purchase_popup_open.js":
+/*!**************************************************!*\
+  !*** ./src/js/admin/room_purchase_popup_open.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#room_purchase_modal').on('popup_open', function (event, data){
+
+        $('#id_purchase_id').val(data.id)
+        $('#room_purchase').html(data.name).attr('href', data.link)
+        const start = new Date(data.start * 1000)
+        $('#id_start').val(start.toISOString().split('T')[0])
+        const end = new Date(data.end * 1000)
+        $('#id_end').val(end.toISOString().split('T')[0])
+        $('#id_is_paid').prop('checked', data.is_paid);
+        $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
+    })
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/select_client.js":
+/*!***************************************!*\
+  !*** ./src/js/admin/select_client.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#select_client').on('submit', function (event, data){
+        event.preventDefault();
+
+        $('#id_client_name').val(data.name);
+        $('#id_client_id').val(data.id);
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/select_room_purchase.js":
+/*!**********************************************!*\
+  !*** ./src/js/admin/select_room_purchase.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#select_room_purchase').on('submit', function (event, data){
+        event.preventDefault();
+
+        $('#room_purchase').html(data.name).attr('href', data.link);
+        $('#id_room_id').val(data.id);
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/select_service_purchase.js":
+/*!*************************************************!*\
+  !*** ./src/js/admin/select_service_purchase.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#select_service_purchase').on('submit', function (event, data){
+        event.preventDefault();
+
+        $('#service_purchase').html(data.name).attr('href', data.link);
+        $('#id_service_id').val(data.id);
+
+        const is_dynamic = (data.is_dynamic === 'true');
+
+        if (is_dynamic){
+            $('.static_time_field').addClass('d-block')
+            $('.dynamic_time_field').addClass('d-none')
+        }
+        else{
+            $('.dynamic_time_field').addClass('d-block')
+            $('.static_time_field').addClass('d-none')
+        }
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/select_timetable.js":
+/*!******************************************!*\
+  !*** ./src/js/admin/select_timetable.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#select_timetable').on('submit', function (event, data){
+        event.preventDefault();
+
+        $('#id_time_select_text').val(data.time_str);
+
+        $('#id_day').val(data.day);
+        $('#id_time_start').val(data.time_start);
+        $('#id_time_end').val(data.time_end);
+
+    });
+
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/service_purchase_popup_open.js":
+/*!*****************************************************!*\
+  !*** ./src/js/admin/service_purchase_popup_open.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const form_date = __webpack_require__(/*! ./form_date */ "./src/js/admin/form_date.js");
+
+$(document).ready(function (){
+
+    $('#service_purchase_modal').on('popup_open', function (event, data){
+
+        $('#id_purchase_id').val(data.id)
+        $('#service_purchase').html(data.name).attr('href', data.link)
+        $('#id_quantity').val(data.quantity)
+        $('#id_is_paid').prop('checked', data.is_paid);
+        $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
+        $('#id_service_id').val(data.offer_id);
+
+        const start = new Date(data.start * 1000)
+        const end = new Date(data.end * 1000)
+
+        const day = start.toISOString().substring(0,10),
+            start_time = start.toISOString().substring(11,16),
+            end_time = end.toISOString().substring(11,16)
+
+        $('#id_day').val(day)
+        $('#id_time_start').val(start_time)
+        $('#id_time_end').val(end_time)
+        if (data.is_dynamic){
+            $('.static_time_field').addClass('d-block')
+            $('.dynamic_time_field').addClass('d-none')
+        }
+        else{
+            $('#id_time_select_text').val(`${form_date.form_date(start)} - ${form_date.form_date(end)}`)
+
+            $('.dynamic_time_field').addClass('d-block')
+            $('.static_time_field').addClass('d-none')
+        }
+
+        // const start = new Date(data.start * 1000)
+        // $('#id_start').val(start.toISOString().split('T')[0])
+        // const end = new Date(data.end * 1000)
+        // $('#id_end').val(end.toISOString().split('T')[0])
+        // $('#id_is_paid').prop('checked', data.is_paid);
+        // $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
+    })
+})
+
+/***/ }),
+
 /***/ "./src/js/admin/show_img.js":
 /*!**********************************!*\
   !*** ./src/js/admin/show_img.js ***!
@@ -937,6 +1577,46 @@ $(document).ready(function(){
     });
 
 });
+
+/***/ }),
+
+/***/ "./src/js/admin/timetable_popup_open.js":
+/*!**********************************************!*\
+  !*** ./src/js/admin/timetable_popup_open.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#manage_timetable_modal').on('popup_open', function (event, data){
+
+        $('#id_timetable_id').val(data.id)
+        const start = new Date(data.start * 1000)
+        const end = new Date(data.end * 1000)
+        $('#id_date').val(start.toISOString().substring(0,10))
+        $('#id_start').val(start.toISOString().substring(11,16))
+        $('#id_end').val(end.toISOString().substring(11,16))
+        $('#timetable_workers_tbody').html('')
+
+        for (const worker of data.workers){
+            const row = `
+                <tr>
+                    <th scope="row">${worker.id}</th>
+                    <td>
+                        <a href="${worker.link}" class="link-hover d-block">${worker.name}</a>
+                    </td>
+                    <td>${worker.phone}</td>
+                    <td class="p-0 position-relative w-10r">
+                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-temp-elem-id="${worker.id}">Убрать</button>
+                    </td>
+                </tr>
+            `
+            $('#timetable_workers_tbody').append(row);
+        }
+
+    })
+})
 
 /***/ }),
 
@@ -1299,21 +1979,37 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/upload_img.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/delete_img.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/new_offer_main_img.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/offer_ajax.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/select_client.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/select_room_purchase.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/select_service_purchase.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/select_timetable.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/find_items.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/item_select.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/clean_popup.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/room_purchase_popup_open.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/service_purchase_popup_open.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/timetable_popup_open.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/add_worker_to_timetable.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/remove_worker_from_timetable.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_rooms.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_services.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/offer_ajax.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_tags_for_offer.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_services_for_worker.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_groups_for_worker.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_permissions_for_group.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_clients_for_order.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_workers_for_timetable.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/search_timetables_for_service.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/delete_additional_elem.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_tag_to_offer.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_service_to_worker.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_group_to_worker.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_permission_to_group.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/edit_additional_elem.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/add_additional_elem.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/manage_purchase.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/create_same_room.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/default_set_main_info.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/default_set_main_info.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/admin/ajax/manage_timetable.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-7e9299572ba57e0ad5f7.bundle.js.map
+//# sourceMappingURL=admin-3cbe38b46019b87adc9f.bundle.js.map

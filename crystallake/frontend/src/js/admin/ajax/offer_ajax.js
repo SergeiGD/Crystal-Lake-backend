@@ -1,4 +1,4 @@
-const main_info_errors = require('./main_info_errors');
+const errors = require('../errors');
 $(document).ready(function (){
 
     var files_uploaded = []
@@ -48,10 +48,7 @@ $(document).ready(function (){
             data: post_data,
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                main_info_errors.handle_errors(response['message'])
-                $([document.documentElement, document.body]).animate({
-                    scrollTop: $("#main_info_errors").offset().top
-                }, 200);
+                errors.handle_errors(response['message'], $("#main_info_errors"))
             },
         }).statusCode({
            302: function (data){

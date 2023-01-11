@@ -1,9 +1,11 @@
 $(document).ready(function (){
 
+
     $('#select_service').on('submit', function (event, service_id){
         event.preventDefault();
 
         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
+
 
         $.ajax({
             url: $(this).attr('action'),

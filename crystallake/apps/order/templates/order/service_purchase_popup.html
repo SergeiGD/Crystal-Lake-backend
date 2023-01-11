@@ -1,0 +1,87 @@
+<!-- modal edit service purchase -->
+    <div class="modal fade edit_popup" id="service_purchase_modal" tabindex="-1" aria-labelledby="service_purchase_modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="service_purchase_modal">Изменение услуги в заказе</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form action="{{ order.get_manage_service_purchase_url }}" class="manage_purchase" method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form_service_purchase.purchase_id }}
+
+                    <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-12 d-flex">
+                                <p class="fw-bold">Услуга:</p>
+                                <a href="" class="link-hover ms-3" id="service_purchase"></a>
+                                <hr>
+                                {{ form_service_purchase.service_id }}
+                            </div>
+                            <div class="col-12 mt-4 text-center">
+                                <a href="" target="_blank" class="text-decoration-none fs-5">Просмотреть расписание услуги</a>
+                            </div>
+
+                            <div class="errors_list"></div>
+
+                            <div class="col-lg-6 col-12 mt-4">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_service_purchase.quantity.id_for_label }}" class="input-group-text w-10r">{{ form_service_purchase.quantity.label }}</label>
+                                    {{ form_service_purchase.quantity }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-12 mt-4 static_time_field">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_service_purchase.day.id_for_label }}" class="input-group-text w-10r">{{ form_service_purchase.day.label }}</label>
+                                    {{ form_service_purchase.day }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-12 mt-4 static_time_field">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_service_purchase.time_start.id_for_label }}" class="input-group-text w-10r">{{ form_service_purchase.time_start.label }}</label>
+                                    {{ form_service_purchase.time_start }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-12 mt-4 static_time_field">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_service_purchase.time_end.id_for_label }}" class="input-group-text w-10r">{{ form_service_purchase.time_end.label }}</label>
+                                    {{ form_service_purchase.time_end }}
+                                </div>
+                            </div>
+                            <div class="col-12 mt-4 dynamic_time_field">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_service_purchase.time_select_text.id_for_label }}" class="input-group-text w-10r">{{ form_service_purchase.time_select_text.label }}</label>
+                                    <div class="d-flex flex-grow-1">
+                                        {{ form_service_purchase.time_select_text }}
+                                        <button class="btn btn-primary w-5r rounded-0 rounded-end open_search_btn" data-form="#search_timetables"  type="button" data-bs-toggle="modal" data-bs-target="#pick_timetable_modal">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+{#                            <div class="col-12 mt-4 btn-group" role="group">#}
+{#                                {{ form_service_purchase.is_prepayment_paid }}#}
+{#                                <label class="btn btn-outline-primary w-50" for="{{ form_service_purchase.is_prepayment_paid.id_for_label }}">{{ form_service_purchase.is_prepayment_paid.label }}</label>#}
+{#                                {{ form_service_purchase.is_paid }}#}
+{#                                <label class="btn btn-outline-primary w-50" for="{{ form_service_purchase.is_paid.id_for_label }}">{{ form_service_purchase.is_paid.label }}</label>#}
+{#                            </div>#}
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary w-10r">Сохранить</button>
+                        <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+<!-- modal edit service purchase end -->

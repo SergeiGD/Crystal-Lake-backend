@@ -1,0 +1,64 @@
+<!-- modal edit room purchase -->
+    <div class="modal fade edit_popup" id="room_purchase_modal" tabindex="-1" aria-labelledby="room_purchase_modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="room_purchase_modal">Изменение номера в заказе</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form action="{{ order.get_manage_room_purchase_url }}" class="manage_purchase" method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form_room_purchase.purchase_id }}
+
+                    <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-12 d-flex">
+                                <p class="fw-bold">Номер:</p>
+                                <a href="" class="link-hover ms-3" id="room_purchase"></a>
+                                <hr>
+                                {{ form_room_purchase.room_id }}
+                            </div>
+                            <div class="col-12 mt-4 text-center">
+                                <a href="" target="_blank" class="text-decoration-none fs-5">Просмотреть занятость номера</a>
+                            </div>
+
+                            <div id="purchase_errors"></div>
+
+                            <div class="col-lg-6 col-12 mt-4">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_room_purchase.start.id_for_label }}" class="input-group-text w-10r">{{ form_room_purchase.start.label }}</label>
+                                    {{ form_room_purchase.start }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-12 mt-4">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_room_purchase.end.id_for_label }}" class="input-group-text w-10r">{{ form_room_purchase.end.label }}</label>
+                                    {{ form_room_purchase.end }}
+                                </div>
+                            </div>
+{#                            <div class="col-12 mt-4 btn-group" role="group">#}
+{#                                {{ form_room_purchase.is_prepayment_paid }}#}
+{#                                <label class="btn btn-outline-primary w-50" for="{{ form_room_purchase.is_prepayment_paid.id_for_label }}">{{ form_room_purchase.is_prepayment_paid.label }}</label>#}
+{#                                {{ form_room_purchase.is_paid }}#}
+{#                                <label class="btn btn-outline-primary w-50" for="{{ form_room_purchase.is_paid.id_for_label }}">{{ form_room_purchase.is_paid.label }}</label>#}
+{#                            </div>#}
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary w-10r">Сохранить</button>
+                        <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+<!-- modal edit room purchase end -->

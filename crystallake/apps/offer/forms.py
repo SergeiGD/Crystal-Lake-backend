@@ -86,6 +86,33 @@ class SearchOffersForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['sort_by'].choices = self.get_sort_choices()
+
+
+class SearchOffersAdmin(forms.Form):
+    id = forms.IntegerField(label='id', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-auto mw-100'
+    }))
+    name = forms.CharField(label='Наименование', required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))
+    dates_from = forms.DateField(label='с', required=False, widget=forms.DateInput(attrs={
+        'class': 'form-control w-100 mw-8r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
+    dates_until = forms.DateField(label='до', required=False, widget=forms.DateInput(attrs={
+        'class': 'form-control w-100 mw-8r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
+    price_from = forms.IntegerField(label='от', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
+    price_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
+    weekend_price_from = forms.IntegerField(label='от', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
+    weekend_price_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
         
 
 

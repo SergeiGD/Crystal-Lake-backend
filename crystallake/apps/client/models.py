@@ -4,7 +4,6 @@ from django.dispatch import receiver
 from django.urls import reverse
 
 from ..user.models import CustomUser
-
 # Create your models here.
 
 

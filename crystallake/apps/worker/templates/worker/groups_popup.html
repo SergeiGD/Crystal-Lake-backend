@@ -1,5 +1,5 @@
 <!-- groups popup -->
-<div class="modal fade" id="pick_group_modal" tabindex="-1" aria-labelledby="pick_group__label" aria-hidden="true">
+<div class="modal fade" id="pick_group_modal" tabindex="-1" aria-labelledby="pick_group_label" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -47,7 +47,7 @@
                     </div>
                 </form>
 
-                <form class="rounded-2 overflow-hidden" method="post" action="{{ worker.get_add_group_url }}" id="select_group">
+                <form class="rounded-2 overflow-hidden add_additional_form" method="post" action="{{ worker.get_add_group_url }}" id="select_group">
 
                     {% csrf_token %}
 

@@ -169,3 +169,27 @@ def del_group_from_worker(request, worker_id):
         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
+def find_workers(request, **kwargs):
+    workers = Worker.objects.filter(date_deleted=None).search(
+        **{**request.POST.dict(), **kwargs}
+    )
+
+    workers_page, num_pages = get_paginator_data(workers, request.POST.get('page_number', 1))
+
+    data = {'pages': {
+        'pages_count': num_pages,
+        'current_page': workers_page.number,
+    }, 'items': []}
+    for worker in workers_page.object_list:
+        item = {
+            'name': worker.full_name,
+            'id': worker.pk,
+            'phone': str(worker.phone),
+            'link': worker.get_admin_show_url()
+        }
+        data['items'].append(item)
+
+    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+    return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+

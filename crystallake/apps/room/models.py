@@ -18,6 +18,14 @@ class RoomQuerySet(OfferQuerySet):
             qs = qs.filter(floors=kwargs['floors'])
         if kwargs.get('beds', ''):
             qs = qs.filter(beds=kwargs['beds'])
+        if kwargs.get('beds_from', ''):
+            qs = qs.filter(beds__gte=kwargs['beds_from'])
+        if kwargs.get('beds_until', ''):
+            qs = qs.filter(beds__lte=kwargs['beds_until'])
+        if kwargs.get('rooms_from', ''):
+            qs = qs.filter(rooms__gte=kwargs['rooms_from'])
+        if kwargs.get('rooms_until', ''):
+            qs = qs.filter(rooms__lte=kwargs['rooms_until'])
 
         return qs
 

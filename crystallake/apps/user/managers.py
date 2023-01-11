@@ -1,5 +1,27 @@
 from django.contrib.auth.base_user import BaseUserManager
-#from django.utils.translation import ugettext_lazy as _
+from django.db import models
+
+
+class UserQuerySet(models.QuerySet):
+    """
+    Кверисет для удобного поиска по данным с форм
+    """
+    def search(self, **kwargs):
+        qs = self
+        if kwargs.get('id', ''):
+            qs = qs.filter(id=kwargs['id'])
+        if kwargs.get('first_name', ''):
+            qs = qs.filter(first_name__icontains=kwargs['first_name'])
+        if kwargs.get('last_name', ''):
+            qs = qs.filter(last_name__icontains=kwargs['last_name'])
+        if kwargs.get('phone', ''):
+            qs = qs.filter(phone__icontains=kwargs['phone'])
+        if kwargs.get('email', ''):
+            qs = qs.filter(email__icontains=kwargs['email'])
+        if kwargs.get('sort_by', ''):
+            qs = qs.order_by(kwargs['sort_by'])
+
+        return qs
 
 
 class CustomUserManager(BaseUserManager):
@@ -24,3 +46,9 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(_('Суперпользователь должен быть отмечен как суперпользователь.'))
         return self.create_user(phone, password, **extra_fields)
+
+    def get_queryset(self):
+        return UserQuerySet(self.model, self._db)       # использем расширенный кверисет с методом search
+
+    def search(self, **kwargs):
+        return self.get_queryset().search(**kwargs)     # для вызываем метод search UserQuerySet

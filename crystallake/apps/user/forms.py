@@ -29,3 +29,21 @@ class UserForm(forms.ModelForm):
         self.fields['phone'].widget.attrs.update({'type': 'tel'})
         self.fields['phone'].label = 'Телефон'
         self.fields['phone'].widget.attrs.update({'placeholder': '+79999999999'})
+
+
+class SearchUserForm(forms.Form):
+    id = forms.IntegerField(label='id', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control'
+    }))
+    first_name = forms.CharField(label='Имя', required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))
+    last_name = forms.CharField(label='Фамилия', required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))
+    phone = forms.CharField(label='Номер телефона', required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))
+    email = forms.CharField(label='Электронная почта', required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))

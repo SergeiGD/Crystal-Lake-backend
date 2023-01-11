@@ -1,12 +1,29 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.urls import reverse
 
 from ..user.models import CustomUser
 from ..service.models import Service
 
+from ..user.managers import UserQuerySet, CustomUserManager
+
 # Create your models here.
+
+
+class WorkerQuerySet(UserQuerySet):
+    """
+    Кверисет для удобного поиска по данным с форм
+    """
+    def search(self, **kwargs):
+        qs = super().search(**kwargs)
+        if kwargs.get('offer_id', ''):
+            qs = qs.filter(qualifications__pk__in=[kwargs['offer_id']])
+
+        return qs
+
+
+class WorkerManager(CustomUserManager):
+    def get_queryset(self):
+        return WorkerQuerySet(self.model, self._db)       # использем расширенный кверисет с методом search
 
 
 class Worker(CustomUser):
@@ -28,6 +45,8 @@ class Worker(CustomUser):
         null=True,
         blank=True
     )
+
+    objects = WorkerManager()
 
     def save(self, *args, **kwargs):
         if not self.pk:

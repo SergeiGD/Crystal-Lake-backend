@@ -22,6 +22,7 @@ class AdminGroupsList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(AdminGroupsList, self).get_context_data()
         context['current_page'] = 'groups'
+        context['additional_page'] = True
         return context
 
 
@@ -34,6 +35,7 @@ class AdminGroupDetail(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(AdminGroupDetail, self).get_context_data(**kwargs)
         context['current_page'] = 'groups'
+        context['additional_page'] = True
         context['delete_link'] = self.object.get_admin_delete_url()
         context['workers'] = Worker.objects.filter(groups=self.object, date_deleted=None)
         context['permissions'] = self.object.permissions.all()#Worker.objects.filter(groups=self.object, date_deleted=None)
@@ -50,6 +52,7 @@ class AdminGroupUpdate(RelocateResponseMixin, UpdateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'groups'
+        context['additional_page'] = True
         context['workers'] = Worker.objects.filter(groups__in=[self.object])
         context['form_permissions'] = ShortSearchForm()
         return context
@@ -76,6 +79,7 @@ class AdminGroupCreate(RelocateResponseMixin, CreateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'groups'
+        context['additional_page'] = True
         return context
 
     def form_invalid(self, form):
@@ -84,7 +88,6 @@ class AdminGroupCreate(RelocateResponseMixin, CreateView):
         return response
 
     def form_valid(self, form):
-        print(form.instance)
         form.instance.save()
         return self.relocate(form.instance.get_admin_show_url())
 

@@ -5,11 +5,10 @@ from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from django.http import HttpResponse, Http404
 
 
-from ..core.utils import SafePaginator, ResponseMessage
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data
 from .models import Room
 from .forms import RoomForm, SearchRoomsForm
 from ..photo.models import Photo
-#from ..tag.forms import SearchTagForm
 from ..core.forms import ShortSearchForm
 from ..offer.utils import ManageOfferMixin
 
@@ -197,3 +196,30 @@ def admin_delete_room(request, offer_id):
     room = get_object_or_404(Room, pk=offer_id)
     room.mark_as_deleted()
     return redirect('admin_rooms')
+
+
+def find_rooms(request, **kwargs):
+    rooms = Room.objects.filter(date_deleted=None, is_hidden=False).search(
+        **request.POST.dict()
+    )
+
+    rooms_page, num_pages = get_paginator_data(rooms, request.POST.get('page_number', 1))
+
+    data = {'pages': {
+        'pages_count': num_pages,
+        'current_page': rooms_page.number,
+    }, 'items': []}
+    for room in rooms_page.object_list:
+        item = {
+            'name': room.name,
+            'id': room.pk,
+            'beds': room.beds,
+            'rooms': room.rooms,
+            'link': room.get_admin_show_url(),
+            'default_price': room.default_price,
+            'weekend_price': room.weekend_price
+        }
+        data['items'].append(item)
+
+    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+    return HttpResponse(response_message.get_json(), content_type='application/json', status=200)

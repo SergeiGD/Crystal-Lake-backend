@@ -1,7 +1,7 @@
 from django import forms
 
-from ..offer.forms import SearchOffersForm, OfferForm
-from .models import Service
+from ..offer.forms import SearchOffersForm, OfferForm, SearchOffersAdmin
+from .models import Service, ServiceTimetable
 
 
 class ServiceForm(OfferForm):
@@ -49,17 +49,40 @@ class SearchServicesForm(SearchOffersForm):
     }))
 
 
-class ShortServiceSearchForm(forms.ModelForm):
-    class Meta:
-        model = Service
-        fields = ['name', 'id']
-
-    id = forms.CharField(max_length=255, label='id', required=False, widget=forms.TextInput(attrs={
-        'class': 'form-control'
+class SearchServicesAdmin(SearchOffersAdmin):
+    time_from = forms.DateField(label='с', required=False, widget=forms.TimeInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    }))
+    time_until = forms.DateField(label='до', required=False, widget=forms.TimeInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
     }))
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
-        self.fields['name'].widget.attrs.update({'class': 'form-control'})
-        self.fields['name'].required = False
+class TimetableForm(forms.Form):
+
+    timetable_id = forms.IntegerField(widget=forms.HiddenInput(attrs={
+        'class': 'd-none'
+    }))
+    date = forms.DateField(label='Дата', widget=forms.DateInput(attrs={
+        'class': 'form-control',
+        'type': 'date'
+    }))
+    start = forms.TimeField(label='Начало', widget=forms.TimeInput(attrs={
+        'class': 'form-control',
+        'type': 'time'
+    }))
+    end = forms.TimeField(label='Конец', widget=forms.TimeInput(attrs={
+        'class': 'form-control',
+        'type': 'time'
+    }))
+
+
+class SearchTimetablesAdmin(forms.Form):
+    start = forms.DateField(label='с', required=False, widget=forms.DateInput(attrs={
+        'class': 'form-control w-100  rounded-end flex-grow-0 flex-shrink-1',
+        'type': 'date'
+    }))
+    end = forms.DateField(label='до', required=False, widget=forms.DateInput(attrs={
+        'class': 'form-control w-100  rounded-end flex-grow-0 flex-shrink-1',
+        'type': 'date'
+    }))

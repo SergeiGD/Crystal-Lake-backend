@@ -1,0 +1,58 @@
+<div class="modal-body">
+
+    <div class="row">
+
+        <div id="timetable_errors"></div>
+
+        <div class="col-lg-4 col-12">
+            <div class="input-group flex-nowrap w-auto">
+                <label for="{{ form_timetable.date.id_for_label }}" class="input-group-text w-10r">{{ form_timetable.date.label }}</label>
+                {{ form_timetable.date }}
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-12">
+            <div class="input-group flex-nowrap w-auto">
+                <label for="{{ form_timetable.start.id_for_label }}" class="input-group-text w-10r">{{ form_timetable.start.label }}</label>
+                {{ form_timetable.start }}
+            </div>
+        </div>
+        <div class="col-lg-4 col-12">
+            <div class="input-group flex-nowrap w-auto">
+                <label for="{{ form_timetable.end.id_for_label }}" class="input-group-text w-10r">{{ form_timetable.end.label }}</label>
+                {{ form_timetable.end }}
+            </div>
+        </div>
+
+        <div class="col-12 mt-4">
+            <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold open_search_btn" data-form="#search_worker" type="button" data-bs-toggle="modal" data-bs-target="#pick_worker_modal">+ Добавить</button>
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">
+                        id
+                    </th>
+                    <th scope="col">
+                        Ф.И.О.
+                    </th>
+                    <th scope="col">
+                        Номер телефона
+                    </th>
+                    <th scope="col">
+                        Убрать
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="timetable_workers_tbody">
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary w-10r">Сохранить</button>
+    <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+</div>

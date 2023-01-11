@@ -106,9 +106,7 @@
                 + Добавить
             </button>
 
-            <form class="overflow-auto delete_additional_form" method="POST" action="{{ group.get_del_permission_url }}">
 
-                {% csrf_token %}
 
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
@@ -130,7 +128,10 @@
                                 <td class="text-nowrap">{{ permission.name }}
                                 </td>
                                 <td class="p-0 position-relative w-10r">
-                                    <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ permission.pk }}">Убрать</button>
+                                    <form class="overflow-auto delete_additional_form" method="POST" action="{{ group.get_del_permission_url }}">
+                                        {% csrf_token %}
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ permission.pk }}">Убрать</button>
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -138,7 +139,6 @@
 
                     </tbody>
                 </table>
-            </form>
         </div>
 
     </div>

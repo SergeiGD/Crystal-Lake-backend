@@ -1,0 +1,97 @@
+<!-- clients popup -->
+<div class="modal fade" id="pick_client_modal" tabindex="-1" aria-labelledby="pick_client_label" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="pick_client_label">Выбор клиента</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
+
+                <form action="{% url 'get_clients_for_order' %}" method="POST" class="find_form" id="search_clients">
+
+                    {% csrf_token %}
+
+                    <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete clean_btn"></i>
+
+                    <div class="text-center">
+                        <span class="fw-bold fs-5">Клиенты</span>
+                    </div>
+
+                    <div class="shadow p-3 rounded-2">
+
+                        <div class="row align-items-start justify-content-between">
+
+                            <div class="col-12 row mx-auto p-0">
+
+                                <div class="col-md-2 col-12">
+                                    <label for="{{ form_clients.id.id_for_label }}" class="form-label">{{ form_clients.id.label }}</label>
+                                    {{ form_clients.id }}
+                                </div>
+
+                                <div class="col-md-5 col-12 mt-md-0 mt-3">
+                                    <label for="{{ form_clients.first_name.id_for_label }}" class="form-label">{{ form_clients.first_name.label }}</label>
+                                    {{ form_clients.first_name }}
+                                </div>
+
+                                <div class="col-md-5 col-12 mt-md-0 mt-3">
+                                    <label for="{{ form_clients.last_name.id_for_label }}" class="form-label">{{ form_clients.last_name.label }}</label>
+                                    {{ form_clients.last_name }}
+                                </div>
+
+                                <div class="col-md-7 col-12 mt-3">
+                                    <label for="{{ form_clients.phone.id_for_label }}" class="form-label">{{ form_clients.phone.label }}</label>
+                                    {{ form_clients.phone }}
+                                </div>
+
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </form>
+
+                <form class="rounded-2 overflow-hidden" method="post" action="." id="select_client">
+
+                    {% csrf_token %}
+
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button" data-sortby="id" data-sortby-active>
+                                id <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="first_name">
+                                Ф.И.О. <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="phone">
+                                Номер телефона <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                            </th>
+                            <th scope="col" class="text-nowrap">
+                                Выбрать
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="clients_tbody">
+
+                        </tbody>
+                    </table>
+
+                </form>
+
+                <nav class="d-flex justify-content-center mt-4">
+                    <ul class="pagination" id="clients_pagination"></ul>
+                </nav>
+
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- clients popup end -->

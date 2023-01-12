@@ -4,6 +4,10 @@ $(document).ready(function (){
     $('.manage_purchase').on('submit', function (event){
         event.preventDefault();
 
+        const form = $(this)
+
+        console.log(form.find('.errors_list'))
+
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
@@ -13,7 +17,7 @@ $(document).ready(function (){
             },
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                errors.handle_errors(response['message'], $('.errors_list'))
+                errors.handle_errors(response['message'], form.find('.errors_list'))
             },
         });
 

@@ -49,11 +49,6 @@ class Order(models.Model):
                 paid += purchase.prepayment
 
         self.paid = paid
-
-        # if self.paid != self.prepayment:
-        #     self.date_full_prepayment = None
-        # elif self.date_full_prepayment is None:
-        #     self.date_full_prepayment = timezone.now()
         if self.paid >= self.prepayment and self.date_full_prepayment is None:
             self.date_full_prepayment = timezone.now()
 
@@ -64,15 +59,20 @@ class Order(models.Model):
 
         self.save()
 
+        # if self.paid != self.prepayment:
+        #     self.date_full_prepayment = None
+        # elif self.date_full_prepayment is None:
+        #     self.date_full_prepayment = timezone.now()
+
     def mark_as_prepayment_paid(self):
-        if not self.date_full_prepayment:
+        if not self.date_full_prepayment and self.price > 0:
             for purchase in self.purchases.filter(is_canceled=False):
                 purchase.is_prepayment_paid = True
                 purchase.save()
             self.update_paid()
 
     def mark_as_paid(self):
-        if not self.date_full_paid:
+        if not self.date_full_paid and self.price > 0:
             self.mark_as_prepayment_paid()
             for purchase in self.purchases.filter(is_canceled=False):
                 purchase.is_paid = True
@@ -218,12 +218,12 @@ class Purchase(PolymorphicModel):
         refund_ratio = Decimal(self.offer.refund_percent) / 100
         return self.price * refund_ratio
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.__old_is_paid = self.is_paid                    # сохраняем изначальное имя, на случай, если его изменяет
-        self.__old_is_prepayment_paid = self.is_prepayment_paid
-        self.__old_is_refund_paid = self.is_refund_made
-        self.__last_paid = self.get_paid()
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.__old_is_paid = self.is_paid                    # сохраняем изначальное имя, на случай, если его изменяет
+    #     self.__old_is_prepayment_paid = self.is_prepayment_paid
+    #     self.__old_is_refund_paid = self.is_refund_made
+    #     self.__last_paid = self.get_paid()
 
     def get_paid(self):
         if self.is_paid and not self.is_refund_made:
@@ -233,40 +233,50 @@ class Purchase(PolymorphicModel):
         if self.is_prepayment_paid:
             return self.prepayment
         return 0
+
     def save(self, *args, **kwargs):
+
+        # if not self.pk and self.offer.date_full_prepayment:
+        #     raise RuntimeError('Нельзя добавить покупки к уже подтвержденному заказу')
+        #
+        # if self.offer
+        self.clean()
         self.price = self.calc_price()
         self.prepayment = self.calc_prepayment()
         self.refund = self.calc_refund()
 
-        # price = self.calc_price()
-        # if price != self.__old_price:
-        #     self.price = price
-        #     self.prepayment = self.calc_prepayemnt()
-        #     self.refund = self.calc_refund()
-        #     self.order.check_payment()
-        # if self.is_paid != self.__old_is_paid or self.is_prepayment_paid != self.__old_is_prepayment_paid:
-        #     self.order.calc_paid()
-
         super().save(*args, **kwargs)
 
-        # self.order.paid -= self.__last_paid
-        # self.order.paid += self.get_paid()
-        # self.order.save()
+        # self.order.update_payment_status()
 
-        #self.order.update_paid()
+    def clean(self):
+        from django.core.exceptions import ValidationError
 
+        if not self.pk and self.offer.date_full_prepayment:
+            raise ValidationError('Нельзя добавить покупки к уже подтвержденному заказу')
+        # if not self.pk and self.offer.date_full_prepayment:
+        #     raise ValidationError({
+        #         'order': 'Нельзя добавить покупки к уже подтвержденному заказу'
+        #     })
 
+        if self.order.date_canceled or self.order.date_finished:
+            raise ValidationError('Нельзя изменить завершенный заказ')
+        # if self.order.date_canceled or self.order.date_finished:
+        #     raise ValidationError({
+        #         'order': 'Нельзя изменить завершенный заказ заказу'
+        #     })
 
+        if self.order.date_full_paid:
+            raise ValidationError('Нельзя изменить даты оплаченного заказа заказ заказу')
 
     def get_info(self):
         return {
-            'name': self.offer.name,
-            'link': self.offer.get_admin_show_url(),
+            'offer': self.offer.get_info(),
             'start': self.start.timestamp(),
             'end': self.end.timestamp(),
             'is_paid': self.is_paid,
             'is_prepayment_paid': self.is_prepayment_paid,
-            'id': self.pk
+            'id': self.pk,
         }
 
     def get_required_modal(self):

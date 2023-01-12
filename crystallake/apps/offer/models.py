@@ -89,6 +89,10 @@ class Offer(PolymorphicModel):
         blank=False,
         null=True
     )
+    # dynamic_timetable = models.BooleanField(
+    #     verbose_name='динамическое расписание',
+    #     default=True
+    # )
     date_create = models.DateTimeField(
         verbose_name='дата создания',
         auto_now_add=True,
@@ -130,6 +134,14 @@ class Offer(PolymorphicModel):
 
     def __str__(self):
         return self.name
+
+    def get_info(self):
+        return {
+            'name': self.name,
+            'id': self.pk,
+            'default_price': self.pk,
+            'is_hidden': self.is_hidden,
+        }
 
     def get_familiar(self):
         tags_intersection = {}

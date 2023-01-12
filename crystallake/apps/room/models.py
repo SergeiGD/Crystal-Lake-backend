@@ -67,6 +67,15 @@ class Room(Offer):
     def get_same_rooms(self):
         return Room.objects.filter(date_deleted=None, main_room=self)
 
+    def get_info(self):
+        data = super().get_info()
+        data['link'] = self.get_admin_show_url()
+        data['rooms'] = self.rooms
+        data['floors'] = self.floors
+        data['beds'] = self.floors
+        data['square'] = self.square
+        return data
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         for room in self.get_same_rooms():

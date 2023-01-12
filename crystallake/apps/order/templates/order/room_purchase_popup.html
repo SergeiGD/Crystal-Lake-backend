@@ -27,8 +27,6 @@
                                 <a href="" target="_blank" class="text-decoration-none fs-5">Просмотреть занятость номера</a>
                             </div>
 
-                            <div id="purchase_errors"></div>
-
                             <div class="col-lg-6 col-12 mt-4">
                                 <div class="input-group flex-nowrap w-auto">
                                     <label for="{{ form_room_purchase.start.id_for_label }}" class="input-group-text w-10r">{{ form_room_purchase.start.label }}</label>
@@ -47,6 +45,8 @@
 {#                                {{ form_room_purchase.is_paid }}#}
 {#                                <label class="btn btn-outline-primary w-50" for="{{ form_room_purchase.is_paid.id_for_label }}">{{ form_room_purchase.is_paid.label }}</label>#}
 {#                            </div>#}
+
+                            <div class="errors_list"></div>
 
                         </div>
 

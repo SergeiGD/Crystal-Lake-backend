@@ -39,6 +39,12 @@ class Service(Offer):
 
     objects = ServiceQuerySet.as_manager()
 
+    def get_info(self):
+        data = super().get_info()
+        data['max_for_moment'] = self.max_for_moment
+        data['dynamic_timetable'] = self.dynamic_timetable
+        return data
+
     def get_absolute_url(self):
         return reverse('service', kwargs={'service_slug': self.slug})
 

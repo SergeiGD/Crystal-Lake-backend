@@ -3,7 +3,7 @@ $(document).ready(function (){
     $('#room_purchase_modal').on('popup_open', function (event, data){
 
         $('#id_purchase_id').val(data.id)
-        $('#room_purchase').html(data.name).attr('href', data.link)
+        $('#room_purchase').html(data.offer.name).attr('href', data.offer.link)
         const start = new Date(data.start * 1000)
         $('#id_start').val(start.toISOString().split('T')[0])
         const end = new Date(data.end * 1000)

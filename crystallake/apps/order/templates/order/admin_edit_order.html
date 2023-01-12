@@ -245,7 +245,7 @@
                                 <td class="p-0 position-relative w-10r">
                                     <form method="post" action="{{ purchase.get_cancel_url }}">
                                         {% csrf_token %}
-                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="submit" {% if purchase.is_canceled %}disabled{% endif %} data-id="{{ purchase.pk }}">Отменить</button>
+                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="submit" {% if purchase.is_canceled or order.date_canceled or order.date_finished %}disabled{% endif %} data-id="{{ purchase.pk }}">Отменить</button>
                                     </form>
                                 </td>
                             </tr>

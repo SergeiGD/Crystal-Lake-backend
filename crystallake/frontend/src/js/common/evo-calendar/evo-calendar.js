@@ -906,9 +906,9 @@
     };
 
     // v1.0.0 - Select month
-    EvoCalendar.prototype.selectMonth = function(event) {
+    EvoCalendar.prototype.selectMonth = function(event, additional_info = {}) {
         var _ = this;
-        
+
         if (typeof event === 'string' || typeof event === 'number') {
             if (event >= 0 && event <=_.$label.months.length) {
                 // if: 0-11
@@ -927,7 +927,7 @@
         }
 
         // EVENT FIRED: selectMonth
-        $(_.$elements.calendarEl).trigger("selectMonth", [_.initials.dates[_.options.language].months[_.$active.month], _.$active.month])
+        $(_.$elements.calendarEl).trigger("selectMonth", [_.initials.dates[_.options.language].months[_.$active.month], _.$active.month, additional_info])
     };
 
     // v1.0.0 - Select specific date

@@ -47,6 +47,7 @@ module.exports = {
             path.resolve(__dirname,'src/scss/admin.scss'),
             path.resolve(__dirname,'src/js/common/redirect.js'),
             path.resolve(__dirname,'src/js/common/evo-calendar/evo-starter.js'),
+            path.resolve(__dirname,'src/js/common/evo-calendar/evo-calendar.js'),
             path.resolve(__dirname,'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'),
             path.resolve(__dirname,'src/js/admin/show_img.js'),
             path.resolve(__dirname,'src/js/admin/move_img.js'),
@@ -86,6 +87,7 @@ module.exports = {
             path.resolve(__dirname,'src/js/admin/ajax/create_same_room.js'),
             path.resolve(__dirname,'src/js/admin/ajax/default_set_main_info.js'),
             path.resolve(__dirname,'src/js/admin/ajax/manage_timetable.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/get_dates_info.js'),
         ]
     },
     output: {

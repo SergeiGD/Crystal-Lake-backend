@@ -195,7 +195,7 @@
                                 <tr>
                             {% endif %}
 
-                                <th scope="row">{{ purchase.id }}</th>
+                                <th scope="row">{{ purchase.offer.pk }}</th>
                                 <td>
                                     <a href="{{ purchase.offer.get_admin_show_url }}" class="link-hover d-block">{{ purchase.offer.name }}</a>
                                 </td>

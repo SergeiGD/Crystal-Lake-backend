@@ -1,9 +1,13 @@
-import copy
+from datetimerange import DateTimeRange
+from datetime import timedelta
 
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
+from django.utils.timezone import localtime
 
 from ..offer.models import Offer, OfferQuerySet
+from ..order.models import Purchase
 
 # Create your models here.
 
@@ -67,6 +71,69 @@ class Room(Offer):
     def get_same_rooms(self):
         return Room.objects.filter(date_deleted=None, main_room=self)
 
+    def get_general_busy_dates(self, start, end):
+        general_dates = []
+        if self.main_room is None:
+
+            rooms = self.get_same_rooms()
+            for room in rooms:
+                room_dates = set()
+
+                purchases = Purchase.objects.filter(
+                    offer__pk=room.pk,
+                    is_canceled=False,
+                    order__date_canceled=None,
+                    start__gte=start,
+                    end__lte=end
+                )
+
+                for purchase in purchases:
+                    dates_range = DateTimeRange(localtime(purchase.start), localtime(purchase.end))
+                    for date in dates_range.range(timedelta(days=1)):
+                        room_dates.add(date.day)
+
+                general_dates.append(room_dates)
+
+            general_dates = set.intersection(*general_dates)
+
+        return list(general_dates)
+
+
+        #     purchases = Purchase.objects.filter(
+        #         offer__pk__in=self.get_same_rooms().values('pk'),
+        #         is_canceled=False,
+        #         order__date_canceled=None,
+        #         start__gte=start,
+        #         end__lte=end
+        #     )
+        #     for purchase in purchases:
+        #         dates_range = DateTimeRange(localtime(purchase.start), localtime(purchase.end))
+        #         purchase_dates = set()
+        #         for date in dates_range.range(timedelta(days=1)):
+        #             purchase_dates.add(date.day)
+        #
+        #         general_dates.append(purchase_dates)
+        #     print(general_dates)
+        #     return set.intersection(*general_dates)
+        # return general_dates
+
+    def get_busy_dates(self, start, end):
+        dates = set()
+        if self.main_room is not None:
+            purchases = Purchase.objects.filter(
+                offer__pk=self.pk,
+                is_canceled=False,
+                order__date_canceled=None,
+                start__gte=start,
+                end__lte=end
+            )
+            for purchase in purchases:
+                dates_range = DateTimeRange(localtime(purchase.start), localtime(purchase.end))
+                print(dates_range)
+                for date in dates_range.range(timedelta(days=1)):
+                    dates.add(date.day)
+        return list(dates)
+
     def get_info(self):
         data = super().get_info()
         data['link'] = self.get_admin_show_url()
@@ -105,5 +172,11 @@ class Room(Offer):
 
     def get_del_same_room_url(self):
         return reverse('del_same_room', kwargs={'offer_id': self.pk})
+
+    def get_busy_dates_url(self):
+        return reverse('get_busy_dates', kwargs={'offer_id': self.main_room.pk, 'room_id': self.pk})
+
+    def get_general_busy_dates_url(self):
+        return reverse('get_general_busy_dates', kwargs={'offer_id': self.pk})
 
     objects = RoomQuerySet.as_manager()

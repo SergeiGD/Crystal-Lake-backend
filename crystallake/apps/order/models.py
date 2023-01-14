@@ -249,24 +249,27 @@ class Purchase(PolymorphicModel):
 
         # self.order.update_payment_status()
 
+    def has_order(self):
+        return hasattr(self, 'order') and self.order is not None
+
     def clean(self):
         from django.core.exceptions import ValidationError
 
-        if not self.pk and self.offer.date_full_prepayment:
+        if not self.pk and self.has_order() and self.order.date_full_prepayment:
             raise ValidationError('Нельзя добавить покупки к уже подтвержденному заказу')
         # if not self.pk and self.offer.date_full_prepayment:
         #     raise ValidationError({
         #         'order': 'Нельзя добавить покупки к уже подтвержденному заказу'
         #     })
 
-        if self.order.date_canceled or self.order.date_finished:
+        if self.pk and self.has_order() and (self.order.date_canceled or self.order.date_finished):
             raise ValidationError('Нельзя изменить завершенный заказ')
         # if self.order.date_canceled or self.order.date_finished:
         #     raise ValidationError({
         #         'order': 'Нельзя изменить завершенный заказ заказу'
         #     })
 
-        if self.order.date_full_paid:
+        if self.pk and self.has_order() and self.order.date_full_paid:
             raise ValidationError('Нельзя изменить даты оплаченного заказа заказ заказу')
 
     def get_info(self):

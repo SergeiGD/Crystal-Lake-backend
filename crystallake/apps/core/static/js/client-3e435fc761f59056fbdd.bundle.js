@@ -3456,6 +3456,134 @@ $(document).ready(function (){
 
 /***/ }),
 
+/***/ "./src/js/common/evo-calendar/evo-starter.js":
+/*!***************************************************!*\
+  !*** ./src/js/common/evo-calendar/evo-starter.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+// import './evo-calendar'
+
+$(document).ready(function(){
+
+    // const serviceEvents = [
+    //     {
+    //         id: "required-id-1",
+    //         name: "busy",
+    //         date: "2022/11/11",
+    //         type: "enable",
+    //         name:"15:00 - 17:00",
+    //         description:"3 мест(а)"
+    //     },
+    // ];
+    //
+    // const roomEvents = [
+    //     {
+    //         id: "required-id-1",
+    //         name: "busy",
+    //         date: "2022/11/11",
+    //         type: "busy",
+    //     },
+    //     {
+    //         id: "required-id-2",
+    //         name: "busy",
+    //         date: "2022/11/12",
+    //         type: "busy",
+    //     },
+    //     {
+    //         id: "required-id-3",
+    //         name: "busy",
+    //         date: "2022/11/13",
+    //         type: "busy",
+    //     },
+    //
+    // ];
+
+
+    // $('.calendar__service').evoCalendar({
+    //     calendarEvents: serviceEvents,
+    //
+    //     format: 'yyyy/mm/dd',
+    //
+    //     sidebarDisplayDefault: false,
+    //     sidebarToggler: true,
+    //
+    //     eventListToggler: false,
+    //
+    //     eventDisplayDefault: false,
+    //
+    //     language:'ru',
+    //
+    //     firstDayOfWeek: 1
+    // });
+
+    $('.evoCalendar').evoCalendar({
+        calendarEvents: [],
+
+        format: 'yyyy/mm/dd',
+
+        sidebarDisplayDefault: false,
+        sidebarToggler: true,
+
+        eventDisplayDefault: false,
+        eventListToggler: false,
+
+        todayHighlight: true,
+
+        language:'ru',
+
+        firstDayOfWeek: 1
+    });
+
+
+
+    $('.calendar__service .calendar-events').addClass('calendar-events__required');
+   
+    // $('.calendar__service').on('selectMonth', function(){
+    //     $(".event-indicator").each(function(){              // если на день есть событие, оказываем услугу в этот день
+    //         $(this).parent().addClass('day-enable');
+    //     });
+    // });
+    //
+    // $('.calendar__room').on('selectMonth', function(){
+    //     $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
+    //         $(this).parent().addClass('day-busy');
+    //     });
+    // });
+
+    //$('.evoCalendar').evoCalendar('selectMonth', new Date().getMonth());    // выбираем текущий месяц
+
+    // $('.calendar__room').on('selectMonth', function(){
+    //     $(this).siblings('form').children('button').trigger('click')
+    // });
+    
+});
+
+/***/ }),
+
+/***/ "./src/js/common/redirect.js":
+/*!***********************************!*\
+  !*** ./src/js/common/redirect.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function(){
+    $("[data-goto]").on('click', function(e){
+        e.stopPropagation();
+        window.location.href = e.currentTarget.getAttribute('data-goto');
+    });
+
+    $(".offers").on('click', function(e){
+        const elem = e.target.closest('[data-goto]');                                       // в списке офферов (скидки) есть элементы, добавляющиеся диначимески.
+        if(!elem) return;                                                                   // поэтому будет искать в его дочерних элементах
+        if (elem.dataset.goto) window.location.href = elem.dataset.goto;
+    });
+});
+
+/***/ }),
+
 /***/ "./src/js/jquery-mobile/jquery.mobile.custom.min.js":
 /*!**********************************************************!*\
   !*** ./src/js/jquery-mobile/jquery.mobile.custom.min.js ***!
@@ -3633,20 +3761,20 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/scss/style.scss")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/common/redirect.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/client/header_burger.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/client/login_popup.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/client/offers_slider.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/client/profile_burger.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/client/filter_mobile.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/client/infinity_catalog.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/client/picked_time.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/client/sortby.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/client/slick-slider/slick_starter.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_evo-calendar_evo-starter_js-src_js_common_redirect_js"], () => (__webpack_require__("./src/js/common/evo-calendar/evo-starter.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/scss/style.scss")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/common/redirect.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/header_burger.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/login_popup.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/offers_slider.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/profile_burger.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/filter_mobile.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/infinity_catalog.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/picked_time.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/sortby.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/slick-slider/slick_starter.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/common/evo-calendar/evo-starter.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-e5e80c1a1a34444cb806.bundle.js.map
+//# sourceMappingURL=client-3e435fc761f59056fbdd.bundle.js.map

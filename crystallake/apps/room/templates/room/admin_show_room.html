@@ -19,8 +19,8 @@
 {% endblock breadcrumbs %}
 
 {% block properties %}
-
     {% with offer as room %}
+
 
     <div class="col-md-6 col-12 row">
         <p class="fw-bold col-5">Наименование:</p>
@@ -96,7 +96,6 @@
 
     {% endwith %}
 
-
 {% endblock properties %}
 
 
@@ -106,6 +105,8 @@
 
     <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5" id="dates">
 
+        {% with offer as room %}
+
         <div class="text-center">
             <span class="fw-bold fs-5">Свободные даты</span>
         </div>
@@ -113,21 +114,38 @@
         <div class="row">
             <div class="mx-auto col-lg-5 col-12">
                 <span class="input-group-text rounded-top rounded-0">Общие даты (1 день):</span>
+                <form action="{{ room.get_general_busy_dates_url }}" id="{{ room.pk }}_dates" method="GET">
+                        {% csrf_token %}
+                        <button type="submit" class="d-none"></button>
+                    </form>
                 <div class="evoCalendar calendar calendar__room"></div>
             </div>
         </div>
 
 
         <div class="row mt-5 justify-content-between">
-            <div class="col-lg-5 col-12">
-                <span class="input-group-text rounded-top rounded-0">Номер 19:</span>
-                <div class="evoCalendar calendar calendar__room"></div>
-            </div>
-            <div class="col-lg-5 col-12 mt-lg-0 mt-5">
-                <span class="input-group-text rounded-top rounded-0">Номер 36:</span>
-                <div  class="evoCalendar calendar calendar__room"></div>
-            </div>
+            {% for same_room in room.get_same_rooms %}
+                <div class="col-lg-5 col-12">
+                    <span class="input-group-text rounded-top rounded-0">Номер {{ same_room.pk }}:</span>
+                    <form action="{{ same_room.get_busy_dates_url }}" id="{{ same_room.pk }}_dates" method="GET">
+                        {% csrf_token %}
+                        <button type="submit" class="d-none"></button>
+                    </form>
+                    <div class="evoCalendar calendar calendar__room"></div>
+                </div>
+            {% endfor %}
+{#            <div class="col-lg-5 col-12">#}
+{#                <span class="input-group-text rounded-top rounded-0">Номер 19:</span>#}
+{#                <div class="evoCalendar calendar calendar__room"></div>#}
+{#            </div>#}
+{#            <div class="col-lg-5 col-12 mt-lg-0 mt-5">#}
+{#                <span class="input-group-text rounded-top rounded-0">Номер 36:</span>#}
+{#                <div  class="evoCalendar calendar calendar__room"></div>#}
+{#            </div>#}
         </div>
+
+        {% endwith %}
+
 
     </div>
 

@@ -1,11 +1,15 @@
+from datetime import datetime
+import pytz
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from django.http import HttpResponse, Http404
+from django.utils.timezone import localtime, now
 
 
-from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, parse_datetime
 from .models import Room
 from .forms import RoomForm, SearchRoomsForm
 from ..photo.models import Photo
@@ -199,10 +203,12 @@ def admin_delete_room(request, offer_id):
 
 
 def find_rooms(request, **kwargs):
-    rooms = Room.objects.filter(date_deleted=None, is_hidden=False).search(
+    # rooms = Room.objects.filter(date_deleted=None, is_hidden=False).search(
+    #     **request.POST.dict()
+    # )
+    rooms = Room.objects.filter(date_deleted=None).search(      # TODO
         **request.POST.dict()
     )
-
     rooms_page, num_pages = get_paginator_data(rooms, request.POST.get('page_number', 1))
 
     data = {'pages': {
@@ -222,4 +228,42 @@ def find_rooms(request, **kwargs):
         data['items'].append(item)
 
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+    return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+
+def get_busy_dates_view(request, room_id, **kwargs):
+    room = get_object_or_404(Room, pk=room_id)
+    start_timestamp = request.GET.get('start', 0)
+    end_timestamp = request.GET.get('end', 0)
+    if start_timestamp == 0 or end_timestamp == 0:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Свободность номера': ['Невозможно получить данные по выбранной дате']
+        })
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=400)
+    start_timestamp = int(start_timestamp) / 1000        # питон принимает в секундах, а не милисекундах
+    end_timestamp = int(end_timestamp) / 1000
+    start = datetime.fromtimestamp(start_timestamp, tz=pytz.UTC)    # приходит время в UTC
+    end = datetime.fromtimestamp(end_timestamp, tz=pytz.UTC)
+
+    dates = room.get_busy_dates(localtime(start), localtime(end))   # конвертим в локальное время при вызове
+    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=dates)
+    return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+
+def get_general_busy_dates_view(request, offer_id, **kwargs):
+    room = get_object_or_404(Room, pk=offer_id)
+    start_timestamp = request.GET.get('start', 0)
+    end_timestamp = request.GET.get('end', 0)
+    if start_timestamp == 0 or end_timestamp == 0:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Свободность номера': ['Невозможно получить данные по выбранной дате']
+        })
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=400)
+    start_timestamp = int(start_timestamp) / 1000        # питон принимает в секундах, а не милисекундах
+    end_timestamp = int(end_timestamp) / 1000
+    start = datetime.fromtimestamp(start_timestamp, tz=pytz.UTC)    # приходит время в UTC
+    end = datetime.fromtimestamp(end_timestamp, tz=pytz.UTC)
+
+    dates = room.get_general_busy_dates(localtime(start), localtime(end))   # конвертим в локальное время при вызове
+    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=dates)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)

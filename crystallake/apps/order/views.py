@@ -13,6 +13,7 @@ from ..room.forms import SearchRoomsAdmin
 from ..offer.models import Offer
 from .models import Purchase, PurchaseCountable
 from ..service.forms import SearchServicesAdmin, SearchTimetablesAdmin
+from ..room.models import Room
 from ..service.models import ServiceTimetable
 
 
@@ -71,8 +72,15 @@ class AdminOrderUpdate(RelocateResponseMixin, UpdateView):
         context['form_rooms'] = SearchRoomsAdmin()
         context['form_services'] = SearchServicesAdmin()
         context['form_room_purchase'] = RoomPurchaseForm()
+        context['form_create_room_purchase'] = RoomPurchaseForm(prefix='create')
         context['form_service_purchase'] = ServicePurchaseForm()
         context['form_timetables'] = SearchTimetablesAdmin()
+        # pur = Purchase.objects.get(pk=91)
+        # print(pur.start)
+        # print(pur.end)
+        # print(timezone.localtime(pur.start))
+        # print(timezone.localtime(pur.end))
+
         return context
 
     def form_invalid(self, form):
@@ -115,21 +123,92 @@ class AdminOrderUpdate(RelocateResponseMixin, UpdateView):
         return response
 
 
-def room_purchase_manage_view(request, order_id):
+def room_purchase_edit_view(request, **kwargs):
+    if request.POST:
+        purchase_id = request.POST['purchase_id']
+        purchase = get_object_or_404(Purchase, pk=purchase_id)
+
+        form = RoomPurchaseForm(request.POST or None, instance=purchase)
+        #purchase = form.instance
+
+        if form.is_valid():
+            room = purchase.offer.main_room
+            rooms = room.pick_rooms_for_purchase(form.cleaned_data['start'], form.cleaned_data['end'], purchase.order.pk)
+            if len(rooms) == 0:
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                    'Свободность номера': ['Нету свободных комнат на выбранные даты']
+                })
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
+
+            if len(rooms) > 1 and not form.cleaned_data['multiple_rooms_acceptable']:
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
+                    'Свободность номера': [
+                        'Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
+                })
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
+
+            purchases = []
+            for room in rooms:
+                created_purchase = Purchase(
+                    order=purchase.order,
+                    offer=room['room'],
+                    start=room['start'],
+                    end=room['end'],
+                    is_prepayment_paid=purchase.is_prepayment_paid
+                )
+                purchases.append(created_purchase)
+            Purchase.objects.bulk_create(purchases)
+            purchase.delete()
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+            response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
+            return response
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
+
+
+def room_purchase_create_view(request, order_id):
     if request.POST:
         order = get_object_or_404(Order, pk=order_id)
-        purchase_id = request.POST['purchase_id'] if request.POST['purchase_id'] else -1
-        purchase = Purchase.objects.filter(pk=purchase_id).first()
 
-        form = RoomPurchaseForm(request.POST or None, instance=purchase)    # если purchase_id не передан, то будет None -> новый объект
+        form = RoomPurchaseForm(request.POST or None, prefix='create')
+        purchase = form.instance
+        purchase.order = order
+
         if form.is_valid():
-            purchase = form.instance
-            if not purchase.pk:
-                room_id = form.cleaned_data['room_id']
-                offer = get_object_or_404(Offer, pk=room_id)
-                purchase.offer = offer
-                purchase.order = order
-            purchase.save()
+            room_id = form.cleaned_data['room_id']
+            room = get_object_or_404(Room, pk=room_id)
+
+            rooms = room.pick_rooms_for_purchase(form.cleaned_data['start'], form.cleaned_data['end'])
+            if len(rooms) == 0:
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                    'Свободность номера': ['Нету свободных комнат на выбранные даты']
+                })
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
+
+            if len(rooms) > 1 and not form.cleaned_data['multiple_rooms_acceptable']:
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
+                    'Свободность номера': ['Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
+                })
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
+
+            purchases = []
+            for room in rooms:
+                purchase = Purchase(
+                    order=order,
+                    offer=room['room'],
+                    start=room['start'],
+                    end=room['end']
+                )
+                print(purchase.start)
+                print(purchase.end)
+                purchases.append(purchase)
+            Purchase.objects.bulk_create(purchases)
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
             return response

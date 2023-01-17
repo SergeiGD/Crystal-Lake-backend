@@ -48,7 +48,9 @@ $(document).ready(function (){
                             ${item.weekend_price}
                         </td>
                         <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal" data-bs-target="#room_purchase_modal" type="button">
+                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal" data-bs-target="#create_room_purchase_modal" type="button">
+
+<!--                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal" data-bs-target="#room_purchase_modal" type="button">-->
                                 Выбрать
                             </button>
                         </td>

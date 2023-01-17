@@ -1,9 +1,11 @@
 from decimal import Decimal
 from datetime import datetime
 
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
-from polymorphic.models import PolymorphicModel
+from polymorphic.models import PolymorphicModel, PolymorphicManager
 from django.urls import reverse
 from django.utils import timezone
 
@@ -172,11 +174,24 @@ class Order(models.Model):
     def get_admin_edit_url(self):
         return reverse('admin_edit_order', kwargs={'order_id': self.pk})
 
-    def get_manage_room_purchase_url(self):
-        return reverse('manage_room_purchase', kwargs={'order_id': self.pk})
+    def get_create_room_purchase_url(self):
+        return reverse('create_room_purchase', kwargs={'order_id': self.pk})
+
+    def get_edit_room_purchase_url(self):
+        return reverse('edit_room_purchase', kwargs={'order_id': self.pk})
 
     def get_manage_service_purchase_url(self):
         return reverse('manage_service_purchase', kwargs={'order_id': self.pk})
+
+
+class PurchaseManager(PolymorphicManager):
+    def bulk_create(self, purchases, **kwargs):
+        for purchase in purchases:
+            purchase.clean()
+            purchase.price = purchase.calc_price()
+            purchase.prepayment = purchase.calc_prepayment()
+            purchase.refund = purchase.calc_refund()
+        return super(PurchaseManager, self).bulk_create(purchases, **kwargs)
 
 
 class Purchase(PolymorphicModel):
@@ -194,6 +209,8 @@ class Purchase(PolymorphicModel):
     price = models.DecimalField(max_digits=12, decimal_places=5)            # итоговая цена
     prepayment = models.DecimalField(max_digits=12, decimal_places=5)       # итоговая предоплата
     refund = models.DecimalField(max_digits=12, decimal_places=5)           # итоговый возврат средств
+
+    objects = PurchaseManager()
 
     def calc_price(self):
         delta_seconds = (self.end - self.start).total_seconds()
@@ -235,11 +252,6 @@ class Purchase(PolymorphicModel):
         return 0
 
     def save(self, *args, **kwargs):
-
-        # if not self.pk and self.offer.date_full_prepayment:
-        #     raise RuntimeError('Нельзя добавить покупки к уже подтвержденному заказу')
-        #
-        # if self.offer
         self.clean()
         self.price = self.calc_price()
         self.prepayment = self.calc_prepayment()
@@ -249,34 +261,27 @@ class Purchase(PolymorphicModel):
 
         # self.order.update_payment_status()
 
-    def has_order(self):
-        return hasattr(self, 'order') and self.order is not None
-
     def clean(self):
         from django.core.exceptions import ValidationError
 
-        if not self.pk and self.has_order() and self.order.date_full_prepayment:
+        if not self.pk and self.order.date_full_prepayment:
             raise ValidationError('Нельзя добавить покупки к уже подтвержденному заказу')
-        # if not self.pk and self.offer.date_full_prepayment:
-        #     raise ValidationError({
-        #         'order': 'Нельзя добавить покупки к уже подтвержденному заказу'
-        #     })
 
-        if self.pk and self.has_order() and (self.order.date_canceled or self.order.date_finished):
+        if self.order.date_canceled or self.order.date_finished:
             raise ValidationError('Нельзя изменить завершенный заказ')
-        # if self.order.date_canceled or self.order.date_finished:
-        #     raise ValidationError({
-        #         'order': 'Нельзя изменить завершенный заказ заказу'
-        #     })
 
-        if self.pk and self.has_order() and self.order.date_full_paid:
-            raise ValidationError('Нельзя изменить даты оплаченного заказа заказ заказу')
+        if self.pk and self.order.date_full_paid:
+            raise ValidationError('Нельзя изменить покупки оплаченного заказа заказ заказу')
 
     def get_info(self):
+        print(self.start.timestamp())
+        print(timezone.localtime(self.start).timestamp())
+        local_start = timezone.localtime(self.start)
+        local_end = timezone.localtime(self.end)
         return {
             'offer': self.offer.get_info(),
-            'start': self.start.timestamp(),
-            'end': self.end.timestamp(),
+            'start': local_start.timestamp(),
+            'end': local_end.timestamp(),
             'is_paid': self.is_paid,
             'is_prepayment_paid': self.is_prepayment_paid,
             'id': self.pk,
@@ -326,6 +331,19 @@ class PurchaseCountable(Purchase):
         return 'quantity modal'
 
 
+# @receiver(pre_save, sender=Purchase)
+# def purchase_save_handler(sender, instance, *args, **kwargs):
+#     print('asdsadsadsadsd')
+#     instance.clean()
+#     instance.price = instance.calc_price()
+#     instance.prepayment = instance.calc_prepayment()
+#     instance.refund = instance.calc_refund()
+
+
+# @receiver(pre_save, sender=Purchase)
+# def update_user(sender, instance, **kwargs):
+#     print('ssssss!!')
+#     instance.user.save()
 
 
 

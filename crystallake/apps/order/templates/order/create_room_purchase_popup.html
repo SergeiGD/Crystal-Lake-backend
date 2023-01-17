@@ -1,17 +1,15 @@
 <!-- modal edit room purchase -->
-    <div class="modal fade edit_popup" id="room_purchase_modal" tabindex="-1" aria-labelledby="room_purchase_modal" aria-hidden="true">
+    <div class="modal fade edit_popup" id="create_room_purchase_modal" tabindex="-1" aria-labelledby="create_room_purchase_label" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="room_purchase_modal">Изменение номера в заказе</h1>
+                    <h1 class="modal-title fs-5" id="create_room_purchase_label">Добавление номера к заказу</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <form action="{{ order.get_edit_room_purchase_url }}" class="manage_purchase" method="POST">
+                <form action="{{ order.get_create_room_purchase_url }}" class="manage_purchase" method="POST">
 
                     {% csrf_token %}
-
-                    {{ form_room_purchase.purchase_id }}
 
                     <div class="modal-body">
 
@@ -21,6 +19,7 @@
                                 <p class="fw-bold">Номер:</p>
                                 <a href="" class="link-hover ms-3 purchase_name"></a>
                                 <hr>
+                                {{ form_create_room_purchase.room_id }}
                             </div>
                             <div class="col-12 mt-4 text-center">
                                 <a href="" target="_blank" class="text-decoration-none fs-5 room_timetable_link">Просмотреть занятость номера</a>
@@ -28,20 +27,20 @@
 
                             <div class="col-lg-6 col-12 mt-4">
                                 <div class="input-group flex-nowrap w-auto">
-                                    <label for="{{ form_room_purchase.start.id_for_label }}" class="input-group-text w-10r">{{ form_room_purchase.start.label }}</label>
-                                    {{ form_room_purchase.start }}
+                                    <label for="{{ form_create_room_purchase.start.id_for_label }}" class="input-group-text w-10r">{{ form_create_room_purchase.start.label }}</label>
+                                    {{ form_create_room_purchase.start }}
                                 </div>
                             </div>
                             <div class="col-lg-6 col-12 mt-4">
                                 <div class="input-group flex-nowrap w-auto">
-                                    <label for="{{ form_room_purchase.end.id_for_label }}" class="input-group-text w-10r">{{ form_room_purchase.end.label }}</label>
-                                    {{ form_room_purchase.end }}
+                                    <label for="{{ form_create_room_purchase.end.id_for_label }}" class="input-group-text w-10r">{{ form_create_room_purchase.end.label }}</label>
+                                    {{ form_create_room_purchase.end }}
                                 </div>
                             </div>
 
                             <div class="col-12 mt-4 btn-group" role="group">
-                                {{ form_room_purchase.multiple_rooms_acceptable }}
-                                <label class="btn btn-outline-primary" for="{{ form_room_purchase.multiple_rooms_acceptable.id_for_label }}">{{ form_room_purchase.multiple_rooms_acceptable.label }}</label>
+                                {{ form_create_room_purchase.multiple_rooms_acceptable }}
+                                <label class="btn btn-outline-primary" for="{{ form_create_room_purchase.multiple_rooms_acceptable.id_for_label }}">{{ form_create_room_purchase.multiple_rooms_acceptable.label }}</label>
                             </div>
 
                             <div class="errors_list"></div>

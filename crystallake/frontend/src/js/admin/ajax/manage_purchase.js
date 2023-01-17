@@ -6,8 +6,6 @@ $(document).ready(function (){
 
         const form = $(this)
 
-        console.log(form.find('.errors_list'))
-
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',

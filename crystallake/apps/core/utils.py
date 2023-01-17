@@ -21,6 +21,7 @@ class ResponseMessage:
     class STATUSES:
         OK = 'OK'
         ERROR = 'ERROR'
+        INFO = 'INFO'
 
     def __init__(self, status, data=None, message=None):
         self.status = status

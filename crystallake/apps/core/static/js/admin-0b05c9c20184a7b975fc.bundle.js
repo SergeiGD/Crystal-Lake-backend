@@ -14,6 +14,21 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/js/admin/add_hours.js":
+/*!***********************************!*\
+  !*** ./src/js/admin/add_hours.js ***!
+  \***********************************/
+/***/ ((module) => {
+
+ const add_hours = function(date, hours){
+     date.setTime(date.getTime() + (hours * 60 * 60 * 1000))
+     return date
+}
+
+module.exports.add_hours = add_hours;
+
+/***/ }),
+
 /***/ "./src/js/admin/add_worker_to_timetable.js":
 /*!*************************************************!*\
   !*** ./src/js/admin/add_worker_to_timetable.js ***!
@@ -255,12 +270,12 @@ $(document).ready(function () {
 
     // TODO: ДОБАВИТЬ АККОРДЕОН И ПРИ ЕГО ОТКРЫТИИ ВЫЗЫВАЕМ selectMonth
 
+
     $('.calendar__room').on('selectMonth', function(event, month_str, month_index, additional_info){
 
         if (!additional_info?.programmatically){
             $('.calendar__room').not(this).evoCalendar('selectMonth', month_index, {programmatically: true});
         }
-
         $(this).find('.day').first().trigger('click');
 
         $(this).siblings('form').children('button').first().trigger('click')
@@ -292,7 +307,6 @@ $(document).ready(function () {
             type: 'GET',
             data: {'start': start, 'end': end, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                console.log(response)
 
                 $('.day-busy').removeClass('day-busy')
                 calendar.find(".event-indicator").removeClass('event-indicator')
@@ -315,6 +329,9 @@ $(document).ready(function () {
             },
         });
     })
+
+    $('.calendar__room').evoCalendar('selectMonth', new Date().getMonth(), {programmatically: true});   // при выбриаем текущей месяц, чтоб стригерить отправку запроса
+
 
     // $('.calendar__room').on('selectMonth', function(){
     //     console.log($(`.calendar[data-id="68"]`).evoCalendar.calendarEvents)
@@ -343,8 +360,6 @@ $(document).ready(function (){
         event.preventDefault();
 
         const form = $(this)
-
-        console.log(form.find('.errors_list'))
 
         $.ajax({
             url: $(this).attr('action'),
@@ -748,7 +763,9 @@ $(document).ready(function (){
                             ${item.weekend_price}
                         </td>
                         <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal" data-bs-target="#room_purchase_modal" type="button">
+                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal" data-bs-target="#create_room_purchase_modal" type="button">
+
+<!--                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal" data-bs-target="#room_purchase_modal" type="button">-->
                                 Выбрать
                             </button>
                         </td>
@@ -1482,16 +1499,20 @@ $(document).ready(function (){
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const add_hours = __webpack_require__(/*! ./add_hours */ "./src/js/admin/add_hours.js");
 $(document).ready(function (){
 
     $('#room_purchase_modal').on('popup_open', function (event, data){
 
         $('#id_purchase_id').val(data.id)
-        $('#room_purchase').html(data.offer.name).attr('href', data.offer.link)
+        $('.purchase_name').html(data.offer.name).attr('href', data.offer.link)
+        $('.room_timetable_link').attr('href', data.offer.link + '#dates')
         const start = new Date(data.start * 1000)
-        $('#id_start').val(start.toISOString().split('T')[0])
+        const local_start = add_hours.add_hours(start, start.getTimezoneOffset() / 60 * -1)
+        $('#id_start').val(local_start.toISOString().split('T')[0])
         const end = new Date(data.end * 1000)
-        $('#id_end').val(end.toISOString().split('T')[0])
+        const local_end = add_hours.add_hours(end, end.getTimezoneOffset() / 60 * -1)
+        $('#id_end').val(local_end.toISOString().split('T')[0])
         $('#id_is_paid').prop('checked', data.is_paid);
         $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
     })
@@ -1532,8 +1553,9 @@ $(document).ready(function (){
     $('#select_room_purchase').on('submit', function (event, data){
         event.preventDefault();
 
-        $('#room_purchase').html(data.name).attr('href', data.link);
-        $('#id_room_id').val(data.id);
+        $('.purchase_name').html(data.name).attr('href', data.link);
+        $('#id_create-room_id').val(data.id);
+        $('.room_timetable_link').attr('href', data.link + '#dates')
 
     });
 
@@ -3351,4 +3373,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-43403faf4294c680202e.bundle.js.map
+//# sourceMappingURL=admin-0b05c9c20184a7b975fc.bundle.js.map

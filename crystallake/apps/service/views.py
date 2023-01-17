@@ -316,7 +316,6 @@ def find_timetables(request, **kwargs):
         'current_page': timetables_page.number,
     }, 'items': []}
     for timetable in timetables_page.object_list:
-        print(timetable.start)
         start_unix_seconds = (timetable.start - timezone.make_aware(datetime(1970, 1, 1))).total_seconds()
         end_unix_seconds = (timetable.end - timezone.make_aware(datetime(1970, 1, 1))).total_seconds()
         item = {

@@ -203,12 +203,12 @@ def admin_delete_room(request, offer_id):
 
 
 def find_rooms(request, **kwargs):
-    # rooms = Room.objects.filter(date_deleted=None, is_hidden=False).search(
-    #     **request.POST.dict()
-    # )
-    rooms = Room.objects.filter(date_deleted=None).search(      # TODO
+    rooms = Room.objects.filter(date_deleted=None, is_hidden=False).search(
         **request.POST.dict()
     )
+    # rooms = Room.objects.filter(date_deleted=None).search(
+    #     **request.POST.dict()
+    # )
     rooms_page, num_pages = get_paginator_data(rooms, request.POST.get('page_number', 1))
 
     data = {'pages': {
@@ -266,4 +266,23 @@ def get_general_busy_dates_view(request, offer_id, **kwargs):
 
     dates = room.get_general_busy_dates(localtime(start), localtime(end))   # конвертим в локальное время при вызове
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=dates)
+    return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+
+def pick_rooms_for_purchase_view(request, offer_id, **kwargs):
+    room = get_object_or_404(Room, pk=offer_id)
+    start_timestamp = request.GET.get('start', 0)
+    end_timestamp = request.GET.get('end', 0)
+    if start_timestamp == 0 or end_timestamp == 0:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Подбор номеров': ['Невозможно получить данные по выбранной дате']
+        })
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=400)
+    start_timestamp = int(start_timestamp) / 1000        # питон принимает в секундах, а не милисекундах
+    end_timestamp = int(end_timestamp) / 1000
+    start = datetime.fromtimestamp(start_timestamp, tz=pytz.UTC)    # приходит время в UTC
+    end = datetime.fromtimestamp(end_timestamp, tz=pytz.UTC)
+
+    rooms = room.pick_rooms_for_purchase(localtime(start), localtime(end))   # конвертим в локальное время при вызове
+    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=rooms)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)

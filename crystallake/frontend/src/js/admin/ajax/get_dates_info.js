@@ -2,12 +2,12 @@ $(document).ready(function () {
 
     // TODO: ДОБАВИТЬ АККОРДЕОН И ПРИ ЕГО ОТКРЫТИИ ВЫЗЫВАЕМ selectMonth
 
+
     $('.calendar__room').on('selectMonth', function(event, month_str, month_index, additional_info){
 
         if (!additional_info?.programmatically){
             $('.calendar__room').not(this).evoCalendar('selectMonth', month_index, {programmatically: true});
         }
-
         $(this).find('.day').first().trigger('click');
 
         $(this).siblings('form').children('button').first().trigger('click')
@@ -39,7 +39,6 @@ $(document).ready(function () {
             type: 'GET',
             data: {'start': start, 'end': end, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                console.log(response)
 
                 $('.day-busy').removeClass('day-busy')
                 calendar.find(".event-indicator").removeClass('event-indicator')
@@ -62,6 +61,9 @@ $(document).ready(function () {
             },
         });
     })
+
+    $('.calendar__room').evoCalendar('selectMonth', new Date().getMonth(), {programmatically: true});   // при выбриаем текущей месяц, чтоб стригерить отправку запроса
+
 
     // $('.calendar__room').on('selectMonth', function(){
     //     console.log($(`.calendar[data-id="68"]`).evoCalendar.calendarEvents)

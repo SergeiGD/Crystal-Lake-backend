@@ -100,6 +100,10 @@ class RoomPurchaseForm(PurchaseForm):
         'class': 'd-none'
     }))
 
+    multiple_rooms_acceptable = forms.BooleanField(label='Разрешить подбор нескольких комнат', required=False, widget=forms.CheckboxInput(attrs={
+        'class': 'btn-check'
+    }))
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

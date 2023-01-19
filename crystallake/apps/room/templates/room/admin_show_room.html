@@ -114,7 +114,7 @@
         <div class="row">
             <div class="mx-auto col-lg-5 col-12">
                 <span class="input-group-text rounded-top rounded-0">Общие даты (1 день):</span>
-                <form action="{{ room.get_general_busy_dates_url }}" id="{{ room.pk }}_dates" method="GET">
+                <form action="{{ room.get_general_busy_dates_url }}" class="calendar__room_form" method="GET">
                         {% csrf_token %}
                         <button type="submit" class="d-none"></button>
                     </form>
@@ -127,21 +127,13 @@
             {% for same_room in room.get_same_rooms %}
                 <div class="col-lg-5 col-12">
                     <span class="input-group-text rounded-top rounded-0">Номер {{ same_room.pk }}:</span>
-                    <form action="{{ same_room.get_busy_dates_url }}" id="{{ same_room.pk }}_dates" method="GET">
+                    <form action="{{ same_room.get_busy_dates_url }}" class="calendar__room_form" method="GET">
                         {% csrf_token %}
                         <button type="submit" class="d-none"></button>
                     </form>
                     <div class="evoCalendar calendar calendar__room"></div>
                 </div>
             {% endfor %}
-{#            <div class="col-lg-5 col-12">#}
-{#                <span class="input-group-text rounded-top rounded-0">Номер 19:</span>#}
-{#                <div class="evoCalendar calendar calendar__room"></div>#}
-{#            </div>#}
-{#            <div class="col-lg-5 col-12 mt-lg-0 mt-5">#}
-{#                <span class="input-group-text rounded-top rounded-0">Номер 36:</span>#}
-{#                <div  class="evoCalendar calendar calendar__room"></div>#}
-{#            </div>#}
         </div>
 
         {% endwith %}

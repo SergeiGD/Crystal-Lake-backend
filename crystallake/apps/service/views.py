@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+import pytz
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
@@ -176,6 +177,7 @@ def manage_timetable_view(request, offer_id):
         service = get_object_or_404(Service, pk=offer_id)
 
         timetable_id = request.POST['timetable_id'] if request.POST['timetable_id'] else -1
+        #timetable_id = request.POST.get('timetable_id', -1)
         timetable = ServiceTimetable.objects.filter(pk=timetable_id).first()
 
         form = TimetableForm(request.POST or None)
@@ -210,7 +212,10 @@ def manage_timetable_view(request, offer_id):
                 else:
                     removed_worker.append(worker)
 
-            remaining_objects = set(list(timetable.workers.all()) + added_workers) - set(removed_worker)
+            if timetable.pk:
+                remaining_objects = set(list(timetable.workers.all()) + added_workers) - set(removed_worker)
+            else:
+                remaining_objects = set(added_workers) - set(removed_worker)
             if len(remaining_objects) == 0:
                 response_message = ResponseMessage(
                     status=ResponseMessage.STATUSES.ERROR,
@@ -288,7 +293,7 @@ def find_services(request, **kwargs):
             'name': service.name,
             'id': service.pk,
             'dynamic_timetable': service.dynamic_timetable,
-            'max_for_moment': service.max_for_moment,
+            'max_in_group': service.max_in_group,
             'link': service.get_admin_show_url(),
             'default_price': service.default_price,
             'weekend_price': service.weekend_price
@@ -342,62 +347,84 @@ class AdminTimetablesList(ListView):
         return context
 
 
-class AdminTimetableDetail(DetailView):
-    model = ServiceTimetable
-    template_name = 'service/admin_show_timetable.html'
-    context_object_name = 'timetable'
-    pk_url_kwarg = 'timetable_id'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = 'timetables'
-        context['delete_link'] = self.object.get_admin_delete_url()
-        context['workers'] = self.object.workers.all()
-        return context
-
-
-class AdminTimetableUpdate(RelocateResponseMixin, UpdateView):
-    model = ServiceTimetable
-    template_name = 'service/admin_edit_timetable.html'
-    context_object_name = 'timetable'
-    pk_url_kwarg = 'timetable_id'
-    form_class = TimetableForm
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = 'timetables'
-        return context
-
-    def form_invalid(self, form):
-        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
-        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-        return response
-
-    def form_valid(self, form):
-        form.instance.save()
-        return self.relocate(form.instance.get_admin_show_url())
+# class AdminTimetableDetail(DetailView):
+#     model = ServiceTimetable
+#     template_name = 'service/admin_show_timetable.html'
+#     context_object_name = 'timetable'
+#     pk_url_kwarg = 'timetable_id'
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['current_page'] = 'timetables'
+#         context['delete_link'] = self.object.get_admin_delete_url()
+#         context['workers'] = self.object.workers.all()
+#         return context
 
 
-class AdminTimetableCreate(RelocateResponseMixin, CreateView):
-    model = ServiceTimetable
-    template_name = 'service/admin_create_timetable.html'
-    context_object_name = 'timetable'
-    form_class = TimetableForm
+# class AdminTimetableUpdate(RelocateResponseMixin, UpdateView):
+#     model = ServiceTimetable
+#     template_name = 'service/admin_edit_timetable.html'
+#     context_object_name = 'timetable'
+#     pk_url_kwarg = 'timetable_id'
+#     form_class = TimetableForm
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['current_page'] = 'timetables'
+#         return context
+#
+#     def form_invalid(self, form):
+#         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+#         response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+#         return response
+#
+#     def form_valid(self, form):
+#         form.instance.save()
+#         return self.relocate(form.instance.get_admin_show_url())
+#
+#
+# class AdminTimetableCreate(RelocateResponseMixin, CreateView):
+#     model = ServiceTimetable
+#     template_name = 'service/admin_create_timetable.html'
+#     context_object_name = 'timetable'
+#     form_class = TimetableForm
+#
+#     def get_success_url(self):
+#         return self.object.get_admin_show_url()
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['current_page'] = 'timetables'
+#         return context
+#
+#     def form_invalid(self, form):
+#         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+#         response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+#         return response
+#
+#     def form_valid(self, form):
+#         form.instance.save()
+#         return self.relocate(form.instance.get_admin_show_url())
 
-    def get_success_url(self):
-        return self.object.get_admin_show_url()
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = 'timetables'
-        return context
+def get_free_time_view(request, offer_id, **kwargs):
+    # TODO: перенести в миксин
+    service = get_object_or_404(Service, pk=offer_id)
+    start_timestamp = request.GET.get('start', 0)
+    end_timestamp = request.GET.get('end', 0)
+    if start_timestamp == 0 or end_timestamp == 0:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Расписание услуги': ['Невозможно получить данные по выбранной дате']
+        })
+        return HttpResponse(response_message.get_json(), content_type='application/json', status=400)
+    start_timestamp = int(start_timestamp) / 1000        # питон принимает в секундах, а не милисекундах
+    end_timestamp = int(end_timestamp) / 1000
+    start = datetime.fromtimestamp(start_timestamp, tz=pytz.UTC)    # приходит время в UTC
+    end = datetime.fromtimestamp(end_timestamp, tz=pytz.UTC)
 
-    def form_invalid(self, form):
-        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
-        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-        return response
-
-    def form_valid(self, form):
-        form.instance.save()
-        return self.relocate(form.instance.get_admin_show_url())
+    dates = service.get_free_time(timezone.localtime(start), timezone.localtime(end))   # конвертим в локальное время при вызове
+    # for data in dates:
+    #     print(data)
+    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=dates)
+    return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 

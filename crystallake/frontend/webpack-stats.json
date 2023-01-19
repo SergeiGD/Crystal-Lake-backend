@@ -25,93 +25,653 @@
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
       "path": "/app/apps/core/static/images/why_is-8d9483bc8b97327e78b1.webp"
     },
-    "js/admin-07fb304de71dc82828a6.bundle.js": {
-      "name": "js/admin-07fb304de71dc82828a6.bundle.js",
-      "path": "/app/apps/core/static/js/admin-07fb304de71dc82828a6.bundle.js"
+    "js/admin-01c7c4652694a02e1724.bundle.js": {
+      "name": "js/admin-01c7c4652694a02e1724.bundle.js",
+      "path": "/app/apps/core/static/js/admin-01c7c4652694a02e1724.bundle.js"
     },
-    "js/admin-07fb304de71dc82828a6.bundle.js.map": {
-      "name": "js/admin-07fb304de71dc82828a6.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-07fb304de71dc82828a6.bundle.js.map"
+    "js/admin-01c7c4652694a02e1724.bundle.js.map": {
+      "name": "js/admin-01c7c4652694a02e1724.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-01c7c4652694a02e1724.bundle.js.map"
     },
-    "js/admin-0b05c9c20184a7b975fc.bundle.js": {
-      "name": "js/admin-0b05c9c20184a7b975fc.bundle.js",
-      "path": "/app/apps/core/static/js/admin-0b05c9c20184a7b975fc.bundle.js"
+    "js/admin-04f05a6fbe18c06de84c.bundle.js": {
+      "name": "js/admin-04f05a6fbe18c06de84c.bundle.js",
+      "path": "/app/apps/core/static/js/admin-04f05a6fbe18c06de84c.bundle.js"
     },
-    "js/admin-0b05c9c20184a7b975fc.bundle.js.map": {
-      "name": "js/admin-0b05c9c20184a7b975fc.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-0b05c9c20184a7b975fc.bundle.js.map"
+    "js/admin-04f05a6fbe18c06de84c.bundle.js.map": {
+      "name": "js/admin-04f05a6fbe18c06de84c.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-04f05a6fbe18c06de84c.bundle.js.map"
     },
-    "js/admin-22bb3b433c6562939163.bundle.js": {
-      "name": "js/admin-22bb3b433c6562939163.bundle.js",
-      "path": "/app/apps/core/static/js/admin-22bb3b433c6562939163.bundle.js"
+    "js/admin-06da39814bc495c78f85.bundle.js": {
+      "name": "js/admin-06da39814bc495c78f85.bundle.js",
+      "path": "/app/apps/core/static/js/admin-06da39814bc495c78f85.bundle.js"
     },
-    "js/admin-22bb3b433c6562939163.bundle.js.map": {
-      "name": "js/admin-22bb3b433c6562939163.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-22bb3b433c6562939163.bundle.js.map"
+    "js/admin-06da39814bc495c78f85.bundle.js.map": {
+      "name": "js/admin-06da39814bc495c78f85.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-06da39814bc495c78f85.bundle.js.map"
     },
-    "js/admin-278bef9932f19f488f33.bundle.js": {
-      "name": "js/admin-278bef9932f19f488f33.bundle.js",
-      "path": "/app/apps/core/static/js/admin-278bef9932f19f488f33.bundle.js"
+    "js/admin-0726a24b7e335915e878.bundle.js": {
+      "name": "js/admin-0726a24b7e335915e878.bundle.js",
+      "path": "/app/apps/core/static/js/admin-0726a24b7e335915e878.bundle.js"
     },
-    "js/admin-278bef9932f19f488f33.bundle.js.map": {
-      "name": "js/admin-278bef9932f19f488f33.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-278bef9932f19f488f33.bundle.js.map"
+    "js/admin-0726a24b7e335915e878.bundle.js.map": {
+      "name": "js/admin-0726a24b7e335915e878.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-0726a24b7e335915e878.bundle.js.map"
     },
-    "js/admin-4f890aab4428531cabcc.bundle.js": {
-      "name": "js/admin-4f890aab4428531cabcc.bundle.js",
-      "path": "/app/apps/core/static/js/admin-4f890aab4428531cabcc.bundle.js"
+    "js/admin-084b11c884c0ced81e49.bundle.js": {
+      "name": "js/admin-084b11c884c0ced81e49.bundle.js",
+      "path": "/app/apps/core/static/js/admin-084b11c884c0ced81e49.bundle.js"
     },
-    "js/admin-4f890aab4428531cabcc.bundle.js.map": {
-      "name": "js/admin-4f890aab4428531cabcc.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-4f890aab4428531cabcc.bundle.js.map"
+    "js/admin-084b11c884c0ced81e49.bundle.js.map": {
+      "name": "js/admin-084b11c884c0ced81e49.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-084b11c884c0ced81e49.bundle.js.map"
     },
-    "js/admin-5e7fd3d06ac50381be35.bundle.js": {
-      "name": "js/admin-5e7fd3d06ac50381be35.bundle.js",
-      "path": "/app/apps/core/static/js/admin-5e7fd3d06ac50381be35.bundle.js"
+    "js/admin-094bf4c12e3e7136918f.bundle.js": {
+      "name": "js/admin-094bf4c12e3e7136918f.bundle.js",
+      "path": "/app/apps/core/static/js/admin-094bf4c12e3e7136918f.bundle.js"
     },
-    "js/admin-5e7fd3d06ac50381be35.bundle.js.map": {
-      "name": "js/admin-5e7fd3d06ac50381be35.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-5e7fd3d06ac50381be35.bundle.js.map"
+    "js/admin-094bf4c12e3e7136918f.bundle.js.map": {
+      "name": "js/admin-094bf4c12e3e7136918f.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-094bf4c12e3e7136918f.bundle.js.map"
     },
-    "js/admin-7aa92127ac29fbdcb6ed.bundle.js": {
-      "name": "js/admin-7aa92127ac29fbdcb6ed.bundle.js",
-      "path": "/app/apps/core/static/js/admin-7aa92127ac29fbdcb6ed.bundle.js"
+    "js/admin-0d5226f8e977100581ca.bundle.js": {
+      "name": "js/admin-0d5226f8e977100581ca.bundle.js",
+      "path": "/app/apps/core/static/js/admin-0d5226f8e977100581ca.bundle.js"
     },
-    "js/admin-7aa92127ac29fbdcb6ed.bundle.js.map": {
-      "name": "js/admin-7aa92127ac29fbdcb6ed.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-7aa92127ac29fbdcb6ed.bundle.js.map"
+    "js/admin-0d5226f8e977100581ca.bundle.js.map": {
+      "name": "js/admin-0d5226f8e977100581ca.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-0d5226f8e977100581ca.bundle.js.map"
     },
-    "js/admin-bc5628957a0fa11f6460.bundle.js": {
-      "name": "js/admin-bc5628957a0fa11f6460.bundle.js",
-      "path": "/app/apps/core/static/js/admin-bc5628957a0fa11f6460.bundle.js"
+    "js/admin-102cd74f24c8fe1f93da.bundle.js": {
+      "name": "js/admin-102cd74f24c8fe1f93da.bundle.js",
+      "path": "/app/apps/core/static/js/admin-102cd74f24c8fe1f93da.bundle.js"
     },
-    "js/admin-bc5628957a0fa11f6460.bundle.js.map": {
-      "name": "js/admin-bc5628957a0fa11f6460.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-bc5628957a0fa11f6460.bundle.js.map"
+    "js/admin-102cd74f24c8fe1f93da.bundle.js.map": {
+      "name": "js/admin-102cd74f24c8fe1f93da.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-102cd74f24c8fe1f93da.bundle.js.map"
     },
-    "js/admin-e95ec0e5661786e23ec4.bundle.js": {
-      "name": "js/admin-e95ec0e5661786e23ec4.bundle.js",
-      "path": "/app/apps/core/static/js/admin-e95ec0e5661786e23ec4.bundle.js"
+    "js/admin-136bd4efb3425217668d.bundle.js": {
+      "name": "js/admin-136bd4efb3425217668d.bundle.js",
+      "path": "/app/apps/core/static/js/admin-136bd4efb3425217668d.bundle.js"
     },
-    "js/admin-e95ec0e5661786e23ec4.bundle.js.map": {
-      "name": "js/admin-e95ec0e5661786e23ec4.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-e95ec0e5661786e23ec4.bundle.js.map"
+    "js/admin-136bd4efb3425217668d.bundle.js.map": {
+      "name": "js/admin-136bd4efb3425217668d.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-136bd4efb3425217668d.bundle.js.map"
     },
-    "js/admin-fed2c0c341094a256a44.bundle.js": {
-      "name": "js/admin-fed2c0c341094a256a44.bundle.js",
-      "path": "/app/apps/core/static/js/admin-fed2c0c341094a256a44.bundle.js"
+    "js/admin-16fbdc534f6a984a2ea3.bundle.js": {
+      "name": "js/admin-16fbdc534f6a984a2ea3.bundle.js",
+      "path": "/app/apps/core/static/js/admin-16fbdc534f6a984a2ea3.bundle.js"
     },
-    "js/admin-fed2c0c341094a256a44.bundle.js.map": {
-      "name": "js/admin-fed2c0c341094a256a44.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-fed2c0c341094a256a44.bundle.js.map"
+    "js/admin-16fbdc534f6a984a2ea3.bundle.js.map": {
+      "name": "js/admin-16fbdc534f6a984a2ea3.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-16fbdc534f6a984a2ea3.bundle.js.map"
     },
-    "js/client-3e435fc761f59056fbdd.bundle.js": {
-      "name": "js/client-3e435fc761f59056fbdd.bundle.js",
-      "path": "/app/apps/core/static/js/client-3e435fc761f59056fbdd.bundle.js"
+    "js/admin-19c83375d9aa57d932db.bundle.js": {
+      "name": "js/admin-19c83375d9aa57d932db.bundle.js",
+      "path": "/app/apps/core/static/js/admin-19c83375d9aa57d932db.bundle.js"
     },
-    "js/client-3e435fc761f59056fbdd.bundle.js.map": {
-      "name": "js/client-3e435fc761f59056fbdd.bundle.js.map",
-      "path": "/app/apps/core/static/js/client-3e435fc761f59056fbdd.bundle.js.map"
+    "js/admin-19c83375d9aa57d932db.bundle.js.map": {
+      "name": "js/admin-19c83375d9aa57d932db.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-19c83375d9aa57d932db.bundle.js.map"
+    },
+    "js/admin-22f9101f69ae2008b0a7.bundle.js": {
+      "name": "js/admin-22f9101f69ae2008b0a7.bundle.js",
+      "path": "/app/apps/core/static/js/admin-22f9101f69ae2008b0a7.bundle.js"
+    },
+    "js/admin-22f9101f69ae2008b0a7.bundle.js.map": {
+      "name": "js/admin-22f9101f69ae2008b0a7.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-22f9101f69ae2008b0a7.bundle.js.map"
+    },
+    "js/admin-22fd28a46d092ba89b1d.bundle.js": {
+      "name": "js/admin-22fd28a46d092ba89b1d.bundle.js",
+      "path": "/app/apps/core/static/js/admin-22fd28a46d092ba89b1d.bundle.js"
+    },
+    "js/admin-22fd28a46d092ba89b1d.bundle.js.map": {
+      "name": "js/admin-22fd28a46d092ba89b1d.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-22fd28a46d092ba89b1d.bundle.js.map"
+    },
+    "js/admin-25fbed9ebb59602fd169.bundle.js": {
+      "name": "js/admin-25fbed9ebb59602fd169.bundle.js",
+      "path": "/app/apps/core/static/js/admin-25fbed9ebb59602fd169.bundle.js"
+    },
+    "js/admin-25fbed9ebb59602fd169.bundle.js.map": {
+      "name": "js/admin-25fbed9ebb59602fd169.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-25fbed9ebb59602fd169.bundle.js.map"
+    },
+    "js/admin-268231f820a449bc1312.bundle.js": {
+      "name": "js/admin-268231f820a449bc1312.bundle.js",
+      "path": "/app/apps/core/static/js/admin-268231f820a449bc1312.bundle.js"
+    },
+    "js/admin-268231f820a449bc1312.bundle.js.map": {
+      "name": "js/admin-268231f820a449bc1312.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-268231f820a449bc1312.bundle.js.map"
+    },
+    "js/admin-28b40f31128fa3f8de12.bundle.js": {
+      "name": "js/admin-28b40f31128fa3f8de12.bundle.js",
+      "path": "/app/apps/core/static/js/admin-28b40f31128fa3f8de12.bundle.js"
+    },
+    "js/admin-28b40f31128fa3f8de12.bundle.js.map": {
+      "name": "js/admin-28b40f31128fa3f8de12.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-28b40f31128fa3f8de12.bundle.js.map"
+    },
+    "js/admin-28de0228de61fb064e1d.bundle.js": {
+      "name": "js/admin-28de0228de61fb064e1d.bundle.js",
+      "path": "/app/apps/core/static/js/admin-28de0228de61fb064e1d.bundle.js"
+    },
+    "js/admin-28de0228de61fb064e1d.bundle.js.map": {
+      "name": "js/admin-28de0228de61fb064e1d.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-28de0228de61fb064e1d.bundle.js.map"
+    },
+    "js/admin-2c1726d1c73b6e18406f.bundle.js": {
+      "name": "js/admin-2c1726d1c73b6e18406f.bundle.js",
+      "path": "/app/apps/core/static/js/admin-2c1726d1c73b6e18406f.bundle.js"
+    },
+    "js/admin-2c1726d1c73b6e18406f.bundle.js.map": {
+      "name": "js/admin-2c1726d1c73b6e18406f.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-2c1726d1c73b6e18406f.bundle.js.map"
+    },
+    "js/admin-30ce03d92849d667cd31.bundle.js": {
+      "name": "js/admin-30ce03d92849d667cd31.bundle.js",
+      "path": "/app/apps/core/static/js/admin-30ce03d92849d667cd31.bundle.js"
+    },
+    "js/admin-30ce03d92849d667cd31.bundle.js.map": {
+      "name": "js/admin-30ce03d92849d667cd31.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-30ce03d92849d667cd31.bundle.js.map"
+    },
+    "js/admin-30dc24a6b079e9072723.bundle.js": {
+      "name": "js/admin-30dc24a6b079e9072723.bundle.js",
+      "path": "/app/apps/core/static/js/admin-30dc24a6b079e9072723.bundle.js"
+    },
+    "js/admin-30dc24a6b079e9072723.bundle.js.map": {
+      "name": "js/admin-30dc24a6b079e9072723.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-30dc24a6b079e9072723.bundle.js.map"
+    },
+    "js/admin-323f5514526902db5217.bundle.js": {
+      "name": "js/admin-323f5514526902db5217.bundle.js",
+      "path": "/app/apps/core/static/js/admin-323f5514526902db5217.bundle.js"
+    },
+    "js/admin-323f5514526902db5217.bundle.js.map": {
+      "name": "js/admin-323f5514526902db5217.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-323f5514526902db5217.bundle.js.map"
+    },
+    "js/admin-3428309c83ec8c7c2e61.bundle.js": {
+      "name": "js/admin-3428309c83ec8c7c2e61.bundle.js",
+      "path": "/app/apps/core/static/js/admin-3428309c83ec8c7c2e61.bundle.js"
+    },
+    "js/admin-3428309c83ec8c7c2e61.bundle.js.map": {
+      "name": "js/admin-3428309c83ec8c7c2e61.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-3428309c83ec8c7c2e61.bundle.js.map"
+    },
+    "js/admin-34ca2db7208dbca4eb6b.bundle.js": {
+      "name": "js/admin-34ca2db7208dbca4eb6b.bundle.js",
+      "path": "/app/apps/core/static/js/admin-34ca2db7208dbca4eb6b.bundle.js"
+    },
+    "js/admin-34ca2db7208dbca4eb6b.bundle.js.map": {
+      "name": "js/admin-34ca2db7208dbca4eb6b.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-34ca2db7208dbca4eb6b.bundle.js.map"
+    },
+    "js/admin-397eac034972a20c98e4.bundle.js": {
+      "name": "js/admin-397eac034972a20c98e4.bundle.js",
+      "path": "/app/apps/core/static/js/admin-397eac034972a20c98e4.bundle.js"
+    },
+    "js/admin-397eac034972a20c98e4.bundle.js.map": {
+      "name": "js/admin-397eac034972a20c98e4.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-397eac034972a20c98e4.bundle.js.map"
+    },
+    "js/admin-3ce5b02274265d0b7ac5.bundle.js": {
+      "name": "js/admin-3ce5b02274265d0b7ac5.bundle.js",
+      "path": "/app/apps/core/static/js/admin-3ce5b02274265d0b7ac5.bundle.js"
+    },
+    "js/admin-3ce5b02274265d0b7ac5.bundle.js.map": {
+      "name": "js/admin-3ce5b02274265d0b7ac5.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-3ce5b02274265d0b7ac5.bundle.js.map"
+    },
+    "js/admin-42dd6d006b70eef5826c.bundle.js": {
+      "name": "js/admin-42dd6d006b70eef5826c.bundle.js",
+      "path": "/app/apps/core/static/js/admin-42dd6d006b70eef5826c.bundle.js"
+    },
+    "js/admin-42dd6d006b70eef5826c.bundle.js.map": {
+      "name": "js/admin-42dd6d006b70eef5826c.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-42dd6d006b70eef5826c.bundle.js.map"
+    },
+    "js/admin-492c2b27a62e8b458590.bundle.js": {
+      "name": "js/admin-492c2b27a62e8b458590.bundle.js",
+      "path": "/app/apps/core/static/js/admin-492c2b27a62e8b458590.bundle.js"
+    },
+    "js/admin-492c2b27a62e8b458590.bundle.js.map": {
+      "name": "js/admin-492c2b27a62e8b458590.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-492c2b27a62e8b458590.bundle.js.map"
+    },
+    "js/admin-4d0691f773ca116c9fd8.bundle.js": {
+      "name": "js/admin-4d0691f773ca116c9fd8.bundle.js",
+      "path": "/app/apps/core/static/js/admin-4d0691f773ca116c9fd8.bundle.js"
+    },
+    "js/admin-4d0691f773ca116c9fd8.bundle.js.map": {
+      "name": "js/admin-4d0691f773ca116c9fd8.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-4d0691f773ca116c9fd8.bundle.js.map"
+    },
+    "js/admin-4feb7bbedad51c1441c8.bundle.js": {
+      "name": "js/admin-4feb7bbedad51c1441c8.bundle.js",
+      "path": "/app/apps/core/static/js/admin-4feb7bbedad51c1441c8.bundle.js"
+    },
+    "js/admin-4feb7bbedad51c1441c8.bundle.js.map": {
+      "name": "js/admin-4feb7bbedad51c1441c8.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-4feb7bbedad51c1441c8.bundle.js.map"
+    },
+    "js/admin-50edc736e8497bc09517.bundle.js": {
+      "name": "js/admin-50edc736e8497bc09517.bundle.js",
+      "path": "/app/apps/core/static/js/admin-50edc736e8497bc09517.bundle.js"
+    },
+    "js/admin-50edc736e8497bc09517.bundle.js.map": {
+      "name": "js/admin-50edc736e8497bc09517.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-50edc736e8497bc09517.bundle.js.map"
+    },
+    "js/admin-5189393956ef9423b0ca.bundle.js": {
+      "name": "js/admin-5189393956ef9423b0ca.bundle.js",
+      "path": "/app/apps/core/static/js/admin-5189393956ef9423b0ca.bundle.js"
+    },
+    "js/admin-5189393956ef9423b0ca.bundle.js.map": {
+      "name": "js/admin-5189393956ef9423b0ca.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-5189393956ef9423b0ca.bundle.js.map"
+    },
+    "js/admin-5ab555ca8f51fe08a7c1.bundle.js": {
+      "name": "js/admin-5ab555ca8f51fe08a7c1.bundle.js",
+      "path": "/app/apps/core/static/js/admin-5ab555ca8f51fe08a7c1.bundle.js"
+    },
+    "js/admin-5ab555ca8f51fe08a7c1.bundle.js.map": {
+      "name": "js/admin-5ab555ca8f51fe08a7c1.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-5ab555ca8f51fe08a7c1.bundle.js.map"
+    },
+    "js/admin-5eb7383308ee2d947647.bundle.js": {
+      "name": "js/admin-5eb7383308ee2d947647.bundle.js",
+      "path": "/app/apps/core/static/js/admin-5eb7383308ee2d947647.bundle.js"
+    },
+    "js/admin-5eb7383308ee2d947647.bundle.js.map": {
+      "name": "js/admin-5eb7383308ee2d947647.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-5eb7383308ee2d947647.bundle.js.map"
+    },
+    "js/admin-6a932c0025ba5e60a74f.bundle.js": {
+      "name": "js/admin-6a932c0025ba5e60a74f.bundle.js",
+      "path": "/app/apps/core/static/js/admin-6a932c0025ba5e60a74f.bundle.js"
+    },
+    "js/admin-6a932c0025ba5e60a74f.bundle.js.map": {
+      "name": "js/admin-6a932c0025ba5e60a74f.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-6a932c0025ba5e60a74f.bundle.js.map"
+    },
+    "js/admin-6e6f83869aac103c6942.bundle.js": {
+      "name": "js/admin-6e6f83869aac103c6942.bundle.js",
+      "path": "/app/apps/core/static/js/admin-6e6f83869aac103c6942.bundle.js"
+    },
+    "js/admin-6e6f83869aac103c6942.bundle.js.map": {
+      "name": "js/admin-6e6f83869aac103c6942.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-6e6f83869aac103c6942.bundle.js.map"
+    },
+    "js/admin-74dc7e3aede98f3f1638.bundle.js": {
+      "name": "js/admin-74dc7e3aede98f3f1638.bundle.js",
+      "path": "/app/apps/core/static/js/admin-74dc7e3aede98f3f1638.bundle.js"
+    },
+    "js/admin-74dc7e3aede98f3f1638.bundle.js.map": {
+      "name": "js/admin-74dc7e3aede98f3f1638.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-74dc7e3aede98f3f1638.bundle.js.map"
+    },
+    "js/admin-75c0e45f71ac2a91784e.bundle.js": {
+      "name": "js/admin-75c0e45f71ac2a91784e.bundle.js",
+      "path": "/app/apps/core/static/js/admin-75c0e45f71ac2a91784e.bundle.js"
+    },
+    "js/admin-75c0e45f71ac2a91784e.bundle.js.map": {
+      "name": "js/admin-75c0e45f71ac2a91784e.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-75c0e45f71ac2a91784e.bundle.js.map"
+    },
+    "js/admin-772128e756c7e9e130f6.bundle.js": {
+      "name": "js/admin-772128e756c7e9e130f6.bundle.js",
+      "path": "/app/apps/core/static/js/admin-772128e756c7e9e130f6.bundle.js"
+    },
+    "js/admin-772128e756c7e9e130f6.bundle.js.map": {
+      "name": "js/admin-772128e756c7e9e130f6.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-772128e756c7e9e130f6.bundle.js.map"
+    },
+    "js/admin-78ada90cb4b3efb32b17.bundle.js": {
+      "name": "js/admin-78ada90cb4b3efb32b17.bundle.js",
+      "path": "/app/apps/core/static/js/admin-78ada90cb4b3efb32b17.bundle.js"
+    },
+    "js/admin-78ada90cb4b3efb32b17.bundle.js.map": {
+      "name": "js/admin-78ada90cb4b3efb32b17.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-78ada90cb4b3efb32b17.bundle.js.map"
+    },
+    "js/admin-7b62d602a81a23130ba3.bundle.js": {
+      "name": "js/admin-7b62d602a81a23130ba3.bundle.js",
+      "path": "/app/apps/core/static/js/admin-7b62d602a81a23130ba3.bundle.js"
+    },
+    "js/admin-7b62d602a81a23130ba3.bundle.js.map": {
+      "name": "js/admin-7b62d602a81a23130ba3.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-7b62d602a81a23130ba3.bundle.js.map"
+    },
+    "js/admin-7b8b637d9cd056697faa.bundle.js": {
+      "name": "js/admin-7b8b637d9cd056697faa.bundle.js",
+      "path": "/app/apps/core/static/js/admin-7b8b637d9cd056697faa.bundle.js"
+    },
+    "js/admin-7b8b637d9cd056697faa.bundle.js.map": {
+      "name": "js/admin-7b8b637d9cd056697faa.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-7b8b637d9cd056697faa.bundle.js.map"
+    },
+    "js/admin-7cb760ee8da07876fcc8.bundle.js": {
+      "name": "js/admin-7cb760ee8da07876fcc8.bundle.js",
+      "path": "/app/apps/core/static/js/admin-7cb760ee8da07876fcc8.bundle.js"
+    },
+    "js/admin-7cb760ee8da07876fcc8.bundle.js.map": {
+      "name": "js/admin-7cb760ee8da07876fcc8.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-7cb760ee8da07876fcc8.bundle.js.map"
+    },
+    "js/admin-88309112bbd6366193f2.bundle.js": {
+      "name": "js/admin-88309112bbd6366193f2.bundle.js",
+      "path": "/app/apps/core/static/js/admin-88309112bbd6366193f2.bundle.js"
+    },
+    "js/admin-88309112bbd6366193f2.bundle.js.map": {
+      "name": "js/admin-88309112bbd6366193f2.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-88309112bbd6366193f2.bundle.js.map"
+    },
+    "js/admin-8ad2bd0a617275d1d7e5.bundle.js": {
+      "name": "js/admin-8ad2bd0a617275d1d7e5.bundle.js",
+      "path": "/app/apps/core/static/js/admin-8ad2bd0a617275d1d7e5.bundle.js"
+    },
+    "js/admin-8ad2bd0a617275d1d7e5.bundle.js.map": {
+      "name": "js/admin-8ad2bd0a617275d1d7e5.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-8ad2bd0a617275d1d7e5.bundle.js.map"
+    },
+    "js/admin-8ade977be7caaf5144c8.bundle.js": {
+      "name": "js/admin-8ade977be7caaf5144c8.bundle.js",
+      "path": "/app/apps/core/static/js/admin-8ade977be7caaf5144c8.bundle.js"
+    },
+    "js/admin-8ade977be7caaf5144c8.bundle.js.map": {
+      "name": "js/admin-8ade977be7caaf5144c8.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-8ade977be7caaf5144c8.bundle.js.map"
+    },
+    "js/admin-8f64a8640e759b2f78ee.bundle.js": {
+      "name": "js/admin-8f64a8640e759b2f78ee.bundle.js",
+      "path": "/app/apps/core/static/js/admin-8f64a8640e759b2f78ee.bundle.js"
+    },
+    "js/admin-8f64a8640e759b2f78ee.bundle.js.map": {
+      "name": "js/admin-8f64a8640e759b2f78ee.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-8f64a8640e759b2f78ee.bundle.js.map"
+    },
+    "js/admin-8facb053a801db645e4d.bundle.js": {
+      "name": "js/admin-8facb053a801db645e4d.bundle.js",
+      "path": "/app/apps/core/static/js/admin-8facb053a801db645e4d.bundle.js"
+    },
+    "js/admin-8facb053a801db645e4d.bundle.js.map": {
+      "name": "js/admin-8facb053a801db645e4d.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-8facb053a801db645e4d.bundle.js.map"
+    },
+    "js/admin-90205e9e167aa5f2409a.bundle.js": {
+      "name": "js/admin-90205e9e167aa5f2409a.bundle.js",
+      "path": "/app/apps/core/static/js/admin-90205e9e167aa5f2409a.bundle.js"
+    },
+    "js/admin-90205e9e167aa5f2409a.bundle.js.map": {
+      "name": "js/admin-90205e9e167aa5f2409a.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-90205e9e167aa5f2409a.bundle.js.map"
+    },
+    "js/admin-989e4a48b6bf2266640d.bundle.js": {
+      "name": "js/admin-989e4a48b6bf2266640d.bundle.js",
+      "path": "/app/apps/core/static/js/admin-989e4a48b6bf2266640d.bundle.js"
+    },
+    "js/admin-989e4a48b6bf2266640d.bundle.js.map": {
+      "name": "js/admin-989e4a48b6bf2266640d.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-989e4a48b6bf2266640d.bundle.js.map"
+    },
+    "js/admin-99a68eaeed82b0441595.bundle.js": {
+      "name": "js/admin-99a68eaeed82b0441595.bundle.js",
+      "path": "/app/apps/core/static/js/admin-99a68eaeed82b0441595.bundle.js"
+    },
+    "js/admin-99a68eaeed82b0441595.bundle.js.map": {
+      "name": "js/admin-99a68eaeed82b0441595.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-99a68eaeed82b0441595.bundle.js.map"
+    },
+    "js/admin-9a757a92e4a47bfd587a.bundle.js": {
+      "name": "js/admin-9a757a92e4a47bfd587a.bundle.js",
+      "path": "/app/apps/core/static/js/admin-9a757a92e4a47bfd587a.bundle.js"
+    },
+    "js/admin-9a757a92e4a47bfd587a.bundle.js.map": {
+      "name": "js/admin-9a757a92e4a47bfd587a.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-9a757a92e4a47bfd587a.bundle.js.map"
+    },
+    "js/admin-9c7671a0aaefdc84f4e2.bundle.js": {
+      "name": "js/admin-9c7671a0aaefdc84f4e2.bundle.js",
+      "path": "/app/apps/core/static/js/admin-9c7671a0aaefdc84f4e2.bundle.js"
+    },
+    "js/admin-9c7671a0aaefdc84f4e2.bundle.js.map": {
+      "name": "js/admin-9c7671a0aaefdc84f4e2.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-9c7671a0aaefdc84f4e2.bundle.js.map"
+    },
+    "js/admin-a2d6e97af57aea6c016b.bundle.js": {
+      "name": "js/admin-a2d6e97af57aea6c016b.bundle.js",
+      "path": "/app/apps/core/static/js/admin-a2d6e97af57aea6c016b.bundle.js"
+    },
+    "js/admin-a2d6e97af57aea6c016b.bundle.js.map": {
+      "name": "js/admin-a2d6e97af57aea6c016b.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-a2d6e97af57aea6c016b.bundle.js.map"
+    },
+    "js/admin-af2b9a1a4f9a49fd4e53.bundle.js": {
+      "name": "js/admin-af2b9a1a4f9a49fd4e53.bundle.js",
+      "path": "/app/apps/core/static/js/admin-af2b9a1a4f9a49fd4e53.bundle.js"
+    },
+    "js/admin-af2b9a1a4f9a49fd4e53.bundle.js.map": {
+      "name": "js/admin-af2b9a1a4f9a49fd4e53.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-af2b9a1a4f9a49fd4e53.bundle.js.map"
+    },
+    "js/admin-afa4bb7ecc4102a04f43.bundle.js": {
+      "name": "js/admin-afa4bb7ecc4102a04f43.bundle.js",
+      "path": "/app/apps/core/static/js/admin-afa4bb7ecc4102a04f43.bundle.js"
+    },
+    "js/admin-afa4bb7ecc4102a04f43.bundle.js.map": {
+      "name": "js/admin-afa4bb7ecc4102a04f43.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-afa4bb7ecc4102a04f43.bundle.js.map"
+    },
+    "js/admin-b14b9952c4c1d39485e5.bundle.js": {
+      "name": "js/admin-b14b9952c4c1d39485e5.bundle.js",
+      "path": "/app/apps/core/static/js/admin-b14b9952c4c1d39485e5.bundle.js"
+    },
+    "js/admin-b14b9952c4c1d39485e5.bundle.js.map": {
+      "name": "js/admin-b14b9952c4c1d39485e5.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-b14b9952c4c1d39485e5.bundle.js.map"
+    },
+    "js/admin-b4a66adf30897f0ecccd.bundle.js": {
+      "name": "js/admin-b4a66adf30897f0ecccd.bundle.js",
+      "path": "/app/apps/core/static/js/admin-b4a66adf30897f0ecccd.bundle.js"
+    },
+    "js/admin-b4a66adf30897f0ecccd.bundle.js.map": {
+      "name": "js/admin-b4a66adf30897f0ecccd.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-b4a66adf30897f0ecccd.bundle.js.map"
+    },
+    "js/admin-b6aa8530e08e4ca580db.bundle.js": {
+      "name": "js/admin-b6aa8530e08e4ca580db.bundle.js",
+      "path": "/app/apps/core/static/js/admin-b6aa8530e08e4ca580db.bundle.js"
+    },
+    "js/admin-b6aa8530e08e4ca580db.bundle.js.map": {
+      "name": "js/admin-b6aa8530e08e4ca580db.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-b6aa8530e08e4ca580db.bundle.js.map"
+    },
+    "js/admin-b838376ea01ffddf578d.bundle.js": {
+      "name": "js/admin-b838376ea01ffddf578d.bundle.js",
+      "path": "/app/apps/core/static/js/admin-b838376ea01ffddf578d.bundle.js"
+    },
+    "js/admin-b838376ea01ffddf578d.bundle.js.map": {
+      "name": "js/admin-b838376ea01ffddf578d.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-b838376ea01ffddf578d.bundle.js.map"
+    },
+    "js/admin-bb66a895074b5055e17b.bundle.js": {
+      "name": "js/admin-bb66a895074b5055e17b.bundle.js",
+      "path": "/app/apps/core/static/js/admin-bb66a895074b5055e17b.bundle.js"
+    },
+    "js/admin-bb66a895074b5055e17b.bundle.js.map": {
+      "name": "js/admin-bb66a895074b5055e17b.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-bb66a895074b5055e17b.bundle.js.map"
+    },
+    "js/admin-ca20b7e3f6f3c9e08881.bundle.js": {
+      "name": "js/admin-ca20b7e3f6f3c9e08881.bundle.js",
+      "path": "/app/apps/core/static/js/admin-ca20b7e3f6f3c9e08881.bundle.js"
+    },
+    "js/admin-ca20b7e3f6f3c9e08881.bundle.js.map": {
+      "name": "js/admin-ca20b7e3f6f3c9e08881.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-ca20b7e3f6f3c9e08881.bundle.js.map"
+    },
+    "js/admin-ce9badd6149e5608648d.bundle.js": {
+      "name": "js/admin-ce9badd6149e5608648d.bundle.js",
+      "path": "/app/apps/core/static/js/admin-ce9badd6149e5608648d.bundle.js"
+    },
+    "js/admin-ce9badd6149e5608648d.bundle.js.map": {
+      "name": "js/admin-ce9badd6149e5608648d.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-ce9badd6149e5608648d.bundle.js.map"
+    },
+    "js/admin-db788b3260f3ab849224.bundle.js": {
+      "name": "js/admin-db788b3260f3ab849224.bundle.js",
+      "path": "/app/apps/core/static/js/admin-db788b3260f3ab849224.bundle.js"
+    },
+    "js/admin-db788b3260f3ab849224.bundle.js.map": {
+      "name": "js/admin-db788b3260f3ab849224.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-db788b3260f3ab849224.bundle.js.map"
+    },
+    "js/admin-de1f6ff22bb230105f05.bundle.js": {
+      "name": "js/admin-de1f6ff22bb230105f05.bundle.js",
+      "path": "/app/apps/core/static/js/admin-de1f6ff22bb230105f05.bundle.js"
+    },
+    "js/admin-de1f6ff22bb230105f05.bundle.js.map": {
+      "name": "js/admin-de1f6ff22bb230105f05.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-de1f6ff22bb230105f05.bundle.js.map"
+    },
+    "js/admin-dfd4238e8e122ceaa4f3.bundle.js": {
+      "name": "js/admin-dfd4238e8e122ceaa4f3.bundle.js",
+      "path": "/app/apps/core/static/js/admin-dfd4238e8e122ceaa4f3.bundle.js"
+    },
+    "js/admin-dfd4238e8e122ceaa4f3.bundle.js.map": {
+      "name": "js/admin-dfd4238e8e122ceaa4f3.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-dfd4238e8e122ceaa4f3.bundle.js.map"
+    },
+    "js/admin-e03a54dd777f02cb9380.bundle.js": {
+      "name": "js/admin-e03a54dd777f02cb9380.bundle.js",
+      "path": "/app/apps/core/static/js/admin-e03a54dd777f02cb9380.bundle.js"
+    },
+    "js/admin-e03a54dd777f02cb9380.bundle.js.map": {
+      "name": "js/admin-e03a54dd777f02cb9380.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-e03a54dd777f02cb9380.bundle.js.map"
+    },
+    "js/admin-e85b94cd99f129659514.bundle.js": {
+      "name": "js/admin-e85b94cd99f129659514.bundle.js",
+      "path": "/app/apps/core/static/js/admin-e85b94cd99f129659514.bundle.js"
+    },
+    "js/admin-e85b94cd99f129659514.bundle.js.map": {
+      "name": "js/admin-e85b94cd99f129659514.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-e85b94cd99f129659514.bundle.js.map"
+    },
+    "js/admin-e8ff8013be7745f1fcdf.bundle.js": {
+      "name": "js/admin-e8ff8013be7745f1fcdf.bundle.js",
+      "path": "/app/apps/core/static/js/admin-e8ff8013be7745f1fcdf.bundle.js"
+    },
+    "js/admin-e8ff8013be7745f1fcdf.bundle.js.map": {
+      "name": "js/admin-e8ff8013be7745f1fcdf.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-e8ff8013be7745f1fcdf.bundle.js.map"
+    },
+    "js/admin-ea4c585a9910824febc1.bundle.js": {
+      "name": "js/admin-ea4c585a9910824febc1.bundle.js",
+      "path": "/app/apps/core/static/js/admin-ea4c585a9910824febc1.bundle.js"
+    },
+    "js/admin-ea4c585a9910824febc1.bundle.js.map": {
+      "name": "js/admin-ea4c585a9910824febc1.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-ea4c585a9910824febc1.bundle.js.map"
+    },
+    "js/admin-f1b0464f2d120c05013e.bundle.js": {
+      "name": "js/admin-f1b0464f2d120c05013e.bundle.js",
+      "path": "/app/apps/core/static/js/admin-f1b0464f2d120c05013e.bundle.js"
+    },
+    "js/admin-f1b0464f2d120c05013e.bundle.js.map": {
+      "name": "js/admin-f1b0464f2d120c05013e.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-f1b0464f2d120c05013e.bundle.js.map"
+    },
+    "js/admin-f3d203c776d278d55f85.bundle.js": {
+      "name": "js/admin-f3d203c776d278d55f85.bundle.js",
+      "path": "/app/apps/core/static/js/admin-f3d203c776d278d55f85.bundle.js"
+    },
+    "js/admin-f3d203c776d278d55f85.bundle.js.map": {
+      "name": "js/admin-f3d203c776d278d55f85.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-f3d203c776d278d55f85.bundle.js.map"
+    },
+    "js/admin-fc6a90c08e1eb6bbc3a6.bundle.js": {
+      "name": "js/admin-fc6a90c08e1eb6bbc3a6.bundle.js",
+      "path": "/app/apps/core/static/js/admin-fc6a90c08e1eb6bbc3a6.bundle.js"
+    },
+    "js/admin-fc6a90c08e1eb6bbc3a6.bundle.js.map": {
+      "name": "js/admin-fc6a90c08e1eb6bbc3a6.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-fc6a90c08e1eb6bbc3a6.bundle.js.map"
+    },
+    "js/client-26e7577e7e4afd712ff2.bundle.js": {
+      "name": "js/client-26e7577e7e4afd712ff2.bundle.js",
+      "path": "/app/apps/core/static/js/client-26e7577e7e4afd712ff2.bundle.js"
+    },
+    "js/client-26e7577e7e4afd712ff2.bundle.js.map": {
+      "name": "js/client-26e7577e7e4afd712ff2.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-26e7577e7e4afd712ff2.bundle.js.map"
+    },
+    "js/client-39eda7dbe94b1774fca9.bundle.js": {
+      "name": "js/client-39eda7dbe94b1774fca9.bundle.js",
+      "path": "/app/apps/core/static/js/client-39eda7dbe94b1774fca9.bundle.js"
+    },
+    "js/client-39eda7dbe94b1774fca9.bundle.js.map": {
+      "name": "js/client-39eda7dbe94b1774fca9.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-39eda7dbe94b1774fca9.bundle.js.map"
+    },
+    "js/client-5db6f36bfdd74a8a4eee.bundle.js": {
+      "name": "js/client-5db6f36bfdd74a8a4eee.bundle.js",
+      "path": "/app/apps/core/static/js/client-5db6f36bfdd74a8a4eee.bundle.js"
+    },
+    "js/client-5db6f36bfdd74a8a4eee.bundle.js.map": {
+      "name": "js/client-5db6f36bfdd74a8a4eee.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-5db6f36bfdd74a8a4eee.bundle.js.map"
+    },
+    "js/client-62cf53693864d1281d97.bundle.js": {
+      "name": "js/client-62cf53693864d1281d97.bundle.js",
+      "path": "/app/apps/core/static/js/client-62cf53693864d1281d97.bundle.js"
+    },
+    "js/client-62cf53693864d1281d97.bundle.js.map": {
+      "name": "js/client-62cf53693864d1281d97.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-62cf53693864d1281d97.bundle.js.map"
+    },
+    "js/client-9f605ad4991559b7d05c.bundle.js": {
+      "name": "js/client-9f605ad4991559b7d05c.bundle.js",
+      "path": "/app/apps/core/static/js/client-9f605ad4991559b7d05c.bundle.js"
+    },
+    "js/client-9f605ad4991559b7d05c.bundle.js.map": {
+      "name": "js/client-9f605ad4991559b7d05c.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-9f605ad4991559b7d05c.bundle.js.map"
+    },
+    "js/client-b4164fc47a45f11d325c.bundle.js": {
+      "name": "js/client-b4164fc47a45f11d325c.bundle.js",
+      "path": "/app/apps/core/static/js/client-b4164fc47a45f11d325c.bundle.js"
+    },
+    "js/client-b4164fc47a45f11d325c.bundle.js.map": {
+      "name": "js/client-b4164fc47a45f11d325c.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-b4164fc47a45f11d325c.bundle.js.map"
+    },
+    "js/client-d9d19e89e1a98a047003.bundle.js": {
+      "name": "js/client-d9d19e89e1a98a047003.bundle.js",
+      "path": "/app/apps/core/static/js/client-d9d19e89e1a98a047003.bundle.js"
+    },
+    "js/client-d9d19e89e1a98a047003.bundle.js.map": {
+      "name": "js/client-d9d19e89e1a98a047003.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-d9d19e89e1a98a047003.bundle.js.map"
+    },
+    "js/client-e9e9c5ca7753eefaa476.bundle.js": {
+      "name": "js/client-e9e9c5ca7753eefaa476.bundle.js",
+      "path": "/app/apps/core/static/js/client-e9e9c5ca7753eefaa476.bundle.js"
+    },
+    "js/client-e9e9c5ca7753eefaa476.bundle.js.map": {
+      "name": "js/client-e9e9c5ca7753eefaa476.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-e9e9c5ca7753eefaa476.bundle.js.map"
+    },
+    "js/client-edd83b44a9397fac868b.bundle.js": {
+      "name": "js/client-edd83b44a9397fac868b.bundle.js",
+      "path": "/app/apps/core/static/js/client-edd83b44a9397fac868b.bundle.js"
+    },
+    "js/client-edd83b44a9397fac868b.bundle.js.map": {
+      "name": "js/client-edd83b44a9397fac868b.bundle.js.map",
+      "path": "/app/apps/core/static/js/client-edd83b44a9397fac868b.bundle.js.map"
     },
     "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js": {
       "name": "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
@@ -135,12 +695,14 @@
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
       "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
       "css/admin-8fedbec253e35def4b31.bundle.css",
-      "js/admin-0b05c9c20184a7b975fc.bundle.js"
+      "js/admin-28b40f31128fa3f8de12.bundle.js"
     ],
     "client": [
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
       "css/client-a5093423cc35b3d8177e.bundle.css",
-      "js/client-3e435fc761f59056fbdd.bundle.js"
+      "js/client-9f605ad4991559b7d05c.bundle.js"
     ]
-  }
+  },
+  "error": "ModuleParseError",
+  "message": "Module parse failed: Unexpected token (67:43)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n|                             type: \"enable\",\n|                             //description: `${day.left} мест(а)`\n>                             description: (${day.left}) ? `${day.left} мест(а)` : ''\n|                         }\n|                     );"
 }

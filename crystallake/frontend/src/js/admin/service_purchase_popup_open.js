@@ -1,4 +1,5 @@
 const form_date = require("./form_date");
+const add_hours = require("./add_hours");
 
 $(document).ready(function (){
 
@@ -12,11 +13,13 @@ $(document).ready(function (){
         $('#id_service_id').val(data.offer.id);
 
         const start = new Date(data.start * 1000)
+        const local_start = add_hours.add_hours(start, start.getTimezoneOffset() / 60 * -1)
         const end = new Date(data.end * 1000)
+        const local_end = add_hours.add_hours(end, end.getTimezoneOffset() / 60 * -1)
 
-        const day = start.toISOString().substring(0,10),
-            start_time = start.toISOString().substring(11,16),
-            end_time = end.toISOString().substring(11,16)
+        const day = local_start.toISOString().substring(0,10),
+            start_time = local_start.toISOString().substring(11,16),
+            end_time = local_end.toISOString().substring(11,16)
 
         $('#id_day').val(day)
         $('#id_time_start').val(start_time)

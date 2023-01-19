@@ -29,6 +29,7 @@ $(document).ready(function (){
         });
 
         form_data.append('workers', JSON.stringify(workers))
+        console.log(form_data)
 
         $.ajax({
             url: $(this).attr('action'),

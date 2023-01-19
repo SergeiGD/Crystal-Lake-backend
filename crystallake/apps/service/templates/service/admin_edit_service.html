@@ -37,8 +37,8 @@
 
         <div class="col-md-6 col-12 mt-lg-0 mt-4">
             <div class="input-group flex-nowrap w-auto">
-                <label class="input-group-text w-12r" for="{{ form_service.max_for_moment.id_for_label }}">{{ form_service.max_for_moment.label }}</label>
-                {{ form_service.max_for_moment }}
+                <label class="input-group-text w-12r" for="{{ form_service.max_in_group.id_for_label }}">{{ form_service.max_in_group.label }}</label>
+                {{ form_service.max_in_group }}
             </div>
         </div>
 
@@ -123,6 +123,7 @@
                     <tr>
                         <th scope="col">Начало</th>
                         <th scope="col">Конец</th>
+                        <th scope="col" class="px-3 text-center" >Изменить</th>
                         <th scope="col" class="px-3 text-center" >Убрать</th>
                     </tr>
                     </thead>
@@ -132,9 +133,9 @@
                                 <td scope="row">{{ timetable.start }}</td>
                                 <td scope="row">{{ timetable.end }}</td>
                                 <td class="p-0 position-relative w-10r">
-                                    <form action="{{ timetable.get_info_url }}" method="POST" class="edit_additional_form" data-popup="#manage_timetable_modal">
+                                    <form action="{{ timetable.get_info_url }}" method="POST" class="edit_additional_form" >
                                         {% csrf_token %}
-                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target="#manage_timetable_modal" data-id="{{ timetable.pk }}">Изменить</button>
+                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-popup="#manage_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#manage_timetable_modal" data-id="{{ timetable.pk }}">Изменить</button>
                                     </form>
                                 </td>
                                 <td class="p-0 position-relative w-10r">

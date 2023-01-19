@@ -1,6 +1,6 @@
 $(document).ready(function (){
 
-    $('.delete_additional_form').on('submit', function (event, elem_id){
+    $('.delete_additional_form').on('submit', function (event, data){
         const current_form = $(this);
         event.preventDefault();
 
@@ -9,7 +9,7 @@ $(document).ready(function (){
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
-            data: {'elem_id': elem_id, 'csrfmiddlewaretoken': csrf_token},
+            data: {'elem_id': data['id'], 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
                 // window.location = window.location
                 window.location.reload();

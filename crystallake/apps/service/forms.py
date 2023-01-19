@@ -7,13 +7,13 @@ from .models import Service, ServiceTimetable
 class ServiceForm(OfferForm):
     class Meta(OfferForm.Meta):
         model = Service
-        fields = [*OfferForm.Meta.fields, 'max_for_moment', 'dynamic_timetable']
+        fields = [*OfferForm.Meta.fields, 'max_in_group', 'dynamic_timetable']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.short_fields.extend(['max_for_moment'])
-        self.number_fields.extend(['max_for_moment'])
+        self.short_fields.extend(['max_in_group'])
+        self.number_fields.extend(['max_in_group'])
 
         self.fields['dynamic_timetable'].widget.attrs.update({'class': 'form-check-input'})
 
@@ -60,7 +60,7 @@ class SearchServicesAdmin(SearchOffersAdmin):
 
 class TimetableForm(forms.Form):
 
-    timetable_id = forms.IntegerField(widget=forms.HiddenInput(attrs={
+    timetable_id = forms.IntegerField(required=False, widget=forms.HiddenInput(attrs={
         'class': 'd-none'
     }))
     date = forms.DateField(label='Дата', widget=forms.DateInput(attrs={

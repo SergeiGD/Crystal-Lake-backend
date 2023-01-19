@@ -3570,15 +3570,29 @@ $(document).ready(function(){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function(){
-    $("[data-goto]").on('click', function(e){
+    $("[data-goto]").on('mousedown', function(e){
         e.stopPropagation();
-        window.location.href = e.currentTarget.getAttribute('data-goto');
+        const url = e.currentTarget.getAttribute('data-goto');
+        if (e.which == 1) {
+          window.location.href = url
+       }
+        if (e.which == 2) {
+          window.open(url, '_blank').focus();
+       }
     });
 
-    $(".offers").on('click', function(e){
+    $(".offers").on('mousedown', function(e){
         const elem = e.target.closest('[data-goto]');                                       // в списке офферов (скидки) есть элементы, добавляющиеся диначимески.
         if(!elem) return;                                                                   // поэтому будет искать в его дочерних элементах
-        if (elem.dataset.goto) window.location.href = elem.dataset.goto;
+        if (!elem.dataset.goto) return;
+        //if (elem.dataset.goto) window.location.href = elem.dataset.goto;
+        if (e.which == 1) {
+            window.location.href = elem.dataset.goto;
+
+       }
+        if (e.which == 2) {
+            window.open(elem.dataset.goto, '_blank').focus();
+       }
     });
 });
 
@@ -3777,4 +3791,4 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-3e435fc761f59056fbdd.bundle.js.map
+//# sourceMappingURL=client-9f605ad4991559b7d05c.bundle.js.map

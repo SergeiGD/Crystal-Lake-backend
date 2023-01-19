@@ -134,9 +134,9 @@ class Room(Offer):
                 )
 
                 for purchase in purchases:
-                    dates_range = DateTimeRange(localtime(purchase.start), localtime(purchase.end))
+                    dates_range = DateTimeRange(purchase.start, purchase.end)
                     for date in dates_range.range(timedelta(days=1)):
-                        room_dates.add(date.day)
+                        room_dates.add(date.timestamp())
 
                 general_dates.append(room_dates)
 
@@ -156,9 +156,10 @@ class Room(Offer):
                 end__lte=end
             )
             for purchase in purchases:
-                dates_range = DateTimeRange(localtime(purchase.start), localtime(purchase.end))
+                # dates_range = DateTimeRange(localtime(purchase.start), localtime(purchase.end))
+                dates_range = DateTimeRange(purchase.start, purchase.end)
                 for date in dates_range.range(timedelta(days=1)):
-                    dates.add(date.day)
+                    dates.add(date.timestamp())
         return list(dates)
 
     def get_info(self):

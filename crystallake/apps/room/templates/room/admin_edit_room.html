@@ -125,7 +125,7 @@
         </div>
 
         <div class="overflow-auto mt-4 rounded-2">
-            <form action="{{ room.get_create_same_room_url }}" method="POST" id="add_same_room">
+            <form action="{{ room.get_create_same_room_url }}" method="POST" class="add_additional_form" id="add_same_room">
                 {% csrf_token %}
                 <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold">+ Добавить</button>
             </form>

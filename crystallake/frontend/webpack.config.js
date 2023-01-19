@@ -84,10 +84,11 @@ module.exports = {
             // path.resolve(__dirname,'src/js/admin/ajax/add_group_to_worker.js'),
             // path.resolve(__dirname,'src/js/admin/ajax/add_permission_to_group.js'),
             path.resolve(__dirname,'src/js/admin/ajax/manage_purchase.js'),
-            path.resolve(__dirname,'src/js/admin/ajax/create_same_room.js'),
+            // path.resolve(__dirname,'src/js/admin/ajax/create_same_room.js'),
             path.resolve(__dirname,'src/js/admin/ajax/default_set_main_info.js'),
             path.resolve(__dirname,'src/js/admin/ajax/manage_timetable.js'),
             path.resolve(__dirname,'src/js/admin/ajax/get_dates_info.js'),
+            path.resolve(__dirname,'src/js/admin/ajax/get_service_dates_info.js'),
         ]
     },
     output: {

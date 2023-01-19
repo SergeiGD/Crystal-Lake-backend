@@ -205,8 +205,6 @@ def room_purchase_create_view(request, order_id):
                     start=room['start'],
                     end=room['end']
                 )
-                print(purchase.start)
-                print(purchase.end)
                 purchases.append(purchase)
             Purchase.objects.bulk_create(purchases)
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
@@ -226,6 +224,8 @@ def service_purchase_manage_view(request, order_id):
         purchase = PurchaseCountable.objects.filter(pk=purchase_id).first()
 
         form = ServicePurchaseForm(request.POST or None, instance=purchase)    # если purchase_id не передан, то будет None -> новый объект
+        purchase = form.instance
+        purchase.order = order
         if form.is_valid():
             purchase = form.instance
             if not purchase.pk:

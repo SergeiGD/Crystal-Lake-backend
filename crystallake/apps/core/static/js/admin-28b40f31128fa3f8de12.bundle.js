@@ -38,10 +38,10 @@ module.exports.add_hours = add_hours;
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
 
-    $('#select_worker').on('submit', function (event, worker_id, worker_name, worker_link, additional_data){
+    $('#select_worker').on('submit', function (event, data){
         event.preventDefault();
 
-        const same_elem = $('#timetable_workers_tbody').find(`[data-id="${worker_id}"]`).length
+        const same_elem = $('#timetable_workers_tbody').find(`[data-id="${data.id}"]`).length
 
         if(same_elem){
             return
@@ -49,19 +49,19 @@ $(document).ready(function (){
 
         const row = `
                 <tr>
-                    <th scope="row">${worker_id}</th>
+                    <th scope="row">${data.id}</th>
                     <td>
-                        <a href="${worker_link}" class="link-hover d-block">${worker_name}</a>
+                        <a href="${data.link}" class="link-hover d-block">${data.name}</a>
                     </td>
-                    <td>${additional_data.phone}</td>
+                    <td>${data.phone}</td>
                     <td class="p-0 position-relative w-10r">
-                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-temp-elem-id="${worker_id}">Убрать</button>
+                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-temp-elem-id="${data.id}">Убрать</button>
                     </td>
                 </tr>
             `
         $('#timetable_workers_tbody').append(row);
 
-        $('#edit_timetable').trigger('worker_added', worker_id)
+        $('#edit_timetable').trigger('worker_added', data.id)
 
     });
 
@@ -80,7 +80,7 @@ $(document).ready(function (){
 const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
 $(document).ready(function (){
 
-    $('.add_additional_form').on('submit', function (event, data){
+    $('.add_additional_form').on('submit', function (event, data={}){
         event.preventDefault();
 
         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
@@ -107,41 +107,40 @@ $(document).ready(function (){
 /*!***********************************************!*\
   !*** ./src/js/admin/ajax/create_same_room.js ***!
   \***********************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (() => {
 
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-$(document).ready(function (){
-
-    $('#add_same_room').on('submit', function (event, room_id){
-        event.preventDefault();
-
-        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: {'elem_id': room_id, 'csrfmiddlewaretoken': csrf_token},
-            success: function (response){
-                const new_room = {id: response['data'].id}
-                append_row(new_room)
-            }
-        });
-
-        function append_row(room){
-            const row = `
-                <tr>
-                    <th scope="row">${room.id}</th>
-                    <td class="p-0 position-relative w-10r">
-                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${room.id}">Убрать</button>
-                    </td>
-                </tr>
-            `
-            $('#same_rooms_list_body').append(row);
-
-        }
-
-    });
-})
+// $(document).ready(function (){
+//
+//     $('#add_same_room').on('submit', function (event){
+//         event.preventDefault();
+//
+//         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
+//
+//         $.ajax({
+//             url: $(this).attr('action'),
+//             type: 'POST',
+//             data: {'csrfmiddlewaretoken': csrf_token},
+//             success: function (response){
+//                 const new_room = {id: response['data'].id}
+//                 append_row(new_room)
+//             }
+//         });
+//
+//         function append_row(room){
+//             const row = `
+//                 <tr>
+//                     <th scope="row">${room.id}</th>
+//                     <td class="p-0 position-relative w-10r">
+//                         <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${room.id}">Убрать</button>
+//                     </td>
+//                 </tr>
+//             `
+//             $('#same_rooms_list_body').append(row);
+//
+//         }
+//
+//     });
+// })
 
 /***/ }),
 
@@ -189,7 +188,7 @@ $(document).ready(function (){
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
 
-    $('.delete_additional_form').on('submit', function (event, elem_id){
+    $('.delete_additional_form').on('submit', function (event, data){
         const current_form = $(this);
         event.preventDefault();
 
@@ -198,7 +197,7 @@ $(document).ready(function (){
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
-            data: {'elem_id': elem_id, 'csrfmiddlewaretoken': csrf_token},
+            data: {'elem_id': data['id'], 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
                 // window.location = window.location
                 window.location.reload();
@@ -235,7 +234,7 @@ $(document).ready(function (){
     $('.edit_additional_form').on('submit', function (event, elem_id) {
         event.preventDefault();
         const popup = $(this).find('[data-popup]').attr('data-popup')
-
+        //const  popup = $(this).attr('data-popup')
 
         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
 
@@ -244,6 +243,8 @@ $(document).ready(function (){
             type: 'POST',
             data: {'elem_id': elem_id, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
+                console.log(response.data)
+                console.log(popup)
                 $(popup).trigger('popup_open', response.data)
             }
         }).statusCode({
@@ -266,10 +267,9 @@ $(document).ready(function (){
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const add_hours = __webpack_require__(/*! ../add_hours */ "./src/js/admin/add_hours.js");
+
 $(document).ready(function () {
-
-    // TODO: ДОБАВИТЬ АККОРДЕОН И ПРИ ЕГО ОТКРЫТИИ ВЫЗЫВАЕМ selectMonth
-
 
     $('.calendar__room').on('selectMonth', function(event, month_str, month_index, additional_info){
 
@@ -279,9 +279,105 @@ $(document).ready(function () {
         $(this).find('.day').first().trigger('click');
 
         $(this).siblings('form').children('button').first().trigger('click')
+
     });
 
-    $("form[id$='_dates']").on('submit', function (event){
+    $(".calendar__room_form").on('submit', function (event){
+        event.preventDefault();
+
+        const calendar = $(this).siblings('.evoCalendar')
+        const date_str = calendar.evoCalendar('getActiveDate');
+        const year = date_str.substring(0,4),
+            month = date_str.substring(5,7)
+        const start = new Date(
+            year,
+            parseInt(month) - 1,
+            1,
+        ).getTime()
+
+        const end = new Date(
+            year,
+            month,
+            0,
+        ).getTime()
+
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'GET',
+            data: {'start': start, 'end': end, 'csrfmiddlewaretoken': csrf_token},
+            success: function (response){
+
+                 $('.day-busy').removeClass('day-busy')
+                calendar.find(".event-indicator").removeClass('event-indicator')
+                calendar.evoCalendar('removeCalendarEvent', []);
+
+                for (const day of response['data']){
+
+                    const date = new Date(day * 1000)
+                    const local_date = add_hours.add_hours(date, date.getTimezoneOffset() / 60 * -1)
+                    const date_str = local_date.toISOString().substring(0,10)
+
+                    calendar.evoCalendar('addCalendarEvent',
+                        {
+                            id: Date.now(),
+                            name: "busy",
+                            date: date_str,
+                            type: "busy",
+                        }
+                    );
+                }
+
+                $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
+                    $(this).parent().addClass('day-busy');
+                });
+            },
+        });
+    })
+
+    $('.calendar__room').evoCalendar('selectMonth', new Date().getMonth(), {programmatically: true});   // при выбриаем текущей месяц, чтоб стригерить отправку запроса
+
+
+    // $('.calendar__room').on('selectMonth', function(){
+    //     console.log($(`.calendar[data-id="68"]`).evoCalendar.calendarEvents)
+    //     console.log($(this).attr('data-id'))
+    //
+    //     $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
+    //         $(this).parent().addClass('day-busy');
+    //     });
+    // });
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/get_service_dates_info.js":
+/*!*****************************************************!*\
+  !*** ./src/js/admin/ajax/get_service_dates_info.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const add_hours = __webpack_require__(/*! ../add_hours */ "./src/js/admin/add_hours.js");
+
+$(document).ready(function () {
+
+    // TODO: ДОБАВИТЬ АККОРДЕОН И ПРИ ЕГО ОТКРЫТИИ ВЫЗЫВАЕМ selectMonth
+
+
+    $('.calendar__service').on('selectMonth', function(event, month_str, month_index){
+
+        // if (!additional_info?.programmatically){
+        //     $('.calendar__service').not(this).evoCalendar('selectMonth', month_index, {programmatically: true});
+        // }
+        $(this).find('.day').first().trigger('click');
+
+        $(this).siblings('form').children('button').first().trigger('click')
+
+        console.log('asd')
+    });
+
+    $(".calendar__service_form").on('submit', function (event){
         event.preventDefault();
 
         const calendar = $(this).siblings('.evoCalendar')
@@ -310,37 +406,38 @@ $(document).ready(function () {
 
                 $('.day-busy').removeClass('day-busy')
                 calendar.find(".event-indicator").removeClass('event-indicator')
-                calendar.evoCalendar.calendarEvents = []
+                calendar.evoCalendar('removeCalendarEvent', []);
 
                 for (const day of response['data']){
+                    const start = new Date(day.start * 1000)
+                    const local_start = add_hours.add_hours(start, start.getTimezoneOffset() / 60 * -1)
+                    const end = new Date(day.end * 1000)
+                    const local_end = add_hours.add_hours(end, end.getTimezoneOffset() / 60 * -1)
+
+                    const date = local_start.toISOString().substring(0,10)
+                    const start_time = local_start.toISOString().substring(11,16)
+                    const end_time = local_end.toISOString().substring(11,16)
                     calendar.evoCalendar('addCalendarEvent',
                         {
-                            id: Date.now(),
-                            name: "busy",
-                            date: `${year}/${month}/${day}`,
-                            type: "busy",
+                            id: new Date(),
+                            date: date,
+                            name: `${start_time} - ${end_time}`,
+                            type: "enable",
+                            description: (day.left !== undefined) ? `${day.left} мест(а)` : ''
                         }
                     );
+
                 }
 
                 $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
-                    $(this).parent().addClass('day-busy');
+                    $(this).parent().addClass('day-enable');
                 });
             },
         });
     })
 
-    $('.calendar__room').evoCalendar('selectMonth', new Date().getMonth(), {programmatically: true});   // при выбриаем текущей месяц, чтоб стригерить отправку запроса
+    $('.calendar__service').evoCalendar('selectMonth', new Date().getMonth(), {programmatically: true});   // при выбриаем текущей месяц, чтоб стригерить отправку запроса
 
-
-    // $('.calendar__room').on('selectMonth', function(){
-    //     console.log($(`.calendar[data-id="68"]`).evoCalendar.calendarEvents)
-    //     console.log($(this).attr('data-id'))
-    //
-    //     $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
-    //         $(this).parent().addClass('day-busy');
-    //     });
-    // });
 })
 
 /***/ }),
@@ -418,6 +515,7 @@ $(document).ready(function (){
         });
 
         form_data.append('workers', JSON.stringify(workers))
+        console.log(form_data)
 
         $.ajax({
             url: $(this).attr('action'),
@@ -450,6 +548,8 @@ $(document).ready(function (){
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
 $(document).ready(function (){
+
+
 
     var files_uploaded = []
 
@@ -1627,6 +1727,7 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const form_date = __webpack_require__(/*! ./form_date */ "./src/js/admin/form_date.js");
+const add_hours = __webpack_require__(/*! ./add_hours */ "./src/js/admin/add_hours.js");
 
 $(document).ready(function (){
 
@@ -1640,11 +1741,13 @@ $(document).ready(function (){
         $('#id_service_id').val(data.offer.id);
 
         const start = new Date(data.start * 1000)
+        const local_start = add_hours.add_hours(start, start.getTimezoneOffset() / 60 * -1)
         const end = new Date(data.end * 1000)
+        const local_end = add_hours.add_hours(end, end.getTimezoneOffset() / 60 * -1)
 
-        const day = start.toISOString().substring(0,10),
-            start_time = start.toISOString().substring(11,16),
-            end_time = end.toISOString().substring(11,16)
+        const day = local_start.toISOString().substring(0,10),
+            start_time = local_start.toISOString().substring(11,16),
+            end_time = local_end.toISOString().substring(11,16)
 
         $('#id_day').val(day)
         $('#id_time_start').val(start_time)
@@ -1703,16 +1806,20 @@ $(document).ready(function(){
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const add_hours = __webpack_require__(/*! ./add_hours */ "./src/js/admin/add_hours.js");
 $(document).ready(function (){
 
     $('#manage_timetable_modal').on('popup_open', function (event, data){
+        console.log(data)
 
         $('#id_timetable_id').val(data.id)
         const start = new Date(data.start * 1000)
+        const local_start = add_hours.add_hours(start, start.getTimezoneOffset() / 60 * -1)
         const end = new Date(data.end * 1000)
-        $('#id_date').val(start.toISOString().substring(0,10))
-        $('#id_start').val(start.toISOString().substring(11,16))
-        $('#id_end').val(end.toISOString().substring(11,16))
+        const local_end = add_hours.add_hours(end, end.getTimezoneOffset() / 60 * -1)
+        $('#id_date').val(local_start.toISOString().substring(0,10))
+        $('#id_start').val(local_start.toISOString().substring(11,16))
+        $('#id_end').val(local_end.toISOString().substring(11,16))
         $('#timetable_workers_tbody').html('')
 
         for (const worker of data.workers){
@@ -3014,6 +3121,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var _ = this;
 
         function deleteEvent(data) {
+
+
             // Array index
             var index = _.options.calendarEvents.map(function (event) { return event.id }).indexOf(data);
             
@@ -3029,7 +3138,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 console.log("%c "+data+": ID not found ", "color:white;font-weight:bold;background-color:#e21d1d;");
             }
         }
+
         if (arr instanceof Array) { // Arrays of index
+            if (arr.length === 0){
+                for(const event of _.options.calendarEvents) {
+                    deleteEvent(event.id)
+                }
+            }
+
             for(var i=0; i < arr.length; i++) {
                 deleteEvent(arr[i])
             }
@@ -3179,15 +3295,29 @@ $(document).ready(function(){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function(){
-    $("[data-goto]").on('click', function(e){
+    $("[data-goto]").on('mousedown', function(e){
         e.stopPropagation();
-        window.location.href = e.currentTarget.getAttribute('data-goto');
+        const url = e.currentTarget.getAttribute('data-goto');
+        if (e.which == 1) {
+          window.location.href = url
+       }
+        if (e.which == 2) {
+          window.open(url, '_blank').focus();
+       }
     });
 
-    $(".offers").on('click', function(e){
+    $(".offers").on('mousedown', function(e){
         const elem = e.target.closest('[data-goto]');                                       // в списке офферов (скидки) есть элементы, добавляющиеся диначимески.
         if(!elem) return;                                                                   // поэтому будет искать в его дочерних элементах
-        if (elem.dataset.goto) window.location.href = elem.dataset.goto;
+        if (!elem.dataset.goto) return;
+        //if (elem.dataset.goto) window.location.href = elem.dataset.goto;
+        if (e.which == 1) {
+            window.location.href = elem.dataset.goto;
+
+       }
+        if (e.which == 2) {
+            window.open(elem.dataset.goto, '_blank').focus();
+       }
     });
 });
 
@@ -3368,9 +3498,10 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/create_same_room.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/default_set_main_info.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/manage_timetable.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/get_dates_info.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/get_dates_info.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/get_service_dates_info.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-0b05c9c20184a7b975fc.bundle.js.map
+//# sourceMappingURL=admin-28b40f31128fa3f8de12.bundle.js.map

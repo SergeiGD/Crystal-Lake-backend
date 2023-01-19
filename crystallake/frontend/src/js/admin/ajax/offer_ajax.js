@@ -1,6 +1,8 @@
 const errors = require('../errors');
 $(document).ready(function (){
 
+
+
     var files_uploaded = []
 
     var files_deleted = []

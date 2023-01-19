@@ -1,7 +1,6 @@
+const add_hours = require('../add_hours');
+
 $(document).ready(function () {
-
-    // TODO: ДОБАВИТЬ АККОРДЕОН И ПРИ ЕГО ОТКРЫТИИ ВЫЗЫВАЕМ selectMonth
-
 
     $('.calendar__room').on('selectMonth', function(event, month_str, month_index, additional_info){
 
@@ -11,9 +10,10 @@ $(document).ready(function () {
         $(this).find('.day').first().trigger('click');
 
         $(this).siblings('form').children('button').first().trigger('click')
+
     });
 
-    $("form[id$='_dates']").on('submit', function (event){
+    $(".calendar__room_form").on('submit', function (event){
         event.preventDefault();
 
         const calendar = $(this).siblings('.evoCalendar')
@@ -40,16 +40,21 @@ $(document).ready(function () {
             data: {'start': start, 'end': end, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
 
-                $('.day-busy').removeClass('day-busy')
+                 $('.day-busy').removeClass('day-busy')
                 calendar.find(".event-indicator").removeClass('event-indicator')
-                calendar.evoCalendar.calendarEvents = []
+                calendar.evoCalendar('removeCalendarEvent', []);
 
                 for (const day of response['data']){
+
+                    const date = new Date(day * 1000)
+                    const local_date = add_hours.add_hours(date, date.getTimezoneOffset() / 60 * -1)
+                    const date_str = local_date.toISOString().substring(0,10)
+
                     calendar.evoCalendar('addCalendarEvent',
                         {
                             id: Date.now(),
                             name: "busy",
-                            date: `${year}/${month}/${day}`,
+                            date: date_str,
                             type: "busy",
                         }
                     );

@@ -35,8 +35,8 @@
     </div>
 
     <div class="col-md-6 col-12 mt-md-0 mt-2 row">
-        <p class="fw-bold col-5">Макс. единовременно:</p>
-        <p class="opacity-75 col-7">{{ service.max_for_moment }}</p>
+        <p class="fw-bold col-5">Макс. в группе:</p>
+        <p class="opacity-75 col-7">{{ service.max_in_group }}</p>
         <hr>
     </div>
 
@@ -80,3 +80,49 @@
 
 
 {% endblock properties %}
+
+{% block additional_info %}
+
+    <!-- dates -->
+
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5" id="dates">
+
+        {% with offer as service %}
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">Досутпное время</span>
+        </div>
+
+        <div class="row">
+            <div class="mx-auto col-lg-5 col-12">
+                <span class="input-group-text rounded-top rounded-0">Доступное время</span>
+                <form action="{{ service.get_free_time_url }}" class="calendar__service_form" method="GET">
+                        {% csrf_token %}
+                        <button type="submit" class="d-none"></button>
+                    </form>
+                <div class="evoCalendar calendar calendar__service"></div>
+            </div>
+        </div>
+
+
+{#        <div class="row mt-5 justify-content-between">#}
+{#            {% for same_room in room.get_same_rooms %}#}
+{#                <div class="col-lg-5 col-12">#}
+{#                    <span class="input-group-text rounded-top rounded-0">Номер {{ same_room.pk }}:</span>#}
+{#                    <form action="{{ same_room.get_busy_dates_url }}" id="{{ same_room.pk }}_dates" method="GET">#}
+{#                        {% csrf_token %}#}
+{#                        <button type="submit" class="d-none"></button>#}
+{#                    </form>#}
+{#                    <div class="evoCalendar calendar calendar__room"></div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+
+        {% endwith %}
+
+
+    </div>
+
+    <!-- end dates -->
+
+{% endblock additional_info %}

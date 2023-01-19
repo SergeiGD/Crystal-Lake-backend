@@ -1,8 +1,13 @@
+from datetimerange import DateTimeRange
+
 from django.db import models
 from django.urls import reverse
+from django.utils.timezone import localtime
+from django.db.models import Sum
 
 from ..offer.models import Offer
 from ..offer.models import OfferQuerySet
+from ..order.models import PurchaseCountable
 
 # Create your models here.
 
@@ -10,8 +15,8 @@ from ..offer.models import OfferQuerySet
 class ServiceQuerySet(OfferQuerySet):
     def search(self, **kwargs):
         qs = super().search(**kwargs)
-        if kwargs.get('max_for_moment', ''):
-            qs = qs.filter(max_for_moment=kwargs['max_for_moment'])
+        if kwargs.get('max_in_group', ''):
+            qs = qs.filter(max_in_group=kwargs['max_in_group'])
         if kwargs.get('dynamic_timetable', ''):
             qs = qs.filter(dynamic_timetable=kwargs['dynamic_timetable'])
 
@@ -34,16 +39,75 @@ class ServiceTimetableQuerySet(models.QuerySet):
 
 
 class Service(Offer):
-    max_for_moment = models.SmallIntegerField(verbose_name='макс. единовременно')
+    max_in_group = models.SmallIntegerField(verbose_name='макс. в группе', default=1)
     dynamic_timetable = models.BooleanField(verbose_name='динамическое расписание')
 
     objects = ServiceQuerySet.as_manager()
 
     def get_info(self):
         data = super().get_info()
-        data['max_for_moment'] = self.max_for_moment
+        data['max_in_group'] = self.max_in_group
         data['dynamic_timetable'] = self.dynamic_timetable
         return data
+
+    def get_free_time(self, start, end):
+        result = []
+
+        timetables = ServiceTimetable.objects.filter(
+            service=self,
+            start__gte=start,
+            end__lte=end
+        )
+
+        if self.dynamic_timetable:
+            for timetable in timetables:
+                result.append({
+                    'start': timetable.start.timestamp(),
+                    'end': timetable.end.timestamp(),
+                })
+
+            # for timetable in timetables:
+            #     purchases = PurchaseCountable.objects.filter(
+            #         offer__pk=timetable.service.pk,
+            #         is_canceled=False,
+            #         order__date_canceled=None,
+            #         start__gte=timetable.start,
+            #         end__lte=timetable.start
+            #     )
+            #
+            #     time_ranges = []
+            #     for purchase in purchases:
+            #         time_range = DateTimeRange(purchase.start, purchase.end)
+            #         time_ranges.append((time_range, purchase.quantity))
+
+        if not self.dynamic_timetable:
+            for timetable in timetables:
+
+                purchases_count = PurchaseCountable.objects.filter(
+                    offer__pk=timetable.service.pk,
+                    is_canceled=False,
+                    order__date_canceled=None,
+                    start__gte=timetable.start,
+                    end__lte=timetable.end
+                ).aggregate(total_quantity=Sum('quantity'))
+
+                if self.max_in_group == 0:
+                    result.append({
+                        'start': timetable.start.timestamp(),
+                        'end': timetable.end.timestamp(),
+                    })
+                else:
+                    left = self.max_in_group if purchases_count['total_quantity'] is None else self.max_in_group - purchases_count['total_quantity']
+
+                    if left > 0:
+                        result.append({
+                            'start': timetable.start.timestamp(),
+                            'end': timetable.end.timestamp(),
+                            'left': left
+                        })
+
+        print(result)
+        return result
 
     def get_absolute_url(self):
         return reverse('service', kwargs={'service_slug': self.slug})
@@ -68,6 +132,9 @@ class Service(Offer):
 
     def get_workers_url(self):
         return reverse('get_service_workers', kwargs={'offer_id': self.pk})
+
+    def get_free_time_url(self):
+        return reverse('get_free_time', kwargs={'offer_id': self.pk})
 
 
 class ServiceTimetable(models.Model):

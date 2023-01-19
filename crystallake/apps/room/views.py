@@ -245,7 +245,8 @@ def get_busy_dates_view(request, room_id, **kwargs):
     start = datetime.fromtimestamp(start_timestamp, tz=pytz.UTC)    # приходит время в UTC
     end = datetime.fromtimestamp(end_timestamp, tz=pytz.UTC)
 
-    dates = room.get_busy_dates(localtime(start), localtime(end))   # конвертим в локальное время при вызове
+    # dates = room.get_busy_dates(localtime(start), localtime(end))   # конвертим в локальное время при вызове
+    dates = room.get_busy_dates(start, end)   # конвертим в локальное время при вызове
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=dates)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
@@ -264,7 +265,8 @@ def get_general_busy_dates_view(request, offer_id, **kwargs):
     start = datetime.fromtimestamp(start_timestamp, tz=pytz.UTC)    # приходит время в UTC
     end = datetime.fromtimestamp(end_timestamp, tz=pytz.UTC)
 
-    dates = room.get_general_busy_dates(localtime(start), localtime(end))   # конвертим в локальное время при вызове
+    # dates = room.get_general_busy_dates(localtime(start), localtime(end))   # конвертим в локальное время при вызове
+    dates = room.get_general_busy_dates(start, end)   # конвертим в локальное время при вызове
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=dates)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 

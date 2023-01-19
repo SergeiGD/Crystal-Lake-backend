@@ -274,10 +274,14 @@ class Purchase(PolymorphicModel):
             raise ValidationError('Нельзя изменить покупки оплаченного заказа заказ заказу')
 
     def get_info(self):
-        print(self.start.timestamp())
-        print(timezone.localtime(self.start).timestamp())
-        local_start = timezone.localtime(self.start)
-        local_end = timezone.localtime(self.end)
+        # local_start = timezone.localtime(self.start)
+        # local_end = timezone.localtime(self.end)
+
+        local_start = self.start
+        local_end = self.end
+
+        print(local_end)
+
         return {
             'offer': self.offer.get_info(),
             'start': local_start.timestamp(),

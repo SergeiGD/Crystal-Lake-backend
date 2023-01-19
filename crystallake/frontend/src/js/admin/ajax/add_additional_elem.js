@@ -1,7 +1,7 @@
 const errors = require("../errors");
 $(document).ready(function (){
 
-    $('.add_additional_form').on('submit', function (event, data){
+    $('.add_additional_form').on('submit', function (event, data={}){
         event.preventDefault();
 
         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')

@@ -1081,6 +1081,8 @@
         var _ = this;
 
         function deleteEvent(data) {
+
+
             // Array index
             var index = _.options.calendarEvents.map(function (event) { return event.id }).indexOf(data);
             
@@ -1096,7 +1098,14 @@
                 console.log("%c "+data+": ID not found ", "color:white;font-weight:bold;background-color:#e21d1d;");
             }
         }
+
         if (arr instanceof Array) { // Arrays of index
+            if (arr.length === 0){
+                for(const event of _.options.calendarEvents) {
+                    deleteEvent(event.id)
+                }
+            }
+
             for(var i=0; i < arr.length; i++) {
                 deleteEvent(arr[i])
             }

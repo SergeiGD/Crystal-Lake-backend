@@ -8,7 +8,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.utils import timezone
 
 from .models import Service, ServiceTimetable
-from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, RelocateResponseMixin
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, RelocateResponseMixin, parse_datetime
 from .forms import SearchServicesForm, ServiceForm, TimetableForm
 from ..offer.utils import ManageOfferMixin
 from ..photo.forms import PhotoForm
@@ -144,7 +144,9 @@ class AdminUpdateService(ManageOfferMixin, UpdateView):
             photos_qs=self.object.photos.all(),
             form_tags=SearchTagForm(self.request.POST or None),
             current_page='services',
-            form_timetable=TimetableForm(),
+            # form_timetable=TimetableForm(),
+            form_edit_timetable=TimetableForm(prefix='edit'),
+            form_create_timetable=TimetableForm(prefix='create'),
             form_workers=SearchUserForm()
         )
         return {**context, **common_context}
@@ -172,39 +174,22 @@ def admin_delete_service(request, offer_id):
     return redirect('admin_services')
 
 
-def manage_timetable_view(request, offer_id):
+def create_timetable_view(request, offer_id):
     if request.POST:
         service = get_object_or_404(Service, pk=offer_id)
+        form = TimetableForm(request.POST or None, prefix='create')
 
-        timetable_id = request.POST['timetable_id'] if request.POST['timetable_id'] else -1
-        #timetable_id = request.POST.get('timetable_id', -1)
-        timetable = ServiceTimetable.objects.filter(pk=timetable_id).first()
-
-        form = TimetableForm(request.POST or None)
         if form.is_valid():
+
+            start = datetime.combine(form.cleaned_data['date'], form.cleaned_data['start'])
+            end = datetime.combine(form.cleaned_data['date'], form.cleaned_data['end'])
+
             workers = json.loads(request.POST.get('workers'))
-            date_str = request.POST.get('date')
-            start_time_str = request.POST.get('start')
-            end_time_str = request.POST.get('end')
-            start_str = date_str + '/' + start_time_str
-            end_str = date_str + '/' + end_time_str
 
-
-            start = datetime.strptime(start_str, '%Y-%m-%d/%H:%M')
-            end = datetime.strptime(end_str, '%Y-%m-%d/%H:%M')
-
-            start = timezone.make_aware(start)
-            end = timezone.make_aware(end)
-
-            if not timetable:
-                timetable = ServiceTimetable(service=service)
-
-            timetable.start = start
-            timetable.end = end
+            timetable = ServiceTimetable(service=service, start=start, end=end)
 
             added_workers = []
             removed_worker = []
-
             for worker_id, added in workers.items():
                 worker = get_object_or_404(Worker, pk=worker_id)
                 if added:
@@ -212,10 +197,7 @@ def manage_timetable_view(request, offer_id):
                 else:
                     removed_worker.append(worker)
 
-            if timetable.pk:
-                remaining_objects = set(list(timetable.workers.all()) + added_workers) - set(removed_worker)
-            else:
-                remaining_objects = set(added_workers) - set(removed_worker)
+            remaining_objects = set(added_workers) - set(removed_worker)
             if len(remaining_objects) == 0:
                 response_message = ResponseMessage(
                     status=ResponseMessage.STATUSES.ERROR,
@@ -225,9 +207,8 @@ def manage_timetable_view(request, offer_id):
                 return response
 
             timetable.save()
-            timetable.workers.clear()
-            for worker in remaining_objects:
-                timetable.workers.add(worker)
+
+            timetable.workers.add(*remaining_objects)
 
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
@@ -238,6 +219,75 @@ def manage_timetable_view(request, offer_id):
             return response
 
 
+
+
+
+
+# def manage_timetable_view(request, offer_id):
+#     if request.POST:
+#         service = get_object_or_404(Service, pk=offer_id)
+#
+#         timetable_id = request.POST['timetable_id'] if request.POST['timetable_id'] else -1
+#         #timetable_id = request.POST.get('timetable_id', -1)
+#         timetable = ServiceTimetable.objects.filter(pk=timetable_id).first()
+#
+#         form = TimetableForm(request.POST or None)
+#         if form.is_valid():
+#             workers = json.loads(request.POST.get('workers'))
+#             date_str = request.POST.get('date')
+#             start_time_str = request.POST.get('start')
+#             end_time_str = request.POST.get('end')
+#             start_str = date_str + '/' + start_time_str
+#             end_str = date_str + '/' + end_time_str
+#
+#             start = datetime.strptime(start_str, '%Y-%m-%d/%H:%M')
+#             end = datetime.strptime(end_str, '%Y-%m-%d/%H:%M')
+#
+#             start = timezone.make_aware(start)
+#             end = timezone.make_aware(end)
+#
+#             if not timetable:
+#                 timetable = ServiceTimetable(service=service)
+#
+#             timetable.start = start
+#             timetable.end = end
+#
+#             added_workers = []
+#             removed_worker = []
+#
+#             for worker_id, added in workers.items():
+#                 worker = get_object_or_404(Worker, pk=worker_id)
+#                 if added:
+#                     added_workers.append(worker)
+#                 else:
+#                     removed_worker.append(worker)
+#
+#             if timetable.pk:
+#                 remaining_objects = set(list(timetable.workers.all()) + added_workers) - set(removed_worker)
+#             else:
+#                 remaining_objects = set(added_workers) - set(removed_worker)
+#             if len(remaining_objects) == 0:
+#                 response_message = ResponseMessage(
+#                     status=ResponseMessage.STATUSES.ERROR,
+#                     message={'Сотрудники': ['Добавите как минимум одного сотрудника']}
+#                 )
+#                 response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+#                 return response
+#
+#             timetable.save()
+#             timetable.workers.clear()
+#             for worker in remaining_objects:
+#                 timetable.workers.add(worker)
+#
+#             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+#             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
+#             return response
+#         else:
+#             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+#             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+#             return response
+
+
 def get_timetable_info_view(request, timetable_id, **kwargs):
     timetable = get_object_or_404(ServiceTimetable, pk=timetable_id)
     data = timetable.get_info()
@@ -246,13 +296,58 @@ def get_timetable_info_view(request, timetable_id, **kwargs):
     return response
 
 
-def edit_timetable_view(request, offer_id):
+def edit_timetable_view(request, timetable_id, **kwargs):
+    if request.POST:
+        form = TimetableForm(request.POST or None, prefix='edit')
+        timetable = get_object_or_404(ServiceTimetable, pk=timetable_id)
+
+        if form.is_valid():
+            # TODO: СДЕЛАТЬ МИКСИН
+            start = datetime.combine(form.cleaned_data['date'], form.cleaned_data['start'])
+            end = datetime.combine(form.cleaned_data['date'], form.cleaned_data['end'])
+
+            workers = json.loads(request.POST.get('workers'))
+
+            timetable.start = start
+            timetable.end = end
+
+            added_workers = []
+            removed_worker = []
+            for worker_id, added in workers.items():
+                worker = get_object_or_404(Worker, pk=worker_id)
+                if added:
+                    added_workers.append(worker)
+                else:
+                    removed_worker.append(worker)
+
+            remaining_objects = set(list(timetable.workers.all()) + added_workers) - set(removed_worker)
+            if len(remaining_objects) == 0:
+                response_message = ResponseMessage(
+                    status=ResponseMessage.STATUSES.ERROR,
+                    message={'Сотрудники': ['Добавите как минимум одного сотрудника']}
+                )
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
+
+            timetable.save()
+            timetable.workers.clear()
+            timetable.workers.add(*remaining_objects)
+
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+            response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
+            return response
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
+
+
     if request.POST:
 
         timetable_id = request.POST['timetable_id'] if request.POST['timetable_id'] else -1
         timetable = get_object_or_404(ServiceTimetable, pk=timetable_id)
 
-        form = TimetableForm(request.POST or None)    # если purchase_id не передан, то будет None -> новый объект
+        form = TimetableForm(request.POST or None, prefix='edit')    # если purchase_id не передан, то будет None -> новый объект
         if form.is_valid():
             workers = json.loads(request.POST.get('workers'))
             date_str = request.POST.get('date')
@@ -334,17 +429,17 @@ def find_timetables(request, **kwargs):
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
-class AdminTimetablesList(ListView):
-    model = ServiceTimetable
-    template_name = 'service/admin_timetables.html'
-    context_object_name = 'timetables'
-    paginate_by = 10
-    paginator_class = SafePaginator
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = 'timetables'
-        return context
+# class AdminTimetablesList(ListView):
+#     model = ServiceTimetable
+#     template_name = 'service/admin_timetables.html'
+#     context_object_name = 'timetables'
+#     paginate_by = 10
+#     paginator_class = SafePaginator
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['current_page'] = 'timetables'
+#         return context
 
 
 # class AdminTimetableDetail(DetailView):

@@ -1,5 +1,5 @@
 $(document).ready(function (){
-    $('#timetable_workers_tbody').on('click', '[data-temp-elem-id]', function (){
+    $('.timetable_workers_tbody').on('click', '[data-temp-elem-id]', function (){
         event.preventDefault()
         const worker_id = $(this).attr('data-temp-elem-id')
         // const table = $('#timetable_workers_tbody');

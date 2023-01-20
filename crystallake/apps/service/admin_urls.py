@@ -1,10 +1,9 @@
 from django.urls import path, include
 
-from .views import AdminServicesList, AdminCreateService, AdminServiceDetail, AdminUpdateService, admin_delete_service, AdminTimetablesList, get_free_time_view
+from .views import AdminServicesList, AdminCreateService, AdminServiceDetail, AdminUpdateService, admin_delete_service, get_free_time_view
 
 urlpatterns = [
     path('', AdminServicesList.as_view(), name='admin_services'),
-    path('timetables/', AdminTimetablesList.as_view(), name='admin_timetables'),
     path('create/', AdminCreateService.as_view(), name='admin_create_service'),
     path('show/<int:offer_id>/', AdminServiceDetail.as_view(), name='admin_show_service'),
     path('show/<int:offer_id>/get_free_time/', get_free_time_view, name='get_free_time'),

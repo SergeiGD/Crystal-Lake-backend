@@ -7,13 +7,70 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <form action="{{ offer.get_edit_timetable_url }}" id="edit_timetable" method="POST">
+                <form id="edit_timetable" class="workers_form" method="POST">
 
                     {% csrf_token %}
 
-                    {{ form_timetable.timetable_id }}
+                    <div class="modal-body">
 
-                    {% include 'service/timetable_body_popup.html' %}
+                        <div class="row">
+                    
+                            <div id="timetable_errors"></div>
+
+                            {{ form_edit_timetable.timetable_id }}
+                    
+                            <div class="col-lg-4 col-12">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_edit_timetable.date.id_for_label }}" class="input-group-text w-10r">{{ form_edit_timetable.date.label }}</label>
+                                    {{ form_edit_timetable.date }}
+                                </div>
+                            </div>
+                    
+                            <div class="col-lg-4 col-12">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_edit_timetable.start.id_for_label }}" class="input-group-text w-10r">{{ form_edit_timetable.start.label }}</label>
+                                    {{ form_edit_timetable.start }}
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="input-group flex-nowrap w-auto">
+                                    <label for="{{ form_edit_timetable.end.id_for_label }}" class="input-group-text w-10r">{{ form_edit_timetable.end.label }}</label>
+                                    {{ form_edit_timetable.end }}
+                                </div>
+                            </div>
+                    
+                            <div class="col-12 mt-4">
+                                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold open_search_btn" data-form="#search_worker" type="button" data-bs-toggle="modal" data-bs-target="#pick_worker_modal">+ Добавить</button>
+                                <table class="table table-striped table-hover table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            id
+                                        </th>
+                                        <th scope="col">
+                                            Ф.И.О.
+                                        </th>
+                                        <th scope="col">
+                                            Номер телефона
+                                        </th>
+                                        <th scope="col">
+                                            Убрать
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="timetable_workers_tbody">
+                    
+                                    </tbody>
+                                </table>
+                            </div>
+                    
+                        </div>
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary w-10r">Сохранить</button>
+                        <button type="button" class="btn btn-secondary w-10r" data-bs-dismiss="modal">Отмена</button>
+                    </div>
 
                 </form>
 

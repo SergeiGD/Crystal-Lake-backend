@@ -41,7 +41,12 @@ $(document).ready(function (){
     $('#select_worker').on('submit', function (event, data){
         event.preventDefault();
 
-        const same_elem = $('#timetable_workers_tbody').find(`[data-id="${data.id}"]`).length
+        // берем data-called-by и там ищем по классу
+
+        const called_by = $(this).attr('data-called-by')
+        const workers_tbody = $(called_by).find('.timetable_workers_tbody')
+
+        const same_elem = workers_tbody.find(`[data-temp-elem-id="${data.id}"]`).length
 
         if(same_elem){
             return
@@ -59,9 +64,9 @@ $(document).ready(function (){
                     </td>
                 </tr>
             `
-        $('#timetable_workers_tbody').append(row);
+        workers_tbody.append(row);
 
-        $('#edit_timetable').trigger('worker_added', data.id)
+        $(called_by).find('.workers_form').trigger('worker_added', data.id)
 
     });
 
@@ -100,47 +105,6 @@ $(document).ready(function (){
 
     });
 })
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/create_same_room.js":
-/*!***********************************************!*\
-  !*** ./src/js/admin/ajax/create_same_room.js ***!
-  \***********************************************/
-/***/ (() => {
-
-// $(document).ready(function (){
-//
-//     $('#add_same_room').on('submit', function (event){
-//         event.preventDefault();
-//
-//         const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
-//
-//         $.ajax({
-//             url: $(this).attr('action'),
-//             type: 'POST',
-//             data: {'csrfmiddlewaretoken': csrf_token},
-//             success: function (response){
-//                 const new_room = {id: response['data'].id}
-//                 append_row(new_room)
-//             }
-//         });
-//
-//         function append_row(room){
-//             const row = `
-//                 <tr>
-//                     <th scope="row">${room.id}</th>
-//                     <td class="p-0 position-relative w-10r">
-//                         <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="${room.id}">Убрать</button>
-//                     </td>
-//                 </tr>
-//             `
-//             $('#same_rooms_list_body').append(row);
-//
-//         }
-//
-//     });
-// })
 
 /***/ }),
 
@@ -243,8 +207,6 @@ $(document).ready(function (){
             type: 'POST',
             data: {'elem_id': elem_id, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                console.log(response.data)
-                console.log(popup)
                 $(popup).trigger('popup_open', response.data)
             }
         }).statusCode({
@@ -490,7 +452,8 @@ $(document).ready(function (){
     var workers = {}
     //var deleted_workers = []
 
-    const form = $('#edit_timetable, #create_timetable');
+    //const form = $('#edit_timetable, #create_timetable');
+    const form = $('.workers_form')
 
     form.on('worker_added', function (event, worker_id){
         //added_workers.push(worker_id)
@@ -504,6 +467,10 @@ $(document).ready(function (){
         workers[worker_id] = false
     })
 
+    $('[data-popup-to-clean]').on('click', function (){
+        workers = {}
+    })
+
     form.on('submit', function (event){
         event.preventDefault();
 
@@ -515,7 +482,6 @@ $(document).ready(function (){
         });
 
         form_data.append('workers', JSON.stringify(workers))
-        console.log(form_data)
 
         $.ajax({
             url: $(this).attr('action'),
@@ -1190,6 +1156,8 @@ $(document).ready(function (){
 
         function build_rows(data){
             var result = ''
+            const modal_to_open = $('#select_worker').attr('data-called-by')
+            console.log(modal_to_open)
             for(const item of data){
                 const row = `
                     <tr>
@@ -1201,7 +1169,7 @@ $(document).ready(function (){
                             ${item.phone}
                         </td>
                         <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" data-phone="${item.phone}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target="#manage_timetable_modal">
+                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" data-phone="${item.phone}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target=${modal_to_open}>
                                 Выбрать
                             </button>
                         </td>
@@ -1579,7 +1547,7 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
-    $('#timetable_workers_tbody').on('click', '[data-temp-elem-id]', function (){
+    $('.timetable_workers_tbody').on('click', '[data-temp-elem-id]', function (){
         event.preventDefault()
         const worker_id = $(this).attr('data-temp-elem-id')
         // const table = $('#timetable_workers_tbody');
@@ -1780,6 +1748,22 @@ $(document).ready(function (){
 
 /***/ }),
 
+/***/ "./src/js/admin/set_timetable_called_by.js":
+/*!*************************************************!*\
+  !*** ./src/js/admin/set_timetable_called_by.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+    $('.manage_timetable_btn').on('click', function (){
+        console.log($('#select_worker').attr('data-called-by', $(this).attr('data-bs-target')))
+        $('#select_worker').attr('data-called-by', $(this).attr('data-bs-target'))
+    })
+})
+
+/***/ }),
+
 /***/ "./src/js/admin/show_img.js":
 /*!**********************************!*\
   !*** ./src/js/admin/show_img.js ***!
@@ -1809,18 +1793,20 @@ $(document).ready(function(){
 const add_hours = __webpack_require__(/*! ./add_hours */ "./src/js/admin/add_hours.js");
 $(document).ready(function (){
 
-    $('#manage_timetable_modal').on('popup_open', function (event, data){
+    $('#edit_timetable_modal').on('popup_open', function (event, data){
         console.log(data)
-
-        $('#id_timetable_id').val(data.id)
+        $('#edit_timetable').attr('action', data.edit_url)
+        $('#id_edit-timetable_id').val(data.id)
         const start = new Date(data.start * 1000)
         const local_start = add_hours.add_hours(start, start.getTimezoneOffset() / 60 * -1)
         const end = new Date(data.end * 1000)
         const local_end = add_hours.add_hours(end, end.getTimezoneOffset() / 60 * -1)
-        $('#id_date').val(local_start.toISOString().substring(0,10))
-        $('#id_start').val(local_start.toISOString().substring(11,16))
-        $('#id_end').val(local_end.toISOString().substring(11,16))
-        $('#timetable_workers_tbody').html('')
+        $('#id_edit-date').val(local_start.toISOString().substring(0,10))
+        $('#id_edit-start').val(local_start.toISOString().substring(11,16))
+        $('#id_edit-end').val(local_end.toISOString().substring(11,16))
+
+        const workers_tbody = $(this).find('.timetable_workers_tbody')
+        workers_tbody.html('')
 
         for (const worker of data.workers){
             const row = `
@@ -1835,7 +1821,7 @@ $(document).ready(function (){
                     </td>
                 </tr>
             `
-            $('#timetable_workers_tbody').append(row);
+            workers_tbody.append(row);
         }
 
     })
@@ -3481,6 +3467,7 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/timetable_popup_open.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/add_worker_to_timetable.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/remove_worker_from_timetable.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/set_timetable_called_by.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_rooms.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_services.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/offer_ajax.js")))
@@ -3495,7 +3482,6 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/edit_additional_elem.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/add_additional_elem.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/manage_purchase.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/create_same_room.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/default_set_main_info.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/manage_timetable.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/get_dates_info.js")))
@@ -3504,4 +3490,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-28b40f31128fa3f8de12.bundle.js.map
+//# sourceMappingURL=admin-e56af164e60164aa247b.bundle.js.map

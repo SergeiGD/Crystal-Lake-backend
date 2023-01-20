@@ -59,6 +59,7 @@ class SearchServicesAdmin(SearchOffersAdmin):
 
 
 class TimetableForm(forms.Form):
+    # TODO: СДЕЛАТЬ МОДЕЛАКОЙ ДЛЯ CLEAR модели
 
     timetable_id = forms.IntegerField(required=False, widget=forms.HiddenInput(attrs={
         'class': 'd-none'

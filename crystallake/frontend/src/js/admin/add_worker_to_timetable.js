@@ -3,7 +3,12 @@ $(document).ready(function (){
     $('#select_worker').on('submit', function (event, data){
         event.preventDefault();
 
-        const same_elem = $('#timetable_workers_tbody').find(`[data-id="${data.id}"]`).length
+        // берем data-called-by и там ищем по классу
+
+        const called_by = $(this).attr('data-called-by')
+        const workers_tbody = $(called_by).find('.timetable_workers_tbody')
+
+        const same_elem = workers_tbody.find(`[data-temp-elem-id="${data.id}"]`).length
 
         if(same_elem){
             return
@@ -21,9 +26,9 @@ $(document).ready(function (){
                     </td>
                 </tr>
             `
-        $('#timetable_workers_tbody').append(row);
+        workers_tbody.append(row);
 
-        $('#edit_timetable').trigger('worker_added', data.id)
+        $(called_by).find('.workers_form').trigger('worker_added', data.id)
 
     });
 

@@ -29,6 +29,8 @@ $(document).ready(function (){
 
         function build_rows(data){
             var result = ''
+            const modal_to_open = $('#select_worker').attr('data-called-by')
+            console.log(modal_to_open)
             for(const item of data){
                 const row = `
                     <tr>
@@ -40,7 +42,7 @@ $(document).ready(function (){
                             ${item.phone}
                         </td>
                         <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" data-phone="${item.phone}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target="#manage_timetable_modal">
+                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" data-phone="${item.phone}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target=${modal_to_open}>
                                 Выбрать
                             </button>
                         </td>

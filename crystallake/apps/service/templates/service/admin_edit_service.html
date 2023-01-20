@@ -116,7 +116,7 @@
 {#                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold">+ Добавить</button>#}
 {#            </form>#}
 
-                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" data-popup-to-clean="#manage_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#manage_timetable_modal">+ Добавить</button>
+                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold manage_timetable_btn" data-popup-to-clean="#create_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#create_timetable_modal">+ Добавить</button>
 
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
@@ -135,7 +135,7 @@
                                 <td class="p-0 position-relative w-10r">
                                     <form action="{{ timetable.get_info_url }}" method="POST" class="edit_additional_form" >
                                         {% csrf_token %}
-                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-popup="#manage_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#manage_timetable_modal" data-id="{{ timetable.pk }}">Изменить</button>
+                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute manage_timetable_btn" data-url="{{ timetable.get_edit_url }}" data-popup="#edit_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#edit_timetable_modal" data-id="{{ timetable.pk }}">Изменить</button>
                                     </form>
                                 </td>
                                 <td class="p-0 position-relative w-10r">
@@ -159,8 +159,8 @@
 {% endblock additional_info %}
 
 {% block additional_popups %}
-    {% include 'service/manage_timetable_popup.html' %}
-{#    {% include 'service/create_timetable_popup.html' %}#}
-{#    {% include 'service/edit_timetable_popup.html' %}#}
+{#    {% include 'service/manage_timetable_popup.html' %}#}
+    {% include 'service/create_timetable_popup.html' %}
+    {% include 'service/edit_timetable_popup.html' %}
     {% include 'service/workers_popup.html' %}
 {% endblock additional_popups %}

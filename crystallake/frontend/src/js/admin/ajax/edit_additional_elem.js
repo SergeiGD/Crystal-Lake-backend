@@ -11,8 +11,6 @@ $(document).ready(function (){
             type: 'POST',
             data: {'elem_id': elem_id, 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                console.log(response.data)
-                console.log(popup)
                 $(popup).trigger('popup_open', response.data)
             }
         }).statusCode({

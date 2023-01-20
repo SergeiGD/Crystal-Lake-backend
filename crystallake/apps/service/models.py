@@ -106,7 +106,6 @@ class Service(Offer):
                             'left': left
                         })
 
-        print(result)
         return result
 
     def get_absolute_url(self):
@@ -124,8 +123,8 @@ class Service(Offer):
     def get_create_timetable_url(self):
         return reverse('create_timetable', kwargs={'offer_id': self.pk})
 
-    def get_edit_timetable_url(self):
-        pass
+    # def get_edit_timetable_url(self, timetable_id):
+    #     return reverse('edit_timetable', kwargs={'offer_id': self.pk, 'timetable_id': timetable_id})
 
     def get_delete_timetable_url(self):
         pass
@@ -176,9 +175,13 @@ class ServiceTimetable(models.Model):
             'start': self.start.timestamp(),
             'end': self.end.timestamp(),
             'id': self.pk,
-            'workers': workers
+            'workers': workers,
+            'edit_url': self.get_edit_url()
         }
 
     def get_info_url(self):
         return reverse('get_timetable', kwargs={'offer_id': self.service.pk, 'timetable_id': self.pk})
+
+    def get_edit_url(self):
+        return reverse('edit_timetable', kwargs={'offer_id': self.service.pk, 'timetable_id': self.pk})
 

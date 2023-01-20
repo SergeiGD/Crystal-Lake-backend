@@ -4,7 +4,8 @@ $(document).ready(function (){
     var workers = {}
     //var deleted_workers = []
 
-    const form = $('#edit_timetable, #create_timetable');
+    //const form = $('#edit_timetable, #create_timetable');
+    const form = $('.workers_form')
 
     form.on('worker_added', function (event, worker_id){
         //added_workers.push(worker_id)
@@ -18,6 +19,10 @@ $(document).ready(function (){
         workers[worker_id] = false
     })
 
+    $('[data-popup-to-clean]').on('click', function (){
+        workers = {}
+    })
+
     form.on('submit', function (event){
         event.preventDefault();
 
@@ -29,7 +34,6 @@ $(document).ready(function (){
         });
 
         form_data.append('workers', JSON.stringify(workers))
-        console.log(form_data)
 
         $.ajax({
             url: $(this).attr('action'),

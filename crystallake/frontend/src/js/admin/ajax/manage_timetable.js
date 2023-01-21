@@ -25,6 +25,8 @@ $(document).ready(function (){
 
     form.on('submit', function (event){
         event.preventDefault();
+        const form = $(this)
+
 
         var raw_data = $(this).serializeArray();
         var form_data = new FormData();
@@ -43,7 +45,8 @@ $(document).ready(function (){
             data: form_data,
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                errors.handle_errors(response['message'], $("#timetable_errors"))
+                console.log(response)
+                errors.handle_errors(response['message'], form.find(".timetable_errors"))
             },
             success: function (){
                 document.location.reload()

@@ -131,10 +131,6 @@ class ServicePurchaseForm(PurchaseForm):
         'class': 'form-control',
         'type': 'time'
     }))
-    time_select_text = forms.CharField(label='Время', required=False, widget=forms.TextInput(attrs={
-        'class': 'form-control rounded-0',
-        'readonly': ''
-    }))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

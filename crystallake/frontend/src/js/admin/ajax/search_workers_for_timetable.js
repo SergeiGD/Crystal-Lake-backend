@@ -1,7 +1,7 @@
 const find_items = require("../find_items");
 $(document).ready(function (){
 
-    $('#search_worker').on('submit', function (event, page='1', called_by){
+    $('#search_worker').on('submit', function (event, page='1'){
         event.preventDefault();
 
         var raw_data = $(this).serializeArray();

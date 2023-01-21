@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, UpdateView, CreateView
@@ -71,9 +73,10 @@ class AdminOrderUpdate(RelocateResponseMixin, UpdateView):
         context['current_page'] = 'orders'
         context['form_rooms'] = SearchRoomsAdmin()
         context['form_services'] = SearchServicesAdmin()
-        context['form_room_purchase'] = RoomPurchaseForm()
+        context['form_edit_room_purchase'] = RoomPurchaseForm(prefix='edit')
         context['form_create_room_purchase'] = RoomPurchaseForm(prefix='create')
-        context['form_service_purchase'] = ServicePurchaseForm()
+        context['form_edit_service_purchase'] = ServicePurchaseForm(prefix='edit')
+        context['form_create_service_purchase'] = ServicePurchaseForm(prefix='create')
         context['form_timetables'] = SearchTimetablesAdmin()
         # pur = Purchase.objects.get(pk=91)
         # print(pur.start)
@@ -123,12 +126,11 @@ class AdminOrderUpdate(RelocateResponseMixin, UpdateView):
         return response
 
 
-def room_purchase_edit_view(request, **kwargs):
+def room_purchase_edit_view(request, purchase_id, **kwargs):
     if request.POST:
-        purchase_id = request.POST['purchase_id']
         purchase = get_object_or_404(Purchase, pk=purchase_id)
 
-        form = RoomPurchaseForm(request.POST or None, instance=purchase)
+        form = RoomPurchaseForm(request.POST or None, instance=purchase, prefix='edit')
         #purchase = form.instance
 
         if form.is_valid():
@@ -216,31 +218,43 @@ def room_purchase_create_view(request, order_id):
             return response
 
 
-def service_purchase_manage_view(request, order_id):
+def service_purchase_create_view(request, order_id):
     if request.POST:
-
         order = get_object_or_404(Order, pk=order_id)
-        purchase_id = request.POST['purchase_id'] if request.POST['purchase_id'] else -1
-        purchase = PurchaseCountable.objects.filter(pk=purchase_id).first()
+        print(request.POST)
+        service_id = request.POST['create-service_id']
+        service = get_object_or_404(Offer, pk=service_id)
 
-        form = ServicePurchaseForm(request.POST or None, instance=purchase)    # если purchase_id не передан, то будет None -> новый объект
-        purchase = form.instance
-        purchase.order = order
+        # day = datetime(request.POST['create-day'])
+        # time_start = datetime.time(request.POST['create-time_start'])
+        # time_end = datetime.time(request.POST['create-time_end'])
+        # start = datetime.combine(day, time_start)
+        # end = datetime.combine(day, time_end)
+        # start, end = timezone.make_aware(start), timezone.make_aware(end)
+
+        purchase = PurchaseCountable(order=order)
+        form = ServicePurchaseForm(request.POST or None, instance=purchase, prefix='create')
+
         if form.is_valid():
-            purchase = form.instance
-            if not purchase.pk:
-                service_id = form.cleaned_data['service_id']
-                offer = get_object_or_404(Offer, pk=service_id)
-                purchase.offer = offer
-                purchase.order = order
+            service_id = form.cleaned_data['service_id']
+            service = get_object_or_404(Offer, pk=service_id)
+            purchase.offer = service
 
-            date_str = request.POST.get('day')
-            start_time_str = request.POST.get('time_start')
-            end_time_str = request.POST.get('time_end')
-            start, end = parse_datetime(date_str, start_time_str, end_time_str)
+            start = datetime.combine(form.cleaned_data['day'], form.cleaned_data['time_start'])
+            end = datetime.combine(form.cleaned_data['day'], form.cleaned_data['time_end'])
+            start, end = timezone.make_aware(start), timezone.make_aware(end)
 
             purchase.start, purchase.end = start, end
-            purchase.save()
+
+            if purchase.offer.is_time_available(purchase.start, purchase.end):
+                purchase.save()
+            else:
+                response_message = ResponseMessage(
+                    status=ResponseMessage.STATUSES.ERROR,
+                    message={'Время': ['На выбранное время нет доступной брони']}
+                )
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
 
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
@@ -249,6 +263,72 @@ def service_purchase_manage_view(request, order_id):
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
+
+
+def service_purchase_edit_view(request, purchase_id, **kwargs):
+    # TODO: mixin
+    if request.POST:
+        purchase = get_object_or_404(PurchaseCountable, pk=purchase_id)
+        form = ServicePurchaseForm(request.POST or None, instance=purchase, prefix='edit')
+
+        if form.is_valid():
+            start = datetime.combine(form.cleaned_data['day'], form.cleaned_data['time_start'])
+            end = datetime.combine(form.cleaned_data['day'], form.cleaned_data['time_end'])
+            start, end = timezone.make_aware(start), timezone.make_aware(end)
+
+            purchase.start, purchase.end = start, end
+
+            if purchase.offer.is_time_available(purchase.start, purchase.end):
+                purchase.save()
+            else:
+                response_message = ResponseMessage(
+                    status=ResponseMessage.STATUSES.ERROR,
+                    message={'Время': ['На выбранное время нет доступной брони']}
+                )
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
+
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+            response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
+            return response
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
+
+# def service_purchase_manage_view(request, order_id):
+#     if request.POST:
+#
+#         order = get_object_or_404(Order, pk=order_id)
+#         purchase_id = request.POST['purchase_id'] if request.POST['purchase_id'] else -1
+#         purchase = PurchaseCountable.objects.filter(pk=purchase_id).first()
+#
+#         form = ServicePurchaseForm(request.POST or None, instance=purchase)    # если purchase_id не передан, то будет None -> новый объект
+#         purchase = form.instance
+#         purchase.order = order
+#         if form.is_valid():
+#             purchase = form.instance
+#             if not purchase.pk:
+#                 service_id = form.cleaned_data['service_id']
+#                 offer = get_object_or_404(Offer, pk=service_id)
+#                 purchase.offer = offer
+#                 purchase.order = order
+#
+#             date_str = request.POST.get('day')
+#             start_time_str = request.POST.get('time_start')
+#             end_time_str = request.POST.get('time_end')
+#             start, end = parse_datetime(date_str, start_time_str, end_time_str)
+#
+#             purchase.start, purchase.end = start, end
+#             purchase.save()
+#
+#             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+#             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
+#             return response
+#         else:
+#             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+#             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+#             return response
 
 
 def get_purchase_info_view(request, purchase_id, **kwargs):

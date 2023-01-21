@@ -129,9 +129,7 @@
                 <th scope="col" class="text-nowrap col-hover" role="button">
                     Наименование <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
                 </th>
-                <th scope="col" class="text-nowrap col-hover" role="button">
-                    Тип расписания <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
-                </th>
+{##}
                 <th scope="col" class="text-nowrap col-hover" role="button">
                     Обычная цена <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
                 </th>
@@ -157,11 +155,11 @@
                         <td>
                             <a href="{{ service.get_admin_show_url }}" class="link-hover d-block">{{ service.name }}</a>
                         </td>
-                        {% if service.dynamic_timetable %}
-                            <td>Динамическое</td>
-                        {% else %}
-                            <td>Статическое</td>
-                        {% endif %}
+{#                        {% if service.dynamic_timetable %}#}
+{#                            <td>Динамическое</td>#}
+{#                        {% else %}#}
+{#                            <td>Статическое</td>#}
+{#                        {% endif %}#}
                         <td>{{ service.default_price.to_integral_value }}&#8381;</td>
                         <td>{{ service.weekend_price.to_integral_value }}&#8381;</td>
                         <td>{{ service.get_orders_count }}</td>

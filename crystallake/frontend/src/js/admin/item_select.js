@@ -3,7 +3,6 @@ $(document).ready(function (){
 
         const form = $(this).closest('form');
         form.trigger('submit', {
-            'is_dynamic': $(this).attr('data-dynamic'),
             'phone': $(this).attr('data-phone'),
             'name': $(this).attr('data-name'),
             'id': $(this).attr('data-id'),
@@ -11,17 +10,9 @@ $(document).ready(function (){
             'time_str': $(this).attr('data-time-str'),
             'time_start': $(this).attr('data-time-start'),
             'time_end': $(this).attr('data-time-end'),
-            'day': $(this).attr('data-day')
+            'day': $(this).attr('data-day'),
+            'url': $(this).attr('data-url'),
             }
         );
-        // form.trigger('submit', [
-        //     $(this).attr('data-id'),
-        //     $(this).attr('data-name'),
-        //     $(this).attr('data-link'),
-        //     {
-        //         'is_dynamic': $(this).attr('data-dynamic'),
-        //         'phone': $(this).attr('data-phone'),
-        //     }
-        // ]);
     });
 })

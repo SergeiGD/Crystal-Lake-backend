@@ -235,9 +235,9 @@
                                         {% csrf_token %}
                                         {% with purchase.offer|offer_type as modelclass %}
                                             {% if modelclass == "Room" %}
-                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or order.date_full_paid %}disabled{% endif %} type="button" data-popup="#room_purchase_modal" data-bs-toggle="modal" data-bs-target="#room_purchase_modal" data-id="{{ purchase.pk }}">Изменить</button>
+                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or order.date_full_paid %}disabled{% endif %} type="button" data-popup="#edit_room_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_room_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
                                             {% elif modelclass == "Service" %}
-                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or order.date_full_paid %}disabled{% endif %} type="button" data-popup="#service_purchase_modal" data-bs-toggle="modal" data-bs-target="#service_purchase_modal" data-id="{{ purchase.pk }}">Изменить</button>
+                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or order.date_full_paid %}disabled{% endif %} type="button" data-popup="#edit_service_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_service_purchase_modal" data-set-called-by="#edit_service_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
                                             {% endif %}
                                         {% endwith %}
                                     </form>
@@ -268,8 +268,9 @@
     {% include 'order/select_purchase_type_popup.html' %}
     {% include 'order/rooms_popup.html' %}
     {% include 'order/services_popup.html' %}
-    {% include 'order/room_purchase_popup.html' %}
+    {% include 'order/edit_room_purchase_popup.html' %}
     {% include 'order/create_room_purchase_popup.html' %}
-    {% include 'order/service_purchase_popup.html' %}
+    {% include 'order/edit_service_purchase_popup.html' %}
+    {% include 'order/create_service_purchase_popup.html' %}
     {% include 'order/timetables_popup.html' %}
 {% endblock popups %}

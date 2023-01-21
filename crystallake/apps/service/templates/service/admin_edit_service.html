@@ -44,6 +44,13 @@
 
         <div class="col-md-6 col-12 mt-4">
             <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-12r" for="{{ form_service.max_intersections.id_for_label }}">{{ form_service.max_intersections.label }}</label>
+                {{ form_service.max_intersections }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
                 <label class="input-group-text w-12r" for="{{ form_service.default_price.id_for_label }}">{{ form_service.default_price.label }}</label>
                 {{ form_service.default_price }}
             </div>
@@ -84,12 +91,12 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-12 mt-4">
-            <div class="form-check">
-                <label class="form-check-label" for="{{ form_service.dynamic_timetable.id_for_label }}">{{ form_service.dynamic_timetable.label }}</label>
-                {{ form_service.dynamic_timetable }}
-            </div>
-        </div>
+{#        <div class="col-md-6 col-12 mt-4">#}
+{#            <div class="form-check">#}
+{#                <label class="form-check-label" for="{{ form_service.dynamic_timetable.id_for_label }}">{{ form_service.dynamic_timetable.label }}</label>#}
+{#                {{ form_service.dynamic_timetable }}#}
+{#            </div>#}
+{#        </div>#}
 
         <div class="col-md-6 col-12 mt-4">
             <div class="form-check">
@@ -116,7 +123,7 @@
 {#                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold">+ Добавить</button>#}
 {#            </form>#}
 
-                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold manage_timetable_btn" data-popup-to-clean="#create_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#create_timetable_modal">+ Добавить</button>
+                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" data-set-called-by="#create_timetable_modal" data-popup-to-clean="#create_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#create_timetable_modal">+ Добавить</button>
 
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
@@ -135,7 +142,7 @@
                                 <td class="p-0 position-relative w-10r">
                                     <form action="{{ timetable.get_info_url }}" method="POST" class="edit_additional_form" >
                                         {% csrf_token %}
-                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute manage_timetable_btn" data-url="{{ timetable.get_edit_url }}" data-popup="#edit_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#edit_timetable_modal" data-id="{{ timetable.pk }}">Изменить</button>
+                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-set-called-by="#edit_timetable_modal" data-url="{{ timetable.get_edit_url }}" data-popup="#edit_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#edit_timetable_modal" data-id="{{ timetable.pk }}">Изменить</button>
                                     </form>
                                 </td>
                                 <td class="p-0 position-relative w-10r">

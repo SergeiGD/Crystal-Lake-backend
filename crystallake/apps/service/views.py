@@ -177,16 +177,18 @@ def admin_delete_service(request, offer_id):
 def create_timetable_view(request, offer_id):
     if request.POST:
         service = get_object_or_404(Service, pk=offer_id)
-        form = TimetableForm(request.POST or None, prefix='create')
+        timetable = ServiceTimetable(service=service)
+        form = TimetableForm(request.POST or None, prefix='create', instance=timetable)
 
         if form.is_valid():
-
             start = datetime.combine(form.cleaned_data['date'], form.cleaned_data['start'])
             end = datetime.combine(form.cleaned_data['date'], form.cleaned_data['end'])
+            start, end = timezone.make_aware(start), timezone.make_aware(end)
 
             workers = json.loads(request.POST.get('workers'))
 
-            timetable = ServiceTimetable(service=service, start=start, end=end)
+            timetable.start = start
+            timetable.end = end
 
             added_workers = []
             removed_worker = []
@@ -298,13 +300,14 @@ def get_timetable_info_view(request, timetable_id, **kwargs):
 
 def edit_timetable_view(request, timetable_id, **kwargs):
     if request.POST:
-        form = TimetableForm(request.POST or None, prefix='edit')
         timetable = get_object_or_404(ServiceTimetable, pk=timetable_id)
+        form = TimetableForm(request.POST or None, prefix='edit', instance=timetable)
 
         if form.is_valid():
             # TODO: СДЕЛАТЬ МИКСИН
             start = datetime.combine(form.cleaned_data['date'], form.cleaned_data['start'])
             end = datetime.combine(form.cleaned_data['date'], form.cleaned_data['end'])
+            start, end = timezone.make_aware(start), timezone.make_aware(end)
 
             workers = json.loads(request.POST.get('workers'))
 
@@ -330,38 +333,22 @@ def edit_timetable_view(request, timetable_id, **kwargs):
                 return response
 
             timetable.save()
+            # from django.core.exceptions import ValidationError
+            #
+            # try:
+            #     timetable.save()
+            # except ValidationError as err:
+            #     print('asdsadsad')
+            #     response_message = ResponseMessage(
+            #         status=ResponseMessage.STATUSES.ERROR,
+            #         message={'Сотрудники': ['Добавите как минимум одного сотрудника']}
+            #     )
+            #     response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            #     return response
+
+
             timetable.workers.clear()
             timetable.workers.add(*remaining_objects)
-
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-            response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
-            return response
-        else:
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
-            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-            return response
-
-
-    if request.POST:
-
-        timetable_id = request.POST['timetable_id'] if request.POST['timetable_id'] else -1
-        timetable = get_object_or_404(ServiceTimetable, pk=timetable_id)
-
-        form = TimetableForm(request.POST or None, prefix='edit')    # если purchase_id не передан, то будет None -> новый объект
-        if form.is_valid():
-            workers = json.loads(request.POST.get('workers'))
-            date_str = request.POST.get('date')
-            start_time_str = request.POST.get('start')
-            end_time_str = request.POST.get('end')
-            start_str = date_str + '/' + start_time_str
-            end_str = date_str + '/' + end_time_str
-
-            start = datetime.strptime(start_str, '%Y-%m-%d/%H:%M')
-            end = datetime.strptime(end_str, '%Y-%m-%d/%H:%M')
-
-            timetable.start = start
-            timetable.end = end
-
 
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
@@ -387,7 +374,6 @@ def find_services(request, **kwargs):
         item = {
             'name': service.name,
             'id': service.pk,
-            'dynamic_timetable': service.dynamic_timetable,
             'max_in_group': service.max_in_group,
             'link': service.get_admin_show_url(),
             'default_price': service.default_price,

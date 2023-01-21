@@ -38,6 +38,13 @@
 
         <div class="col-md-6 col-12 mt-4">
             <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-12r" for="{{ form_service.max_intersections.id_for_label }}">{{ form_service.max_intersections.label }}</label>
+                {{ form_service.max_intersections }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
                 <label class="input-group-text w-12r" for="{{ form_service.default_price.id_for_label }}">{{ form_service.default_price.label }}</label>
                 {{ form_service.default_price }}
             </div>
@@ -78,12 +85,12 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-12 mt-4">
-            <div class="form-check">
-                <label class="form-check-label" for="{{ form_service.dynamic_timetable.id_for_label }}">{{ form_service.dynamic_timetable.label }}</label>
-                {{ form_service.dynamic_timetable }}
-            </div>
-        </div>
+{#        <div class="col-md-6 col-12 mt-4">#}
+{#            <div class="form-check">#}
+{#                <label class="form-check-label" for="{{ form_service.dynamic_timetable.id_for_label }}">{{ form_service.dynamic_timetable.label }}</label>#}
+{#                {{ form_service.dynamic_timetable }}#}
+{#            </div>#}
+{#        </div>#}
 
         <div class="col-md-6 col-12 mt-4">
             <div class="form-check">

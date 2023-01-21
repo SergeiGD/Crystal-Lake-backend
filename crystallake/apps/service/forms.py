@@ -1,3 +1,6 @@
+from datetime import datetime
+from django.utils import timezone
+
 from django import forms
 
 from ..offer.forms import SearchOffersForm, OfferForm, SearchOffersAdmin
@@ -7,15 +10,13 @@ from .models import Service, ServiceTimetable
 class ServiceForm(OfferForm):
     class Meta(OfferForm.Meta):
         model = Service
-        fields = [*OfferForm.Meta.fields, 'max_in_group', 'dynamic_timetable']
+        fields = [*OfferForm.Meta.fields, 'max_in_group', 'max_intersections']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.short_fields.extend(['max_in_group'])
-        self.number_fields.extend(['max_in_group'])
-
-        self.fields['dynamic_timetable'].widget.attrs.update({'class': 'form-check-input'})
+        self.short_fields.extend(['max_in_group', 'max_intersections'])
+        self.number_fields.extend(['max_in_group', 'max_intersections'])
 
         for field in self.fields:
             if str(field) in self.short_fields:
@@ -58,8 +59,10 @@ class SearchServicesAdmin(SearchOffersAdmin):
     }))
 
 
-class TimetableForm(forms.Form):
-    # TODO: СДЕЛАТЬ МОДЕЛАКОЙ ДЛЯ CLEAR модели
+class TimetableForm(forms.ModelForm):
+    class Meta:
+        model = ServiceTimetable
+        fields = []
 
     timetable_id = forms.IntegerField(required=False, widget=forms.HiddenInput(attrs={
         'class': 'd-none'
@@ -76,6 +79,17 @@ class TimetableForm(forms.Form):
         'class': 'form-control',
         'type': 'time'
     }))
+
+    def clean(self):
+        cd = self.cleaned_data
+
+        start = datetime.combine(cd['date'], cd['start'])
+        end = datetime.combine(cd['date'], cd['end'])
+        start, end = timezone.make_aware(start), timezone.make_aware(end)
+
+        self.instance.start = start
+        self.instance.end = end
+        return cd
 
 
 class SearchTimetablesAdmin(forms.Form):

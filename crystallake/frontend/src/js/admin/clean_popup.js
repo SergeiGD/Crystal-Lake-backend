@@ -3,5 +3,6 @@ $(document).ready(function (){
         const popup = $(this).attr('data-popup-to-clean')
         $(popup).find('input').not('[name="csrfmiddlewaretoken"]').val('').prop('checked', false)
         $(popup).find('tbody').html('')
+        $(popup).find('.errors').html('')
     })
 })

@@ -38,15 +38,12 @@ $(document).ready(function (){
                             <a class="link-hover" href="${item.link}">${item.name}</a>   
                         </td>
                         <td>
-                            ${item.dynamic_timetable}
-                        </td>
-                        <td>
                             ${item.default_price}
                         </td><td>
                             ${item.weekend_price}
                         </td>
                         <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" data-dynamic="${item.dynamic_timetable}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="#service_purchase_modal" type="button">
+                            <button data-id="${item.id}"  data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="#create_service_purchase_modal" type="button">
                                 Выбрать
                             </button>
                         </td>

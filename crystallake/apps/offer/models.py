@@ -40,7 +40,6 @@ class Offer(PolymorphicModel):
     PRICE_CHOICES = (
         ('hours', 'часы'),
         ('days', 'дни'),
-        ('unit', 'количество'),
     )
 
     name = models.CharField(

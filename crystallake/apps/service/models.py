@@ -3,7 +3,7 @@ from datetimerange import DateTimeRange
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import localtime
-from django.db.models import Sum
+from django.db.models import Sum, Q
 
 from ..offer.models import Offer
 from ..offer.models import OfferQuerySet
@@ -17,8 +17,8 @@ class ServiceQuerySet(OfferQuerySet):
         qs = super().search(**kwargs)
         if kwargs.get('max_in_group', ''):
             qs = qs.filter(max_in_group=kwargs['max_in_group'])
-        if kwargs.get('dynamic_timetable', ''):
-            qs = qs.filter(dynamic_timetable=kwargs['dynamic_timetable'])
+        # if kwargs.get('dynamic_timetable', ''):
+        #     qs = qs.filter(dynamic_timetable=kwargs['dynamic_timetable'])
 
         return qs
 
@@ -40,14 +40,13 @@ class ServiceTimetableQuerySet(models.QuerySet):
 
 class Service(Offer):
     max_in_group = models.SmallIntegerField(verbose_name='макс. в группе', default=1)
-    dynamic_timetable = models.BooleanField(verbose_name='динамическое расписание')
+    max_intersections = models.SmallIntegerField(verbose_name='макс пересечений', default=0)
 
     objects = ServiceQuerySet.as_manager()
 
     def get_info(self):
         data = super().get_info()
         data['max_in_group'] = self.max_in_group
-        data['dynamic_timetable'] = self.dynamic_timetable
         return data
 
     def get_free_time(self, start, end):
@@ -59,52 +58,52 @@ class Service(Offer):
             end__lte=end
         )
 
-        if self.dynamic_timetable:
-            for timetable in timetables:
-                result.append({
-                    'start': timetable.start.timestamp(),
-                    'end': timetable.end.timestamp(),
-                })
+        # if self.dynamic_timetable:
+        for timetable in timetables:
+            result.append({
+                'start': timetable.start.timestamp(),
+                'end': timetable.end.timestamp(),
+            })
 
-            # for timetable in timetables:
-            #     purchases = PurchaseCountable.objects.filter(
-            #         offer__pk=timetable.service.pk,
-            #         is_canceled=False,
-            #         order__date_canceled=None,
-            #         start__gte=timetable.start,
-            #         end__lte=timetable.start
-            #     )
-            #
-            #     time_ranges = []
-            #     for purchase in purchases:
-            #         time_range = DateTimeRange(purchase.start, purchase.end)
-            #         time_ranges.append((time_range, purchase.quantity))
+        for timetable in timetables:
+            purchases = PurchaseCountable.objects.filter(
+                offer__pk=timetable.service.pk,
+                is_canceled=False,
+                order__date_canceled=None,
+                start__gte=timetable.start,
+                end__lte=timetable.start
+            )
 
-        if not self.dynamic_timetable:
-            for timetable in timetables:
+            time_ranges = []
+            for purchase in purchases:
+                time_range = DateTimeRange(purchase.start, purchase.end)
+                time_ranges.append((time_range, purchase.quantity))
 
-                purchases_count = PurchaseCountable.objects.filter(
-                    offer__pk=timetable.service.pk,
-                    is_canceled=False,
-                    order__date_canceled=None,
-                    start__gte=timetable.start,
-                    end__lte=timetable.end
-                ).aggregate(total_quantity=Sum('quantity'))
-
-                if self.max_in_group == 0:
-                    result.append({
-                        'start': timetable.start.timestamp(),
-                        'end': timetable.end.timestamp(),
-                    })
-                else:
-                    left = self.max_in_group if purchases_count['total_quantity'] is None else self.max_in_group - purchases_count['total_quantity']
-
-                    if left > 0:
-                        result.append({
-                            'start': timetable.start.timestamp(),
-                            'end': timetable.end.timestamp(),
-                            'left': left
-                        })
+        # if not self.dynamic_timetable:
+        #     for timetable in timetables:
+        #
+        #         purchases_count = PurchaseCountable.objects.filter(
+        #             offer__pk=timetable.service.pk,
+        #             is_canceled=False,
+        #             order__date_canceled=None,
+        #             start__gte=timetable.start,
+        #             end__lte=timetable.end
+        #         ).aggregate(total_quantity=Sum('quantity'))
+        #
+        #         if self.max_in_group == 0:
+        #             result.append({
+        #                 'start': timetable.start.timestamp(),
+        #                 'end': timetable.end.timestamp(),
+        #             })
+        #         else:
+        #             left = self.max_in_group if purchases_count['total_quantity'] is None else self.max_in_group - purchases_count['total_quantity']
+        #
+        #             if left > 0:
+        #                 result.append({
+        #                     'start': timetable.start.timestamp(),
+        #                     'end': timetable.end.timestamp(),
+        #                     'left': left
+        #                 })
 
         return result
 
@@ -135,6 +134,35 @@ class Service(Offer):
     def get_free_time_url(self):
         return reverse('get_free_time', kwargs={'offer_id': self.pk})
 
+    def is_time_available(self, start, end):
+        timetable = ServiceTimetable.objects.filter(
+            service_id=self.pk,
+            start__lte=start,
+            end__gte=end
+        ).first()
+
+        if not timetable:
+            return False
+
+        purchases = PurchaseCountable.objects.filter(
+            offer__id=self.pk,
+            start__gte=timetable.start,
+            end__lte=timetable.end,
+            is_canceled=False,
+            order__date_canceled=None
+        )
+
+        time_range = DateTimeRange(start, end)
+        intersections_count = 0
+        for purchase in purchases:
+            if DateTimeRange(purchase.start, purchase.end).is_intersection(time_range):
+                intersections_count += 1
+
+        if intersections_count >= self.max_intersections:
+            return False
+
+        return True
+
 
 class ServiceTimetable(models.Model):
     service = models.ForeignKey(
@@ -160,6 +188,66 @@ class ServiceTimetable(models.Model):
             models.Index(fields=['start', 'end'])
         ]
         ordering = ['id']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__original_start = self.start
+        self.__original_end = self.end
+
+    # def get_purchases(self):
+    #     return PurchaseCountable.objects.filter(
+    #         start__gte=self.start,
+    #         end__lte=self.end,
+    #         is_canceled=False,
+    #         order__date_canceled=None,
+    #     )
+
+    def save(self, *args, **kwargs):
+        self.clean()
+
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        purchases_original_time = PurchaseCountable.objects.none()
+
+        if self.pk:
+            purchases_original_time = PurchaseCountable.objects.filter(
+                start__gte=self.__original_start,
+                end__lte=self.__original_end,
+                offer__pk=self.service.pk,
+                is_canceled=False,
+                order__date_canceled=None,
+            )
+
+        # if self.pk and purchases_original_time.exists() and not self.service.dynamic_timetable:
+        #     raise ValidationError('Нельзя изменить расписание, к которому уже привязаны покупки статического типа')
+
+        if self.pk and purchases_original_time.filter(Q(start__lt=self.start) | Q(end__gt=self.end)).exists():
+            raise ValidationError('Выбор данного времени приведет к невозможности оказать услуги')
+
+        intersections = ServiceTimetable.objects.filter(
+            start__year=self.start.year,
+            start__month=self.start.month,
+            start__day=self.start.day
+        )
+        for intersection in intersections:
+            time_range = DateTimeRange(intersection.start, intersection.end)
+            if DateTimeRange(self.start, self.end).is_intersection(time_range):
+                raise ValidationError('На это время уже есть расписание')
+        # else:
+        #     intersection_count = 0
+        #     for intersection in intersections:
+        #         time_range = DateTimeRange(intersection.start, intersection.end)
+        #         if DateTimeRange(self.start, self.end).is_intersection(time_range):
+        #             intersection_count += 1
+        #
+        #     print(intersection_count)
+        #     if intersection_count > self.service.max_intersections:
+        #         raise ValidationError('На это время уже создано максимум расписаний')
+
+
 
     def get_info(self):
         workers = []

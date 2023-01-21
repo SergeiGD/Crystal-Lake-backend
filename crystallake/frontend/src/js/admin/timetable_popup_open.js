@@ -2,7 +2,6 @@ const add_hours = require('./add_hours');
 $(document).ready(function (){
 
     $('#edit_timetable_modal').on('popup_open', function (event, data){
-        console.log(data)
         $('#edit_timetable').attr('action', data.edit_url)
         $('#id_edit-timetable_id').val(data.id)
         const start = new Date(data.start * 1000)

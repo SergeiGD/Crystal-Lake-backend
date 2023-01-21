@@ -10,15 +10,6 @@
                     {{ service.max_in_group }}
                 </span>
             </li>
-            <li class="stat_item">Тип расписания:
-                <span class="highlighted">
-                    {% if service.dynamic_timetalbe %}
-                        в часы работы
-                    {% else %}
-                        выбор из доступного
-                    {% endif %}
-                </span>
-            </li>
         </ul>
     </div>
     {% endwith %}

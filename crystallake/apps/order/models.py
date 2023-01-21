@@ -177,11 +177,17 @@ class Order(models.Model):
     def get_create_room_purchase_url(self):
         return reverse('create_room_purchase', kwargs={'order_id': self.pk})
 
-    def get_edit_room_purchase_url(self):
-        return reverse('edit_room_purchase', kwargs={'order_id': self.pk})
+    # def get_edit_room_purchase_url(self):
+    #     return reverse('edit_room_purchase', kwargs={'order_id': self.pk})
 
-    def get_manage_service_purchase_url(self):
-        return reverse('manage_service_purchase', kwargs={'order_id': self.pk})
+    def get_create_service_purchase_url(self):
+        return reverse('create_service_purchase', kwargs={'order_id': self.pk})
+
+    # def get_edit_room_purchase_url(self):
+    #     return reverse('edit_service_purchase', kwargs={'order_id': self.pk})
+
+    # def get_manage_service_purchase_url(self):
+    #     return reverse('manage_service_purchase', kwargs={'order_id': self.pk})
 
 
 class PurchaseManager(PolymorphicManager):
@@ -222,8 +228,6 @@ class Purchase(PolymorphicModel):
         if self.offer.price_type == 'days':
             days = Decimal(delta_seconds / seconds_in_day)
             return self.offer.default_price * days
-        if self.offer.price_type == 'unit':
-            return self.offer.default_price
 
         raise ValueError('Неизвестный тип цены')
 
@@ -274,21 +278,15 @@ class Purchase(PolymorphicModel):
             raise ValidationError('Нельзя изменить покупки оплаченного заказа заказ заказу')
 
     def get_info(self):
-        # local_start = timezone.localtime(self.start)
-        # local_end = timezone.localtime(self.end)
-
-        local_start = self.start
-        local_end = self.end
-
-        print(local_end)
 
         return {
             'offer': self.offer.get_info(),
-            'start': local_start.timestamp(),
-            'end': local_end.timestamp(),
+            'start': self.start.timestamp(),
+            'end': self.end.timestamp(),
             'is_paid': self.is_paid,
             'is_prepayment_paid': self.is_prepayment_paid,
             'id': self.pk,
+            'edit_url': self.get_edit_url()
         }
 
     def get_required_modal(self):
@@ -307,9 +305,18 @@ class Purchase(PolymorphicModel):
     def get_cancel_url(self):
         return reverse('cancel_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
 
+    def get_edit_url(self):
+        return reverse('edit_room_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
+
 
 class PurchaseCountable(Purchase):
     quantity = models.SmallIntegerField(default=1)
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        if self.quantity > self.offer.max_in_group:
+            raise ValidationError('Превышено максимальное количество')
 
     def calc_price(self):
         delta_seconds = (self.end - self.start).total_seconds()
@@ -321,8 +328,6 @@ class PurchaseCountable(Purchase):
         if self.offer.price_type == 'days':
             days = Decimal(delta_seconds / seconds_in_day)
             return (self.offer.default_price * days) * self.quantity
-        if self.offer.price_type == 'unit':
-            return self.offer.default_price * self.quantity
 
         raise ValueError('Неизвестный тип цены')
 
@@ -333,6 +338,9 @@ class PurchaseCountable(Purchase):
 
     def get_required_modal(self):
         return 'quantity modal'
+
+    def get_edit_url(self):
+        return reverse('edit_service_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
 
 
 # @receiver(pre_save, sender=Purchase)

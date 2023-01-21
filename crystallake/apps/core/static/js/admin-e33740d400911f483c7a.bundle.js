@@ -473,6 +473,8 @@ $(document).ready(function (){
 
     form.on('submit', function (event){
         event.preventDefault();
+        const form = $(this)
+
 
         var raw_data = $(this).serializeArray();
         var form_data = new FormData();
@@ -491,7 +493,8 @@ $(document).ready(function (){
             data: form_data,
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                errors.handle_errors(response['message'], $("#timetable_errors"))
+                console.log(response)
+                errors.handle_errors(response['message'], form.find(".timetable_errors"))
             },
             success: function (){
                 document.location.reload()
@@ -895,15 +898,12 @@ $(document).ready(function (){
                             <a class="link-hover" href="${item.link}">${item.name}</a>   
                         </td>
                         <td>
-                            ${item.dynamic_timetable}
-                        </td>
-                        <td>
                             ${item.default_price}
                         </td><td>
                             ${item.weekend_price}
                         </td>
                         <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" data-dynamic="${item.dynamic_timetable}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="#service_purchase_modal" type="button">
+                            <button data-id="${item.id}"  data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="#create_service_purchase_modal" type="button">
                                 Выбрать
                             </button>
                         </td>
@@ -1072,7 +1072,7 @@ $(document).ready(function (){
         const sort_by = $('#pick_timetable_modal').find('[data-sortby-active]').attr('data-sortby')
         post_data.append('sort_by', sort_by)
         post_data.append('page_number', page)
-        post_data.append('service_id', $('#id_service_id').attr('value'))
+        post_data.append('service_id', $(this).attr('service_id'))
 
         $.ajax({
             url: $(this).attr('action'),
@@ -1087,12 +1087,14 @@ $(document).ready(function (){
         });
 
         function build_rows(data){
+            const called_by = $('#search_timetables').attr('data-called-by')
+            console.log(called_by)
             var result = ''
             for(const item of data){
                 const start = new Date(item.start * 1000)   // на 1000, т.к. получаем в секундах, а джесу нужно в мс
                 const end = new Date(item.end * 1000)
                 const formated_start = form_date.form_date(start)
-                const formated_end = form_date.form_date(start)
+                const formated_end = form_date.form_date(end)
                 const day = start.toISOString().substring(0,10)
                 const start_time = start.toISOString().substring(11,16)
                 const end_time = end.toISOString().substring(11,16)
@@ -1101,7 +1103,7 @@ $(document).ready(function (){
                         <td scope="row">${formated_start}</td>
                         <td scope="row">${formated_end}</td>
                         <td class="p-0 position-relative w-10r">
-                            <button data-day="${day}" data-time-start="${start_time}" data-time-end="${end_time}" data-time-str="${formated_start} - ${formated_end}" data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="#service_purchase_modal" type="button">
+                            <button data-day="${day}" data-time-start="${start_time}" data-time-end="${end_time}" data-time-str="${formated_start} - ${formated_end}" data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="${called_by}" type="button">
                                 Выбрать
                             </button>
                         </td>
@@ -1128,7 +1130,7 @@ $(document).ready(function (){
 const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
 $(document).ready(function (){
 
-    $('#search_worker').on('submit', function (event, page='1', called_by){
+    $('#search_worker').on('submit', function (event, page='1'){
         event.preventDefault();
 
         var raw_data = $(this).serializeArray();
@@ -1198,6 +1200,7 @@ $(document).ready(function (){
         const popup = $(this).attr('data-popup-to-clean')
         $(popup).find('input').not('[name="csrfmiddlewaretoken"]').val('').prop('checked', false)
         $(popup).find('tbody').html('')
+        $(popup).find('.errors').html('')
     })
 })
 
@@ -1247,6 +1250,7 @@ $(document).ready(function() {
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
  const handle_errors = function(errors, elem){
     var result = ''
+     console.log(errors)
     for (var field in errors){
         const message = errors[field][0]
         result += `<li>${message}</li>`
@@ -1424,7 +1428,6 @@ $(document).ready(function (){
 
         const form = $(this).closest('form');
         form.trigger('submit', {
-            'is_dynamic': $(this).attr('data-dynamic'),
             'phone': $(this).attr('data-phone'),
             'name': $(this).attr('data-name'),
             'id': $(this).attr('data-id'),
@@ -1432,18 +1435,10 @@ $(document).ready(function (){
             'time_str': $(this).attr('data-time-str'),
             'time_start': $(this).attr('data-time-start'),
             'time_end': $(this).attr('data-time-end'),
-            'day': $(this).attr('data-day')
+            'day': $(this).attr('data-day'),
+            'url': $(this).attr('data-url'),
             }
         );
-        // form.trigger('submit', [
-        //     $(this).attr('data-id'),
-        //     $(this).attr('data-name'),
-        //     $(this).attr('data-link'),
-        //     {
-        //         'is_dynamic': $(this).attr('data-dynamic'),
-        //         'phone': $(this).attr('data-phone'),
-        //     }
-        // ]);
     });
 })
 
@@ -1570,19 +1565,19 @@ $(document).ready(function (){
 const add_hours = __webpack_require__(/*! ./add_hours */ "./src/js/admin/add_hours.js");
 $(document).ready(function (){
 
-    $('#room_purchase_modal').on('popup_open', function (event, data){
+    $('#edit_room_purchase_modal').on('popup_open', function (event, data){
 
-        $('#id_purchase_id').val(data.id)
-        $('.purchase_name').html(data.offer.name).attr('href', data.offer.link)
+        $('#edit_room_purchase').attr('action', data.edit_url)
+        $('.room_name').html(data.offer.name).attr('href', data.offer.link)
         $('.room_timetable_link').attr('href', data.offer.link + '#dates')
         const start = new Date(data.start * 1000)
         const local_start = add_hours.add_hours(start, start.getTimezoneOffset() / 60 * -1)
-        $('#id_start').val(local_start.toISOString().split('T')[0])
+        $('#id_edit-start').val(local_start.toISOString().split('T')[0])
         const end = new Date(data.end * 1000)
         const local_end = add_hours.add_hours(end, end.getTimezoneOffset() / 60 * -1)
-        $('#id_end').val(local_end.toISOString().split('T')[0])
-        $('#id_is_paid').prop('checked', data.is_paid);
-        $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
+        $('#id_edit-end').val(local_end.toISOString().split('T')[0])
+        // $('#id_is_paid').prop('checked', data.is_paid);
+        // $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
     })
 })
 
@@ -1621,7 +1616,7 @@ $(document).ready(function (){
     $('#select_room_purchase').on('submit', function (event, data){
         event.preventDefault();
 
-        $('.purchase_name').html(data.name).attr('href', data.link);
+        $('.room_name').html(data.name).attr('href', data.link);
         $('#id_create-room_id').val(data.id);
         $('.room_timetable_link').attr('href', data.link + '#dates')
 
@@ -1643,19 +1638,22 @@ $(document).ready(function (){
     $('#select_service_purchase').on('submit', function (event, data){
         event.preventDefault();
 
-        $('#service_purchase').html(data.name).attr('href', data.link);
-        $('#id_service_id').val(data.id);
+        $('.service_name').html(data.name).attr('href', data.link);
+        $('#id_create-service_id').val(data.id);
+        $('.service_timetable_link').attr('href', data.link + '#dates')
 
-        const is_dynamic = (data.is_dynamic === 'true');
+        // const is_dynamic = (data.is_dynamic === 'true');
+        //
+        // if (is_dynamic){
+        //     $('.static_time_field').addClass('d-block')
+        //     $('.dynamic_time_field').addClass('d-none')
+        // }
+        // else{
+        //     $('.dynamic_time_field').addClass('d-block')
+        //     $('.static_time_field').addClass('d-none')
+        // }
 
-        if (is_dynamic){
-            $('.static_time_field').addClass('d-block')
-            $('.dynamic_time_field').addClass('d-none')
-        }
-        else{
-            $('.dynamic_time_field').addClass('d-block')
-            $('.static_time_field').addClass('d-none')
-        }
+        $('#search_timetables').attr('service_id', data.id)
 
     });
 
@@ -1675,11 +1673,17 @@ $(document).ready(function (){
     $('#select_timetable').on('submit', function (event, data){
         event.preventDefault();
 
-        $('#id_time_select_text').val(data.time_str);
+        $('#id_create-time_select_text').val(data.time_str);
+        $('#id_edit-time_select_text').val(data.time_str);
+        $('#id_create-timetable_id').val(data.id);
+        $('#id_edit-timetable_id').val(data.id);
 
-        $('#id_day').val(data.day);
-        $('#id_time_start').val(data.time_start);
-        $('#id_time_end').val(data.time_end);
+        $('#id_create-day').val(data.day);
+        $('#id_edit-day').val(data.day);
+        $('#id_create-time_start').val(data.time_start);
+        $('#id_edit-time_start').val(data.time_start);
+        $('#id_create-time_end').val(data.time_end);
+        $('#id_edit-time_end').val(data.time_end);
 
     });
 
@@ -1699,14 +1703,17 @@ const add_hours = __webpack_require__(/*! ./add_hours */ "./src/js/admin/add_hou
 
 $(document).ready(function (){
 
-    $('#service_purchase_modal').on('popup_open', function (event, data){
+    $('#edit_service_purchase_modal').on('popup_open', function (event, data){
+        $('#edit_service_purchase').attr('action', data.edit_url)
+        console.log(data)
+        // $('#id_purchase_id').val(data.id)
+        $('.service_name').html(data.offer.name).attr('href', data.offer.link)
+        $('#id_edit-quantity').val(data.quantity)
+        // $('#id_is_paid').prop('checked', data.is_paid);
+        // $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
+        // $('#id_service_id').val(data.offer.id);
 
-        $('#id_purchase_id').val(data.id)
-        $('#service_purchase').html(data.offer.name).attr('href', data.offer.link)
-        $('#id_quantity').val(data.quantity)
-        $('#id_is_paid').prop('checked', data.is_paid);
-        $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
-        $('#id_service_id').val(data.offer.id);
+        $('#search_timetables').attr('service_id', data.offer.id)
 
         const start = new Date(data.start * 1000)
         const local_start = add_hours.add_hours(start, start.getTimezoneOffset() / 60 * -1)
@@ -1717,48 +1724,27 @@ $(document).ready(function (){
             start_time = local_start.toISOString().substring(11,16),
             end_time = local_end.toISOString().substring(11,16)
 
-        $('#id_day').val(day)
-        $('#id_time_start').val(start_time)
-        $('#id_time_end').val(end_time)
-        if (data.offer.dynamic_timetable){
-            $('.static_time_field').removeClass('d-none')
-            $('.static_time_field').addClass('d-block')
+        $('#id_edit-day').val(day)
+        $('#id_edit-time_start').val(start_time)
+        $('#id_edit-time_end').val(end_time)
 
-            $('.dynamic_time_field').removeClass('d-block')
-            $('.dynamic_time_field').addClass('d-none')
-        }
-        else{
-            $('#id_time_select_text').val(`${form_date.form_date(start)} - ${form_date.form_date(end)}`)
-
-            $('.dynamic_time_field').removeClass('d-none')
-            $('.dynamic_time_field').addClass('d-block')
-
-            $('.static_time_field').removeClass('d-block')
-            $('.static_time_field').addClass('d-none')
-        }
-
-        // const start = new Date(data.start * 1000)
-        // $('#id_start').val(start.toISOString().split('T')[0])
-        // const end = new Date(data.end * 1000)
-        // $('#id_end').val(end.toISOString().split('T')[0])
-        // $('#id_is_paid').prop('checked', data.is_paid);
-        // $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
     })
 })
 
 /***/ }),
 
-/***/ "./src/js/admin/set_timetable_called_by.js":
-/*!*************************************************!*\
-  !*** ./src/js/admin/set_timetable_called_by.js ***!
-  \*************************************************/
+/***/ "./src/js/admin/set_called_by.js":
+/*!***************************************!*\
+  !*** ./src/js/admin/set_called_by.js ***!
+  \***************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
-    $('.manage_timetable_btn').on('click', function (){
-        console.log($('#select_worker').attr('data-called-by', $(this).attr('data-bs-target')))
-        $('#select_worker').attr('data-called-by', $(this).attr('data-bs-target'))
+    $('[data-set-called-by]').on('click', function (){
+        console.log($(this).attr('data-set-called-by'))
+        console.log($('[data-called-by]'))
+        $('[data-called-by]').attr('data-called-by', $(this).attr('data-set-called-by'))
     })
 })
 
@@ -1794,7 +1780,6 @@ const add_hours = __webpack_require__(/*! ./add_hours */ "./src/js/admin/add_hou
 $(document).ready(function (){
 
     $('#edit_timetable_modal').on('popup_open', function (event, data){
-        console.log(data)
         $('#edit_timetable').attr('action', data.edit_url)
         $('#id_edit-timetable_id').val(data.id)
         const start = new Date(data.start * 1000)
@@ -3467,7 +3452,7 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/timetable_popup_open.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/add_worker_to_timetable.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/remove_worker_from_timetable.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/set_timetable_called_by.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/set_called_by.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_rooms.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_services.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/offer_ajax.js")))
@@ -3490,4 +3475,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-e56af164e60164aa247b.bundle.js.map
+//# sourceMappingURL=admin-e33740d400911f483c7a.bundle.js.map

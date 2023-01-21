@@ -9,7 +9,7 @@
         <div class="modal-body">
             <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
 
-                <form action="{% url 'get_timetables_for_service' order_id=order.id  %}" method="POST" class="find_form" id="search_timetables">
+                <form action="{% url 'get_timetables_for_service' order_id=order.id  %}" data-called-by="" method="POST" class="find_form" id="search_timetables">
 
                     {% csrf_token %}
 

@@ -66,7 +66,7 @@ module.exports = {
             path.resolve(__dirname,'src/js/admin/timetable_popup_open.js'),
             path.resolve(__dirname,'src/js/admin/add_worker_to_timetable.js'),
             path.resolve(__dirname,'src/js/admin/remove_worker_from_timetable.js'),
-            path.resolve(__dirname,'src/js/admin/set_timetable_called_by.js'),
+            path.resolve(__dirname,'src/js/admin/set_called_by.js'),
             path.resolve(__dirname,'src/js/admin/ajax/search_rooms.js'),
             path.resolve(__dirname,'src/js/admin/ajax/search_services.js'),
             path.resolve(__dirname,'src/js/admin/ajax/offer_ajax.js'),

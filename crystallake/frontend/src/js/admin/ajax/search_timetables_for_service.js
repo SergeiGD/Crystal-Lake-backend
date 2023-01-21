@@ -17,7 +17,7 @@ $(document).ready(function (){
         const sort_by = $('#pick_timetable_modal').find('[data-sortby-active]').attr('data-sortby')
         post_data.append('sort_by', sort_by)
         post_data.append('page_number', page)
-        post_data.append('service_id', $('#id_service_id').attr('value'))
+        post_data.append('service_id', $(this).attr('service_id'))
 
         $.ajax({
             url: $(this).attr('action'),
@@ -32,12 +32,14 @@ $(document).ready(function (){
         });
 
         function build_rows(data){
+            const called_by = $('#search_timetables').attr('data-called-by')
+            console.log(called_by)
             var result = ''
             for(const item of data){
                 const start = new Date(item.start * 1000)   // на 1000, т.к. получаем в секундах, а джесу нужно в мс
                 const end = new Date(item.end * 1000)
                 const formated_start = form_date.form_date(start)
-                const formated_end = form_date.form_date(start)
+                const formated_end = form_date.form_date(end)
                 const day = start.toISOString().substring(0,10)
                 const start_time = start.toISOString().substring(11,16)
                 const end_time = end.toISOString().substring(11,16)
@@ -46,7 +48,7 @@ $(document).ready(function (){
                         <td scope="row">${formated_start}</td>
                         <td scope="row">${formated_end}</td>
                         <td class="p-0 position-relative w-10r">
-                            <button data-day="${day}" data-time-start="${start_time}" data-time-end="${end_time}" data-time-str="${formated_start} - ${formated_end}" data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="#service_purchase_modal" type="button">
+                            <button data-day="${day}" data-time-start="${start_time}" data-time-end="${end_time}" data-time-str="${formated_start} - ${formated_end}" data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="${called_by}" type="button">
                                 Выбрать
                             </button>
                         </td>

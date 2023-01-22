@@ -1,3 +1,5 @@
+const errors = require("../errors");
+
 $(document).ready(function (){
 
     $('.delete_additional_form').on('submit', function (event, data){
@@ -11,12 +13,13 @@ $(document).ready(function (){
             type: 'POST',
             data: {'elem_id': data['id'], 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                // window.location = window.location
                 window.location.reload();
-                // const table = current_form.closest('.additional_info_tbody');
-                // const row = table.find(`[data-id=${elem_id}]`).closest('tr')
-                // row.remove()
-            }
+            },
+            error: function (jqXHR){
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                const errors_list = current_form.closest('table').siblings('.additional_errors');
+                errors.handle_errors(response['message'], errors_list)
+            },
         }).statusCode({
            302: function (data){
                 const response = jQuery.parseJSON(data.responseText)

@@ -27,7 +27,7 @@ class CreateOrderForm(forms.ModelForm):
 class EditOrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['bonuses', 'comment']
+        fields = ['comment']
 
     prepayment_paid = forms.BooleanField(label='Предоплата внесена', required=False, widget=forms.CheckboxInput(attrs={
         'class': 'btn-check'
@@ -57,7 +57,6 @@ class EditOrderForm(forms.ModelForm):
         if self.instance.left_to_refund == 0:
             self.fields['refund_made'].disabled = True
 
-        self.fields['bonuses'].widget.attrs.update({'class': 'form-control'})
         self.fields['comment'].widget.attrs.update({'class': 'form-control rounded-bottom rounded-0 h-10r'})
 
 

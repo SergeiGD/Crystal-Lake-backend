@@ -54,7 +54,7 @@ $(document).ready(function (){
 
     $('#id_sort_by').on('change', function() {
 
-        refresh_icons();
+        // refresh_icons();
 
         $('#offers').trigger('submit');
     });

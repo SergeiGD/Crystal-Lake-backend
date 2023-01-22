@@ -19,7 +19,6 @@ from .status_choises import get_status_by_code
 class Order(models.Model):
     client = models.ForeignKey(Client, on_delete=models.PROTECT, verbose_name='Клиент')
     comment = models.TextField(verbose_name="комментарий к заказу", blank=True, null=True)
-    bonuses = models.IntegerField(verbose_name='Бонусов списано', default=0)
     paid = models.DecimalField(max_digits=12, decimal_places=5, default=0)     # сколько заплатили
     date_create = models.DateTimeField(verbose_name="дата создания", auto_now_add=True)
     date_full_prepayment = models.DateTimeField(verbose_name="дата полной предоплаты", blank=True, null=True)
@@ -289,9 +288,6 @@ class Purchase(PolymorphicModel):
             'edit_url': self.get_edit_url()
         }
 
-    def get_required_modal(self):
-        return 'base modal'
-
     def cancel(self):
         if self.is_paid or self.is_prepayment_paid:
             self.is_canceled = True
@@ -335,9 +331,6 @@ class PurchaseCountable(Purchase):
         data = super().get_info()
         data['quantity'] = self.quantity
         return data
-
-    def get_required_modal(self):
-        return 'quantity modal'
 
     def get_edit_url(self):
         return reverse('edit_service_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})

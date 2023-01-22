@@ -1,3 +1,6 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins;
+
 .header{
     opacity: .75;
     transition: opacity linear 0.15s;
@@ -95,9 +98,18 @@
     }
 }
 
-// input[type=number]::-webkit-inner-spin-button {
-//     opacity: 0
-// }
+.errors{
+    background-color: vars.$red_color;
+    color: #FFFFFF;
+    padding: 0.75rem 1.5rem !important;
+    margin: 1rem 0;
+    display: block;
+
+    &:empty{
+        display: none;
+    }
+}
+
 
 .card_icon{
     position: absolute;

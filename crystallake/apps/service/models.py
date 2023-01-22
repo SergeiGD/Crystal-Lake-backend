@@ -122,12 +122,6 @@ class Service(Offer):
     def get_create_timetable_url(self):
         return reverse('create_timetable', kwargs={'offer_id': self.pk})
 
-    # def get_edit_timetable_url(self, timetable_id):
-    #     return reverse('edit_timetable', kwargs={'offer_id': self.pk, 'timetable_id': timetable_id})
-
-    def get_delete_timetable_url(self):
-        pass
-
     def get_workers_url(self):
         return reverse('get_service_workers', kwargs={'offer_id': self.pk})
 
@@ -221,9 +215,6 @@ class ServiceTimetable(models.Model):
                 order__date_canceled=None,
             )
 
-        # if self.pk and purchases_original_time.exists() and not self.service.dynamic_timetable:
-        #     raise ValidationError('Нельзя изменить расписание, к которому уже привязаны покупки статического типа')
-
         if self.pk and purchases_original_time.filter(Q(start__lt=self.start) | Q(end__gt=self.end)).exists():
             raise ValidationError('Выбор данного времени приведет к невозможности оказать услуги')
 
@@ -231,23 +222,20 @@ class ServiceTimetable(models.Model):
             start__year=self.start.year,
             start__month=self.start.month,
             start__day=self.start.day
-        )
+        ).exclude(pk=self.pk)
         for intersection in intersections:
             time_range = DateTimeRange(intersection.start, intersection.end)
             if DateTimeRange(self.start, self.end).is_intersection(time_range):
                 raise ValidationError('На это время уже есть расписание')
-        # else:
-        #     intersection_count = 0
-        #     for intersection in intersections:
-        #         time_range = DateTimeRange(intersection.start, intersection.end)
-        #         if DateTimeRange(self.start, self.end).is_intersection(time_range):
-        #             intersection_count += 1
-        #
-        #     print(intersection_count)
-        #     if intersection_count > self.service.max_intersections:
-        #         raise ValidationError('На это время уже создано максимум расписаний')
 
-
+    def get_purchases(self):
+        return PurchaseCountable.objects.filter(
+            start__gte=self.start,
+            end__lte=self.end,
+            offer__pk=self.service.pk,
+            is_canceled=False,
+            order__date_canceled=None,
+        )
 
     def get_info(self):
         workers = []
@@ -272,4 +260,7 @@ class ServiceTimetable(models.Model):
 
     def get_edit_url(self):
         return reverse('edit_timetable', kwargs={'offer_id': self.service.pk, 'timetable_id': self.pk})
+
+    def get_delete_url(self):
+        return reverse('delete_timetable',  kwargs={'offer_id': self.service.pk, 'timetable_id': self.pk})
 

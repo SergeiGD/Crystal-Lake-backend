@@ -221,75 +221,6 @@ def create_timetable_view(request, offer_id):
             return response
 
 
-
-
-
-
-# def manage_timetable_view(request, offer_id):
-#     if request.POST:
-#         service = get_object_or_404(Service, pk=offer_id)
-#
-#         timetable_id = request.POST['timetable_id'] if request.POST['timetable_id'] else -1
-#         #timetable_id = request.POST.get('timetable_id', -1)
-#         timetable = ServiceTimetable.objects.filter(pk=timetable_id).first()
-#
-#         form = TimetableForm(request.POST or None)
-#         if form.is_valid():
-#             workers = json.loads(request.POST.get('workers'))
-#             date_str = request.POST.get('date')
-#             start_time_str = request.POST.get('start')
-#             end_time_str = request.POST.get('end')
-#             start_str = date_str + '/' + start_time_str
-#             end_str = date_str + '/' + end_time_str
-#
-#             start = datetime.strptime(start_str, '%Y-%m-%d/%H:%M')
-#             end = datetime.strptime(end_str, '%Y-%m-%d/%H:%M')
-#
-#             start = timezone.make_aware(start)
-#             end = timezone.make_aware(end)
-#
-#             if not timetable:
-#                 timetable = ServiceTimetable(service=service)
-#
-#             timetable.start = start
-#             timetable.end = end
-#
-#             added_workers = []
-#             removed_worker = []
-#
-#             for worker_id, added in workers.items():
-#                 worker = get_object_or_404(Worker, pk=worker_id)
-#                 if added:
-#                     added_workers.append(worker)
-#                 else:
-#                     removed_worker.append(worker)
-#
-#             if timetable.pk:
-#                 remaining_objects = set(list(timetable.workers.all()) + added_workers) - set(removed_worker)
-#             else:
-#                 remaining_objects = set(added_workers) - set(removed_worker)
-#             if len(remaining_objects) == 0:
-#                 response_message = ResponseMessage(
-#                     status=ResponseMessage.STATUSES.ERROR,
-#                     message={'Сотрудники': ['Добавите как минимум одного сотрудника']}
-#                 )
-#                 response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-#                 return response
-#
-#             timetable.save()
-#             timetable.workers.clear()
-#             for worker in remaining_objects:
-#                 timetable.workers.add(worker)
-#
-#             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-#             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
-#             return response
-#         else:
-#             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
-#             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-#             return response
-
-
 def get_timetable_info_view(request, timetable_id, **kwargs):
     timetable = get_object_or_404(ServiceTimetable, pk=timetable_id)
     data = timetable.get_info()
@@ -333,19 +264,6 @@ def edit_timetable_view(request, timetable_id, **kwargs):
                 return response
 
             timetable.save()
-            # from django.core.exceptions import ValidationError
-            #
-            # try:
-            #     timetable.save()
-            # except ValidationError as err:
-            #     print('asdsadsad')
-            #     response_message = ResponseMessage(
-            #         status=ResponseMessage.STATUSES.ERROR,
-            #         message={'Сотрудники': ['Добавите как минимум одного сотрудника']}
-            #     )
-            #     response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-            #     return response
-
 
             timetable.workers.clear()
             timetable.workers.add(*remaining_objects)
@@ -357,6 +275,22 @@ def edit_timetable_view(request, timetable_id, **kwargs):
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
+
+
+def delete_timetable_view(request, timetable_id, **kwargs):
+    timetable = get_object_or_404(ServiceTimetable, pk=timetable_id)
+    if timetable.get_purchases().exists():
+        response_message = ResponseMessage(
+            status=ResponseMessage.STATUSES.ERROR,
+            message={'Заказы': ['Нельзя удалить расписание, на которые забронированы услуги']}
+        )
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
+    else:
+        timetable.delete()
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+        response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
+        return response
 
 
 def find_services(request, **kwargs):
@@ -413,79 +347,6 @@ def find_timetables(request, **kwargs):
 
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
-
-
-# class AdminTimetablesList(ListView):
-#     model = ServiceTimetable
-#     template_name = 'service/admin_timetables.html'
-#     context_object_name = 'timetables'
-#     paginate_by = 10
-#     paginator_class = SafePaginator
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['current_page'] = 'timetables'
-#         return context
-
-
-# class AdminTimetableDetail(DetailView):
-#     model = ServiceTimetable
-#     template_name = 'service/admin_show_timetable.html'
-#     context_object_name = 'timetable'
-#     pk_url_kwarg = 'timetable_id'
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['current_page'] = 'timetables'
-#         context['delete_link'] = self.object.get_admin_delete_url()
-#         context['workers'] = self.object.workers.all()
-#         return context
-
-
-# class AdminTimetableUpdate(RelocateResponseMixin, UpdateView):
-#     model = ServiceTimetable
-#     template_name = 'service/admin_edit_timetable.html'
-#     context_object_name = 'timetable'
-#     pk_url_kwarg = 'timetable_id'
-#     form_class = TimetableForm
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['current_page'] = 'timetables'
-#         return context
-#
-#     def form_invalid(self, form):
-#         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
-#         response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-#         return response
-#
-#     def form_valid(self, form):
-#         form.instance.save()
-#         return self.relocate(form.instance.get_admin_show_url())
-#
-#
-# class AdminTimetableCreate(RelocateResponseMixin, CreateView):
-#     model = ServiceTimetable
-#     template_name = 'service/admin_create_timetable.html'
-#     context_object_name = 'timetable'
-#     form_class = TimetableForm
-#
-#     def get_success_url(self):
-#         return self.object.get_admin_show_url()
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['current_page'] = 'timetables'
-#         return context
-#
-#     def form_invalid(self, form):
-#         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
-#         response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-#         return response
-#
-#     def form_valid(self, form):
-#         form.instance.save()
-#         return self.relocate(form.instance.get_admin_show_url())
 
 
 def get_free_time_view(request, offer_id, **kwargs):

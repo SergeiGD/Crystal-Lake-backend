@@ -32,6 +32,17 @@ class UserForm(forms.ModelForm):
 
 
 class SearchUserForm(forms.Form):
+    SORT_CHOICES = (
+        ('id', ''),
+        ('-id', ''),
+        ('first_name', ''),
+        ('-first_name', ''),
+        ('phone', ''),
+        ('-phone', ''),
+        ('email', ''),
+        ('-email', ''),
+    )
+
     id = forms.IntegerField(label='id', required=False, widget=forms.NumberInput(attrs={
         'class': 'form-control'
     }))
@@ -47,3 +58,10 @@ class SearchUserForm(forms.Form):
     email = forms.CharField(label='Электронная почта', required=False, widget=forms.TextInput(attrs={
         'class': 'form-control'
     }))
+    sort_by = forms.ChoiceField(choices=SORT_CHOICES, required=False, initial=['id'], widget=forms.Select(attrs={
+        'class': 'd-none sorting_input',
+    }))
+    page = forms.IntegerField(required=False, initial=1, widget=forms.NumberInput(attrs={
+        'class': 'd-none page_input',
+    }))
+

@@ -87,6 +87,17 @@
   top: 20px;
 }
 
+.errors {
+  background-color: #FF0914;
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem !important;
+  margin: 1rem 0;
+  display: block;
+}
+.errors:empty {
+  display: none;
+}
+
 .card_icon {
   position: absolute;
   top: 8px;
@@ -12519,4 +12530,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=admin-8fedbec253e35def4b31.bundle.css.map*/
+/*# sourceMappingURL=admin-1d2017df37ac0e197a2d.bundle.css.map*/

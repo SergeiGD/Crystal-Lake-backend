@@ -8,11 +8,6 @@ from ..user.models import CustomUser
 
 
 class Client(CustomUser):
-    bonuses = models.IntegerField(
-        verbose_name='Бонусов',
-        blank=True,
-        default=0
-    )
 
     def save(self, *args, **kwargs):
         if not self.pk:

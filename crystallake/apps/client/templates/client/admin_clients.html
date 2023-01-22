@@ -16,45 +16,41 @@
 {% block content %}
 
 
-    <form class="shadow p-3 rounded-2 position-relative">
+    <form class="shadow p-3 rounded-2 position-relative find_form" action="{% url 'admin_clients' %}" method="GET">
 
-        <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete"></i>
+        <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete clean_btn"></i>
 
-       <div class="row align-items-start justify-content-between">
+        <div class="row align-items-start justify-content-between">
 
             <div class="col-12 row mx-auto p-0">
 
                 <div class="col-md-3 col-6">
-                    <div>
-                        <label for="client_id" class="form-label">id клиента:</label>
-                        <input type="text" class="form-control " id="client_id">
-                    </div>
+                    <label for="{{ form_clients.id.id_for_label }}" class="form-label">{{ form_clients.id.label }}</label>
+                    {{ form_clients.id }}
                 </div>
 
                 <div class="col-md-3 col-6">
-                    <div>
-                        <label for="client_phone" class="form-label">Номер телефона:</label>
-                        <input type="tel" class="form-control " id="client_phone">
-                    </div>
+                     <label for="{{ form_clients.first_name.id_for_label }}" class="form-label">{{ form_clients.first_name.label }}</label>
+                    {{ form_clients.first_name }}
                 </div>
 
                 <div class="col-md-6 col-12 mt-md-0 mt-3">
-                    <label for="client_name" class="form-label">Ф.И.О:</label>
-                    <input type="text" class="form-control" id="client_name">
+                    <label for="{{ form_clients.last_name.id_for_label }}" class="form-label">{{ form_clients.last_name.label }}</label>
+                    {{ form_clients.last_name }}
                 </div>
 
                 <div class="col-md-6 col-12 mt-3">
-                    <div>
-                        <label for="client_email" class="form-label">Электронная почта:</label>
-                        <input type="email" class="form-control" id="client_email">
-                    </div>
+                    <label for="{{ form_clients.phone.id_for_label }}" class="form-label">{{ form_clients.phone.label }}</label>
+                    {{ form_clients.phone }}
                 </div>
 
-            </div>
+                {{ form_clients.sort_by }}
+                {{ form_clients.page }}
 
+                <div class="col-12 mt-3">
+                    <button class="btn btn-c_yellow-700 w-100" type="submit">Найти</button>
+                </div>
 
-            <div class="col-12 mt-3">
-                <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
             </div>
 
         </div>
@@ -64,24 +60,21 @@
     <div class="shadow mt-4 rounded-2 overflow-auto">
      <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-goto="{% url 'admin_create_client' %}">+ Создать</button>
         <table class="table table-striped table-hover table-bordered">
-            <thead>
-            <tr>
-                <th scope="col" class="bg-c_yellow-700 text-nowrap col-hover" role="button">
-                    id <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
-                </th>
-                <th scope="col" class="text-nowrap col-hover" role="button">
-                    ФИО <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
-                </th>
-                <th scope="col" class="text-nowrap col-hover" role="button">
-                    Номер телефона <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
-                </th>
-                <th scope="col" class="text-nowrap col-hover" role="button">
-                    Электронная почта <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
-                </th>
-                <th scope="col" class="text-nowrap col-hover" role="button">
-                    Баллов <i class="fa-solid fa-arrow-up-short-wide text-c_yellow-700"></i>
-                </th>
-            </tr>
+            <thead data-find-form=".find_form">
+                <tr>
+                    <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="id" data-sortby-active>
+                        id <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="first_name">
+                        Ф.И.О. <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="phone">
+                        Номер телефона <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                    </th>
+                    <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="email">
+                        Электронная почта <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                    </th>
+                </tr>
             </thead>
             <tbody>
 
@@ -94,7 +87,6 @@
                         </td>
                         <td>{{ client.phone }}</td>
                         <td>{{ client.email }}</td>
-                        <td>{{ client.bonuses }}&#8381;</td>
                     </tr>
 
                 {% endfor %}
@@ -108,15 +100,16 @@
 
             {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+{#                    <input type="submit" name="page" value="{{ page_obj.previous_page_number }}" class="page_arrow page_arrow__prev">#}
+                    <button class="page-link" type="button" data-page="{{ page_obj.previous_page_number }}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
-                    </a>
+                    </button>
                 </li>
             {% endif %}
 
             {% if page_obj.number|add:'-3' > 1 %}
                 <li class="page-item">
-                    <a class="page-link" href="?page=1">1</a>
+                    <button class="page-link" type="button" data-page="1">1</button>
                 </li>
                 <li class="page-item">
                     <p class="page-link">&hellip;</p>
@@ -125,9 +118,9 @@
 
             {% for i in page_obj.paginator.page_range %}
                 {% if i == page_obj.number %}
-                    <li class="page-item"><a class="page-link bg-c_yellow-700 text-black" href="#">{{ i }}</a></li>
+                    <li class="page-item"><p class="page-link bg-c_yellow-700 text-black">{{ i }}</p></li>
                 {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
-                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    <li class="page-item"><button class="page-link" type="button" data-page="{{ i }}">{{ i }}</button></li>
                 {% endif %}
             {% endfor %}
 
@@ -136,15 +129,15 @@
                     <p class="page-link">&hellip;</p>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                    <button class="page-link" type="button" data-page="${data.pages_count}">{{ page_obj.paginator.count }}</button>
                 </li>
             {% endif %}
 
             {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <button class="page-link" type="button" data-page="{{ page_obj.next_page_number }}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
-                    </a>
+                    </button>
                 </li>
             {% endif %}
 

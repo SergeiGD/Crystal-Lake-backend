@@ -3446,7 +3446,7 @@ $(document).ready(function (){
 
     $('#id_sort_by').on('change', function() {
 
-        refresh_icons();
+        // refresh_icons();
 
         $('#offers').trigger('submit');
     });
@@ -3791,4 +3791,4 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-9f605ad4991559b7d05c.bundle.js.map
+//# sourceMappingURL=client-00427d10e4b33b5e49fd.bundle.js.map

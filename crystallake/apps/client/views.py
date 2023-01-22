@@ -4,7 +4,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView
 
 from .models import Client
 from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data
-from ..user.forms import UserForm
+from ..user.forms import UserForm, SearchUserForm
 from ..user.models import CustomUser
 from .forms import ClientForm
 
@@ -15,16 +15,23 @@ class AdminClientsList(ListView):
     model = Client
     template_name = 'client/admin_clients.html'
     context_object_name = 'clients'
-    paginate_by = 10
+    paginate_by = 1
     paginator_class = SafePaginator
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'clients'
+        context['form_clients'] = SearchUserForm(self.request.GET)
         return context
     
     def get_queryset(self):
-        return Client.objects.filter(date_deleted=None)
+        search_form = SearchUserForm(self.request.GET)
+        clients = Client.objects.filter(date_deleted=None)
+
+        if search_form.is_valid():
+            clients = clients.search(**search_form.cleaned_data)
+
+        return clients
 
 
 class AdminCreatClient(RelocateResponseMixin, CreateView):

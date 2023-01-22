@@ -123,8 +123,9 @@
 {#                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold">+ Добавить</button>#}
 {#            </form>#}
 
-                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" data-set-called-by="#create_timetable_modal" data-popup-to-clean="#create_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#create_timetable_modal">+ Добавить</button>
+                <div class="errors additional_errors"></div>
 
+                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" data-set-called-by="#create_timetable_modal" data-popup-to-clean="#create_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#create_timetable_modal">+ Добавить</button>
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
                     <tr>
@@ -146,7 +147,7 @@
                                     </form>
                                 </td>
                                 <td class="p-0 position-relative w-10r">
-                                    <form action="{{ service.get_delete_timetable_url }}" method="POST" class="delete_additional_form">
+                                    <form action="{{ timetable.get_delete_url }}" method="POST" class="delete_additional_form">
                                         {% csrf_token %}
                                         <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ timetable.pk }}">Убрать</button>
                                     </form>

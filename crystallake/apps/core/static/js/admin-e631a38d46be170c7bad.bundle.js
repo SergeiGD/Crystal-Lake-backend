@@ -150,6 +150,8 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
+
 $(document).ready(function (){
 
     $('.delete_additional_form').on('submit', function (event, data){
@@ -163,12 +165,13 @@ $(document).ready(function (){
             type: 'POST',
             data: {'elem_id': data['id'], 'csrfmiddlewaretoken': csrf_token},
             success: function (response){
-                // window.location = window.location
                 window.location.reload();
-                // const table = current_form.closest('.additional_info_tbody');
-                // const row = table.find(`[data-id=${elem_id}]`).closest('tr')
-                // row.remove()
-            }
+            },
+            error: function (jqXHR){
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                const errors_list = current_form.closest('table').siblings('.additional_errors');
+                errors.handle_errors(response['message'], errors_list)
+            },
         }).statusCode({
            302: function (data){
                 const response = jQuery.parseJSON(data.responseText)
@@ -1288,6 +1291,7 @@ $(document).ready(function (){
     $('.pagination').on('click', '[data-page]', function (){
         const page = $(this).attr('data-page')
         const form = $(this).closest('.pagination').parent().siblings('.find_form');
+        $('.page_input').val(page)
         form.trigger('submit', page)
     })
 
@@ -1324,9 +1328,44 @@ $(document).ready(function (){
         }
 
         $(this).attr('data-sortby', picked_sortby);
-        const form = $(this).closest('form').siblings('.find_form')
+        const form_selector = $(this).closest('[data-find-form]').attr('data-find-form')
+        const form = $(form_selector);
+        form.find('.sorting_input').val(picked_sortby).change();
         form.trigger('submit');
     })
+
+    // $('.sorting_input').on('change', function (){
+    //     console.log('change')
+    // })
+
+    function refresh_icons(){
+
+        const sorting_input = $('.sorting_input');
+        if(sorting_input.length > 0){
+            const old_sorty = $('[data-sortby-active]')
+            old_sorty.removeClass('bg-c_yellow-700')
+            old_sorty.removeAttr('data-sortby-active')
+        }
+        const active_sorting = sorting_input.val();
+        const sort_elem = $(`[data-sortby$=${active_sorting.replace('-', '')}]`);
+        const icon = sort_elem.find('i')
+        sort_elem.attr('data-sortby-active', '')
+        sort_elem.attr('data-sortby', active_sorting)
+        const is_desc = active_sorting.includes('-')
+        if (is_desc){
+            icon.removeClass('fa-arrow-down-short-wide');
+            icon.addClass('fa-arrow-down-wide-short');
+        }
+        else{
+            icon.removeClass('fa-arrow-down-wide-short');
+            icon.addClass('fa-arrow-down-short-wide');
+        }
+        sort_elem.addClass('bg-c_yellow-700');
+
+    }
+    //
+    refresh_icons();
+
 });
 
 const build_pages = function (data, pages_elem){
@@ -3475,4 +3514,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-e33740d400911f483c7a.bundle.js.map
+//# sourceMappingURL=admin-e631a38d46be170c7bad.bundle.js.map

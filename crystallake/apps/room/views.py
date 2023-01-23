@@ -9,9 +9,10 @@ from django.http import HttpResponse, Http404
 from django.utils.timezone import localtime, now
 
 
-from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, parse_datetime
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, parse_datetime, is_ajax
+from django.template.loader import render_to_string
 from .models import Room
-from .forms import RoomForm, SearchRoomsForm
+from .forms import RoomForm, SearchRoomsForm, SearchRoomsAdmin
 from ..photo.models import Photo
 from ..core.forms import ShortSearchForm
 from ..offer.utils import ManageOfferMixin
@@ -76,10 +77,19 @@ class AdminRoomsList(PermissionRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'rooms'
+        context['form_rooms'] = SearchRoomsAdmin(self.request.GET)
         return context
 
     def get_queryset(self):
-        return Room.objects.filter(date_deleted=None, main_room=None)
+        #return Room.objects.filter(date_deleted=None, main_room=None)
+
+        search_form = SearchRoomsAdmin(self.request.GET)
+        rooms = Room.objects.filter(date_deleted=None, main_room=None)
+
+        if search_form.is_valid():
+            rooms = rooms.search(**search_form.cleaned_data)
+
+        return rooms
 
 
 class AdminRoomDetail(PermissionRequiredMixin, DetailView):
@@ -206,26 +216,29 @@ def find_rooms(request, **kwargs):
     rooms = Room.objects.filter(date_deleted=None, is_hidden=False).search(
         **request.POST.dict()
     )
-    # rooms = Room.objects.filter(date_deleted=None).search(
-    #     **request.POST.dict()
-    # )
     rooms_page, num_pages = get_paginator_data(rooms, request.POST.get('page_number', 1))
 
     data = {'pages': {
         'pages_count': num_pages,
         'current_page': rooms_page.number,
     }, 'items': []}
-    for room in rooms_page.object_list:
-        item = {
-            'name': room.name,
-            'id': room.pk,
-            'beds': room.beds,
-            'rooms': room.rooms,
-            'link': room.get_admin_show_url(),
-            'default_price': room.default_price,
-            'weekend_price': room.weekend_price
-        }
-        data['items'].append(item)
+
+    if is_ajax(request):
+        popup_to_open = request.POST.get('popup_to_open')
+        html = render_to_string('core/rooms_body.html', {'rooms_list': rooms_page.object_list, 'popup_to_open': popup_to_open})
+        data['items'] = html
+    else:
+        for room in rooms_page.object_list:
+            item = {
+                'name': room.name,
+                'id': room.pk,
+                'beds': room.beds,
+                'rooms': room.rooms,
+                'link': room.get_admin_show_url(),
+                'default_price': room.default_price,
+                'weekend_price': room.weekend_price
+            }
+            data['items'].append(item)
 
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)

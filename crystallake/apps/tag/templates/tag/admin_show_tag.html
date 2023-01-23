@@ -50,40 +50,45 @@
 
     <!-- services -->
 
-    <form class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
 
-        <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete"></i>
+        <form action="{{ tag.get_services_url }}" method="POST" class="find_form" id="search_services">
 
-        <div class="text-center">
-            <span class="fw-bold fs-5">Прикреплен к:</span>
-        </div>
+            {% csrf_token %}
 
-        <div class="shadow p-3 rounded-2 justify-content-between row w-100 mx-auto">
+            <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete clean_btn"></i>
 
-            <div class="col-12 row justify-content-between mx-auto p-0">
+            <div class="text-center">
+                <span class="fw-bold fs-5">Услуги</span>
+            </div>
 
-                <div class="col-md-3 col-6">
-                    <div>
-                        <label for="service_id" class="form-label">id:</label>
-                        <input type="text" class="form-control " id="service_id">
+            <div class="shadow p-3 rounded-2">
+
+                <div class="row align-items-start justify-content-between">
+
+                    <div class="col-12 row mx-auto p-0">
+
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <label for="{{ form_services.id.id_for_label }}" class="form-label">{{ form_services.id.label }}</label>
+                            {{ form_services.id }}
+                        </div>
+
+                        <div class="col-md-10 col-12 mt-md-0 mt-3">
+                            <label for="{{ form_services.name.id_for_label }}" class="form-label">{{ form_services.name.label }}</label>
+                            {{ form_services.name }}
+                        </div>
+
                     </div>
-                </div>
 
-                <div class="col-lg-8 col-12 mt-lg-0 mt-3">
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                    </div>
 
-                    <label for="service_name" class="form-label">Наименование:</label>
-                    <input type="text" class="form-control" id="service_name">
 
                 </div>
 
             </div>
-
-            <div class="col-12 mt-3">
-                <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
-            </div>
-
-
-        </div>
+        </form>
 
         <div class="overflow-auto mt-4">
             <table class="table table-striped table-hover table-bordered">
@@ -134,7 +139,7 @@
             </li>
             </ul>
         </nav>
-    </form>
+    </div>
 
     <!-- services end -->
 

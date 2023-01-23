@@ -53,8 +53,8 @@ class GroupProxy(Group):
     def get_add_permission_url(self):
         return reverse('add_permission_to_group', kwargs={'group_id': self.pk})
 
-    def get_unattached_permissions_url(self):
-        return reverse('get_unattached_permissions', kwargs={'group_id': self.pk})
+    def get_permissions_url(self):
+        return reverse('get_permissions_for_group', kwargs={'group_id': self.pk})
 
 
 class PermissionsProxy(Permission):         # TODO: удалить дубликаты и подумать, что делать с разрешенияеми на прокси-моделями

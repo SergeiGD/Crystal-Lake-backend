@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.template.loader import render_to_string
 
 from .models import Client
-from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data
+from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data, is_ajax
 from ..user.forms import UserForm, SearchUserForm
 from ..user.models import CustomUser
 from .forms import ClientForm
@@ -105,15 +106,21 @@ def find_clients(request, **kwargs):
         'pages_count': num_pages,
         'current_page': clients_page.number,
     }, 'items': []}
-    for client in clients_page.object_list:
-        item = {
-            'name': client.full_name,
-            'id': client.pk,
-            'phone': str(client.phone),
-            'email': client.email,
-            'link': client.get_admin_show_url()
-        }
-        data['items'].append(item)
+
+    if is_ajax(request):
+        popup_to_open = request.POST.get('popup_to_open')
+        html = render_to_string('core/clients_body.html', {'clients_list': clients_page.object_list, 'popup_to_open': popup_to_open})
+        data['items'] = html
+    else:
+        for client in clients_page.object_list:
+            item = {
+                'name': client.full_name,
+                'id': client.pk,
+                'phone': str(client.phone),
+                'email': client.email,
+                'link': client.get_admin_show_url()
+            }
+            data['items'].append(item)
 
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)

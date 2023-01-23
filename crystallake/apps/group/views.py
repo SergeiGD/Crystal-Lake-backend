@@ -2,9 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
+from django.template.loader import render_to_string
 
 from .models import GroupProxy, PermissionsProxy
-from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data
+from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data, is_ajax
 from ..worker.models import Worker
 from ..core.forms import ShortSearchForm
 from .forms import GroupForm
@@ -23,7 +24,17 @@ class AdminGroupsList(ListView):
         context = super(AdminGroupsList, self).get_context_data()
         context['current_page'] = 'groups'
         context['additional_page'] = True
+        context['form_groups'] = ShortSearchForm(self.request.GET)
         return context
+
+    def get_queryset(self):
+        search_form = ShortSearchForm(self.request.GET)
+        groups = GroupProxy.objects.all()
+
+        if search_form.is_valid():
+            groups = groups.search(**search_form.cleaned_data)
+
+        return groups
 
 
 class AdminGroupDetail(DetailView):
@@ -111,22 +122,49 @@ def del_permission_from_group(request, group_id):
         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
-def get_unattached_permissions(request, group_id):
-    if request.method == 'POST':
-        group = get_object_or_404(GroupProxy, pk=group_id)
-        permissions = PermissionsProxy.objects.exclude(pk__in=group.permissions.values('pk')).search(**request.POST.dict())
-        permissions_page, num_pages = get_paginator_data(permissions, request.POST.get('page_number', 1))
+# def get_unattached_permissions(request, group_id):
+#     if request.method == 'POST':
+#         group = get_object_or_404(GroupProxy, pk=group_id)
+#         permissions = PermissionsProxy.objects.exclude(pk__in=group.permissions.values('pk')).search(**request.POST.dict())
+#         permissions_page, num_pages = get_paginator_data(permissions, request.POST.get('page_number', 1))
+#
+#         data = {'pages': {
+#             'pages_count': num_pages,
+#             'current_page': permissions_page.number,
+#         }, 'items': []}
+#         for permission in permissions_page.object_list:
+#             item = {'name': permission.name, 'id': permission.pk}
+#             data['items'].append(item)
+#
+#         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+#         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
-        data = {'pages': {
-            'pages_count': num_pages,
-            'current_page': permissions_page.number,
-        }, 'items': []}
-        for permission in permissions_page.object_list:
-            item = {'name': permission.name, 'id': permission.pk}
+def find_permissions(request, **kwargs):
+    permissions = PermissionsProxy.objects.all().search(
+        **request.POST.dict()
+    )
+
+    permissions_page, num_pages = get_paginator_data(permissions, request.POST.get('page_number', 1))
+
+    data = {'pages': {
+        'pages_count': num_pages,
+        'current_page': permissions_page.number,
+    }, 'items': []}
+
+    if is_ajax(request):
+        popup_to_open = request.POST.get('popup_to_open')
+        html = render_to_string('core/permissions_body.html', {'permissions_list': permissions_page.object_list, 'popup_to_open': popup_to_open})
+        data['items'] = html
+    else:
+        for tag in permissions_page.object_list:
+            item = {
+                'name': tag.name,
+                'id': tag.pk,
+            }
             data['items'].append(item)
 
-        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
-        return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+    return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
 def add_permission_to_group(request, group_id):
@@ -138,3 +176,32 @@ def add_permission_to_group(request, group_id):
         data = {'name': permission.name, 'id': permission.pk}
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+
+def find_groups(request, **kwargs):
+    groups = GroupProxy.objects.all().search(
+        **request.POST.dict()
+    )
+
+    groups_page, num_pages = get_paginator_data(groups, request.POST.get('page_number', 1))
+
+    data = {'pages': {
+        'pages_count': num_pages,
+        'current_page': groups_page.number,
+    }, 'items': []}
+
+    if is_ajax(request):
+        popup_to_open = request.POST.get('popup_to_open')
+        html = render_to_string('core/groups_body.html', {'groups_list': groups_page.object_list, 'popup_to_open': popup_to_open})
+        data['items'] = html
+    else:
+        for tag in groups_page.object_list:
+            item = {
+                'name': tag.name,
+                'id': tag.pk,
+                'link': tag.get_admin_show_url()
+            }
+            data['items'].append(item)
+
+    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+    return HttpResponse(response_message.get_json(), content_type='application/json', status=200)

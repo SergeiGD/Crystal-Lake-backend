@@ -9,7 +9,7 @@
         <div class="modal-body">
             <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
 
-                <form action="{% url 'get_clients_for_order' %}" method="POST" class="find_form" id="search_clients">
+                <form action="{% url 'get_clients_for_order' %}" method="POST" class="find_form ajax_search" id="search_clients">
 
                     {% csrf_token %}
 
@@ -78,7 +78,7 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="clients_tbody">
+                        <tbody data-find-form="#search_clients">
 
                         </tbody>
                     </table>
@@ -86,7 +86,7 @@
                 </form>
 
                 <nav class="d-flex justify-content-center mt-4">
-                    <ul class="pagination" id="clients_pagination"></ul>
+                    <ul class="pagination" data-find-form="#search_clients"></ul>
                 </nav>
 
             </div>

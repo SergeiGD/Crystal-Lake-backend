@@ -255,7 +255,7 @@ class Purchase(PolymorphicModel):
         return 0
 
     def save(self, *args, **kwargs):
-        self.clean()
+        # self.clean()
         self.price = self.calc_price()
         self.prepayment = self.calc_prepayment()
         self.refund = self.calc_refund()
@@ -308,11 +308,11 @@ class Purchase(PolymorphicModel):
 class PurchaseCountable(Purchase):
     quantity = models.SmallIntegerField(default=1)
 
-    def clean(self):
-        from django.core.exceptions import ValidationError
-
-        if self.quantity > self.offer.max_in_group:
-            raise ValidationError('Превышено максимальное количество')
+    # def clean(self):
+    #     from django.core.exceptions import ValidationError
+    #
+    #     if self.quantity > self.offer.max_in_group:
+    #         raise ValidationError('Превышено максимальное количество')
 
     def calc_price(self):
         delta_seconds = (self.end - self.start).total_seconds()

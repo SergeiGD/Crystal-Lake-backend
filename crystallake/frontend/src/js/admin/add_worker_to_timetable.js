@@ -3,12 +3,12 @@ $(document).ready(function (){
     $('#select_worker').on('submit', function (event, data){
         event.preventDefault();
 
-        // берем data-called-by и там ищем по классу
-
-        const called_by = $(this).attr('data-called-by')
+        const called_by = $('#search_worker').attr('data-popup-to-open')
         const workers_tbody = $(called_by).find('.timetable_workers_tbody')
 
         const same_elem = workers_tbody.find(`[data-temp-elem-id="${data.id}"]`).length
+
+        console.log(data)
 
         if(same_elem){
             return

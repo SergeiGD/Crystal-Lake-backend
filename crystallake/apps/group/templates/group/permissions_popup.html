@@ -9,7 +9,7 @@
         <div class="modal-body">
             <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
 
-                <form action="{{ group.get_unattached_permissions_url }}" method="POST" class="find_form" id="search_permissions">
+                <form action="{{ group.get_permissions_url }}" method="POST" class="find_form ajax_search" id="search_permissions">
 
                     {% csrf_token %}
 
@@ -65,7 +65,7 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="permissions_tbody">
+                        <tbody data-find-form="#search_permissions">
 
                         </tbody>
                     </table>
@@ -73,7 +73,7 @@
                 </form>
 
                 <nav class="d-flex justify-content-center mt-4">
-                    <ul class="pagination" id="permissions_pagination"></ul>
+                    <ul class="pagination" data-find-form="#search_permissions"></ul>
                 </nav>
 
             </div>

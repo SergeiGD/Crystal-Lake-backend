@@ -5,13 +5,8 @@ $(document).ready(function (){
 
     $('#edit_service_purchase_modal').on('popup_open', function (event, data){
         $('#edit_service_purchase').attr('action', data.edit_url)
-        console.log(data)
-        // $('#id_purchase_id').val(data.id)
         $('.service_name').html(data.offer.name).attr('href', data.offer.link)
         $('#id_edit-quantity').val(data.quantity)
-        // $('#id_is_paid').prop('checked', data.is_paid);
-        // $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
-        // $('#id_service_id').val(data.offer.id);
 
         $('#search_timetables').attr('service_id', data.offer.id)
 

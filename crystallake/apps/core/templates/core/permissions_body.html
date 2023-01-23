@@ -1,0 +1,14 @@
+{% for permission in permissions_list %}
+    <tr>
+        <th scope="row">{{ permission.id }}</th>
+        <td>
+            {{ permission.name }}
+        </td>
+        <td class="p-0 position-relative w-10r">
+            <button data-id="{{ permission.id }}" data-name="{{ permission.name }}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button" data-bs-toggle="modal" data-bs-target="{{ popup_to_open }}">
+                Выбрать
+            </button>
+        </td>
+    </tr>
+{% endfor %}
+

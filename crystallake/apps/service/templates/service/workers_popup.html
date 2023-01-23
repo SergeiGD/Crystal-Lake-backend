@@ -9,7 +9,7 @@
         <div class="modal-body">
             <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
 
-                <form action="{{ offer.get_workers_url  }}" method="POST" class="find_form" id="search_worker">
+                <form action="{{ offer.get_workers_url }}" method="POST" class="find_form changeable_popup ajax_search" id="search_worker" data-popup-to-open="">
 
                     {% csrf_token %}
 
@@ -57,7 +57,7 @@
                     </div>
                 </form>
 
-                <form class="rounded-2 overflow-hidden" method="post" action="." id="select_worker" data-called-by="">
+                <form class="rounded-2 overflow-hidden" method="post" action="." id="select_worker">
 
                     {% csrf_token %}
 
@@ -78,7 +78,7 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="workers_tbody">
+                        <tbody data-find-form="#search_worker">
 
                         </tbody>
                     </table>
@@ -86,7 +86,7 @@
                 </form>
 
                 <nav class="d-flex justify-content-center mt-4">
-                    <ul class="pagination" id="workers_pagination"></ul>
+                    <ul class="pagination" data-find-form="#search_worker"></ul>
                 </nav>
 
             </div>

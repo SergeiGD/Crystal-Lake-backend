@@ -52,6 +52,7 @@ $(document).ready(function (){
         $(this).attr('data-sortby', picked_sortby);
         const form_selector = $(this).closest('[data-find-form]').attr('data-find-form')
         const form = $(form_selector);
+        // form.find('.sorting_input').val(picked_sortby).change();
         form.find('.sorting_input').val(picked_sortby).change();
         form.trigger('submit');
     })
@@ -63,11 +64,15 @@ $(document).ready(function (){
     function refresh_icons(){
 
         const sorting_input = $('.sorting_input');
-        if(sorting_input.length > 0){
-            const old_sorty = $('[data-sortby-active]')
-            old_sorty.removeClass('bg-c_yellow-700')
-            old_sorty.removeAttr('data-sortby-active')
-        }
+        if(sorting_input.length == 0) return
+        // if(sorting_input.length > 0){
+        //     const old_sorty = $('[data-sortby-active]')
+        //     old_sorty.removeClass('bg-c_yellow-700')
+        //     old_sorty.removeAttr('data-sortby-active')
+        // }
+        const old_sorty = $('[data-sortby-active]')
+        old_sorty.removeClass('bg-c_yellow-700')
+        old_sorty.removeAttr('data-sortby-active')
         const active_sorting = sorting_input.val();
         const sort_elem = $(`[data-sortby$=${active_sorting.replace('-', '')}]`);
         const icon = sort_elem.find('i')

@@ -84,12 +84,13 @@ class SearchRoomsAdmin(SearchOffersAdmin):
         'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
     }))
     beds_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
-        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1 rounded-end'
     }))
     rooms_from = forms.IntegerField(label='от', required=False, widget=forms.NumberInput(attrs={
         'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
     }))
     rooms_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
-        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1 rounded-end'
     }))
+
 

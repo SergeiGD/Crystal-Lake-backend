@@ -5,8 +5,11 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
+from django.template.loader import render_to_string
 
-from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin
+
+from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data, is_ajax
+from ..core.forms import ShortSearchForm
 from .models import Tag
 from .forms import TagForm
 
@@ -26,7 +29,17 @@ class AdminTagsList(PermissionRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'tags'
         context['additional_page'] = True
+        context['form_tags'] = ShortSearchForm(self.request.GET)
         return context
+
+    def get_queryset(self):
+        search_form = ShortSearchForm(self.request.GET)
+        tags = Tag.objects.all()
+
+        if search_form.is_valid():
+            tags = tags.search(**search_form.cleaned_data)
+
+        return tags
 
 
 class AdminTagDetail(PermissionRequiredMixin, DetailView):
@@ -102,6 +115,35 @@ class AdminDeleteTagView(DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+
+def find_tags(request, **kwargs):
+    tags = Tag.objects.all().search(
+        **request.POST.dict()
+    )
+
+    tags_page, num_pages = get_paginator_data(tags, request.POST.get('page_number', 1))
+
+    data = {'pages': {
+        'pages_count': num_pages,
+        'current_page': tags_page.number,
+    }, 'items': []}
+
+    if is_ajax(request):
+        popup_to_open = request.POST.get('popup_to_open')
+        html = render_to_string('core/tags_body.html', {'tags_list': tags_page.object_list, 'popup_to_open': popup_to_open})
+        data['items'] = html
+    else:
+        for tag in tags_page.object_list:
+            item = {
+                'name': tag.name,
+                'id': tag.pk,
+                'link': tag.get_admin_show_url()
+            }
+            data['items'].append(item)
+
+    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+    return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
 

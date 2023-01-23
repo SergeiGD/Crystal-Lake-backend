@@ -96,22 +96,31 @@ class SearchOffersAdmin(forms.Form):
         'class': 'form-control'
     }))
     dates_from = forms.DateField(label='с', required=False, widget=forms.DateInput(attrs={
-        'class': 'form-control w-100 mw-8r rounded-0 flex-grow-0 flex-shrink-1'
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1',
+        'type': 'date'
     }))
     dates_until = forms.DateField(label='до', required=False, widget=forms.DateInput(attrs={
-        'class': 'form-control w-100 mw-8r rounded-0 flex-grow-0 flex-shrink-1'
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1 rounded-end',
+        'type': 'date'
     }))
     price_from = forms.IntegerField(label='от', required=False, widget=forms.NumberInput(attrs={
         'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
     }))
     price_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
-        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1 rounded-end'
     }))
     weekend_price_from = forms.IntegerField(label='от', required=False, widget=forms.NumberInput(attrs={
         'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
     }))
     weekend_price_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
-        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1 rounded-end'
+    }))
+    sort_by = forms.CharField(required=False, initial='id', widget=forms.TextInput(attrs={
+        'class': 'd-none sorting_input',
+        'value': 'id'
+    }))
+    page = forms.IntegerField(required=False, initial=1, widget=forms.NumberInput(attrs={
+        'class': 'd-none page_input',
     }))
         
 

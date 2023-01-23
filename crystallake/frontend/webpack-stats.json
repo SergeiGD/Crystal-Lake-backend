@@ -25,37 +25,13 @@
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
       "path": "/app/apps/core/static/images/why_is-8d9483bc8b97327e78b1.webp"
     },
-    "js/admin-613ef8bc0cbdeed690c7.bundle.js": {
-      "name": "js/admin-613ef8bc0cbdeed690c7.bundle.js",
-      "path": "/app/apps/core/static/js/admin-613ef8bc0cbdeed690c7.bundle.js"
+    "js/admin-c018ea31d41caf8dc13d.bundle.js": {
+      "name": "js/admin-c018ea31d41caf8dc13d.bundle.js",
+      "path": "/app/apps/core/static/js/admin-c018ea31d41caf8dc13d.bundle.js"
     },
-    "js/admin-613ef8bc0cbdeed690c7.bundle.js.map": {
-      "name": "js/admin-613ef8bc0cbdeed690c7.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-613ef8bc0cbdeed690c7.bundle.js.map"
-    },
-    "js/admin-7052bebdcd99b28e18f8.bundle.js": {
-      "name": "js/admin-7052bebdcd99b28e18f8.bundle.js",
-      "path": "/app/apps/core/static/js/admin-7052bebdcd99b28e18f8.bundle.js"
-    },
-    "js/admin-7052bebdcd99b28e18f8.bundle.js.map": {
-      "name": "js/admin-7052bebdcd99b28e18f8.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-7052bebdcd99b28e18f8.bundle.js.map"
-    },
-    "js/admin-e631a38d46be170c7bad.bundle.js": {
-      "name": "js/admin-e631a38d46be170c7bad.bundle.js",
-      "path": "/app/apps/core/static/js/admin-e631a38d46be170c7bad.bundle.js"
-    },
-    "js/admin-e631a38d46be170c7bad.bundle.js.map": {
-      "name": "js/admin-e631a38d46be170c7bad.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-e631a38d46be170c7bad.bundle.js.map"
-    },
-    "js/admin-f2216e45d8a02de272ae.bundle.js": {
-      "name": "js/admin-f2216e45d8a02de272ae.bundle.js",
-      "path": "/app/apps/core/static/js/admin-f2216e45d8a02de272ae.bundle.js"
-    },
-    "js/admin-f2216e45d8a02de272ae.bundle.js.map": {
-      "name": "js/admin-f2216e45d8a02de272ae.bundle.js.map",
-      "path": "/app/apps/core/static/js/admin-f2216e45d8a02de272ae.bundle.js.map"
+    "js/admin-c018ea31d41caf8dc13d.bundle.js.map": {
+      "name": "js/admin-c018ea31d41caf8dc13d.bundle.js.map",
+      "path": "/app/apps/core/static/js/admin-c018ea31d41caf8dc13d.bundle.js.map"
     },
     "js/client-00427d10e4b33b5e49fd.bundle.js": {
       "name": "js/client-00427d10e4b33b5e49fd.bundle.js",
@@ -87,7 +63,7 @@
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
       "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
       "css/admin-1d2017df37ac0e197a2d.bundle.css",
-      "js/admin-e631a38d46be170c7bad.bundle.js"
+      "js/admin-c018ea31d41caf8dc13d.bundle.js"
     ],
     "client": [
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",

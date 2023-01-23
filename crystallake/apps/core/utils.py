@@ -59,3 +59,10 @@ def parse_datetime(day, time_start, time_end):
 
     return start, end
 
+
+def is_ajax(request):
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return True
+    else:
+        return False
+

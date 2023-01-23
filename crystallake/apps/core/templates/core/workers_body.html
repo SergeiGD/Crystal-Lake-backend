@@ -1,0 +1,15 @@
+{% for worker in workers_list %}
+    <tr>
+        <th scope="row">{{ worker.id }}</th>
+        <td>
+            <a class="link-hover" href="{{ worker.get_admin_show_url }}">{{ worker.full_name }}</a>
+        </td>
+        <td>{{ worker.phone }}</td>
+        <td class="p-0 position-relative w-10r">
+            <button data-id="{{ worker.id }}" data-phone="{{ worker.phone }}" data-name="{{ worker.full_name }}" data-link="{{ worker.get_admin_show_url }}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button" data-bs-toggle="modal" data-bs-target="{{ popup_to_open }}">
+                Выбрать
+            </button>
+        </td>
+    </tr>
+{% endfor %}
+

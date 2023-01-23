@@ -1,10 +1,10 @@
 from datetimerange import DateTimeRange
-from datetime import timedelta
+from datetime import timedelta, datetime, time, date
 
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
-from django.utils.timezone import localtime
+from django.utils.timezone import localtime, make_aware
 
 from ..offer.models import Offer, OfferQuerySet
 from ..order.models import Purchase
@@ -13,6 +13,23 @@ from ..order.models import Purchase
 
 
 class RoomQuerySet(OfferQuerySet):
+    def get_free_rooms(self, start, end):
+        rooms = self.filter(
+            is_hidden=False,
+            date_deleted=None,
+            main_room=None
+        )
+        result = []
+        for room in rooms:
+            busy_dates = room.get_general_busy_dates(start, end)
+            if len(busy_dates) == 0:
+                result.append(room)
+
+        rooms_ids = [room.id for room in result]
+        queryset = rooms.filter(id__in=rooms_ids)
+
+        return queryset
+
     def search(self, **kwargs):
         qs = super().search(**kwargs)
 
@@ -30,6 +47,16 @@ class RoomQuerySet(OfferQuerySet):
             qs = qs.filter(rooms__gte=kwargs['rooms_from'])
         if kwargs.get('rooms_until', ''):
             qs = qs.filter(rooms__lte=kwargs['rooms_until'])
+        if kwargs.get('dates_from', '') and kwargs.get('dates_until', ''):
+            # TODO: ЗАШИТЬ ЧАСЫ НАЧАЛА И КОНЦА БРОНИ В КОНФИГ
+            if isinstance(kwargs['dates_from'], date):
+                dates_from = datetime.combine(kwargs['dates_from'], time(0, 0, 0))
+                dates_until = datetime.combine(kwargs['dates_until'], time(0, 0, 0))
+            else:
+                dates_from = datetime.strptime(kwargs['dates_from'], "%Y-%m-%d")
+                dates_until = datetime.strptime(kwargs['dates_until'], "%Y-%m-%d")
+            start, end = make_aware(dates_from), make_aware(dates_until)
+            qs = qs.get_free_rooms(start, end)
 
         return qs
 
@@ -72,11 +99,6 @@ class Room(Offer):
         return Room.objects.filter(date_deleted=None, main_room=self)
 
     def pick_rooms_for_purchase(self, start, end, purchase_id=None):
-        # ДЛЯ НАЧЛА ПРОВЕРЯЕМ ОБЩИМ ДАТЫ, ЕСЛИ ЛИ ВООБЩЕ СМЫСЛ ИСКАТЬ
-        # ЗАТЕМ ИДЕМ ПО КАЖДОЙ КОМНАТЕ И НАХОДИМ САМЫЙ ДЛИННЫЙ ВОЗМОЖНЫЙ, БЕРЕМ ЕГО
-        # ЕГО АПЕНДИМ К НАБОРУ КОМНАТ И ЗАТЕМ ОПЯТЬ ПО КАЖДОЙ КОМНАТ НАЧИНАЯ С ДАТЫ ГДЕ НАШЛИ
-        # if start == end:
-        #     return'
         if len(self.get_general_busy_dates(start, end)) > 0:
             return []
         result = []
@@ -86,6 +108,7 @@ class Room(Offer):
             # TODO: УБРАТЬ ТУТ ДЕНЬ -1 ПОСЛЕ ТОГО КАК ИСПАВЛЮ ВРЕМЯ ЗАЛЕСЕНИЯ ВЫСЕЛЕНИЯ
             dates_range = DateTimeRange(start, end - timedelta(days=1))
             for room in self.get_same_rooms():
+                print(11111)
                 rooms_dates[room] = 0
                 for date in dates_range.range(timedelta(days=1)):
                     if not room.is_day_busy(date, purchase_id):
@@ -102,13 +125,30 @@ class Room(Offer):
                 'end': room_end
             })
             start = room_end
-            # TODO: СДЕЛАТЬ КРАСИВЕЕ МБ
             if max_room_delta[1] == 0:
                 return []
 
         return result
 
+    # def get_free_rooms(self, start, end=None):
+    #     # TODO: ВЫНЕСТИ В МЕНЕДЖЕР ОБЪЕКТОВ
+    #     rooms = Room.objects.filter(
+    #         is_hidden=False,
+    #         date_deleted=None
+    #     )
+    #     result = []
+    #     for room in rooms:
+    #         busy_dates = room.get_general_busy_dates(start, end)
+    #         if len(busy_dates) == 0:
+    #             result.append(room)
+    #
+    #     rooms_ids = [room.id for room in result]
+    #     queryset = Room.objects.filter(id__in=rooms_ids)
+    #
+    #     return queryset
+
     def is_day_busy(self, day, purchase_id=None):
+
         return Purchase.objects.exclude(pk=purchase_id).filter(
                 offer__pk=self.pk,
                 is_canceled=False,
@@ -117,49 +157,62 @@ class Room(Offer):
                 end__gte=day,
             ).exists()
 
-    def get_general_busy_dates(self, start, end):
+    def get_general_busy_dates(self, start, end=None):
         general_dates = []
-        if self.main_room is None:
+        room = self if self.main_room is None else self.main_room
 
-            rooms = self.get_same_rooms()
-            for room in rooms:
-                room_dates = set()
+        rooms = room.get_same_rooms()
+        for same_room in rooms:
+            room_dates = set()
 
-                purchases = Purchase.objects.filter(
-                    offer__pk=room.pk,
-                    is_canceled=False,
-                    order__date_canceled=None,
-                    start__gte=start,
-                    end__lte=end
-                )
+            purchases = Purchase.objects.filter(
+                Q(start__range=[start, end]) | Q(end__range=[start, end]),
+                offer__pk=same_room.pk,
+                is_canceled=False,
+                order__date_canceled=None,
+                # start__gte=start,
+                # start__range=[start, end]
+            )
+            # if end is not None:
+            #     purchases = purchases.filter(
+            #         Q(start__range=[start, end]) | Q(end__range=[start, end])
+            #     )
+            # else:
+            #     purchases = purchases.filter(
+            #         start__gte=start,
+            #     )
 
-                for purchase in purchases:
-                    dates_range = DateTimeRange(purchase.start, purchase.end)
-                    for date in dates_range.range(timedelta(days=1)):
-                        room_dates.add(date.timestamp())
+            for purchase in purchases:
+                dates_range = DateTimeRange(purchase.start, purchase.end)
+                for date in dates_range.range(timedelta(days=1)):
+                    room_dates.add(date.timestamp())
 
-                general_dates.append(room_dates)
+            general_dates.append(room_dates)
 
-            general_dates = set.intersection(*general_dates)
+        if len(general_dates) > 1:
+            result = set.intersection(*general_dates)
+            return list(result)
 
-        return list(general_dates)
+        return []
 
     def get_busy_dates(self, start, end):
         dates = set()
 
         if self.main_room is not None:
+
             purchases = Purchase.objects.filter(
+                Q(start__range=[start, end]) | Q(end__range=[start, end]),
                 offer__pk=self.pk,
                 is_canceled=False,
                 order__date_canceled=None,
-                start__gte=start,
-                end__lte=end
             )
+
             for purchase in purchases:
-                # dates_range = DateTimeRange(localtime(purchase.start), localtime(purchase.end))
                 dates_range = DateTimeRange(purchase.start, purchase.end)
                 for date in dates_range.range(timedelta(days=1)):
                     dates.add(date.timestamp())
+        else:
+            raise ValueError('Нельзя получить конкретное расписание родительской комнаты')
         return list(dates)
 
     def get_info(self):

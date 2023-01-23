@@ -41,12 +41,12 @@ $(document).ready(function (){
     $('#select_worker').on('submit', function (event, data){
         event.preventDefault();
 
-        // берем data-called-by и там ищем по классу
-
-        const called_by = $(this).attr('data-called-by')
+        const called_by = $('#search_worker').attr('data-popup-to-open')
         const workers_tbody = $(called_by).find('.timetable_workers_tbody')
 
         const same_elem = workers_tbody.find(`[data-temp-elem-id="${data.id}"]`).length
+
+        console.log(data)
 
         if(same_elem){
             return
@@ -104,6 +104,52 @@ $(document).ready(function (){
         });
 
     });
+})
+
+/***/ }),
+
+/***/ "./src/js/admin/ajax/ajax_search.js":
+/*!******************************************!*\
+  !*** ./src/js/admin/ajax/ajax_search.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
+$(document).ready(function (){
+
+    $('.ajax_search').on('submit', function (event, page='1'){
+        event.preventDefault();
+
+        const form = $(this);
+
+        var raw_data = $(this).serializeArray();
+        var post_data = new FormData();
+
+        $.map(raw_data, function(n, i){
+            post_data.append(n['name'], n['value']);
+        });
+
+        const sort_by = $(`[data-find-form="#${form.attr('id')}"]`).find('[data-sortby-active]').attr('data-sortby')
+        post_data.append('sort_by', sort_by)
+        post_data.append('page_number', page)
+        post_data.append('popup_to_open', $(this).attr('data-popup-to-open'))
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: post_data,
+            processData: false,
+            contentType: false,
+            success: function (response){
+                console.log($(`tbody[data-find-form="#${form.attr('id')}"]`))
+                $(`tbody[data-find-form="#${form.attr('id')}"]`).html(response['data']['items'])
+                find_items.build_pages(response['data']['pages'], $(`.pagination[data-find-form="#${form.attr('id')}"]`))
+            },
+        });
+
+    });
+
 })
 
 /***/ }),
@@ -588,609 +634,6 @@ $(document).ready(function (){
 
 /***/ }),
 
-/***/ "./src/js/admin/ajax/search_clients_for_order.js":
-/*!*******************************************************!*\
-  !*** ./src/js/admin/ajax/search_clients_for_order.js ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
-$(document).ready(function (){
-
-    $('#search_clients').on('submit', function (event, page='1'){
-        event.preventDefault();
-
-        var raw_data = $(this).serializeArray();
-        var post_data = new FormData();
-
-        $.map(raw_data, function(n, i){
-            post_data.append(n['name'], n['value']);
-        });
-
-        const sort_by = $('#pick_client_modal').find('[data-sortby-active]').attr('data-sortby')
-        post_data.append('sort_by', sort_by)
-        post_data.append('page_number', page)
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: post_data,
-            processData: false,
-            contentType: false,
-            success: function (response){
-                build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#clients_pagination'))
-            },
-        });
-
-        function build_rows(data){
-            var result = ''
-            for(const item of data){
-                const row = `
-                    <tr>
-                        <th scope="row">${item.id}</th>
-                        <td>
-                            <a class="link-hover" href="${item.link}">${item.name}</a>   
-                        </td>
-                        <td>
-                            ${item.phone}
-                        </td>
-                        <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" data-name="${item.name}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button">
-                                Выбрать
-                            </button>
-                        </td>
-                    </tr>
-                `
-                result += row
-            }
-            $('#clients_tbody').html(result);
-        }
-
-    });
-
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/search_groups_for_worker.js":
-/*!*******************************************************!*\
-  !*** ./src/js/admin/ajax/search_groups_for_worker.js ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
-$(document).ready(function (){
-
-    $('#search_groups').on('submit', function (event, page='1'){
-        event.preventDefault();
-
-        var raw_data = $(this).serializeArray();
-        var post_data = new FormData();
-
-        $.map(raw_data, function(n, i){
-            post_data.append(n['name'], n['value']);
-        });
-
-        const sort_by = $('#pick_group_modal').find('[data-sortby-active]').attr('data-sortby')
-        post_data.append('sort_by', sort_by)
-        post_data.append('page_number', page)
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: post_data,
-            processData: false,
-            contentType: false,
-            success: function (response){
-                build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#groups_pagination'))
-            },
-        });
-
-        function build_rows(data){
-            var result = ''
-            for(const item of data){
-                const row = `
-                    <tr>
-                        <th scope="row">${item.id}</th>
-                        <td>
-                            <a class="link-hover" href="${item.link}">${item.name}</a>   
-                        </td>
-                        <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button">
-                                Выбрать
-                            </button>
-                        </td>
-                    </tr>
-                `
-                result += row
-            }
-            $('#groups_tbody').html(result);
-        }
-
-    });
-
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/search_permissions_for_group.js":
-/*!***********************************************************!*\
-  !*** ./src/js/admin/ajax/search_permissions_for_group.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
-$(document).ready(function (){
-
-    $('#search_permissions').on('submit', function (event, page='1'){
-        event.preventDefault();
-
-        var raw_data = $(this).serializeArray();
-        var post_data = new FormData();
-
-        $.map(raw_data, function(n, i){
-            post_data.append(n['name'], n['value']);
-        });
-
-        const sort_by = $('#pick_permission_modal').find('[data-sortby-active]').attr('data-sortby')
-        post_data.append('sort_by', sort_by)
-        post_data.append('page_number', page)
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: post_data,
-            processData: false,
-            contentType: false,
-            success: function (response){
-                build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#permissions_pagination'))
-            },
-        });
-
-        function build_rows(data){
-            var result = ''
-            for(const item of data){
-                const row = `
-                    <tr>
-                        <th scope="row">${item.id}</th>
-                        <td>${item.name}</td>
-                        <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button">
-                                Выбрать
-                            </button>
-                        </td>
-                    </tr>
-                `
-                result += row
-            }
-            $('#permissions_tbody').html(result);
-        }
-
-    });
-
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/search_rooms.js":
-/*!*******************************************!*\
-  !*** ./src/js/admin/ajax/search_rooms.js ***!
-  \*******************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
-$(document).ready(function (){
-
-    $('#search_rooms').on('submit', function (event, page='1'){
-        event.preventDefault();
-
-        var raw_data = $(this).serializeArray();
-        var post_data = new FormData();
-
-        $.map(raw_data, function(n, i){
-            post_data.append(n['name'], n['value']);
-        });
-
-        const sort_by = $('#rooms_sorting').find('[data-sortby-active]').attr('data-sortby')
-        post_data.append('sort_by', sort_by)
-        post_data.append('page_number', page)
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: post_data,
-            processData: false,
-            contentType: false,
-            success: function (response){
-                build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#rooms_pagination'))
-            },
-        });
-
-        function build_rows(data){
-            var result = ''
-            for(const item of data){
-                const row = `
-                    <tr>
-                        <th scope="row">${item.id}</th>
-                        <td>
-                            <a class="link-hover" href="${item.link}">${item.name}</a>   
-                        </td>
-                        <td>
-                            ${item.beds}
-                        </td>
-                        <td>
-                            ${item.rooms}
-                        </td>
-                        <td>
-                            ${item.default_price}
-                        </td><td>
-                            ${item.weekend_price}
-                        </td>
-                        <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal" data-bs-target="#create_room_purchase_modal" type="button">
-
-<!--                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal" data-bs-target="#room_purchase_modal" type="button">-->
-                                Выбрать
-                            </button>
-                        </td>
-                    </tr>
-                `
-                result += row
-            }
-            $('#rooms_tbody').html(result);
-        }
-
-    });
-
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/search_services.js":
-/*!**********************************************!*\
-  !*** ./src/js/admin/ajax/search_services.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
-$(document).ready(function (){
-
-    $('#search_services').on('submit', function (event, page='1'){
-        event.preventDefault();
-
-        var raw_data = $(this).serializeArray();
-        var post_data = new FormData();
-
-        $.map(raw_data, function(n, i){
-            post_data.append(n['name'], n['value']);
-        });
-
-        const sort_by = $('#services_sorting').find('[data-sortby-active]').attr('data-sortby')
-        post_data.append('sort_by', sort_by)
-        post_data.append('page_number', page)
-
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: post_data,
-            processData: false,
-            contentType: false,
-            success: function (response){
-                build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#services_pagination'))
-            },
-        });
-
-        function build_rows(data){
-            var result = ''
-            for(const item of data){
-                const row = `
-                    <tr>
-                        <th scope="row">${item.id}</th>
-                        <td>
-                            <a class="link-hover" href="${item.link}">${item.name}</a>   
-                        </td>
-                        <td>
-                            ${item.default_price}
-                        </td><td>
-                            ${item.weekend_price}
-                        </td>
-                        <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}"  data-name="${item.name}" data-link="${item.link}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="#create_service_purchase_modal" type="button">
-                                Выбрать
-                            </button>
-                        </td>
-                    </tr>
-                `
-                result += row
-            }
-            $('#services_tbody').html(result);
-        }
-
-    });
-
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/search_services_for_worker.js":
-/*!*********************************************************!*\
-  !*** ./src/js/admin/ajax/search_services_for_worker.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
-$(document).ready(function (){
-
-    $('#search_service').on('submit', function (event, page='1'){
-        event.preventDefault();
-
-        var raw_data = $(this).serializeArray();
-        var post_data = new FormData();
-
-        $.map(raw_data, function(n, i){
-            post_data.append(n['name'], n['value']);
-        });
-
-        const sort_by = $('#pick_service_modal').find('[data-sortby-active]').attr('data-sortby')
-        post_data.append('sort_by', sort_by)
-        post_data.append('page_number', page)
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: post_data,
-            processData: false,
-            contentType: false,
-            success: function (response){
-                build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#services_pagination'))
-            },
-        });
-
-        function build_rows(data){
-            var result = ''
-            for(const item of data){
-                const row = `
-                    <tr>
-                        <th scope="row">${item.id}</th>
-                        <td>
-                            <a class="link-hover" href="${item.link}">${item.name}</a>   
-                        </td>
-                        <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button">
-                                Выбрать
-                            </button>
-                        </td>
-                    </tr>
-                `
-                result += row
-            }
-            $('#services_tbody').html(result);
-        }
-
-    });
-
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/search_tags_for_offer.js":
-/*!****************************************************!*\
-  !*** ./src/js/admin/ajax/search_tags_for_offer.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
-$(document).ready(function (){
-
-    $('#search_tag').on('submit', function (event, page='1'){
-        event.preventDefault();
-
-        var raw_data = $(this).serializeArray();
-        var post_data = new FormData();
-
-        $.map(raw_data, function(n, i){
-            post_data.append(n['name'], n['value']);
-        });
-
-        const sort_by = $('#add_tag_modal').find('[data-sortby-active]').attr('data-sortby')
-        post_data.append('sort_by', sort_by)
-        post_data.append('page_number', page)
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: post_data,
-            processData: false,
-            contentType: false,
-            success: function (response){
-                build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#tags_pagination'))
-            },
-        });
-
-        function build_rows(data){
-            var result = ''
-            for(const item of data){
-                const row = `
-                    <tr>
-                        <th scope="row">${item.id}</th>
-                        <td>
-                            <a class="link-hover" href="${item.link}">${item.name}</a>   
-                        </td>
-                        <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button">
-                                Выбрать
-                            </button>
-                        </td>
-                    </tr>
-                `
-                result += row
-            }
-            $('#tags_add_body').html(result);
-        }
-
-    });
-
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/search_timetables_for_service.js":
-/*!************************************************************!*\
-  !*** ./src/js/admin/ajax/search_timetables_for_service.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
-const form_date = __webpack_require__(/*! ../form_date */ "./src/js/admin/form_date.js");
-
-$(document).ready(function (){
-
-    $('#search_timetables').on('submit', function (event, page='1'){
-        event.preventDefault();
-
-
-        var raw_data = $(this).serializeArray();
-        var post_data = new FormData();
-
-        $.map(raw_data, function(n, i){
-            post_data.append(n['name'], n['value']);
-        });
-
-        const sort_by = $('#pick_timetable_modal').find('[data-sortby-active]').attr('data-sortby')
-        post_data.append('sort_by', sort_by)
-        post_data.append('page_number', page)
-        post_data.append('service_id', $(this).attr('service_id'))
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: post_data,
-            processData: false,
-            contentType: false,
-            success: function (response){
-                build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#timetables_pagination'))
-            },
-        });
-
-        function build_rows(data){
-            const called_by = $('#search_timetables').attr('data-called-by')
-            console.log(called_by)
-            var result = ''
-            for(const item of data){
-                const start = new Date(item.start * 1000)   // на 1000, т.к. получаем в секундах, а джесу нужно в мс
-                const end = new Date(item.end * 1000)
-                const formated_start = form_date.form_date(start)
-                const formated_end = form_date.form_date(end)
-                const day = start.toISOString().substring(0,10)
-                const start_time = start.toISOString().substring(11,16)
-                const end_time = end.toISOString().substring(11,16)
-                const row = `
-                    <tr>
-                        <td scope="row">${formated_start}</td>
-                        <td scope="row">${formated_end}</td>
-                        <td class="p-0 position-relative w-10r">
-                            <button data-day="${day}" data-time-start="${start_time}" data-time-end="${end_time}" data-time-str="${formated_start} - ${formated_end}" data-id="${item.id}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-toggle="modal"  data-bs-target="${called_by}" type="button">
-                                Выбрать
-                            </button>
-                        </td>
-                    </tr>
-                `
-                result += row
-            }
-            $('#timetables_tbody').html(result);
-        }
-
-    });
-
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/ajax/search_workers_for_timetable.js":
-/*!***********************************************************!*\
-  !*** ./src/js/admin/ajax/search_workers_for_timetable.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const find_items = __webpack_require__(/*! ../find_items */ "./src/js/admin/find_items.js");
-$(document).ready(function (){
-
-    $('#search_worker').on('submit', function (event, page='1'){
-        event.preventDefault();
-
-        var raw_data = $(this).serializeArray();
-        var post_data = new FormData();
-
-        $.map(raw_data, function(n, i){
-            post_data.append(n['name'], n['value']);
-        });
-
-        const sort_by = $('#pick_worker_modal').find('[data-sortby-active]').attr('data-sortby')
-        post_data.append('sort_by', sort_by)
-        post_data.append('page_number', page)
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: post_data,
-            processData: false,
-            contentType: false,
-            success: function (response){
-                build_rows(response['data']['items'])
-                find_items.build_pages(response['data']['pages'], $('#workers_pagination'))
-            },
-        });
-
-        function build_rows(data){
-            var result = ''
-            const modal_to_open = $('#select_worker').attr('data-called-by')
-            console.log(modal_to_open)
-            for(const item of data){
-                const row = `
-                    <tr>
-                        <th scope="row">${item.id}</th>
-                        <td>
-                            <a class="link-hover" href="${item.link}">${item.name}</a>   
-                        </td>
-                        <td>
-                            ${item.phone}
-                        </td>
-                        <td class="p-0 position-relative w-10r">
-                            <button data-id="${item.id}" data-name="${item.name}" data-link="${item.link}" data-phone="${item.phone}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-bs-toggle="modal" data-bs-target=${modal_to_open}>
-                                Выбрать
-                            </button>
-                        </td>
-                    </tr>
-                `
-                result += row
-            }
-            $('#workers_tbody').html(result);
-        }
-
-    });
-
-})
-
-/***/ }),
-
 /***/ "./src/js/admin/clean_popup.js":
 /*!*************************************!*\
   !*** ./src/js/admin/clean_popup.js ***!
@@ -1330,6 +773,7 @@ $(document).ready(function (){
         $(this).attr('data-sortby', picked_sortby);
         const form_selector = $(this).closest('[data-find-form]').attr('data-find-form')
         const form = $(form_selector);
+        // form.find('.sorting_input').val(picked_sortby).change();
         form.find('.sorting_input').val(picked_sortby).change();
         form.trigger('submit');
     })
@@ -1341,11 +785,15 @@ $(document).ready(function (){
     function refresh_icons(){
 
         const sorting_input = $('.sorting_input');
-        if(sorting_input.length > 0){
-            const old_sorty = $('[data-sortby-active]')
-            old_sorty.removeClass('bg-c_yellow-700')
-            old_sorty.removeAttr('data-sortby-active')
-        }
+        if(sorting_input.length == 0) return
+        // if(sorting_input.length > 0){
+        //     const old_sorty = $('[data-sortby-active]')
+        //     old_sorty.removeClass('bg-c_yellow-700')
+        //     old_sorty.removeAttr('data-sortby-active')
+        // }
+        const old_sorty = $('[data-sortby-active]')
+        old_sorty.removeClass('bg-c_yellow-700')
+        old_sorty.removeAttr('data-sortby-active')
         const active_sorting = sorting_input.val();
         const sort_elem = $(`[data-sortby$=${active_sorting.replace('-', '')}]`);
         const icon = sort_elem.find('i')
@@ -1681,48 +1129,7 @@ $(document).ready(function (){
         $('#id_create-service_id').val(data.id);
         $('.service_timetable_link').attr('href', data.link + '#dates')
 
-        // const is_dynamic = (data.is_dynamic === 'true');
-        //
-        // if (is_dynamic){
-        //     $('.static_time_field').addClass('d-block')
-        //     $('.dynamic_time_field').addClass('d-none')
-        // }
-        // else{
-        //     $('.dynamic_time_field').addClass('d-block')
-        //     $('.static_time_field').addClass('d-none')
-        // }
-
         $('#search_timetables').attr('service_id', data.id)
-
-    });
-
-})
-
-/***/ }),
-
-/***/ "./src/js/admin/select_timetable.js":
-/*!******************************************!*\
-  !*** ./src/js/admin/select_timetable.js ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-$(document).ready(function (){
-
-    $('#select_timetable').on('submit', function (event, data){
-        event.preventDefault();
-
-        $('#id_create-time_select_text').val(data.time_str);
-        $('#id_edit-time_select_text').val(data.time_str);
-        $('#id_create-timetable_id').val(data.id);
-        $('#id_edit-timetable_id').val(data.id);
-
-        $('#id_create-day').val(data.day);
-        $('#id_edit-day').val(data.day);
-        $('#id_create-time_start').val(data.time_start);
-        $('#id_edit-time_start').val(data.time_start);
-        $('#id_create-time_end').val(data.time_end);
-        $('#id_edit-time_end').val(data.time_end);
 
     });
 
@@ -1744,13 +1151,8 @@ $(document).ready(function (){
 
     $('#edit_service_purchase_modal').on('popup_open', function (event, data){
         $('#edit_service_purchase').attr('action', data.edit_url)
-        console.log(data)
-        // $('#id_purchase_id').val(data.id)
         $('.service_name').html(data.offer.name).attr('href', data.offer.link)
         $('#id_edit-quantity').val(data.quantity)
-        // $('#id_is_paid').prop('checked', data.is_paid);
-        // $('#id_is_prepayment_paid').prop('checked', data.is_prepayment_paid);
-        // $('#id_service_id').val(data.offer.id);
 
         $('#search_timetables').attr('service_id', data.offer.id)
 
@@ -1781,9 +1183,7 @@ $(document).ready(function (){
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
     $('[data-set-called-by]').on('click', function (){
-        console.log($(this).attr('data-set-called-by'))
-        console.log($('[data-called-by]'))
-        $('[data-called-by]').attr('data-called-by', $(this).attr('data-set-called-by'))
+        $('.changeable_popup').attr('data-popup-to-open', $(this).attr('data-set-called-by'))
     })
 })
 
@@ -3482,7 +2882,6 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/select_client.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/select_room_purchase.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/select_service_purchase.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/select_timetable.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/find_items.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/item_select.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/clean_popup.js")))
@@ -3492,16 +2891,7 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/add_worker_to_timetable.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/remove_worker_from_timetable.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/set_called_by.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_rooms.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_services.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/offer_ajax.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_tags_for_offer.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_services_for_worker.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_groups_for_worker.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_permissions_for_group.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_clients_for_order.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_workers_for_timetable.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/search_timetables_for_service.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/delete_additional_elem.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/edit_additional_elem.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/add_additional_elem.js")))
@@ -3509,9 +2899,10 @@ $(document).ready(function(){
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/default_set_main_info.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/manage_timetable.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/get_dates_info.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/get_service_dates_info.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/get_service_dates_info.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js"], () => (__webpack_require__("./src/js/admin/ajax/ajax_search.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-e631a38d46be170c7bad.bundle.js.map
+//# sourceMappingURL=admin-c018ea31d41caf8dc13d.bundle.js.map

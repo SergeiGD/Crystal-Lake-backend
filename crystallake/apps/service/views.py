@@ -6,9 +6,10 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.utils import timezone
+from django.template.loader import render_to_string
 
 from .models import Service, ServiceTimetable
-from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, RelocateResponseMixin, parse_datetime
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, is_ajax
 from .forms import SearchServicesForm, ServiceForm, TimetableForm
 from ..offer.utils import ManageOfferMixin
 from ..photo.forms import PhotoForm
@@ -304,16 +305,22 @@ def find_services(request, **kwargs):
         'pages_count': num_pages,
         'current_page': services_page.number,
     }, 'items': []}
-    for service in services_page.object_list:
-        item = {
-            'name': service.name,
-            'id': service.pk,
-            'max_in_group': service.max_in_group,
-            'link': service.get_admin_show_url(),
-            'default_price': service.default_price,
-            'weekend_price': service.weekend_price
-        }
-        data['items'].append(item)
+
+    if is_ajax(request):
+        popup_to_open = request.POST.get('popup_to_open')
+        html = render_to_string('core/services_body.html', {'services_list': services_page.object_list, 'popup_to_open': popup_to_open})
+        data['items'] = html
+    else:
+        for service in services_page.object_list:
+            item = {
+                'name': service.name,
+                'id': service.pk,
+                'max_in_group': service.max_in_group,
+                'link': service.get_admin_show_url(),
+                'default_price': service.default_price,
+                'weekend_price': service.weekend_price
+            }
+            data['items'].append(item)
 
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)

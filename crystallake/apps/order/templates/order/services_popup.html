@@ -9,7 +9,7 @@
         <div class="modal-body">
             <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
 
-                <form action="{% url 'get_services_for_order'  order_id=order.id  %}" method="POST" class="find_form" id="search_services">
+                <form action="{% url 'get_services_for_order'  order_id=order.id  %}" method="POST" class="find_form ajax_search" id="search_services" data-popup-to-open="#create_service_purchase_modal">
 
                     {% csrf_token %}
 
@@ -127,9 +127,9 @@
                             <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="name">
                                 Наименование <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
                             </th>
-{#                            <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="dynamic_timetable">#}
-{#                                Тип расписания <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>#}
-{#                            </th>#}
+                            <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="max_in_group">
+                                Макс в группе <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
+                            </th>
                             <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="default_price">
                                 Обычная цена <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
                             </th>
@@ -141,7 +141,7 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="services_tbody">
+                        <tbody data-find-form="#search_services">
 
                         </tbody>
                     </table>
@@ -149,7 +149,7 @@
                 </form>
 
                 <nav class="d-flex justify-content-center">
-                    <ul class="pagination" id="services_pagination"></ul>
+                    <ul class="pagination" data-find-form="#search_services" id="services_pagination"></ul>
                 </nav>
 
             </div>

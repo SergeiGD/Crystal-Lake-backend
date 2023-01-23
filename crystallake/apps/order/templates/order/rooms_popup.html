@@ -9,7 +9,7 @@
         <div class="modal-body">
             <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
 
-                <form action="{% url 'get_rooms_for_order'  order_id=order.id  %}" method="POST" class="find_form" id="search_rooms">
+                <form action="{% url 'get_rooms_for_order'  order_id=order.id  %}" method="POST" class="find_form ajax_search" id="search_rooms" data-popup-to-open="#create_room_purchase_modal">
 
                     {% csrf_token %}
 
@@ -117,7 +117,6 @@
                                 <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
                             </div>
 
-
                         </div>
 
                     </div>
@@ -153,7 +152,7 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="rooms_tbody">
+                        <tbody data-find-form="#search_rooms">
 
                         </tbody>
                     </table>
@@ -161,7 +160,7 @@
                 </form>
 
                 <nav class="d-flex justify-content-center">
-                    <ul class="pagination" id="rooms_pagination"></ul>
+                    <ul class="pagination"  data-find-form="#search_rooms"></ul>
                 </nav>
 
             </div>

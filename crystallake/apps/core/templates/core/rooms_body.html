@@ -1,0 +1,18 @@
+{% for room in rooms_list %}
+    <tr>
+        <th scope="row">{{ room.id }}</th>
+        <td>
+            <a class="link-hover" href="{{ room.get_admin_show_url }}">{{ room.name }}</a>
+        </td>
+        <td>{{ room.beds }}</td>
+        <td>{{ room.rooms }}</td>
+        <td>{{ room.default_price }}</td>
+        <td>{{ room.weekend_price }}</td>
+        <td class="p-0 position-relative w-10r">
+            <button data-id="{{ room.id }}" data-name="{{ room.name }}" data-link="{{ room.get_admin_show_url }}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button" data-bs-toggle="modal" data-bs-target="{{ popup_to_open }}">
+                Выбрать
+            </button>
+        </td>
+    </tr>
+{% endfor %}
+

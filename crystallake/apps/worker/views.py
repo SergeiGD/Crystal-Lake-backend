@@ -1,10 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.template.loader import render_to_string
 
 from .models import Worker
-from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data
+from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data, is_ajax
 from .forms import WorkerForm
+from ..user.forms import SearchUserForm
 from ..core.forms import ShortSearchForm
 from ..service.models import Service
 from ..group.models import GroupProxy
@@ -23,10 +25,17 @@ class AdminWorkersList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(AdminWorkersList, self).get_context_data(**kwargs)
         context['current_page'] = 'workers'
+        context['form_workers'] = SearchUserForm(self.request.GET)
         return context
 
     def get_queryset(self):
-        return Worker.objects.filter(date_deleted=None)
+        search_form = SearchUserForm(self.request.GET)
+        workers = Worker.objects.filter(date_deleted=None)
+
+        if search_form.is_valid():
+            workers = workers.search(**search_form.cleaned_data)
+
+        return workers
 
 
 class AdminCreatWorker(RelocateResponseMixin, CreateView):
@@ -91,24 +100,6 @@ def admin_delete_worker(request, worker_id):
     return redirect('admin_workers')
 
 
-def get_unattached_services(request, worker_id):
-    if request.method == 'POST':
-        worker = get_object_or_404(Worker, pk=worker_id)
-        services = Service.objects.filter(date_deleted=None).exclude(pk__in=worker.qualifications.values('pk')).search(**request.POST.dict())
-        services_page, num_pages = get_paginator_data(services, request.POST.get('page_number', 1))
-
-        data = {'pages': {
-            'pages_count': num_pages,
-            'current_page': services_page.number,
-        }, 'items': []}
-        for service in services_page.object_list:
-            item = {'name': service.name, 'id': service.pk, 'link': service.get_admin_show_url()}
-            data['items'].append(item)
-
-        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
-        return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
-
-
 def add_service_to_worker(request, worker_id):
     if request.method == 'POST':
         worker = get_object_or_404(Worker, pk=worker_id)
@@ -127,24 +118,6 @@ def del_service_from_worker(request, worker_id):
         service = get_object_or_404(Service, pk=service_id)
         worker.qualifications.remove(service)
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-        return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
-
-
-def get_unattached_groups(request, worker_id):
-    if request.method == 'POST':
-        worker = get_object_or_404(Worker, pk=worker_id)
-        groups = GroupProxy.objects.exclude(pk__in=worker.groups.values('pk')).search(**request.POST.dict())
-        groups_page, num_pages = get_paginator_data(groups, request.POST.get('page_number', 1))
-
-        data = {'pages': {
-            'pages_count': num_pages,
-            'current_page': groups_page.number,
-        }, 'items': []}
-        for group in groups_page.object_list:
-            item = {'name': group.name, 'id': group.pk, 'link': group.get_admin_show_url()}
-            data['items'].append(item)
-
-        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
@@ -180,16 +153,25 @@ def find_workers(request, **kwargs):
         'pages_count': num_pages,
         'current_page': workers_page.number,
     }, 'items': []}
-    for worker in workers_page.object_list:
-        item = {
-            'name': worker.full_name,
-            'id': worker.pk,
-            'phone': str(worker.phone),
-            'link': worker.get_admin_show_url()
-        }
-        data['items'].append(item)
+
+    if is_ajax(request):
+        popup_to_open = request.POST.get('popup_to_open')
+        html = render_to_string('core/workers_body.html', {'workers_list': workers_page.object_list, 'popup_to_open': popup_to_open})
+        data['items'] = html
+    else:
+        for worker in workers_page.object_list:
+            item = {
+                'name': worker.full_name,
+                'id': worker.pk,
+                'phone': str(worker.phone),
+                'link': worker.get_admin_show_url()
+            }
+            data['items'].append(item)
 
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+
+
 
 

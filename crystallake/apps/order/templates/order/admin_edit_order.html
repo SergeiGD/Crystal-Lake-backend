@@ -52,14 +52,14 @@
                 </div>
             </div>
 
-            <div class="col-lg-6 col-12 mt-lg-0 mt-4">
-                <div class="input-group flex-nowrap w-auto  opacity-75">
-                    <span class="input-group-text w-10r" id="basic-addon1">Наименование</span>
-                    <span class="form-control">{{ order.name }}</span>
-                </div>
-            </div>
+{#            <div class="col-lg-6 col-12 mt-lg-0 mt-4">#}
+{#                <div class="input-group flex-nowrap w-auto  opacity-75">#}
+{#                    <span class="input-group-text w-10r" id="basic-addon1">Наименование</span>#}
+{#                    <span class="form-control">{{ order.name }}</span>#}
+{#                </div>#}
+{#            </div>#}
 
-            <div class="col-lg-6 col-12 mt-4">
+            <div class="col-lg-6 col-12 mt-lg-0 mt-4">
                 <div class="input-group flex-nowrap w-auto opacity-75">
                     <label for="manage_paid" class="input-group-text w-10r" id="basic-addon1">Внесено средств</label>
                     <span class="form-control">{{ order.paid }}</span>
@@ -265,5 +265,4 @@
     {% include 'order/create_room_purchase_popup.html' %}
     {% include 'order/edit_service_purchase_popup.html' %}
     {% include 'order/create_service_purchase_popup.html' %}
-    {% include 'order/timetables_popup.html' %}
 {% endblock popups %}

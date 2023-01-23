@@ -1,0 +1,17 @@
+{% for service in services_list %}
+    <tr>
+        <th scope="row">{{ service.id }}</th>
+        <td>
+            <a class="link-hover" href="{{ service.get_admin_show_url }}">{{ service.name }}</a>
+        </td>
+        <td>{{ service.max_in_group }}</td>
+        <td>{{ service.default_price }}</td>
+        <td>{{ service.weekend_price }}</td>
+        <td class="p-0 position-relative w-10r">
+            <button data-id="{{ service.id }}" data-name="{{ service.name }}" data-link="{{ service.get_admin_show_url }}" class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-bs-dismiss="modal" type="button" data-bs-toggle="modal" data-bs-target="{{ popup_to_open }}">
+                Выбрать
+            </button>
+        </td>
+    </tr>
+{% endfor %}
+

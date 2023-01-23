@@ -95,53 +95,6 @@
         </table>
     </div>
 
-    <nav class="d-flex justify-content-center mt-4">
-        <ul class="pagination">
-
-            {% if page_obj.has_previous %}
-                <li class="page-item">
-{#                    <input type="submit" name="page" value="{{ page_obj.previous_page_number }}" class="page_arrow page_arrow__prev">#}
-                    <button class="page-link" type="button" data-page="{{ page_obj.previous_page_number }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </button>
-                </li>
-            {% endif %}
-
-            {% if page_obj.number|add:'-3' > 1 %}
-                <li class="page-item">
-                    <button class="page-link" type="button" data-page="1">1</button>
-                </li>
-                <li class="page-item">
-                    <p class="page-link">&hellip;</p>
-                </li>
-            {% endif %}
-
-            {% for i in page_obj.paginator.page_range %}
-                {% if i == page_obj.number %}
-                    <li class="page-item"><p class="page-link bg-c_yellow-700 text-black">{{ i }}</p></li>
-                {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
-                    <li class="page-item"><button class="page-link" type="button" data-page="{{ i }}">{{ i }}</button></li>
-                {% endif %}
-            {% endfor %}
-
-            {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
-                <li class="page-item">
-                    <p class="page-link">&hellip;</p>
-                </li>
-                <li class="page-item">
-                    <button class="page-link" type="button" data-page="${data.pages_count}">{{ page_obj.paginator.count }}</button>
-                </li>
-            {% endif %}
-
-            {% if page_obj.has_next %}
-                <li class="page-item">
-                    <button class="page-link" type="button" data-page="{{ page_obj.next_page_number }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </button>
-                </li>
-            {% endif %}
-
-        </ul>
-    </nav>
+    {% include 'core/pagination.html' %}
 
 {% endblock content %}

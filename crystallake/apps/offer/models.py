@@ -155,14 +155,14 @@ class Offer(PolymorphicModel):
         self.name = self.name + '-DELETED'
         self.save()
 
-    def get_unattached_tags_url(self):
-        return reverse('get_unattached_tags', kwargs={'offer_id': self.pk})
-
     def get_add_tag_url(self):
         return reverse('add_tag_to_offer', kwargs={'offer_id': self.pk})
 
     def get_del_tag_url(self):
         return reverse('del_tag_from_offer', kwargs={'offer_id': self.pk})
+
+    def get_tags_url(self):
+        return reverse('get_tags_for_offer', kwargs={'offer_id': self.pk})
 
     def get_orders_count(self):
         pass

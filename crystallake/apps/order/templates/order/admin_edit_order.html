@@ -15,7 +15,7 @@
                 </a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ order.get_admin_edit_url }}" class="link-hover text-dark text-decoration-none">
+                <a href="{{ order.get_admin_show_url }}" class="link-hover text-dark text-decoration-none">
                     Просмотр заказа
                 </a>
             </li>
@@ -60,11 +60,13 @@
 {#            </div>#}
 
             <div class="col-lg-6 col-12 mt-lg-0 mt-4">
-                <div class="input-group flex-nowrap w-auto opacity-75">
-                    <label for="manage_paid" class="input-group-text w-10r" id="basic-addon1">Внесено средств</label>
-                    <span class="form-control">{{ order.paid }}</span>
+                <div class="input-group flex-nowrap w-auto  opacity-75">
+                    <span class="input-group-text w-10r" id="basic-addon1">Предоплата</span>
+                    <span class="form-control ">{{ order.prepayment }}</span>
                 </div>
             </div>
+
+
 
             <div class="col-lg-6 col-12 mt-4">
                 <div class="input-group flex-nowrap w-auto opacity-75">
@@ -82,29 +84,36 @@
 
             <div class="col-lg-6 col-12 mt-4">
                 <div class="input-group flex-nowrap w-auto  opacity-75">
-                    <span class="input-group-text w-10r" id="basic-addon1">Предоплата</span>
-                    <span class="form-control ">{{ order.prepayment }}</span>
-                </div>
-            </div>
-
-            <div class="col-lg-6 col-12 mt-4">
-                <div class="input-group flex-nowrap w-auto  opacity-75">
                     <span class="input-group-text w-10r" id="basic-addon1">К возврату</span>
                     <span class="form-control ">{{ order.left_to_refund }}</span>
                 </div>
             </div>
 
-            <div class="col-lg-4 col-12 mt-4 btn-group" role="group">
-                {{ form.prepayment_paid }}
-                <label class="btn btn-outline-primary" for="{{ form.prepayment_paid.id_for_label }}">{{ form.prepayment_paid.label }}</label>
+            <div class="col-lg-6 col-12 mt-4">
+                <div class="input-group flex-nowrap w-auto opacity-75">
+                    <span class="input-group-text w-10r" id="basic-addon1">Возвращено</span>
+                    <span class="form-control ">{{ order.refunded }}</span>
+                </div>
             </div>
 
-            <div class="col-lg-4 col-12 mt-4 btn-group" role="group">
-                {{ form.paid }}
-                <label class="btn btn-outline-primary" for="{{ form.paid.id_for_label }}">{{ form.paid.label }}</label>
+            <div class="col-lg-6 col-12 mt-4">
+                <div class="input-group flex-nowrap w-auto">
+                    <label for="{{ form.paid.id_for_label }}" class="input-group-text w-10r">{{ form.paid.label }}</label>
+                    {{ form.paid }}
+                </div>
             </div>
 
-            <div class="col-lg-4 col-12 mt-4 btn-group" role="group">
+{#            <div class="col-lg-4 col-12 mt-4 btn-group" role="group">#}
+{#                {{ form.prepayment_paid }}#}
+{#                <label class="btn btn-outline-primary" for="{{ form.prepayment_paid.id_for_label }}">{{ form.prepayment_paid.label }}</label>#}
+{#            </div>#}
+{##}
+{#            <div class="col-lg-4 col-12 mt-4 btn-group" role="group">#}
+{#                {{ form.paid }}#}
+{#                <label class="btn btn-outline-primary" for="{{ form.paid.id_for_label }}">{{ form.paid.label }}</label>#}
+{#            </div>#}
+
+            <div class="col-lg-6 col-12 mt-4 btn-group" role="group">
                 {{ form.refund_made }}
                 <label class="btn btn-outline-primary" for="{{ form.refund_made.id_for_label }}">{{ form.refund_made.label }}</label>
             </div>
@@ -117,12 +126,9 @@
                         {% for radio in form.status %}
                             {{ radio.tag }}
 
-                            {# мб убрать нафиг, если будут проблемы #}
-                            {% if order.date_full_prepayment or radio.choice_label != 'завершен' %}
-                                <label class="btn btn-outline-primary rounded-0" for="{{ radio.id_for_label }}">
-                                    {{ radio.choice_label }}
-                                </label>
-                            {% endif %}
+                            <label class="btn btn-outline-primary rounded-0" for="{{ radio.id_for_label }}">
+                                {{ radio.choice_label }}
+                            </label>
                         {% endfor %}
 
                     </div>
@@ -157,11 +163,12 @@
 
         <div class="overflow-auto mt-4 rounded-2">
 
-            {% if not order.date_full_prepayment %}
-                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#purchase_type_modal">
-                    + Добавить
-                </button>
-            {% endif %}
+                {% if order.is_editable %}
+                    <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#purchase_type_modal">
+                        + Добавить
+                    </button>
+                {% endif %}
+
 
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
@@ -174,7 +181,7 @@
                         <th scope="col">Стоимость</th>
                         <th scope="col">prepay</th>
                         <th scope="col">refund</th>
-                        <th scope="col">Оплачено</th>
+                        <th scope="col">Оплата</th>
                         <th scope="col" class="px-3 text-center" type="button">Изменить</th>
                         <th scope="col" class="px-3 text-center" type="button">Убрать</th>
                     </tr>
@@ -215,22 +222,18 @@
                                     {{ purchase.refund }}
                                 </td>
                                 <td>
-                                    {% if purchase.is_paid %}
-                                        Полностью
-                                    {% elif purchase.is_prepayment_paid %}
-                                        Предоплата
-                                    {% else %}
-                                        Нет
-                                    {% endif %}
+                                    {{ purchase.get_payment_status }}
                                 </td>
                                 <td class="p-0 position-relative w-10r">
                                     <form method="post" action="{{ purchase.get_info_url }}" class="edit_additional_form" >
                                         {% csrf_token %}
                                         {% with purchase.offer|offer_type as modelclass %}
                                             {% if modelclass == "Room" %}
-                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or order.date_full_paid %}disabled{% endif %} type="button" data-popup="#edit_room_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_room_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
+                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or not order.is_editable %}disabled{% endif %} type="button" data-popup="#edit_room_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_room_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
+{#                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-popup="#edit_room_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_room_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>#}
                                             {% elif modelclass == "Service" %}
-                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or order.date_full_paid %}disabled{% endif %} type="button" data-popup="#edit_service_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_service_purchase_modal" data-set-called-by="#edit_service_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
+                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or not order.is_editable %}disabled{% endif %} type="button" data-popup="#edit_service_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_service_purchase_modal" data-set-called-by="#edit_service_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
+{#                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-popup="#edit_service_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_service_purchase_modal" data-set-called-by="#edit_service_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>#}
                                             {% endif %}
                                         {% endwith %}
                                     </form>

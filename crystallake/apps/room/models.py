@@ -99,8 +99,8 @@ class Room(Offer):
         return Room.objects.filter(date_deleted=None, main_room=self)
 
     def pick_rooms_for_purchase(self, start, end, purchase_id=None):
-        if len(self.get_general_busy_dates(start, end)) > 0:
-            return []
+        # if len(self.get_general_busy_dates(start, end)) > 0:
+        #     return []
         result = []
 
         while start != end:
@@ -108,7 +108,6 @@ class Room(Offer):
             # TODO: УБРАТЬ ТУТ ДЕНЬ -1 ПОСЛЕ ТОГО КАК ИСПАВЛЮ ВРЕМЯ ЗАЛЕСЕНИЯ ВЫСЕЛЕНИЯ
             dates_range = DateTimeRange(start, end - timedelta(days=1))
             for room in self.get_same_rooms():
-                print(11111)
                 rooms_dates[room] = 0
                 for date in dates_range.range(timedelta(days=1)):
                     if not room.is_day_busy(date, purchase_id):
@@ -129,23 +128,6 @@ class Room(Offer):
                 return []
 
         return result
-
-    # def get_free_rooms(self, start, end=None):
-    #     # TODO: ВЫНЕСТИ В МЕНЕДЖЕР ОБЪЕКТОВ
-    #     rooms = Room.objects.filter(
-    #         is_hidden=False,
-    #         date_deleted=None
-    #     )
-    #     result = []
-    #     for room in rooms:
-    #         busy_dates = room.get_general_busy_dates(start, end)
-    #         if len(busy_dates) == 0:
-    #             result.append(room)
-    #
-    #     rooms_ids = [room.id for room in result]
-    #     queryset = Room.objects.filter(id__in=rooms_ids)
-    #
-    #     return queryset
 
     def is_day_busy(self, day, purchase_id=None):
 

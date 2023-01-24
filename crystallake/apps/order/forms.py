@@ -27,14 +27,8 @@ class CreateOrderForm(forms.ModelForm):
 class EditOrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['comment']
+        fields = ['comment', 'paid']
 
-    prepayment_paid = forms.BooleanField(label='Предоплата внесена', required=False, widget=forms.CheckboxInput(attrs={
-        'class': 'btn-check'
-    }))
-    paid = forms.BooleanField(label='Полностью оплачено', required=False, widget=forms.CheckboxInput(attrs={
-        'class': 'btn-check'
-    }))
     refund_made = forms.BooleanField(label='Средства возвращены', required=False, widget=forms.CheckboxInput(attrs={
         'class': 'btn-check'
     }))
@@ -46,18 +40,16 @@ class EditOrderForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['status'].initial = get_status_by_name(self.instance.status)
-        if self.instance.date_full_prepayment:
-            self.fields['prepayment_paid'].initial = True
-            self.fields['prepayment_paid'].disabled = True
 
-        if self.instance.date_full_paid:
-            self.fields['paid'].initial = True
+        if not self.instance.is_editable():
+            self.fields['comment'].disabled = True
             self.fields['paid'].disabled = True
 
         if self.instance.left_to_refund == 0:
             self.fields['refund_made'].disabled = True
 
         self.fields['comment'].widget.attrs.update({'class': 'form-control rounded-bottom rounded-0 h-10r'})
+        self.fields['paid'].widget.attrs.update({'class': 'form-control rounded-bottom rounded-0'})
 
 
 class PurchaseForm(forms.ModelForm):

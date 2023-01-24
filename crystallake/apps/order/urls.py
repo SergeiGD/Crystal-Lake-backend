@@ -1,11 +1,12 @@
 from django.urls import path, include
 
-from .views import AdminOrdersList, AdminOrderUpdate, AdminOrderCreate
+from .views import AdminOrdersList, AdminOrderUpdate, AdminOrderCreate, AdminOrderDetail
 
 urlpatterns = [
     path('', AdminOrdersList.as_view(), name='admin_orders'),
     path('create/', AdminOrderCreate.as_view(), name='admin_create_order'),
     path('create/', include('apps.order.additional_urls.clients_urls')),
+    path('show/<int:order_id>/', AdminOrderDetail.as_view(), name='admin_show_order'),
     path('edit/<int:order_id>/', AdminOrderUpdate.as_view(), name='admin_edit_order'),
     path('edit/<int:order_id>/', include('apps.order.additional_urls.rooms_urls')),
     path('edit/<int:order_id>/', include('apps.order.additional_urls.services_urls')),

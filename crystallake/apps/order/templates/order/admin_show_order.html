@@ -1,0 +1,110 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'admin_orders' %}" class="link-hover text-dark text-decoration-none">
+                    Заказы
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Просмотр заказа</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+    <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
+
+
+        {% if perms.order.change_order %}
+            <i class="fa-regular fa-pen-to-square card_icon card_icon__edit" data-goto="{{ order.get_admin_edit_url }}"></i>
+        {% endif %}
+
+        <div class="text-center">
+            <span class="fw-bold fs-5">id: </span>
+            <span class="fw-bold fs-5">{{ order.pk }}</span>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-6 col-12 row">
+                <p class="fw-bold col-5">Название:</p>
+                <p class="opacity-75 col-7">temp name</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-lg-0 mt-2 row">
+                <p class="fw-bold col-5">Клиент:</p>
+                <a class="opacity-75 col-7 link-hover" href="{{ order.client.get_admin_show_url }}">{{ order.client.full_name }}</a>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Статус оплаты:</p>
+                <p class="opacity-75 col-7">{{ order.payment_status }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Статус заказа:</p>
+                <p class="opacity-75 col-7">{{ order.status }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Цена:</p>
+                <p class="opacity-75 col-7">{{ order.price }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Предоплата:</p>
+                <p class="opacity-75 col-7">{{ order.prepayment }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Оплачено:</p>
+                <p class="opacity-75 col-7">{{ order.paid }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Осталось оплатить:</p>
+                <p class="opacity-75 col-7">{{ order.left_to_pay }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">К возврату:</p>
+                <p class="opacity-75 col-7">{{ order.left_to_refund }}</p>
+                <hr>
+            </div>
+
+            <div class="col-lg-6 col-12 mt-2 row">
+                <p class="fw-bold col-5">Возвращено:</p>
+                <p class="opacity-75 col-7">{{ order.refunded }}</p>
+                <hr>
+            </div>
+
+            <div class="col-12 mt-2 row">
+                <p class="fw-bold col-12">Комментарий к заказу:</p>
+                <p class="opacity-75 col-12">{{ order.comment|linebreaks }}</p>
+                <hr>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+{% block popups %}
+{% endblock popups %}

@@ -1,8 +1,18 @@
+from enum import Enum
+
+
 STATUS_CHOICES = (
-    ('in process', 'в процессе'),
+    ('process', 'в процессе'),
     ('canceled', 'отменен'),
     ('finished', 'завершен'),
 )
+
+
+# class syntax
+class Status(Enum):
+    process = 'в процессе'
+    canceled = 'отменен'
+    finished = 'завершен'
 
 
 def get_status_by_name(name):

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, UpdateView, CreateView
+from django.views.generic import ListView, UpdateView, CreateView, DetailView
 from django.utils import timezone
 
 from .models import Order
@@ -16,6 +16,7 @@ from ..offer.models import Offer
 from .models import Purchase, PurchaseCountable
 from ..service.forms import SearchServicesAdmin, SearchTimetablesAdmin
 from ..room.models import Room
+from .status_choises import Status
 from ..service.models import ServiceTimetable
 
 
@@ -28,6 +29,18 @@ class AdminOrdersList(ListView):
     context_object_name = 'orders'
     paginate_by = 10
     paginator_class = SafePaginator
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = 'orders'
+        return context
+
+
+class AdminOrderDetail(DetailView):
+    model = Order
+    template_name = 'order/admin_show_order.html'
+    context_object_name = 'order'
+    pk_url_kwarg = 'order_id'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,11 +107,11 @@ class AdminOrderUpdate(RelocateResponseMixin, UpdateView):
     def form_valid(self, form):
         status = form.cleaned_data['status']
         if status != get_status_by_name(form.cleaned_data['status']):
-            if status == 'canceled':
+            if status == Status.canceled.name:
                 form.instance.mark_as_canceled()
-            if status == 'finished':
+            if status == Status.finished.name:
                 form.instance.mark_as_finished()
-            if status == 'in process':
+            if status == Status.process.name:
                 form.instance.mark_as_in_process()
 
         # paid = form.cleaned_data['paid']
@@ -107,13 +120,13 @@ class AdminOrderUpdate(RelocateResponseMixin, UpdateView):
         # elif not paid and self.object.date_full_paid is not None:
         #     self.object.mark_as_unpaid()
 
-        prepayment_paid = form.cleaned_data['prepayment_paid']
-        if prepayment_paid:
-            self.object.mark_as_prepayment_paid()
-
-        paid = form.cleaned_data['paid']
-        if paid:
-            self.object.mark_as_paid()
+        # prepayment_paid = form.cleaned_data['prepayment_paid']
+        # if prepayment_paid:
+        #     self.object.mark_as_prepayment_paid()
+        #
+        # paid = form.cleaned_data['paid']
+        # if paid:
+        #     self.object.mark_as_paid()
 
         refund_made = form.cleaned_data['refund_made']
         if refund_made:
@@ -135,7 +148,7 @@ def room_purchase_edit_view(request, purchase_id, **kwargs):
 
         if form.is_valid():
             room = purchase.offer.main_room
-            rooms = room.pick_rooms_for_purchase(form.cleaned_data['start'], form.cleaned_data['end'], purchase.order.pk)
+            rooms = room.pick_rooms_for_purchase(form.cleaned_data['start'], form.cleaned_data['end'], purchase.pk)
             if len(rooms) == 0:
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
                     'Свободность номера': ['Нету свободных комнат на выбранные даты']
@@ -161,8 +174,8 @@ def room_purchase_edit_view(request, purchase_id, **kwargs):
                     is_prepayment_paid=purchase.is_prepayment_paid
                 )
                 purchases.append(created_purchase)
-            Purchase.objects.bulk_create(purchases)
             purchase.delete()
+            Purchase.objects.bulk_create(purchases)
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
             return response

@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from ..offer.models import Offer
 from ..client.models import Client
-from .status_choises import get_status_by_code
+from .status_choises import get_status_by_code, get_status_by_name, Status
 
 # Create your models here.
 
@@ -19,7 +19,8 @@ from .status_choises import get_status_by_code
 class Order(models.Model):
     client = models.ForeignKey(Client, on_delete=models.PROTECT, verbose_name='Клиент')
     comment = models.TextField(verbose_name="комментарий к заказу", blank=True, null=True)
-    paid = models.DecimalField(max_digits=12, decimal_places=5, default=0)     # сколько заплатили
+    paid = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name='Оплачено')     # сколько заплатили
+    refunded = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name='Возвращено')
     date_create = models.DateTimeField(verbose_name="дата создания", auto_now_add=True)
     date_full_prepayment = models.DateTimeField(verbose_name="дата полной предоплаты", blank=True, null=True)
     date_full_paid = models.DateTimeField(verbose_name="дата полной оплаты", blank=True, null=True)
@@ -39,46 +40,82 @@ class Order(models.Model):
     #
     #     self.save()
 
-    def update_paid(self):
-        paid = 0
-        for purchase in self.purchases.all():
-            if purchase.is_paid and not purchase.is_refund_made:
-                paid += purchase.price
-            elif purchase.is_paid and purchase.is_refund_made:
-                paid += purchase.price - purchase.refund
-            elif purchase.is_prepayment_paid:
-                paid += purchase.prepayment
-
-        self.paid = paid
-        if self.paid >= self.prepayment and self.date_full_prepayment is None:
-            self.date_full_prepayment = timezone.now()
-
-        if self.paid < self.price:
-            self.date_full_paid = None
-        elif self.date_full_paid is None:
-            self.date_full_paid = timezone.now()
-
-        self.save()
+    # def update_paid(self):
+    #     paid = 0
+    #     for purchase in self.purchases.all():
+    #         if purchase.is_paid and not purchase.is_refund_made:
+    #             paid += purchase.price
+    #         elif purchase.is_paid and purchase.is_refund_made:
+    #             paid += purchase.price - purchase.refund
+    #         elif purchase.is_prepayment_paid:
+    #             paid += purchase.prepayment
+    #
+    #     self.paid = paid
+    #     if self.paid >= self.prepayment and self.date_full_prepayment is None:
+    #         self.date_full_prepayment = timezone.now()
+    #
+    #     if self.paid < self.price:
+    #         self.date_full_paid = None
+    #     elif self.date_full_paid is None:
+    #         self.date_full_paid = timezone.now()
+    #
+    #     self.save()
 
         # if self.paid != self.prepayment:
         #     self.date_full_prepayment = None
         # elif self.date_full_prepayment is None:
         #     self.date_full_prepayment = timezone.now()
 
-    def mark_as_prepayment_paid(self):
-        if not self.date_full_prepayment and self.price > 0:
-            for purchase in self.purchases.filter(is_canceled=False):
-                purchase.is_prepayment_paid = True
-                purchase.save()
-            self.update_paid()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.pk:
+            self.__original_paid,  self.__original_price = self.paid,  self.price
+        self.__original_paid, self.__original_price = 0, 0
 
-    def mark_as_paid(self):
-        if not self.date_full_paid and self.price > 0:
-            self.mark_as_prepayment_paid()
-            for purchase in self.purchases.filter(is_canceled=False):
-                purchase.is_paid = True
-                purchase.save()
-            self.update_paid()
+    def save(self, *args, **kwargs):
+        if self.pk and (self.__original_paid != self.paid or self.__original_price != self.price):
+            self.check_payment()
+        super().save(*args, **kwargs)
+
+    def check_payment(self):
+        if self.paid >= self.prepayment:
+            self.purchases.filter(is_canceled=False).update(is_prepayment_paid=True)
+            if self.date_full_prepayment is None:
+                self.date_full_prepayment = timezone.now()
+
+        print(self.paid)
+        print(self.price)
+        if self.paid >= self.price:
+            print(11111)
+            self.purchases.filter(is_canceled=False).update(is_paid=True)
+            if self.date_full_paid is None:
+                self.date_full_paid = timezone.now()
+
+        if self.paid < self.prepayment and self.date_full_prepayment is not None:
+            self.date_full_prepayment = None
+            if self.paid < self.__original_paid:
+                self.purchases.filter(is_canceled=False).update(is_prepayment_paid=False)
+
+        if self.paid < self.price and self.date_full_paid is not None:
+            self.date_full_paid = None
+            if self.paid < self.__original_paid:
+                self.purchases.filter(is_canceled=False).update(is_paid=False)
+
+
+    # def mark_as_prepayment_paid(self):
+    #     if not self.date_full_prepayment and self.price > 0:
+    #         for purchase in self.purchases.filter(is_canceled=False):
+    #             purchase.is_prepayment_paid = True
+    #             purchase.save()
+    #         self.update_paid()
+    #
+    # def mark_as_paid(self):
+    #     if not self.date_full_paid and self.price > 0:
+    #         self.mark_as_prepayment_paid()
+    #         for purchase in self.purchases.filter(is_canceled=False):
+    #             purchase.is_paid = True
+    #             purchase.save()
+    #         self.update_paid()
 
     # def mark_as_prepayment_unpaid(self):
     #     if self.prepayment > 0:
@@ -94,7 +131,10 @@ class Order(models.Model):
         for purchase in self.purchases.filter(is_canceled=True, is_refund_made=False):
             purchase.is_refund_made = True
             purchase.save()
-        self.update_paid()
+        refund_made = self.left_to_refund
+        self.paid -= refund_made
+        self.refunded += refund_made
+        self.save()
 
     def mark_as_canceled(self):
         self.date_canceled = timezone.now()
@@ -111,17 +151,32 @@ class Order(models.Model):
         self.date_finished = None
         self.save()
 
+    def is_editable(self):
+        if self.status == Status.finished.value or self.status == Status.canceled.value:
+            return False
+        return True
+
     @property
     def price(self):
         price = 0
-        for purchase in self.purchases.filter(is_canceled=False):
-            price += purchase.price
-        for purchase in self.purchases.filter(is_canceled=True):
-            if purchase.is_paid:
+        for purchase in self.purchases.all():
+            if purchase.is_canceled and purchase.is_paid:
                 price += purchase.price - purchase.refund
-            else:
+            elif purchase.is_canceled and not purchase.is_paid:
                 price += purchase.prepayment
+            elif not purchase.is_canceled:
+                price += purchase.price
+
         return price
+
+        # for purchase in self.purchases.filter(is_canceled=False):
+        #     price += purchase.price
+        # for purchase in self.purchases.filter(is_canceled=True):
+        #     if purchase.is_paid:
+        #         price += purchase.price - purchase.refund
+        #     else:
+        #         price += purchase.prepayment
+        # return price
 
     @property
     def prepayment(self):
@@ -157,45 +212,59 @@ class Order(models.Model):
     @property
     def status(self):
         if self.date_finished is not None:
-            return get_status_by_code('finished')
+            return Status.finished.value
         if self.date_canceled is not None:
-            return get_status_by_code('canceled')
-        return get_status_by_code('in process')
+            return Status.canceled.value
+        return Status.process.value
 
     @property
     def payment_status(self):
-        if self.date_full_prepayment is not None:
-            return 'Внесена предоплата'
         if self.date_full_paid is not None:
             return 'Полностью оплачен'
+        if self.date_full_prepayment is not None:
+            return 'Внесена предоплата'
         return 'Ожидает предоплату'
 
     def get_admin_edit_url(self):
         return reverse('admin_edit_order', kwargs={'order_id': self.pk})
 
+    def get_admin_show_url(self):
+        return reverse('admin_show_order', kwargs={'order_id': self.pk})
+
     def get_create_room_purchase_url(self):
         return reverse('create_room_purchase', kwargs={'order_id': self.pk})
-
-    # def get_edit_room_purchase_url(self):
-    #     return reverse('edit_room_purchase', kwargs={'order_id': self.pk})
 
     def get_create_service_purchase_url(self):
         return reverse('create_service_purchase', kwargs={'order_id': self.pk})
 
-    # def get_edit_room_purchase_url(self):
-    #     return reverse('edit_service_purchase', kwargs={'order_id': self.pk})
-
-    # def get_manage_service_purchase_url(self):
-    #     return reverse('manage_service_purchase', kwargs={'order_id': self.pk})
+    class Meta:
+        ordering = ['-date_create']
 
 
 class PurchaseManager(PolymorphicManager):
+    def update_order_decorator(bulk_func):
+        """
+        ДЕКОРАТОР ДЛЯ ОБНОВЛЕНИЯ ЗАКАЗА ПОСЛЕ ДОБАВЛЕНИЯ ЭЛЕМЕНТОВ
+        """
+        from functools import wraps
+        @wraps(bulk_func)
+        def wrapper(*args, **kwargs):
+            purchases = bulk_func(*args, **kwargs)
+            order = purchases[0].order
+            order.save()
+
+        return wrapper
+
+    @update_order_decorator
     def bulk_create(self, purchases, **kwargs):
         for purchase in purchases:
             purchase.clean()
             purchase.price = purchase.calc_price()
             purchase.prepayment = purchase.calc_prepayment()
             purchase.refund = purchase.calc_refund()
+            if not purchase.is_canceled:
+                purchase.is_paid = False
+                purchase.is_prepayment_paid = False
         return super(PurchaseManager, self).bulk_create(purchases, **kwargs)
 
 
@@ -211,11 +280,18 @@ class Purchase(PolymorphicModel):
     start = models.DateTimeField()
     end = models.DateTimeField()
 
-    price = models.DecimalField(max_digits=12, decimal_places=5)            # итоговая цена
-    prepayment = models.DecimalField(max_digits=12, decimal_places=5)       # итоговая предоплата
-    refund = models.DecimalField(max_digits=12, decimal_places=5)           # итоговый возврат средств
+    price = models.DecimalField(max_digits=12, decimal_places=2)            # итоговая цена
+    prepayment = models.DecimalField(max_digits=12, decimal_places=2)       # итоговая предоплата
+    refund = models.DecimalField(max_digits=12, decimal_places=2)           # итоговый возврат средств
 
     objects = PurchaseManager()
+
+    def get_payment_status(self):
+        if self.is_paid:
+            return 'Оплачен'
+        if self.is_prepayment_paid:
+            return 'Предоплата'
+        return 'Нет'
 
     def calc_price(self):
         delta_seconds = (self.end - self.start).total_seconds()
@@ -259,22 +335,26 @@ class Purchase(PolymorphicModel):
         self.price = self.calc_price()
         self.prepayment = self.calc_prepayment()
         self.refund = self.calc_refund()
-
+        if not self.is_canceled:
+            self.is_paid = False
+            self.is_prepayment_paid = False
         super().save(*args, **kwargs)
+        order = self.order
+        order.save()
 
         # self.order.update_payment_status()
 
-    def clean(self):
-        from django.core.exceptions import ValidationError
-
-        if not self.pk and self.order.date_full_prepayment:
-            raise ValidationError('Нельзя добавить покупки к уже подтвержденному заказу')
-
-        if self.order.date_canceled or self.order.date_finished:
-            raise ValidationError('Нельзя изменить завершенный заказ')
-
-        if self.pk and self.order.date_full_paid:
-            raise ValidationError('Нельзя изменить покупки оплаченного заказа заказ заказу')
+    # def clean(self):
+    #     from django.core.exceptions import ValidationError
+    #
+    #     if not self.pk and self.order.date_full_prepayment:
+    #         raise ValidationError('Нельзя добавить покупки к уже подтвержденному заказу')
+    #
+    #     if self.order.date_canceled or self.order.date_finished:
+    #         raise ValidationError('Нельзя изменить завершенный заказ')
+    #
+    #     if self.pk and self.order.date_full_paid:
+    #         raise ValidationError('Нельзя изменить покупки оплаченного заказа заказ заказу')
 
     def get_info(self):
 
@@ -293,7 +373,10 @@ class Purchase(PolymorphicModel):
             self.is_canceled = True
             self.save()
         else:
+            order = self.order
             self.delete()
+            order.save()
+
 
     def get_info_url(self):
         return reverse('get_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})

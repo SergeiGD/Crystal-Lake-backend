@@ -250,8 +250,9 @@ class PurchaseManager(PolymorphicManager):
         @wraps(bulk_func)
         def wrapper(*args, **kwargs):
             purchases = bulk_func(*args, **kwargs)
-            order = purchases[0].order
-            order.save()
+            if len(purchases) > 0:
+                order = purchases[0].order
+                order.save()
 
         return wrapper
 

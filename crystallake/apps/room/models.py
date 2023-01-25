@@ -99,8 +99,6 @@ class Room(Offer):
         return Room.objects.filter(date_deleted=None, main_room=self)
 
     def pick_rooms_for_purchase(self, start, end, purchase_id=None):
-        # if len(self.get_general_busy_dates(start, end)) > 0:
-        #     return []
         result = []
 
         while start != end:
@@ -152,17 +150,7 @@ class Room(Offer):
                 offer__pk=same_room.pk,
                 is_canceled=False,
                 order__date_canceled=None,
-                # start__gte=start,
-                # start__range=[start, end]
             )
-            # if end is not None:
-            #     purchases = purchases.filter(
-            #         Q(start__range=[start, end]) | Q(end__range=[start, end])
-            #     )
-            # else:
-            #     purchases = purchases.filter(
-            #         start__gte=start,
-            #     )
 
             for purchase in purchases:
                 dates_range = DateTimeRange(purchase.start, purchase.end)

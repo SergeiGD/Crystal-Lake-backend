@@ -6,6 +6,8 @@ $(document).ready(function (){
 
         const form = $(this)
 
+
+
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',

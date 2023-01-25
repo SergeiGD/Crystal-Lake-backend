@@ -60,8 +60,8 @@ class PurchaseForm(forms.ModelForm):
 
     purchase_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
 
         # self.fields['is_paid'].widget.attrs.update({'class': 'btn-check'})
         # self.fields['is_prepayment_paid'].widget.attrs.update({'class': 'btn-check'})
@@ -91,9 +91,13 @@ class RoomPurchaseForm(PurchaseForm):
         'class': 'd-none'
     }))
 
-    multiple_rooms_acceptable = forms.BooleanField(label='Разрешить подбор нескольких комнат', required=False, widget=forms.CheckboxInput(attrs={
-        'class': 'btn-check'
-    }))
+    multiple_rooms_acceptable = forms.BooleanField(
+        label='Разрешить подбор нескольких комнат',
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'btn-check',
+        })
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

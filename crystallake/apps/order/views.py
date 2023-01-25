@@ -144,7 +144,6 @@ def room_purchase_edit_view(request, purchase_id, **kwargs):
         purchase = get_object_or_404(Purchase, pk=purchase_id)
 
         form = RoomPurchaseForm(request.POST or None, instance=purchase, prefix='edit')
-        #purchase = form.instance
 
         if form.is_valid():
             room = purchase.offer.main_room
@@ -206,6 +205,7 @@ def room_purchase_create_view(request, order_id):
                 return response
 
             if len(rooms) > 1 and not form.cleaned_data['multiple_rooms_acceptable']:
+                print(form.cleaned_data)
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
                     'Свободность номера': ['Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
                 })
@@ -246,7 +246,6 @@ def service_purchase_create_view(request, order_id):
         # start, end = timezone.make_aware(start), timezone.make_aware(end)
 
         purchase = PurchaseCountable(order=order)
-        # purchase.offer = service
         form = ServicePurchaseForm(request.POST or None, instance=purchase, prefix='create')
 
         if form.is_valid():
@@ -292,7 +291,7 @@ def service_purchase_edit_view(request, purchase_id, **kwargs):
 
             purchase.start, purchase.end = start, end
 
-            if purchase.offer.is_time_available(purchase.start, purchase.end):
+            if purchase.offer.is_time_available(purchase.start, purchase.end, purchase.pk):
                 purchase.save()
             else:
                 response_message = ResponseMessage(

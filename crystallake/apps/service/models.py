@@ -1,3 +1,5 @@
+import datetime
+
 from datetimerange import DateTimeRange
 
 from django.db import models
@@ -17,8 +19,6 @@ class ServiceQuerySet(OfferQuerySet):
         qs = super().search(**kwargs)
         if kwargs.get('max_in_group', ''):
             qs = qs.filter(max_in_group=kwargs['max_in_group'])
-        # if kwargs.get('dynamic_timetable', ''):
-        #     qs = qs.filter(dynamic_timetable=kwargs['dynamic_timetable'])
 
         return qs
 
@@ -58,52 +58,49 @@ class Service(Offer):
             end__lte=end
         )
 
-        # if self.dynamic_timetable:
-        for timetable in timetables:
-            result.append({
-                'start': timetable.start.timestamp(),
-                'end': timetable.end.timestamp(),
-            })
-
         for timetable in timetables:
             purchases = PurchaseCountable.objects.filter(
                 offer__pk=timetable.service.pk,
                 is_canceled=False,
                 order__date_canceled=None,
                 start__gte=timetable.start,
-                end__lte=timetable.start
+                end__lte=timetable.end
             )
 
-            time_ranges = []
+            purchases_time = []
+            intersections = []
             for purchase in purchases:
-                time_range = DateTimeRange(purchase.start, purchase.end)
-                time_ranges.append((time_range, purchase.quantity))
+                purchase_time = DateTimeRange(purchase.start, purchase.end)
+                for existing_time in purchases_time:
+                    if purchase_time.is_intersection(existing_time):                        # если время пересекается с уже просмотренным
+                        intersections.append(purchase_time.intersection(existing_time))     # то в список пересечений добаволяем их пересечение
+                purchases_time.append(purchase_time)
 
-        # if not self.dynamic_timetable:
-        #     for timetable in timetables:
-        #
-        #         purchases_count = PurchaseCountable.objects.filter(
-        #             offer__pk=timetable.service.pk,
-        #             is_canceled=False,
-        #             order__date_canceled=None,
-        #             start__gte=timetable.start,
-        #             end__lte=timetable.end
-        #         ).aggregate(total_quantity=Sum('quantity'))
-        #
-        #         if self.max_in_group == 0:
-        #             result.append({
-        #                 'start': timetable.start.timestamp(),
-        #                 'end': timetable.end.timestamp(),
-        #             })
-        #         else:
-        #             left = self.max_in_group if purchases_count['total_quantity'] is None else self.max_in_group - purchases_count['total_quantity']
-        #
-        #             if left > 0:
-        #                 result.append({
-        #                     'start': timetable.start.timestamp(),
-        #                     'end': timetable.end.timestamp(),
-        #                     'left': left
-        #                 })
+            banned_ranges = []
+            for i in range(len(intersections) - 1):
+                intersections_count = 0
+                current_range = intersections[i]
+                temp_banned = []
+                for j in range(i + 1, len(intersections)):                      # каждое пересечение нужно сравнить друг с другом
+                    if current_range.is_intersection(intersections[j]):
+                        temp_banned.append(current_range.intersection(intersections[j]))    # если есть, то добавляем во временный список недоступных
+                        intersections_count += 1
+                if intersections_count >= self.max_intersections - 1:   # если больше разрешенного кол-ва пересечений, то недоступно
+                    banned_ranges.extend(temp_banned)
+
+            available_ranges = [DateTimeRange(timetable.start, timetable.end)]      # изначально доступно все время расписания
+            for banned_time in banned_ranges:
+                temp = []
+                for available_time in available_ranges:
+                    timetable_range = available_time.subtract(banned_time)          # отнимаем от текущего диапозона запрещенный диапозон
+                    temp.extend(timetable_range)
+                available_ranges = temp
+
+            for available_time in available_ranges:
+                result.append({
+                    'start': available_time.start_datetime.timestamp(),             # возращаем в виде таймстемпов
+                    'end': available_time.end_datetime.timestamp(),
+                })
 
         return result
 
@@ -128,7 +125,7 @@ class Service(Offer):
     def get_free_time_url(self):
         return reverse('get_free_time', kwargs={'offer_id': self.pk})
 
-    def is_time_available(self, start, end):
+    def is_time_available(self, start, end, purchase_id=None):
         timetable = ServiceTimetable.objects.filter(
             service_id=self.pk,
             start__lte=start,
@@ -138,7 +135,7 @@ class Service(Offer):
         if not timetable:
             return False
 
-        purchases = PurchaseCountable.objects.filter(
+        purchases = PurchaseCountable.objects.exclude(pk=purchase_id).filter(
             offer__id=self.pk,
             start__gte=timetable.start,
             end__lte=timetable.end,
@@ -149,7 +146,9 @@ class Service(Offer):
         time_range = DateTimeRange(start, end)
         intersections_count = 0
         for purchase in purchases:
-            if DateTimeRange(purchase.start, purchase.end).is_intersection(time_range):
+            purchase_start = purchase.start + datetime.timedelta(seconds=5)     # прибавим от отнимем по 5 сек, чтоб если одна запись встает на конец/начало
+            purchase_end = purchase.end - datetime.timedelta(seconds=5)         # другой, мы не считали это за пересечение
+            if DateTimeRange(purchase_start, purchase_end).is_intersection(time_range):
                 intersections_count += 1
 
         if intersections_count >= self.max_intersections:

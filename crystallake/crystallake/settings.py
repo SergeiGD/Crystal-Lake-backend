@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+
 from pathlib import Path
 from os import environ, path
+from django.urls import reverse_lazy
 
 import webpack_loader
 
@@ -53,6 +55,8 @@ INSTALLED_APPS = [
     'apps.client.apps.ClientConfig',
     'apps.worker.apps.WorkerConfig',
     'apps.group.apps.GroupConfig',
+    'apps.client_profile.apps.ClientProfileConfig',
+    'apps.worker_profile.apps.WorkerProfileConfig',
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'
@@ -157,5 +161,7 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGOUT_REDIRECT_URL = reverse_lazy('index')
+# LOGOUT_REDIRECT_URL = 'index'
 
 # TODO: ПО СКОЛЬКО ПАГИНАЦИЯ

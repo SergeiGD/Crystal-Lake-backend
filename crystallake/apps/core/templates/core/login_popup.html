@@ -10,18 +10,26 @@
             </button>
         </div>
 
-        <div class="login_fields">
-            <input class="login_field input_field" type="text" name="phone" id="phone" placeholder="Номер телефона">
-            <input class="login_field input_field" type="text" name="password" id="password" placeholder="Пароль">
-        </div>
+        <form action="{% url 'client_login' %}" method="POST" id="temp_login_from_id">
 
-        <div>
-            <p class="login_reset">Забыли пароль?</p>
-        </div>
+            {% csrf_token %}
 
-        <div class="login_buttons">
-            <button class="login_button" id="end_login_button">Войти</button>
-        </div>
+            <div class="login_fields">
+    {#            <input class="login_field input_field" type="text" name="phone" id="phone" placeholder="Номер телефона">#}
+    {#            <input class="login_field input_field" type="text" name="password" id="password" placeholder="Пароль">#}
+                {{ login_form.phone }}
+                {{ login_form.password }}
+            </div>
+
+            <div>
+                <p class="login_reset">Забыли пароль?</p>
+            </div>
+
+            <div class="login_buttons">
+{#                <button class="login_button" id="end_login_button">Войти</button>#}
+                <button class="login_button" type="submit">Войти</button>
+            </div>
+        </form>
 
     </div>
 

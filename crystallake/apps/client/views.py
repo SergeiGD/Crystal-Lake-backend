@@ -124,3 +124,5 @@ def find_clients(request, **kwargs):
 
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+
+

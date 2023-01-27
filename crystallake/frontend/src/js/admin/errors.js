@@ -1,6 +1,5 @@
  const handle_errors = function(errors, elem){
     var result = ''
-     console.log(errors)
     for (var field in errors){
         const message = errors[field][0]
         result += `<li>${message}</li>`

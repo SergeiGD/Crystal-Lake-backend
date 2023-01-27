@@ -104,27 +104,6 @@ class Service(Offer):
 
         return result
 
-    def get_absolute_url(self):
-        return reverse('service', kwargs={'service_slug': self.slug})
-
-    def get_admin_show_url(self):
-        return reverse('admin_show_service', kwargs={'offer_id': self.pk})
-
-    def get_admin_delete_url(self):
-        return reverse('admin_delete_service', kwargs={'offer_id': self.pk})
-
-    def get_admin_edit_url(self):
-        return reverse('admin_edit_service', kwargs={'offer_id': self.pk})
-
-    def get_create_timetable_url(self):
-        return reverse('create_timetable', kwargs={'offer_id': self.pk})
-
-    def get_workers_url(self):
-        return reverse('get_service_workers', kwargs={'offer_id': self.pk})
-
-    def get_free_time_url(self):
-        return reverse('get_free_time', kwargs={'offer_id': self.pk})
-
     def is_time_available(self, start, end, purchase_id=None):
         timetable = ServiceTimetable.objects.filter(
             service_id=self.pk,
@@ -155,6 +134,27 @@ class Service(Offer):
             return False
 
         return True
+
+    def get_absolute_url(self):
+        return reverse('service', kwargs={'service_slug': self.slug})
+
+    def get_admin_show_url(self):
+        return reverse('admin_show_service', kwargs={'offer_id': self.pk})
+
+    def get_admin_delete_url(self):
+        return reverse('admin_delete_service', kwargs={'offer_id': self.pk})
+
+    def get_admin_edit_url(self):
+        return reverse('admin_edit_service', kwargs={'offer_id': self.pk})
+
+    def get_create_timetable_url(self):
+        return reverse('create_timetable', kwargs={'offer_id': self.pk})
+
+    def get_workers_url(self):
+        return reverse('get_service_workers', kwargs={'offer_id': self.pk})
+
+    def get_free_time_url(self):
+        return reverse('get_free_time', kwargs={'offer_id': self.pk})
 
 
 class ServiceTimetable(models.Model):

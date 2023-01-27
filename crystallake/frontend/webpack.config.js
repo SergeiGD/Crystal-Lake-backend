@@ -31,6 +31,7 @@ module.exports = {
     entry: {
         client: [
             path.resolve(__dirname,'src/scss/style.scss'),
+            path.resolve(__dirname,'src/js/client/ajax/login.js'),
             path.resolve(__dirname,'src/js/common/redirect.js'),
             path.resolve(__dirname,'src/js/client/header_burger.js'),
             path.resolve(__dirname,'src/js/client/login_popup.js'),

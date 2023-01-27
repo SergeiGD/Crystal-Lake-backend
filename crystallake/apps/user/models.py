@@ -19,13 +19,17 @@ class CustomUser(AbstractUser):
     )
 
     phone = PhoneNumberField(
-        null=False, blank=False,
-        unique=True, region='RU',
+        null=False,
+        blank=False,
+        unique=True,
+        region='RU',
         verbose_name='Номер телефона'
     )
     gender = models.CharField(
-        max_length=50, choices=GENDER_CHOICES,
-        blank=False, null=False,
+        max_length=50,
+        choices=GENDER_CHOICES,
+        blank=False,
+        null=False,
         verbose_name='Пол',
         default='unknown'
     )

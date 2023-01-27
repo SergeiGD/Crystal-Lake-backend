@@ -27,8 +27,8 @@
             <a href="{% url 'index' %}" class="text-white fs-4 font-logo text-decoration-none link-hover">Crystal Lake</a>
 
             <div class="d-flex gap-md-5 gap-3 align-items-center fs-5">
-                <span class="text-white">Иван Иванович Иванов</span>
-                <a href="../client/index.html" class="text-white text-decoration-none link-hover">
+                <span class="text-white">{{ request.user.full_name }}</span>
+                <a href="{% url 'admin_logout' %}" class="text-white text-decoration-none link-hover">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     <span>Выйти</span>
                 </a>
@@ -138,8 +138,8 @@
             </div>
 
             <div class="col-lg-auto col-12 mt-lg-0 mt-3 d-flex flex-lg-column justify-content-between">
-                <p class="text-white fs-5">Иван Иванович Иванов</p>
-                <a href="../client/index.html" class="text-white text-decoration-none link-hover fs-5">
+                <p class="text-white fs-5">{{ request.user.full_name }}</p>
+                <a href="{% url 'admin_logout' %}" class="text-white text-decoration-none link-hover fs-5">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     <span>Выйти</span>
                 </a>

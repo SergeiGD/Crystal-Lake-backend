@@ -28,7 +28,7 @@
     .filter_column{
         display: flex;
         flex-direction: column;
-        //justify-content: space-around;
+        justify-content: space-around;
         
         gap: 0.8em;
     }
@@ -80,7 +80,7 @@
             }
 
             .input_field__date, .input_field__price{
-                max-width: 7.5em;
+                max-width: 8em;
             }
         }
 

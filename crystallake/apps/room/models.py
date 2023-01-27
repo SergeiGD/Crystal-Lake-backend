@@ -76,6 +76,11 @@ class Room(Offer):
         related_query_name='child_room'
     )
 
+    def get_main_photo(self):
+        if self.main_room is None:
+            return super().get_main_photo()
+        return self.main_room.get_main_photo()
+
     def create_same_room(self):
         if self.main_room is not None:
             raise ValueError('Нельзя создать копию номера, который сам является копией')

@@ -4,9 +4,11 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, UpdateView, CreateView, DetailView
 from django.utils import timezone
+from django.urls import reverse_lazy
 
 from .models import Order
-from ..core.utils import SafePaginator, RelocateResponseMixin, ResponseMessage, parse_datetime
+from ..core.utils import SafePaginator, RelocateResponseMixin, ResponseMessage
+from ..worker_profile.views import AdminLoginRequired
 from .forms import CreateOrderForm, EditOrderForm, RoomPurchaseForm, ServicePurchaseForm
 from ..client.models import Client
 from ..user.forms import SearchUserForm
@@ -23,7 +25,7 @@ from ..service.models import ServiceTimetable
 # Create your views here.
 
 
-class AdminOrdersList(ListView):
+class AdminOrdersList(AdminLoginRequired, ListView):
     model = Order
     template_name = 'order/admin_orders.html'
     context_object_name = 'orders'
@@ -36,7 +38,7 @@ class AdminOrdersList(ListView):
         return context
 
 
-class AdminOrderDetail(DetailView):
+class AdminOrderDetail(AdminLoginRequired, DetailView):
     model = Order
     template_name = 'order/admin_show_order.html'
     context_object_name = 'order'
@@ -48,7 +50,7 @@ class AdminOrderDetail(DetailView):
         return context
 
 
-class AdminOrderCreate(RelocateResponseMixin, CreateView):
+class AdminOrderCreate(RelocateResponseMixin, AdminLoginRequired, CreateView):
     model = Order
     template_name = 'order/admin_create_order.html'
     context_object_name = 'order'
@@ -74,7 +76,7 @@ class AdminOrderCreate(RelocateResponseMixin, CreateView):
         return self.relocate(order.get_admin_edit_url())
 
 
-class AdminOrderUpdate(RelocateResponseMixin, UpdateView):
+class AdminOrderUpdate(RelocateResponseMixin, AdminLoginRequired, UpdateView):
     model = Order
     template_name = 'order/admin_edit_order.html'
     context_object_name = 'order'
@@ -91,12 +93,6 @@ class AdminOrderUpdate(RelocateResponseMixin, UpdateView):
         context['form_edit_service_purchase'] = ServicePurchaseForm(prefix='edit')
         context['form_create_service_purchase'] = ServicePurchaseForm(prefix='create')
         context['form_timetables'] = SearchTimetablesAdmin()
-        # pur = Purchase.objects.get(pk=91)
-        # print(pur.start)
-        # print(pur.end)
-        # print(timezone.localtime(pur.start))
-        # print(timezone.localtime(pur.end))
-
         return context
 
     def form_invalid(self, form):
@@ -134,7 +130,7 @@ class AdminOrderUpdate(RelocateResponseMixin, UpdateView):
 
         form.instance.save()
 
-        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=form.instance.get_admin_edit_url())
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=form.instance.get_admin_show_url())
         response = HttpResponse(response_message.get_json(), status=302, content_type='application/json')
         return response
 
@@ -309,40 +305,6 @@ def service_purchase_edit_view(request, purchase_id, **kwargs):
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
 
-# def service_purchase_manage_view(request, order_id):
-#     if request.POST:
-#
-#         order = get_object_or_404(Order, pk=order_id)
-#         purchase_id = request.POST['purchase_id'] if request.POST['purchase_id'] else -1
-#         purchase = PurchaseCountable.objects.filter(pk=purchase_id).first()
-#
-#         form = ServicePurchaseForm(request.POST or None, instance=purchase)    # если purchase_id не передан, то будет None -> новый объект
-#         purchase = form.instance
-#         purchase.order = order
-#         if form.is_valid():
-#             purchase = form.instance
-#             if not purchase.pk:
-#                 service_id = form.cleaned_data['service_id']
-#                 offer = get_object_or_404(Offer, pk=service_id)
-#                 purchase.offer = offer
-#                 purchase.order = order
-#
-#             date_str = request.POST.get('day')
-#             start_time_str = request.POST.get('time_start')
-#             end_time_str = request.POST.get('time_end')
-#             start, end = parse_datetime(date_str, start_time_str, end_time_str)
-#
-#             purchase.start, purchase.end = start, end
-#             purchase.save()
-#
-#             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-#             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
-#             return response
-#         else:
-#             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
-#             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-#             return response
-
 
 def get_purchase_info_view(request, purchase_id, **kwargs):
     purchase = get_object_or_404(Purchase, pk=purchase_id)
@@ -359,5 +321,10 @@ def cancel_purchase_view(request, purchase_id, **kwargs):
     response = HttpResponse(response_message.get_json(), status=302, content_type='application/json')
     response['Location'] = purchase.order.get_admin_edit_url()
     return response
+
+
+
+
+
 
 

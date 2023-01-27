@@ -9,7 +9,7 @@ from django.http import HttpResponse, Http404
 from django.utils.timezone import localtime, now
 
 
-from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, parse_datetime, is_ajax
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, parse_datetime, is_ajax, ContextMixin
 from django.template.loader import render_to_string
 from .models import Room
 from .forms import RoomForm, SearchRoomsForm, SearchRoomsAdmin
@@ -20,7 +20,7 @@ from ..offer.utils import ManageOfferMixin
 # Create your views here.
 
 
-class RoomsCatalog(ListView):
+class RoomsCatalog(ContextMixin, ListView):
     template_name = 'room/rooms.html'
     model = Room
     context_object_name = 'rooms'
@@ -31,7 +31,7 @@ class RoomsCatalog(ListView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'rooms'
         context['search_form'] = SearchRoomsForm(self.request.GET)
-        return context
+        return {**context, **self.get_general_context()}
 
     def get_queryset(self):
         search_form = SearchRoomsForm(self.request.GET)
@@ -130,10 +130,12 @@ class AdminUpdateRoom(ManageOfferMixin, UpdateView):  # TODO: не давать 
         return {**context, **common_context}
 
     def form_valid(self, form):
+        # print(form.cleaned_data)
         context = self.get_context_data()
         formset_photos = context['formset_photos']
         if formset_photos.is_valid():
             offer = form.instance
+            # offer.main_photo = form.cleaned_data['main_photo']
             return self.save_offer(
                 formset_photos=formset_photos,
                 offer=offer

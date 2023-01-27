@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from polymorphic.models import PolymorphicModel, PolymorphicManager
 from django.urls import reverse
 from django.utils import timezone
+from django.db.models import Max
 
 from ..offer.models import Offer
 from ..client.models import Client
@@ -83,10 +84,7 @@ class Order(models.Model):
             if self.date_full_prepayment is None:
                 self.date_full_prepayment = timezone.now()
 
-        print(self.paid)
-        print(self.price)
         if self.paid >= self.price:
-            print(11111)
             self.purchases.filter(is_canceled=False).update(is_paid=True)
             if self.date_full_paid is None:
                 self.date_full_paid = timezone.now()
@@ -224,6 +222,27 @@ class Order(models.Model):
         if self.date_full_prepayment is not None:
             return 'Внесена предоплата'
         return 'Ожидает предоплату'
+
+    @property
+    def main_offer(self):
+        if self.get_active_purchases().count() > 0:
+            main_purchase = self.purchases.filter(is_canceled=False).order_by('-price').first()
+            return main_purchase.offer
+        main_purchase = self.purchases.order_by('-price').first()
+        if main_purchase is not None:
+            return main_purchase.offer
+
+    @property
+    def name(self):
+        purchases_count = self.get_active_purchases().count()
+        if purchases_count > 1:
+            return f'{self.main_offer.name} и еще {purchases_count} покупок'
+        if self.main_offer is not None:
+            return self.main_offer.name
+        return f'Заказ от {self.date_create.date()}'
+
+    def get_active_purchases(self):
+        return self.purchases.filter(is_canceled=False)
 
     def get_admin_edit_url(self):
         return reverse('admin_edit_order', kwargs={'order_id': self.pk})

@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 
 from .models import CustomUser
 
@@ -32,17 +33,6 @@ class UserForm(forms.ModelForm):
 
 
 class SearchUserForm(forms.Form):
-    # SORT_CHOICES = (
-    #     ('id', ''),
-    #     ('-id', ''),
-    #     ('first_name', ''),
-    #     ('-first_name', ''),
-    #     ('phone', ''),
-    #     ('-phone', ''),
-    #     ('email', ''),
-    #     ('-email', ''),
-    # )
-
     id = forms.IntegerField(label='id', required=False, widget=forms.NumberInput(attrs={
         'class': 'form-control'
     }))
@@ -65,4 +55,20 @@ class SearchUserForm(forms.Form):
     page = forms.IntegerField(required=False, initial=1, widget=forms.NumberInput(attrs={
         'class': 'd-none page_input',
     }))
+
+
+# class LoginForm(AuthenticationForm):
+#     def __init__(self, *args, **kwargs):
+#         super(LoginForm, self).__init__(*args, **kwargs)
+#
+#     phone = forms.CharField(required=True, widget=forms.TextInput(attrs={
+#         'class': 'login_field input_field',
+#         'placeholder': 'Номер телефона'
+#     }))
+#     password = forms.CharField(widget=forms.PasswordInput(attrs={
+#         'class': 'login_field input_field',
+#         'placeholder': 'Пароль'
+#     }))
+
+
 

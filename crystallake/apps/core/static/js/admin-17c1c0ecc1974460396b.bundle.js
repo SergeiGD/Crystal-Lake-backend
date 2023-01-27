@@ -469,6 +469,8 @@ $(document).ready(function (){
 
         const form = $(this)
 
+
+
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
@@ -696,7 +698,6 @@ $(document).ready(function() {
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
  const handle_errors = function(errors, elem){
     var result = ''
-     console.log(errors)
     for (var field in errors){
         const message = errors[field][0]
         result += `<li>${message}</li>`
@@ -2905,4 +2906,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-c018ea31d41caf8dc13d.bundle.js.map
+//# sourceMappingURL=admin-17c1c0ecc1974460396b.bundle.js.map

@@ -14,6 +14,42 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/js/client/ajax/login.js":
+/*!*************************************!*\
+  !*** ./src/js/client/ajax/login.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+
+    $('#temp_login_from_id').on('submit', function (event){
+        event.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (response){
+                console.log(response.data)
+            },
+            error: function (jqXHR){
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                console.log(response['message'])
+            },
+        }).statusCode({
+           302: function (data){
+                const response = jQuery.parseJSON(data.responseText)
+                window.location.href = response['data']
+            }
+        });
+
+    });
+})
+
+/***/ }),
+
 /***/ "./src/js/client/filter_mobile.js":
 /*!****************************************!*\
   !*** ./src/js/client/filter_mobile.js ***!
@@ -3776,6 +3812,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/scss/style.scss")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/ajax/login.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/common/redirect.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/header_burger.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js"], () => (__webpack_require__("./src/js/client/login_popup.js")))
@@ -3791,4 +3828,4 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-00427d10e4b33b5e49fd.bundle.js.map
+//# sourceMappingURL=client-ccea064c40db7d505658.bundle.js.map

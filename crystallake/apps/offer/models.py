@@ -86,8 +86,31 @@ class Offer(PolymorphicModel):
     main_photo = models.ImageField(
         upload_to=build_photo_path,
         blank=False,
-        null=True
+        null=True,
+        db_column='main_photo'
     )
+
+    def get_main_photo(self):
+        return self.main_photo
+
+    # @property
+    # def main_photo(self):
+    #     return self._main_photo
+    #
+    # @main_photo.setter
+    # def main_photo(self, value):
+    #     self._main_photo = value
+
+    # @property
+    # def main_photo(self):
+    #     return self._main_photo
+    #
+    # @main_photo.setter
+    # def main_photo(self, value):
+    #
+    #     self._main_photo = value
+    #     self.save()
+
     # dynamic_timetable = models.BooleanField(
     #     verbose_name='динамическое расписание',
     #     default=True
@@ -152,7 +175,7 @@ class Offer(PolymorphicModel):
 
     def mark_as_deleted(self):
         self.date_deleted = timezone.now()
-        self.name = self.name + '-DELETED'
+        # self.name = self.name + '-DELETED'
         self.save()
 
     def get_add_tag_url(self):

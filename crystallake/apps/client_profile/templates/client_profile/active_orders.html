@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <section class="section">
+
+        <div class="content_container">
+
+            <h2 class="section_title">Личный кабинет</h2>
+
+            <div class="breadcrumbs">
+                <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
+                <span>&#10148;</span>
+                <p class="breadcrumbs_item breadcrumbs_item__active">Активные заказы</p>
+            </div>
+
+            <div class="profile">
+
+                {% include 'client_profile/profile_menu.html' %}
+
+                <div class="profile_content">
+
+                    {% include 'client_profile/orders_filter.html' %}
+
+                    <div class="catalog_long">
+
+                        {% for order in orders %}
+                            <div class="card_long">
+
+                                {% if order.main_offer.get_main_photo %}
+                                    <img src="{{ order.main_offer.get_main_photo.url }}" alt="{{ order.name }}" class="card_long_img">
+                                {% endif %}
+
+                                <div class="card_long_inner">
+                                    <div class="card_long_desciption">
+                                        <a href="{{ order.get_show_client_url }}" class="card_long_name">{{ order.name }}</a>
+                                        <div class="card_long_stats">
+                                            <div class="card_long_text">
+                                                <p>Даты создания:</p>
+                                                <span class="highlighted">{{ order.date_create }}</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Количество покупок: </p>
+                                                <span class="highlighted">{{ order.purchases.count }}</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Суммарная цена: </p>
+                                                <span class="highlighted">{{ order.price }}&#8381;</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Статус оплаты:</p>
+                                                <span class="highlighted">{{ order.payment_status }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card_long_buttons">
+                                        <button class="card_button card_button__reschedule">Перенести</button>
+                                        <button class="card_button card_button__pay">Доплатить</button>
+                                        <button class="card_button card_button__cancel">Отменить</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="pages">
+                        <p class="page_item page_item_active">1</p>
+                        <p class="page_item">2</p>
+                        <p class="page_item">3</p>
+                        <p class="page_item">4</p>
+                        <p class="page_item page_item_more">...</p>
+                        <p class="page_item">15</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock content %}

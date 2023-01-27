@@ -1,0 +1,92 @@
+<div class="finder">
+
+    <form class="mobile_filter_soring">
+        <div class="mobile_filter">
+            <i class="fa-solid fa-sliders"></i>
+            <p>Фильтр</p>
+        </div>
+        <div class="mobile_sorting">
+            <i class="fa-solid fa-arrow-up-wide-short"></i>
+            <p>Сортировать по:</p>
+            <select class="select_sortby select_field">
+                <option value="1" selected>ближайшие</option>
+                <option value="2">дальние</option>
+                <option value="3">убыванию цен</option>
+                <option value="4">возрастанию цен</option>
+            </select>
+        </div>
+    </form>
+
+    <form class="filter">
+
+        <div class="filter_column">
+            <div class="filter_item">
+                <label class="filter_name filter_name__long" for="name_field">Наименование:</label>
+                <div class="filter_select filter_select__name">
+                    <input type="text" name="" id="name_field" class="input_field input_field__name">
+                </div>
+            </div>
+
+            <div class="filter_item">
+                <p class="filter_name filter_name__long">Дата заказа:</p>
+                <div class="filter_select">
+                    <div class="filter_select_subfiled">
+                        <label class="filter_subname" for="date_from_field">от</label>
+                        <input type="date" name="" id="date_from_field" class="input_field input_field__date">
+                    </div>
+                    <div class="filter_select_subfiled">
+                        <label class="filter_subname" for="date_until_field">до</label>
+                        <input type="date" name="" id="date_until_field" class="input_field input_field__date">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="filter_column">
+
+            <div class="filter_item">
+                <label class="filter_name filter_name__long" for="status_field">Статус оплаты:</label>
+                <div class="filter_select">
+                    <select id="status_field" class="input_field select_field">
+                        <option value="1" selected>все</option>
+                        <option value="2">польностью оплачено</option>
+                        <option value="3">внесена предоплата</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter_item">
+                <p class="filter_name filter_name__long">Цена заказа:</p>
+                <div class="filter_select">
+                    <div class="filter_select_subfiled">
+                        <label class="filter_subname" for="price_from_field">от</label>
+                        <input type="number" name="" id="price_from_field" class="input_field input_field__price">
+                    </div>
+                    <div class="filter_select_subfiled">
+                        <label class="filter_subname" for="price_until_field">до</label>
+                        <input type="number" name="" id="price_until_field" class="input_field input_field__price">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter_column filter__buttons">
+            <button class="filter_button filter_button__find">Применить</button>
+            <button class="filter_button filter_button__clean">Сбросить</button>
+        </div>
+
+    </form>
+
+    <form class="sorting">
+        <p class="sorting_item">
+            <i class="fa-solid fa-arrow-up-short-wide sorting_icon_active"></i>
+            Дате
+        </p>
+        <p class="sorting_item">
+            <i class="fa-solid fa-arrow-down-wide-short"></i>
+            Цене
+        </p>
+    </form>
+
+</div>

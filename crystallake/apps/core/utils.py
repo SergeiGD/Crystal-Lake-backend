@@ -5,6 +5,8 @@ from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse
 from django.utils import timezone
 
+from ..client_profile.forms import ClientLoginForm
+
 
 class SafePaginator(Paginator):
     def validate_number(self, number):
@@ -37,6 +39,14 @@ class RelocateResponseMixin:
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=url)
         response = HttpResponse(response_message.get_json(), status=302, content_type='application/json')
         return response
+
+
+class ContextMixin:
+    def get_general_context(self):
+        context = {
+            'login_form': ClientLoginForm()
+        }
+        return context
 
 
 def get_paginator_data(data_list, page_number):

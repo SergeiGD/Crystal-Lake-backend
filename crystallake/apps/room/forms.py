@@ -24,13 +24,13 @@ class RoomForm(OfferForm):
             if str(field) in self.number_fields:
                 self.fields[str(field)].widget.attrs.update({'min': 1})
 
-    def clean_name(self):
-        name = self.cleaned_data.get("name")
-        pk = self.instance.pk
-        if Room.objects.filter(date_deleted=None, name=name).exclude(Q(pk=pk) | Q(main_room=self.instance)):
-            raise forms.ValidationError('Номер с таким наименованием уже существует', code='unique')
-
-        return name
+    # def clean_name(self):
+    #     name = self.cleaned_data.get("name")
+    #     pk = self.instance.pk
+    #     if Room.objects.filter(date_deleted=None, name=name).exclude(Q(pk=pk) | Q(main_room=self.instance)):
+    #         raise forms.ValidationError('Номер с таким наименованием уже существует', code='unique')
+    #
+    #     return name
 
 
 class SearchRoomsForm(SearchOffersForm):

@@ -8,7 +8,7 @@ from ..user.models import CustomUser
 
 
 class Client(CustomUser):
-
+    # TODO: сделать прокси?
     def save(self, *args, **kwargs):
         if not self.pk:
             self.is_staff = False

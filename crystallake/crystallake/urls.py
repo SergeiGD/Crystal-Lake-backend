@@ -23,9 +23,12 @@ from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 urlpatterns = [
     path('admin_django/', admin.site.urls),
     path('', include('apps.core.urls')),
-    re_path('^accounts/', admin.site.urls, name='temp_login'),
+    # re_path('^accounts/', admin.site.urls, name='temp_login'),
     path('rooms/', include('apps.room.urls')),
     path('services/', include('apps.service.urls')),
+    path('services/', include('apps.service.urls')),
+    path('profile/', include('apps.client_profile.urls')),
+    path('admin/', include('apps.worker_profile.urls')),
     path('admin/rooms/', include('apps.room.admin_urls')),
     path('admin/services/', include('apps.service.admin_urls')),
     path('admin/offers/', include('apps.offer.admin_urls')),
@@ -33,7 +36,7 @@ urlpatterns = [
     path('admin/groups/', include('apps.group.urls')),
     path('admin/clients/', include('apps.client.urls')),
     path('admin/workers/', include('apps.worker.urls')),
-    path('admin/orders/', include('apps.order.urls')),
+    path('admin/orders/', include('apps.order.admin_urls')),
 ]
 
 if DEBUG:

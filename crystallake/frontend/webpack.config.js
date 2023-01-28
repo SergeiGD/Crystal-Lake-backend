@@ -2,7 +2,8 @@ const path = require('path');
 const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+// const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const BundleTracker = require('webpack-bundle-tracker');
 
@@ -18,7 +19,7 @@ const optimize = () => {
 
     if (isProd) {
         conf.minimizer = [
-            new CssMinimizerPlugin(),
+            // new CssMinimizerPlugin(),
             new TerserWebpackPlugin()
         ]
         

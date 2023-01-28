@@ -1,19 +1,31 @@
-FROM nikolaik/python-nodejs:python3.9-nodejs19-alpine
+FROM ubuntu/apache2:2.4-20.04_edge
 
 WORKDIR /app
+
+RUN apt-get -y update
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository -y ppa:deadsnakes/ppa
+RUN apt-get install -y python3.9 python3-pip python3-dev libpq-dev libapache2-mod-wsgi-py3 nodejs npm
+
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apk update && apk add bash && apk add postgresql-dev gcc python3-dev musl-dev
-
-RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
 COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 COPY . .
 
-RUN cd ./crystallake/frontend && chmod -R a+x node_modules && npm install && npm run dev
+RUN cd ./crystallake/frontend && npm install && npm run dev
 
-ENTRYPOINT ./wait-for-it.sh db:5432 -- python3.9 manage.py migrate && python3.9 manage.py runserver 0.0.0.0:8000
+COPY ./crystal_lake.conf /etc/apache2/sites-available/crystal_lake.conf
+RUN a2ensite crystal_lake.conf
+RUN a2dissite 000-default.conf
+EXPOSE 80
+
+ENTRYPOINT ./wait-for-it.sh db:5432 --  python3 manage.py makemigrations && \
+                                        python3 manage.py migrate && \
+                                        python3 manage.py collectstatic --no-input && \
+                                        apachectl -D FOREGROUND
 

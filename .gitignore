@@ -6,3 +6,5 @@ venv
 postgres_data
 migrate.sh
 watch_front.sh
+crystallake/media/*
+crystallake/logs/*

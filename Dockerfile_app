@@ -5,8 +5,7 @@ WORKDIR /app
 RUN apt-get -y update
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository -y ppa:deadsnakes/ppa
-RUN apt-get install -y python3.9 python3-pip python3-dev libpq-dev libapache2-mod-wsgi-py3 nodejs npm
-
+RUN apt-get install -y python3.9 python3-pip python3-dev libpq-dev libapache2-mod-wsgi-py3 nodejs npm nano
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

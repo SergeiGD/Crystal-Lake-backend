@@ -1,0 +1,47 @@
+<div class="field_item">
+    <label for="{{ book_form.first_name.id_for_label }}" class="field_name">{{ book_form.first_name.label }}</label>
+    <div class="field_content">
+        {{ book_form.first_name }}
+    </div>
+</div>
+
+<div class="field_item">
+    <label for="{{ book_form.last_name.id_for_label }}" class="field_name">{{ book_form.last_name.label }}</label>
+    <div class="field_content">
+        {{ book_form.last_name }}
+    </div>
+</div>
+
+<div class="field_item">
+    <label for="{{ book_form.phone.id_for_label }}" class="field_name">{{ book_form.phone.label }}</label>
+    <div class="field_content">
+        {{ book_form.phone }}
+    </div>
+</div>
+
+
+{#<div class="field_item">#}
+{#    <label for="input_payment" class="field_name">Оплатить сейчас:</label>#}
+{#    <div class="field_content">#}
+{#        <select id="input_payment" class="input_field select_field">#}
+{#            <option value="1">полностью</option>#}
+{#            <option value="2" selected>только предоплату</option>#}
+{#        </select>#}
+{#    </div>#}
+{#</div>#}
+
+<div class="field_item">
+    <p class="field_name">К оплате сейчас:</p>
+    <div class="field_content">
+        <p class="field_info">2.899&#8381;</p>
+    </div>
+</div>
+
+<div class="field_item">
+    <p class="field_name">Суммарная цена:</p>
+    <div class="field_content">
+        <p class="field_info">12.399&#8381;</p>
+    </div>
+</div>
+
+<button type="submit" class="button__book">В корзину</button>

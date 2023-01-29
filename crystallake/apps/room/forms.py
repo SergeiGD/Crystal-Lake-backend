@@ -3,7 +3,7 @@ from django.db.models import Q
 
 
 from .models import Room
-from ..offer.forms import SearchOffersForm, OfferForm, SearchOffersAdmin
+from ..offer.forms import SearchOffersForm, OfferForm, SearchOffersAdmin, BookOfferForm
 
 
 class RoomForm(OfferForm):
@@ -94,3 +94,12 @@ class SearchRoomsAdmin(SearchOffersAdmin):
     }))
 
 
+class BookRoomForm(BookOfferForm):
+    date_start = forms.DateField(label='с', widget=forms.DateInput(attrs={
+        'class': 'input_field',
+        'type': 'date'
+    }))
+    date_end = forms.DateField(label='до', widget=forms.DateInput(attrs={
+        'class': 'input_field',
+        'type': 'date'
+    }))

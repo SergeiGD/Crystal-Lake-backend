@@ -157,6 +157,8 @@ class Order(models.Model):
     @property
     def price(self):
         price = 0
+        if not self.pk:
+            return 0
         for purchase in self.purchases.all():
             if purchase.is_canceled and purchase.is_paid:
                 price += purchase.price - purchase.refund
@@ -179,6 +181,8 @@ class Order(models.Model):
     @property
     def prepayment(self):
         prepayment = 0
+        if not self.pk:
+            return 0
         for purchase in self.purchases.filter(is_canceled=False):
             prepayment += purchase.prepayment
         return prepayment

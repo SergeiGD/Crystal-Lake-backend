@@ -12,10 +12,12 @@ from django.utils.timezone import localtime, now
 from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, parse_datetime, is_ajax, ContextMixin
 from django.template.loader import render_to_string
 from .models import Room
-from .forms import RoomForm, SearchRoomsForm, SearchRoomsAdmin
+from .forms import RoomForm, SearchRoomsForm, SearchRoomsAdmin, BookRoomForm
 from ..photo.models import Photo
 from ..core.forms import ShortSearchForm
 from ..offer.utils import ManageOfferMixin
+from ..order.models import Order, Purchase
+from ..client.models import Client
 
 # Create your views here.
 
@@ -57,6 +59,7 @@ class RoomDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'rooms'
         context['familiar'] = self.object.get_familiar()
+        context['book_form'] = BookRoomForm(self.request.POST, user=self.request.user)
         return context
 
     def get_object(self, queryset=None):
@@ -64,6 +67,66 @@ class RoomDetail(DetailView):
         if obj.date_deleted or obj.is_hidden or obj.main_room:
             raise Http404()
         return obj
+
+    def post(self, request, **kwargs):
+        book_form = BookRoomForm(self.request.POST, user=self.request.user)
+        if book_form.is_valid():
+            if self.request.user.is_authenticated:
+                order = Order.objects.filter(
+                    client=self.request.user,
+                    paid=0, refunded=0,
+                    date_canceled=None,
+                    date_finished=None
+                ).first()
+                if order is None:
+                    # TODO: пофиксить, мб ссылка просто на кастом юзера
+                    client = get_object_or_404(Client, pk=self.request.user.pk)
+                    # order = Order(client=self.request.user, date_create=now())
+                    order = Order(client=client, date_create=now())
+                    order.save()
+
+                room = self.get_object()
+                rooms = room.pick_rooms_for_purchase(book_form.cleaned_data['date_start'], book_form.cleaned_data['date_end'])
+                if len(rooms) == 0:
+                    response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                        'Свободность номера': ['Нету свободных комнат на выбранные даты']
+                    })
+                    response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                    return response
+                if len(rooms) > 1 and not form.cleaned_data['multiple_rooms_acceptable']:
+                    response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
+                        'Свободность номера': [
+                            'Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
+                    })
+                    response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                    return response
+
+                purchases = []
+                for room in rooms:
+                    purchase = Purchase(
+                        order=order,
+                        offer=room['room'],
+                        start=room['start'],
+                        end=room['end']
+                    )
+                    purchases.append(purchase)
+                Purchase.objects.bulk_create(purchases)
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
+                response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
+                return response
+
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=book_form.errors)
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
+
+
+                # purchase = Purchase(
+                #     order=order,
+                #     start=book_form.cleaned_data['date_start'],
+                #     end=book_form.cleaned_data['date_end']
+                # )
+
 
 
 class AdminRoomsList(PermissionRequiredMixin, ListView):

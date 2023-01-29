@@ -65,7 +65,7 @@
                         <a href="{% url 'services' %}" class="header_menu_item header_link {% if current_page == 'services' %} header_menu_item__active {% endif %}" data-text="Услуги">Услуги</a>
                         <a href="sales.html" class="header_menu_item header_link {% if current_page == 'sales' %} header_menu_item__active {% endif %}" data-text="Акции">Акции</a>
                         <a href="contacts.html" class="header_menu_item header_link {% if current_page == 'contacts' %} header_menu_item__active {% endif %}" data-text="Контакты">Контакты</a>
-                        <a href="cart.html" class="header_menu_item header_link {% if current_page == 'cart' %} header_menu_item__active {% endif %}" data-text="Корзина">Корзина</a>
+                        <a href="{% url 'cart' %}" class="header_menu_item header_link {% if current_page == 'cart' %} header_menu_item__active {% endif %}" data-text="Корзина">Корзина</a>
                         {% if user.is_authenticated %}
                             <a href="{% url 'active_orders' %}" class="header_menu_item header_link {% if current_page == 'profile' %} header_menu_item__active {% endif %}" data-text="Личный кабинет">Личный кабинет</a>
                         {% else %}

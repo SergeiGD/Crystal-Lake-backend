@@ -115,9 +115,9 @@
             <div class="mx-auto col-lg-5 col-12">
                 <span class="input-group-text rounded-top rounded-0">Общие даты (1 день):</span>
                 <form action="{{ room.get_general_busy_dates_url }}" class="calendar__room_form" method="GET">
-                        {% csrf_token %}
-                        <button type="submit" class="d-none"></button>
-                    </form>
+                    {% csrf_token %}
+                    <button type="submit" class="d-none"></button>
+                </form>
                 <div class="evoCalendar calendar calendar__room"></div>
             </div>
         </div>

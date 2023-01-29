@@ -1,0 +1,88 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <section class="section">
+
+        <div class="content_container">
+
+            <h2 class="section_title">Корзина</h2>
+
+            <div class="breadcrumbs">
+                <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
+                <span>&#10148;</span>
+                <p class="breadcrumbs_item breadcrumbs_item__active">Корзина</p>
+            </div>
+
+            <div class="cart">
+
+                <div class="cart_services">
+
+                    <div class="catalog_long">
+
+                        {% if cart_items.count == 0 %}
+                            <p>Корзина пуста</p>
+                        {% endif %}
+
+                        {% for cart_item in cart_items.all %}
+                            <div class="card_long">
+
+                                <img src="{{ cart_item.offer.get_main_photo.url }}" alt="{{ cart_item.offer.name }}" class="card_long_img">
+
+                                <div class="card_long_inner">
+                                    <div class="card_long_desciption">
+                                        <a href="{{ cart_item.offer.get_absolute_url }}" class="card_long_name">{{ cart_item.offer.name }}</a>
+                                        <div class="card_long_stats">
+                                            <div class="card_long_text">
+                                                <p>Даты начала:</p>
+                                                <span class="highlighted">{{ cart_item.start }}</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Даты конца:</p>
+                                                <span class="highlighted">{{ cart_item.end }}</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Количество: </p>
+                                                {% if cart_item.quantity %}
+                                                    <span class="highlighted">{{ cart_item.quantity }}</span>
+                                                {% else %}
+                                                    <span class="highlighted">Нет</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Суммарная цена: </p>
+                                                <span class="highlighted">{{ cart_item.price }}&#8381;</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <i class="fa-regular fa-trash-can card_delete"></i>
+
+                                </div>
+
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <div class="cart_info">
+                    {% if not cart_items.count == 0 %}
+                        <div class="cart_info_stats">
+                            <p class="cart_info_text highlighted">Условия заказа:</p>
+                            <p class="cart_info_text">Элементов в корзине: <span class="highlighted">{{ cart_items.count }}</span></p>
+                            <p class="cart_info_text">К оплате: <span class="highlighted">{{ order.price }}&#8381;</span></p>
+                        </div>
+
+                        <button class="button__pay">Перейти к оплате</button>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock content %}

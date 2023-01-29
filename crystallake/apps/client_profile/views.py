@@ -1,14 +1,17 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, View
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, View, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
+from django.utils import timezone
 
 from ..order.models import Order
 from ..core.utils import SafePaginator
 from ..core.utils import ResponseMessage, RelocateResponseMixin
 from .forms import ClientLoginForm
+from ..order.models import Order, Purchase
+from ..client.models import Client
 
 # Create your views here.
 
@@ -67,3 +70,28 @@ def client_logout_view(request):
     if request.user.is_authenticated:
         logout(request)
         return redirect('/')
+
+
+class CartView(TemplateView):
+    template_name = 'client_profile/cart.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = Order.objects.filter(
+            client=self.request.user,
+            paid=0, refunded=0,
+            date_canceled=None,
+            date_finished=None
+        ).first()
+        if order is None:
+            # TODO: пофиксить, мб ссылка просто на кастом юзера
+            client = get_object_or_404(Client, pk=self.request.user.pk)
+            order = Order(client=client, date_create=timezone.now())
+            cart_items = Purchase.objects.none()
+        else:
+            cart_items = order.purchases
+        context['order'] = order
+        context['cart_items'] = cart_items
+        context['current_page'] = 'cart'
+        return context
+

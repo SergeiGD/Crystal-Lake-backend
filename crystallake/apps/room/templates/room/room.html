@@ -29,7 +29,10 @@
     <div class="dates">
 
         <h3 class="dates_title">Занятость номера</h3>
-
+        <form action="{{ offer.get_general_busy_dates_url }}" class="calendar__room_form" method="GET">
+            {% csrf_token %}
+            <button type="submit" class="d-none"></button>
+        </form>
         <div id="evoCalendar" class="evoCalendar calendar calendar__room"></div>
 
         <p class="dates_notice">* при брониваронии нескольких дней подряд даты могут отличаться от предоставленных выше.</p>
@@ -38,62 +41,30 @@
 {% endblock %}
 
 {% block book %}
-    <div class="fields">
+    <form class="book" method="post" action=".">
 
-        <div class="field_item">
-            <p class="field_name">Время пребывания:</p>
-            <div class="field_content">
-                <div class="field_subcontent">
-                    <label for="input_date_from" class="field_subname">с</label>
-                    <input type="date" id="input_date_from" class="input_field">
+        {% csrf_token %}
+
+        <div class="fields">
+
+            <div class="field_item">
+                <p class="field_name">Время пребывания:</p>
+                <div class="field_content">
+                    <div class="field_subcontent">
+                        <label for="{{ book_form.date_start.id_for_label }}" class="field_subname">{{ book_form.date_start.label }}</label>
+                        {{ book_form.date_start }}
+                    </div>
+                    <div class="field_subcontent">
+                        <label for="{{ book_form.date_end.id_for_label }}" class="field_subname">{{ book_form.date_end.label }}</label>
+                        {{ book_form.date_end }}
+                    </div>
                 </div>
-                <div class="field_subcontent">
-                    <label for="input_date_until" class="field_subname">до</label>
-                    <input type="date" id="input_date_until" class="input_field">
-                </div>
             </div>
-        </div>
 
-        <div class="field_item">
-            <label for="input_name" class="field_name">Ваше Ф.И.О:</label>
-            <div class="field_content">
-                <input type="text" id="input_name" class="input_field input_field__name">
-            </div>
-        </div>
+            {% include 'offer/book_general_fields.html' %}
 
-        <div class="field_item">
-            <label for="input_phone" class="field_name">Номер телефона:</label>
-            <div class="field_content">
-                <input type="tel" id="input_phone" class="input_field input_field__phone" placeholder="+7(___)___-__-__">
-            </div>
-        </div>
-
-
-        <div class="field_item">
-            <label for="input_payment" class="field_name">Оплатить сейчас:</label>
-            <div class="field_content">
-                <select id="input_payment" class="input_field select_field">
-                    <option value="1">полностью</option>
-                    <option value="2" selected>только предоплату</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="field_item">
-            <p class="field_name">К оплате сейчас:</p>
-            <div class="field_content">
-                <p class="field_info">2.899&#8381;</p>
-            </div>
-        </div>
-
-        <div class="field_item">
-            <p class="field_name">Суммарная цена:</p>
-            <div class="field_content">
-                <p class="field_info">12.399&#8381;</p>
-            </div>
         </div>
 
     </div>
-    <button class="button__book">Продолжить</button>
 {% endblock book %}
 

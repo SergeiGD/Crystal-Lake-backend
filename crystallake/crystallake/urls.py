@@ -23,6 +23,7 @@ from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 urlpatterns = [
     path('admin_django/', admin.site.urls),
     path('', include('apps.core.urls')),
+    path('cart/', include('apps.client_profile.cart_urls')),
     # re_path('^accounts/', admin.site.urls, name='temp_login'),
     path('rooms/', include('apps.room.urls')),
     path('services/', include('apps.service.urls')),

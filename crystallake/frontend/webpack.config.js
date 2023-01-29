@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 // const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
@@ -28,7 +27,10 @@ const optimize = () => {
 }
 
 module.exports = {
+    // watch: true,
+    // stats: 'none',
     mode: isDev ? 'development' : 'production',
+    // productionSourceMap: false,
     entry: {
         client: [
             path.resolve(__dirname,'src/scss/style.scss'),
@@ -44,6 +46,9 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/sortby.js'),
             path.resolve(__dirname,'src/js/client/slick-slider/slick_starter.js'),
             path.resolve(__dirname,'src/js/common/evo-calendar/evo-starter.js'),
+
+
+            path.resolve(__dirname,'src/js/admin/ajax/get_dates_info.js'),
         ],
         admin: [
             path.resolve(__dirname,'src/scss/admin.scss'),
@@ -82,7 +87,7 @@ module.exports = {
     },
     output: {
         filename: 'js/[name]-[contenthash].bundle.js',
-        path: path.resolve(__dirname, '../apps/core/static'),
+        path: path.resolve(__dirname, '../static'),
         clean: {
             keep: /images\//,
         },
@@ -98,11 +103,12 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             url: true,
-                            sourceMap: true,
+                            sourceMap: isDev,
                         }
                     },
-                    {loader: 'resolve-url-loader'},
+                    {loader: 'resolve-url-loader', options: {sourceMap: isDev}},
                     {loader: 'sass-loader', options: {sourceMap: true}},
+                    // {loader: 'sass-loader'},
                 ]
             },
             {

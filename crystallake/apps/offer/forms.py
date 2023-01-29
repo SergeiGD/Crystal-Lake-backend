@@ -1,4 +1,5 @@
 from django import forms
+from phonenumber_field.formfields import PhoneNumberField, RegionalPhoneNumberWidget
 
 from .models import Offer
 
@@ -124,7 +125,34 @@ class SearchOffersAdmin(forms.Form):
     }))
         
 
+class BookOfferForm(forms.Form):
+    first_name = forms.CharField(label='Ваше имя:', widget=forms.TextInput(attrs={
+        'class': 'input_field input_field__name',
+    }))
+    last_name = forms.CharField(label='Ваша фамилия:', widget=forms.TextInput(attrs={
+        'class': 'input_field input_field__name',
+    }))
+    phone = PhoneNumberField(region='RU', label='Номер телефона:', widget=RegionalPhoneNumberWidget(attrs={
+        'class': 'input_field input_field__phone',
+        'placeholder': '+79999999999'
+    }))
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        if self.user is not None and self.user.is_authenticated:
+            # self.fields['phone'].disabled = True
+            self.fields['phone'].widget.attrs['value'] = self.user.phone
+            self.fields['phone'].widget.attrs['readonly'] = ''
+
+            # self.fields['first_name'].disabled = True
+            self.fields['first_name'].widget.attrs['value'] = self.user.first_name
+            self.fields['first_name'].widget.attrs['readonly'] = ''
+
+            # self.fields['last_name'].disabled = True
+            self.fields['last_name'].widget.attrs['value'] = self.user.last_name
+            self.fields['last_name'].widget.attrs['readonly'] = ''
 
 
 

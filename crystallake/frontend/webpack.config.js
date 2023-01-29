@@ -2,7 +2,6 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 // const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const BundleTracker = require('webpack-bundle-tracker');
 
@@ -27,10 +26,7 @@ const optimize = () => {
 }
 
 module.exports = {
-    // watch: true,
-    // stats: 'none',
     mode: isDev ? 'development' : 'production',
-    // productionSourceMap: false,
     entry: {
         client: [
             path.resolve(__dirname,'src/scss/style.scss'),
@@ -89,7 +85,7 @@ module.exports = {
         filename: 'js/[name]-[contenthash].bundle.js',
         path: path.resolve(__dirname, '../static'),
         clean: {
-            keep: /images\//,
+            keep: /(admin|polymorphic)\//
         },
     },
     devtool: isDev ? 'source-map' : false,

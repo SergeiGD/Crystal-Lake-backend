@@ -16,16 +16,18 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-RUN cd ./crystallake/frontend && npm install && npm run build
-
 COPY ./crystal_lake.conf /etc/apache2/sites-available/crystal_lake.conf
 RUN a2ensite crystal_lake.conf
 RUN a2dissite 000-default.conf
 EXPOSE 80
 
-ENTRYPOINT ./wait-for-it.sh db:5432 --  python3 manage.py makemigrations && \
-                                        python3 manage.py migrate && \
-                                        python3 manage.py collectstatic --no-input && \
-                                        apachectl -D FOREGROUND
+ENTRYPOINT cd /app/frontend && npm install && \
+            if [ $DEV = true ]; then npm run dev; else npm run build ; fi && \
+            cd /app && \
+            ./wait-for-it.sh db:5432 -- \
+            python3 manage.py makemigrations && \
+            python3 manage.py migrate && \
+            python3 manage.py collectstatic --no-input && \
+            apachectl -D FOREGROUND
 
 

@@ -2,9 +2,10 @@
 *.vscode
 *__pycache__*
 .env
-*venv*
+venv
 postgres_data
 watch_front.sh
 migrate.sh
 crystallake/media/*
+crystallake/frontend/node_modules
 crystallake/logs/*

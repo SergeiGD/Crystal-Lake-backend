@@ -17,7 +17,7 @@ class SmsCodeMixin:
         return SmsCode.objects.exclude(date__lt=timezone.make_aware(min_date)).filter(
             code=code,
             is_used=False
-        ).first()
+        ).order_by('-date').first()
 
     def get_code_error_message(self):
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
@@ -34,10 +34,5 @@ class SmsCodeMixin:
         return response
 
 
-class PasswordsMixin:
-    def get_unequal_passwords_error(self):
-        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-            'Неверные данные': ['Пароли не совпадают']
-        })
-        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-        return response
+# class PasswordsMixin:
+#     def post(self):

@@ -28,7 +28,7 @@ $(document).ready(function (){
     $('.ajax_redirect').on('submit', function (){
         event.preventDefault();
 
-        const errors_list = $(this).find('.auth_errors')
+        const errors_list = $(this).find('.errors_wrapper')
 
         $.ajax({
             url: $(this).attr('action'),
@@ -63,7 +63,7 @@ $(document).ready(function (){
     $('#client_register_from').on('submit', function (){
         event.preventDefault();
 
-        const errors_list = $(this).find('.auth_errors')
+        const errors_list = $(this).find('.errors_wrapper')
 
         $.ajax({
             url: $(this).attr('action'),
@@ -97,7 +97,7 @@ $(document).ready(function (){
     $('#client_reset_phone_form').on('submit', function (e){
         e.preventDefault();
 
-        const errors_list = $(this).find('.auth_errors')
+        const errors_list = $(this).find('.errors_wrapper')
 
         $.ajax({
             url: $(this).attr('action'),
@@ -511,9 +511,8 @@ $(document).ready(function (){
 /*!*********************************!*\
   !*** ./src/js/common/errors.js ***!
   \*********************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module) => {
 
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
  const handle_errors = function(errors, elem){
     var result = ''
     for (var field in errors){
@@ -522,9 +521,6 @@ $(document).ready(function (){
     }
     elem.html(result);
 
-    $([document.documentElement, document.body]).animate({
-        scrollTop: elem.offset().top
-    }, 200);
 }
 
 module.exports.handle_errors = handle_errors;
@@ -761,4 +757,4 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-664cbe048d35ed934973.bundle.js.map
+//# sourceMappingURL=client-fa02799b96299d53efa3.bundle.js.map

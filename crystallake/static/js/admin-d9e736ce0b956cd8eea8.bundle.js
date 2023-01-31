@@ -1423,9 +1423,8 @@ $(document).ready(function(){
 /*!*********************************!*\
   !*** ./src/js/common/errors.js ***!
   \*********************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module) => {
 
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
  const handle_errors = function(errors, elem){
     var result = ''
     for (var field in errors){
@@ -1434,9 +1433,6 @@ $(document).ready(function(){
     }
     elem.html(result);
 
-    $([document.documentElement, document.body]).animate({
-        scrollTop: elem.offset().top
-    }, 200);
 }
 
 module.exports.handle_errors = handle_errors;
@@ -2905,4 +2901,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-2fe78d531e507254321a.bundle.js.map
+//# sourceMappingURL=admin-d9e736ce0b956cd8eea8.bundle.js.map

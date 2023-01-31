@@ -1,5 +1,6 @@
 from random import choices
 import string
+from datetime import datetime
 from uuid import uuid4
 
 from django.contrib.auth.base_user import BaseUserManager
@@ -64,6 +65,13 @@ class CustomUserManager(BaseUserManager):
 
 class SmsCodeManager(models.Manager):
     def send_sms(self, phone):
+        min_date = datetime.now() - settings.CODE_ACTIVE_TIME
+        # ЕСЛИ ЕСТЬ АКТИВНЫЙ КОД, ТО НЕ ОТПРАВЛЯЕМ
+        if self.model.objects.exclude(date__lt=timezone.make_aware(min_date)).filter(
+                is_used=False,
+                phone=phone
+        ).exists():
+            return
         code = ''.join(choices(string.ascii_uppercase + string.digits, k=5))
         date = timezone.now()
         with open(settings.CODES_FILE, 'a') as f:

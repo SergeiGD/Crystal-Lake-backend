@@ -4,7 +4,7 @@ $(document).ready(function (){
     $('.ajax_redirect').on('submit', function (){
         event.preventDefault();
 
-        const errors_list = $(this).find('.auth_errors')
+        const errors_list = $(this).find('.errors_wrapper')
 
         $.ajax({
             url: $(this).attr('action'),

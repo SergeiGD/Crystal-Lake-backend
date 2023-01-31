@@ -4,7 +4,7 @@ $(document).ready(function (){
     $('#client_reset_phone_form').on('submit', function (e){
         e.preventDefault();
 
-        const errors_list = $(this).find('.auth_errors')
+        const errors_list = $(this).find('.errors_wrapper')
 
         $.ajax({
             url: $(this).attr('action'),

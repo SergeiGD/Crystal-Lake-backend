@@ -1,0 +1,16 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins;
+
+.errors_wrapper{
+    margin-bottom: 1em;
+    list-style-type: none;
+    background-color: vars.$red_color;
+    border-radius: vars.$radius;
+    color: #fff;
+    padding: 0.5em;
+    line-height: 1.5;
+
+    &:empty{
+        display: none;
+    }
+}

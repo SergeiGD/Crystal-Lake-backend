@@ -1,0 +1,98 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <section class="section">
+
+        <div class="content_container">
+
+            <h2 class="section_title">Личный кабинет</h2>
+
+            <div class="breadcrumbs">
+                <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
+                <span>&#10148;</span>
+                <p class="breadcrumbs_item breadcrumbs_item__active">Профиль</p>
+            </div>
+
+            <div class="profile">
+
+                {% include 'client_profile/profile_menu.html' %}
+
+                <div class="profile_content">
+
+                    <form class="profile_info ajax_redirect" action="." method="post">
+
+                        {% csrf_token %}
+
+                        <div class="fields">
+
+                        <div class="errors_wrapper"></div>
+
+{#                            {% for field in form %}#}
+{#                                {% if field.errors %}#}
+{#                                    <div class="errors_wrapper">#}
+{#                                        <ul>#}
+{#                                            {% for error in field.errors %}#}
+{#                                                <li>{{ error }}</li>#}
+{#                                            {% endfor %}#}
+{#                                        </ul>#}
+{#                                    </div>#}
+{#                                {% endif %}#}
+{#                            {% endfor %}#}
+
+                            <div class="field_item">
+                                <label for="{{ form.first_name.id_for_label }}" class="profile_label">{{ form.first_name.label }}</label>
+                                <div class="field_content">
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+
+                            <div class="field_item">
+                                <label for="{{ form.last_name.id_for_label }}" class="profile_label">{{ form.last_name.label }}</label>
+                                <div class="field_content">
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+
+                            <div class="field_item">
+                                <label for="{{ form.email.id_for_label }}" class="profile_label">{{ form.email.label }}</label>
+                                <div class="field_content">
+                                    {{ form.email }}
+                                </div>
+                            </div>
+
+                            <div class="field_item">
+                                <label for="{{ form.phone.id_for_label }}" class="profile_label">{{ form.phone.label }}</label>
+                                <div class="field_content">
+                                    {{ form.phone }}
+                                </div>
+                            </div>
+
+                            <div class="field_item">
+                                <label for="{{ form.gender.id_for_label }}" class="profile_label">{{ form.gender.label }}</label>
+                                <div class="field_content">
+                                    {{ form.gender }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="profile_info_btns">
+                            <button class="button__profile button__profile__save" type="submit">
+                                Сохранить
+                            </button>
+                            <button class="button__profile button__profile__passwd" type="button" data-goto="{% url 'client_change_password' %}">
+                                Изменить пароль
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock content %}

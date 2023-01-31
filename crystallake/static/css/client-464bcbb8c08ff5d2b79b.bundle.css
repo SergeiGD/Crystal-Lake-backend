@@ -749,6 +749,39 @@ body {
   border-color: transparent;
 }
 
+.errors_wrapper {
+  margin-bottom: 1em;
+  list-style-type: none;
+  background-color: #FF0914;
+  border-radius: 5px;
+  color: #fff;
+  padding: 0.5em;
+  line-height: 1.5;
+}
+.errors_wrapper:empty {
+  display: none;
+}
+
+.dates .dates_title, .info .info_title, .description .description_title {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.profile_info .profile_info_btns .button__profile, .cart_info .button__pay, .intro .find_rooms .button__find, .login_popup .login_buttons .login_button, .description .description_extra .description_button_wrapper .button__description, .footer_section .button__footer, .filter_button, .book .button__book, .card_short .card_inner .card_info .card_button__long, .card_long .card_long_buttons .card_button {
+  font-size: 1.1rem;
+  display: inline;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.15s linear, color 0.15s linear;
+  padding: 0.5em;
+}
+
+.profile_info .profile_info_btns .button__profile:hover, .cart_info .button__pay:hover, .intro .find_rooms .button__find:hover, .login_popup .login_buttons .login_button:hover, .description .description_extra .description_button_wrapper .button__description:hover, .footer_section .button__footer:hover, .filter_button:hover, .book .button__book:hover, .card_short .card_inner .card_info .card_button__long:hover, .card_long .card_long_buttons .card_button:hover {
+  background-color: #E72574;
+  color: #fff;
+  border-color: transparent;
+}
+
 .section {
   padding-top: 9rem;
 }
@@ -2224,17 +2257,6 @@ body {
 .login_popup .hidden_auth_form {
   display: none;
 }
-.login_popup .auth_errors {
-  margin-bottom: 1em;
-  list-style-type: none;
-  background-color: #FF0914;
-  border-radius: 5px;
-  color: #fff;
-  padding: 0.5em;
-}
-.login_popup .auth_errors:empty {
-  display: none;
-}
 
 .login_popup__active {
   display: flex;
@@ -2856,7 +2878,7 @@ body {
   width: 100%;
 }
 .profile_info .input_field__phone {
-  width: 7.5em;
+  width: 9em;
 }
 .profile_info .input_field__email {
   width: 100%;
@@ -4153,4 +4175,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=client-0ae1fb39d6df26bbe2a0.bundle.css.map*/
+/*# sourceMappingURL=client-464bcbb8c08ff5d2b79b.bundle.css.map*/

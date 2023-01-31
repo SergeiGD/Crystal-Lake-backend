@@ -124,19 +124,6 @@
         display: none;
     }
 
-    .auth_errors{
-        margin-bottom: 1em;
-        list-style-type: none;
-        background-color: vars.$red_color;
-        border-radius: vars.$radius;
-        color: #fff;
-        padding: 0.5em;
-
-        &:empty{
-            display: none;
-        }
-    }
-
 }
 
 .login_popup__active{

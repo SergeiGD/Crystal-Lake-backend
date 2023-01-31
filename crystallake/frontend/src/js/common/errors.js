@@ -6,9 +6,6 @@
     }
     elem.html(result);
 
-    $([document.documentElement, document.body]).animate({
-        scrollTop: elem.offset().top
-    }, 200);
 }
 
 module.exports.handle_errors = handle_errors;

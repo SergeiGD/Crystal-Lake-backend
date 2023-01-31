@@ -3,7 +3,7 @@ from datetime import timedelta, datetime
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, View, TemplateView
+from django.views.generic import ListView, View, TemplateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
@@ -12,12 +12,12 @@ from django.utils import timezone
 from ..order.models import Order
 from ..core.utils import SafePaginator
 from ..core.utils import ResponseMessage, RelocateResponseMixin, ClientContextMixin
-from .forms import ClientLoginForm, SendCodeForm, ClientPhoneForm, ClientPasswordsForm
+from .forms import ClientLoginForm, SendCodeForm, ClientPhoneForm, ClientPasswordsForm, ClientInfoForm
 from ..order.models import Order, Purchase
 from ..client.models import Client
 from ..user.models import SmsCode, CustomUser
 from ..worker.models import Worker
-from .utils import SmsCodeMixin, PasswordsMixin
+from .utils import SmsCodeMixin
 
 # Create your views here.
 
@@ -48,6 +48,33 @@ class ActiveOrdersCatalog(LoginRequiredMixin, ListView):
         return orders
 
 
+class ClientInfoView(RelocateResponseMixin, LoginRequiredMixin, UpdateView):
+    login_url = 'index'
+    model = Client
+    template_name = 'client_profile/info.html'
+    context_object_name = 'client'
+    form_class = ClientInfoForm
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = 'profile'
+        context['current_profile_page'] = 'info'
+
+        return context
+
+    def form_invalid(self, form):
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
+
+    def form_valid(self, form):
+        form.instance.save()
+        return self.relocate(reverse_lazy('client_info'))
+
+
 class ClientLoginView(RelocateResponseMixin, View):
     def post(self, request):
         if request.user.is_authenticated and not request.user.is_staff:
@@ -61,7 +88,6 @@ class ClientLoginView(RelocateResponseMixin, View):
                 login(request, client)
                 return self.relocate(reverse_lazy('active_orders'))
             else:
-                # branch test
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
                     'Неверные данные': ['Не найден пользователь с таким номером и паролем']
                 })
@@ -101,7 +127,7 @@ class SendRegisterCodeView(SmsCodeMixin, RelocateResponseMixin, View):
             return response
 
 
-class ClientRegisterView(PasswordsMixin, View):
+class ClientRegisterView(View):
     def post(self, request):
         phone_form = ClientPhoneForm(request.POST, prefix='register')
         passwords_form = ClientPasswordsForm(request.POST, prefix='register')
@@ -117,11 +143,7 @@ class ClientRegisterView(PasswordsMixin, View):
             client = Client.objects.filter(phone=phone, is_active=False).first()
             if client is None:
                 client = Client()
-            password1 = cleaned_data['password1']
-            password2 = cleaned_data['password2']
-            if password1 != password2:
-                return self.get_unequal_passwords_error()
-            password = make_password(password1)
+            password = make_password(cleaned_data['password1'])
             client.phone = phone
             client.password = password
             client.is_active = False
@@ -131,7 +153,7 @@ class ClientRegisterView(PasswordsMixin, View):
             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
             return response
         else:
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={**passwords_form, **phone_form})
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
 
@@ -157,7 +179,11 @@ class ClientResetPasswordCodeView(View):
             return response
 
 
-class ClientResetPasswordView(PasswordsMixin, SmsCodeMixin, RelocateResponseMixin, View):
+class ClientResetPasswordView(SmsCodeMixin, RelocateResponseMixin, View):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.relocate_url = reverse_lazy('active_orders')
+
     def post(self, request):
         passwords_form = ClientPasswordsForm(request.POST, prefix='reset')
         code_form = SendCodeForm(request.POST, prefix='reset')
@@ -168,21 +194,35 @@ class ClientResetPasswordView(PasswordsMixin, SmsCodeMixin, RelocateResponseMixi
             client = Client.objects.filter(phone=sms_code.phone).first()
             if client is None:
                 return self.get_unknown_phone_error()
-            password1 = passwords_form.cleaned_data['password1']
-            password2 = passwords_form.cleaned_data['password2']
-            if password1 != password2:
-                return self.get_unequal_passwords_error()
-            password = make_password(password1)
+            password = make_password(passwords_form.cleaned_data['password1'])
             client.password = password
             client.save()
             sms_code.is_used = True
             sms_code.save()
             login(request, client)
-            return self.relocate(reverse_lazy('active_orders'))
+            return self.relocate(self.relocate_url)
         else:
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=reset_form.errors)
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={**passwords_form.errors, **code_form.errors})
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
+
+
+class ClientChangePasswordView(ClientResetPasswordView, LoginRequiredMixin):
+    login_url = 'index'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.relocate_url = reverse_lazy('client_info')
+
+    def get(self, request):
+        context = {
+            'current_page': 'profile',
+            'current_profile_page': 'info',
+            'code_form':  SendCodeForm(prefix='reset'),
+            'passwords_form': ClientPasswordsForm(prefix='reset')
+        }
+        SmsCode.objects.send_sms(request.user.phone)
+        return render(request, template_name='client_profile/change_password.html', context=context)
 
 
 class CartView(ClientContextMixin, TemplateView):
@@ -213,4 +253,5 @@ class CartView(ClientContextMixin, TemplateView):
         context['cart_items'] = cart_items
         context['current_page'] = 'cart'
         return context
+
 

@@ -7,9 +7,9 @@
     <div class="profile_menu_item">
         <i class="fa-solid fa-list-ul"></i>
         {% if current_profile_page == 'active_orders' %}
-            <a href="#" class="profile_menu_title profile_menu_title__active">Активные заказы</a>
+            <a href="{% url 'active_orders' %}" class="profile_menu_title profile_menu_title__active">Активные заказы</a>
         {% else %}
-            <a href="#" class="profile_menu_title">Активные заказы</a>
+            <a href="{% url 'active_orders' %}" class="profile_menu_title">Активные заказы</a>
         {% endif %}
     </div>
     <div class="profile_menu_item">
@@ -23,9 +23,9 @@
     <div class="profile_menu_item">
         <i class="fa-regular fa-user"></i>
         {% if current_profile_page == 'info' %}
-            <a href="#" class="profile_menu_title profile_menu_title__active">Профиль</a>
+            <a href="{% url 'client_info' %}" class="profile_menu_title profile_menu_title__active">Профиль</a>
         {% else %}
-            <a href="profile_info.html" class="profile_menu_title">Профиль</a>
+            <a href="{% url 'client_info' %}" class="profile_menu_title">Профиль</a>
         {% endif %}
     </div>
     <div class="profile_menu_item">

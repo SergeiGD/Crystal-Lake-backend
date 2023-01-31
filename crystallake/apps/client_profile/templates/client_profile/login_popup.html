@@ -14,7 +14,7 @@
 
             {% csrf_token %}
 
-            <div class="auth_errors"></div>
+            <div class="errors_wrapper"></div>
 
             <div class="login_fields">
                 {{ login_form.phone }}
@@ -31,7 +31,7 @@
 
             {% csrf_token %}
 
-            <div class="auth_errors"></div>
+            <div class="errors_wrapper"></div>
 
             <div class="login_fields">
                 {{ reset_phone_form.phone }}
@@ -48,7 +48,7 @@
 
             {% csrf_token %}
 
-            <div class="auth_errors"></div>
+            <div class="errors_wrapper"></div>
 
             <div class="login_fields">
                 {{ reset_passwords_form.password1 }}
@@ -80,7 +80,7 @@
 
             {% csrf_token %}
 
-            <div class="auth_errors"></div>
+            <div class="errors_wrapper"></div>
 
             <div class="login_fields">
                 {{ register_phone_form.phone }}
@@ -97,7 +97,7 @@
 
             {% csrf_token %}
 
-            <div class="auth_errors"></div>
+            <div class="errors_wrapper"></div>
 
             <div class="login_fields">
                 {{ register_code_form.code }}

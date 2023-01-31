@@ -4,7 +4,7 @@ $(document).ready(function (){
     $('#client_register_from').on('submit', function (){
         event.preventDefault();
 
-        const errors_list = $(this).find('.auth_errors')
+        const errors_list = $(this).find('.errors_wrapper')
 
         $.ajax({
             url: $(this).attr('action'),

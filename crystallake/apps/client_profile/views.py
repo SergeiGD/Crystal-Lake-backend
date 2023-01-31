@@ -50,14 +50,14 @@ class ActiveOrdersCatalog(LoginRequiredMixin, ListView):
 
 class ClientLoginView(RelocateResponseMixin, View):
     def post(self, request):
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and not request.user.is_staff:
             return self.relocate(reverse_lazy('active_orders'))
         form = ClientLoginForm(request.POST)
         if form.is_valid():
             phone = form.cleaned_data['phone']
             password = form.cleaned_data['password']
             client = authenticate(phone=phone, password=password)
-            if client is not None:
+            if client is not None and not client.is_staff:
                 login(request, client)
                 return self.relocate(reverse_lazy('active_orders'))
             else:

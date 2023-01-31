@@ -1,4 +1,4 @@
-const errors = require("../errors");
+const errors = require("../../common/errors");
 $(document).ready(function (){
 
     $('.add_additional_form').on('submit', function (event, data={}){

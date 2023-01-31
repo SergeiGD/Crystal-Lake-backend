@@ -30,7 +30,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {
             "fields": (
-                ('phone', 'first_name', 'last_name', 'password', 'groups', 'is_superuser', 'is_staff')
+                ('phone', 'first_name', 'last_name', 'password', 'groups', 'is_superuser', 'is_staff', 'is_active')
             ),
         }),
     )

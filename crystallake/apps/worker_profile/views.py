@@ -39,7 +39,7 @@ class AdminLoginView(RelocateResponseMixin, LoginView):
                 return redirect(reverse_lazy('admin_orders'))
             else:
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                    'Неверные данные': 'не найден сотрудник с таким номером телефона и паролем'
+                    'Неверные данные': 'Не найден сотрудник с таким номером и паролем'
                 })
                 response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
                 return response

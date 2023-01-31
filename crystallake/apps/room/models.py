@@ -8,6 +8,7 @@ from django.utils.timezone import localtime, make_aware
 
 from ..offer.models import Offer, OfferQuerySet
 from ..order.models import Purchase
+from django.conf import settings
 
 # Create your models here.
 
@@ -48,10 +49,9 @@ class RoomQuerySet(OfferQuerySet):
         if kwargs.get('rooms_until', ''):
             qs = qs.filter(rooms__lte=kwargs['rooms_until'])
         if kwargs.get('dates_from', '') and kwargs.get('dates_until', ''):
-            # TODO: ЗАШИТЬ ЧАСЫ НАЧАЛА И КОНЦА БРОНИ В КОНФИГ
             if isinstance(kwargs['dates_from'], date):
-                dates_from = datetime.combine(kwargs['dates_from'], time(0, 0, 0))
-                dates_until = datetime.combine(kwargs['dates_until'], time(0, 0, 0))
+                dates_from = datetime.combine(kwargs['dates_from'], settings.CHECK_IN_TIME)
+                dates_until = datetime.combine(kwargs['dates_until'], settings.CHECK_IN_TIME)
             else:
                 dates_from = datetime.strptime(kwargs['dates_from'], "%Y-%m-%d")
                 dates_until = datetime.strptime(kwargs['dates_until'], "%Y-%m-%d")
@@ -108,7 +108,6 @@ class Room(Offer):
 
         while start != end:
             rooms_dates = {}
-            # TODO: УБРАТЬ ТУТ ДЕНЬ -1 ПОСЛЕ ТОГО КАК ИСПАВЛЮ ВРЕМЯ ЗАЛЕСЕНИЯ ВЫСЕЛЕНИЯ
             dates_range = DateTimeRange(start, end - timedelta(days=1))
             for room in self.get_same_rooms():
                 rooms_dates[room] = 0
@@ -121,10 +120,11 @@ class Room(Offer):
             room = max_room_delta[0]
             room_start = start
             room_end = start + timedelta(days=max_room_delta[1])
+            # ТУПА ТУТ У ЕНДА СТАВИМ ДРУГЙО КОНЕЦ
             result.append({
                 'room': room,
                 'start': room_start,
-                'end': room_end
+                'end': datetime.combine(room_end.date(), settings.CHECK_OUT_TIME)
             })
             start = room_end
             if max_room_delta[1] == 0:

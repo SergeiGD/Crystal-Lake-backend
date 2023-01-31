@@ -21,8 +21,8 @@ class Client(CustomUser):
     def get_admin_edit_url(self):
         return reverse('admin_edit_client', kwargs={'client_id': self.pk})
 
-    def get_admin_delete_url(self):
-        return reverse('admin_delete_client', kwargs={'client_id': self.pk})
+    # def get_admin_delete_url(self):
+    #     return reverse('admin_delete_client', kwargs={'client_id': self.pk})
 
 
 # @receiver(pre_save, sender=Client)

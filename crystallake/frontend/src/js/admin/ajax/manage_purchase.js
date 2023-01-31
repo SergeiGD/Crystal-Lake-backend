@@ -1,4 +1,4 @@
-const errors = require("../errors");
+const errors = require("../../common/errors");
 $(document).ready(function (){
 
     $('.manage_purchase').on('submit', function (event){

@@ -9,7 +9,7 @@ from django.http import HttpResponse, Http404
 from django.utils.timezone import localtime, now
 
 
-from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, parse_datetime, is_ajax, ContextMixin
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, parse_datetime, is_ajax, ClientContextMixin
 from django.template.loader import render_to_string
 from .models import Room
 from .forms import RoomForm, SearchRoomsForm, SearchRoomsAdmin, BookRoomForm
@@ -22,7 +22,7 @@ from ..client.models import Client
 # Create your views here.
 
 
-class RoomsCatalog(ContextMixin, ListView):
+class RoomsCatalog(ClientContextMixin, ListView):
     template_name = 'room/rooms.html'
     model = Room
     context_object_name = 'rooms'
@@ -49,7 +49,7 @@ class RoomsCatalog(ContextMixin, ListView):
         return rooms
 
 
-class RoomDetail(DetailView):
+class RoomDetail(ClientContextMixin, DetailView):
     template_name = 'room/room.html'
     model = Room
     slug_url_kwarg = 'room_slug'
@@ -60,7 +60,7 @@ class RoomDetail(DetailView):
         context['current_page'] = 'rooms'
         context['familiar'] = self.object.get_familiar()
         context['book_form'] = BookRoomForm(self.request.POST, user=self.request.user)
-        return context
+        return {**context, **self.get_general_context()}
 
     def get_object(self, queryset=None):
         obj = super(RoomDetail, self).get_object(queryset=queryset)
@@ -119,14 +119,6 @@ class RoomDetail(DetailView):
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=book_form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
-
-
-                # purchase = Purchase(
-                #     order=order,
-                #     start=book_form.cleaned_data['date_start'],
-                #     end=book_form.cleaned_data['date_end']
-                # )
-
 
 
 class AdminRoomsList(PermissionRequiredMixin, ListView):

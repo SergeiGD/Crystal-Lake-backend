@@ -30,7 +30,6 @@ module.exports = {
     entry: {
         client: [
             path.resolve(__dirname,'src/scss/style.scss'),
-            path.resolve(__dirname,'src/js/client/ajax/login.js'),
             path.resolve(__dirname,'src/js/common/redirect.js'),
             path.resolve(__dirname,'src/js/client/header_burger.js'),
             path.resolve(__dirname,'src/js/client/login_popup.js'),
@@ -40,11 +39,12 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/infinity_catalog.js'),
             path.resolve(__dirname,'src/js/client/picked_time.js'),
             path.resolve(__dirname,'src/js/client/sortby.js'),
-            path.resolve(__dirname,'src/js/client/slick-slider/slick_starter.js'),
-            path.resolve(__dirname,'src/js/common/evo-calendar/evo-starter.js'),
+            path.resolve(__dirname,'src/js/client/ajax/register.js'),
+            path.resolve(__dirname,'src/js/client/ajax/ajax_redirect.js'),
+            path.resolve(__dirname,'src/js/client/ajax/reset_password.js'),
 
-
-            path.resolve(__dirname,'src/js/admin/ajax/get_dates_info.js'),
+            // path.resolve(__dirname,'src/js/common/evo-calendar/evo-starter.js'),
+            // path.resolve(__dirname,'src/js/admin/ajax/get_dates_info.js'),
         ],
         admin: [
             path.resolve(__dirname,'src/scss/admin.scss'),

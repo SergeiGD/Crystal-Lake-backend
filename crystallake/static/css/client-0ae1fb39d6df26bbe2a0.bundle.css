@@ -2181,6 +2181,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1em;
+  margin-bottom: 1em;
 }
 .login_popup .login_fields .login_field {
   border-radius: 5px;
@@ -2219,6 +2220,20 @@ body {
 }
 .login_popup .login_close:hover {
   color: #E72574;
+}
+.login_popup .hidden_auth_form {
+  display: none;
+}
+.login_popup .auth_errors {
+  margin-bottom: 1em;
+  list-style-type: none;
+  background-color: #FF0914;
+  border-radius: 5px;
+  color: #fff;
+  padding: 0.5em;
+}
+.login_popup .auth_errors:empty {
+  display: none;
 }
 
 .login_popup__active {
@@ -4138,4 +4153,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=client-7bbd42f026c0ed093a27.bundle.css.map*/
+/*# sourceMappingURL=client-0ae1fb39d6df26bbe2a0.bundle.css.map*/

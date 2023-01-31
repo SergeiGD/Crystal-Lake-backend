@@ -1,18 +1,18 @@
-$(document).ready(function (){
+const errors = require("../../common/errors");
 
-    $('#temp_login_from_id').on('submit', function (event){
+$(document).ready(function (){
+    $('.ajax_redirect').on('submit', function (){
         event.preventDefault();
+
+        const errors_list = $(this).find('.auth_errors')
 
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
             data: $(this).serialize(),
-            success: function (response){
-                console.log(response.data)
-            },
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                console.log(response['message'])
+                errors.handle_errors(response['message'], errors_list)
             },
         }).statusCode({
            302: function (data){
@@ -20,6 +20,5 @@ $(document).ready(function (){
                 window.location.href = response['data']
             }
         });
-
-    });
+    })
 })

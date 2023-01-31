@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.template.loader import render_to_string
 
 from .models import Service, ServiceTimetable
-from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, is_ajax
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, is_ajax, ClientContextMixin
 from .forms import SearchServicesForm, ServiceForm, TimetableForm
 from ..offer.utils import ManageOfferMixin
 from ..photo.forms import PhotoForm
@@ -21,7 +21,7 @@ from ..worker.models import Worker
 # Create your views here.
 
 
-class ServiceDetail(DetailView):
+class ServiceDetail(ClientContextMixin, DetailView):
     template_name = 'service/service.html'
     model = Service
     slug_url_kwarg = 'service_slug'
@@ -31,7 +31,7 @@ class ServiceDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'services'
         context['familiar'] = self.object.get_familiar()
-        return context
+        return {**context, **self.get_general_context()}
 
     def get_object(self, queryset=None):
         obj = super(ServiceDetail, self).get_object(queryset=queryset)
@@ -40,7 +40,7 @@ class ServiceDetail(DetailView):
         return obj
 
 
-class ServicesCatalog(ListView):
+class ServicesCatalog(ClientContextMixin, ListView):
     model = Service
     context_object_name = 'services'
     paginator_class = SafePaginator
@@ -51,7 +51,7 @@ class ServicesCatalog(ListView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'services'
         context['search_form'] = SearchServicesForm(self.request.GET)
-        return context
+        return {**context, **self.get_general_context()}
 
     def get_queryset(self):
         search_form = SearchServicesForm(self.request.GET)

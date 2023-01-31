@@ -167,6 +167,15 @@ MEDIA_ROOT = path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
-# LOGOUT_REDIRECT_URL = 'index'
 
 # TODO: ПО СКОЛЬКО ПАГИНАЦИЯ
+
+try:
+    from .additional_settings.sms_settings import *
+except ImportError:
+    pass
+
+try:
+    from .additional_settings.rooms_settings import *
+except ImportError:
+    pass

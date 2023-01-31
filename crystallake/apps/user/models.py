@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils import timezone
 
-from .managers import CustomUserManager
+from .managers import CustomUserManager, SmsCodeManager
 
 # Create your models here.
 
@@ -46,6 +46,8 @@ class CustomUser(AbstractUser):
 
     @property
     def full_name(self):
+        if not self.first_name and not self.last_name:
+            return 'Неизвестно'
         return f'{self.first_name} {self.last_name}'
 
     class Meta:
@@ -59,3 +61,32 @@ class CustomUser(AbstractUser):
         self.last_name = self.last_name + '-DELETED'
         self.save()
 
+
+class SmsCode(models.Model):
+    phone = PhoneNumberField(
+        null=False,
+        blank=False,
+        unique=False,
+        region='RU',
+        verbose_name='Номер телефона'
+    )
+    date = models.DateTimeField(
+        null=False,
+        blank=False,
+        unique=False,
+        verbose_name='Время отправки'
+    )
+    code = models.TextField(
+        null=False,
+        blank=False,
+        unique=False,
+        verbose_name='Код'
+    )
+    is_used = models.BooleanField(
+        null=False,
+        blank=False,
+        default=False,
+        verbose_name='Использован'
+    )
+
+    objects = SmsCodeManager()

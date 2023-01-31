@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse
 from django.utils import timezone
 
-from ..client_profile.forms import ClientLoginForm
+from ..client_profile.forms import ClientLoginForm, SendCodeForm, ClientPasswordsForm, ClientPhoneForm
 
 
 class SafePaginator(Paginator):
@@ -41,10 +41,16 @@ class RelocateResponseMixin:
         return response
 
 
-class ContextMixin:
+class ClientContextMixin:
     def get_general_context(self):
         context = {
-            'login_form': ClientLoginForm()
+            'login_form': ClientLoginForm(),
+            'register_phone_form': ClientPhoneForm(prefix='register'),
+            'register_passwords_form': ClientPasswordsForm(prefix='register'),
+            'register_code_form': SendCodeForm(prefix='register'),
+            'reset_phone_form': ClientPhoneForm(prefix='reset'),
+            'reset_code_form': SendCodeForm(prefix='reset'),
+            'reset_passwords_form': ClientPasswordsForm(prefix='reset'),
         }
         return context
 

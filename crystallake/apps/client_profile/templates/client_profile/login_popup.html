@@ -1,0 +1,114 @@
+<div class="modal_wrapper modal_wrapper__dark" id="login_modal">
+    <div class="login_popup login_popup__active" id="login_popup">
+
+        <div class="login_title">
+            <p class="login_link login_link__active">Вход</p>
+            <span>/</span>
+            <p class="login_link" id="goto_singup">Регистрация</p>
+            <button class="login_close" id="login_close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form action="{% url 'client_login' %}" method="POST" id="client_login_form" class="ajax_redirect">
+
+            {% csrf_token %}
+
+            <div class="auth_errors"></div>
+
+            <div class="login_fields">
+                {{ login_form.phone }}
+                {{ login_form.password }}
+                <p class="login_reset" id="reset_password_btn">Забыли пароль?</p>
+            </div>
+
+            <div class="login_buttons">
+                <button class="login_button" type="submit">Войти</button>
+            </div>
+        </form>
+
+        <form action="{% url 'client_code_reset_password' %}" method="POST" id="client_reset_phone_form" class="hidden_auth_form">
+
+            {% csrf_token %}
+
+            <div class="auth_errors"></div>
+
+            <div class="login_fields">
+                {{ reset_phone_form.phone }}
+            </div>
+
+            <div class="login_buttons">
+                <button class="login_button" type="submit">Продолжить</button>
+
+                <button class="login_button" id="back_to_login_btn" type="button">Назад</button>
+            </div>
+        </form>
+
+        <form action="{% url 'client_reset_password' %}" method="POST" id="client_reset_form" class="hidden_auth_form ajax_redirect">
+
+            {% csrf_token %}
+
+            <div class="auth_errors"></div>
+
+            <div class="login_fields">
+                {{ reset_passwords_form.password1 }}
+                {{ reset_passwords_form.password2 }}
+                {{ reset_code_form.code }}
+            </div>
+
+            <div class="login_buttons">
+                <button class="login_button" type="submit">Подтвердить</button>
+
+                <button class="login_button" id="back_to_reset_phone_btn" type="button">Назад</button>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="login_popup" id="signup_popup">
+
+        <div class="login_title">
+            <p class="login_link" id="goto_login">Вход</p>
+            <span>/</span>
+            <p class="login_link login_link__active">Регистрация</p>
+            <button class="login_close" id="signup_close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form action="{% url 'client_register' %}" method="POST" id="client_register_from">
+
+            {% csrf_token %}
+
+            <div class="auth_errors"></div>
+
+            <div class="login_fields">
+                {{ register_phone_form.phone }}
+                {{ register_passwords_form.password1 }}
+                {{ register_passwords_form.password2 }}
+            </div>
+
+            <div class="login_buttons">
+                <button class="login_button" type="submit" id="send_register_code_btn">Прислать код</button>
+            </div>
+        </form>
+
+        <form action="{% url 'client_code_register' %}" method="POST" id="client_register_code_from" class="hidden_auth_form ajax_redirect">
+
+            {% csrf_token %}
+
+            <div class="auth_errors"></div>
+
+            <div class="login_fields">
+                {{ register_code_form.code }}
+            </div>
+
+            <div class="login_buttons">
+                <button class="login_button" type="submit" id="end_signup_button">Подтвердить</button>
+
+                <button class="login_button" id="back_to_register_btn" type="button">Назад</button>
+            </div>
+        </form>
+
+    </div>
+</div>

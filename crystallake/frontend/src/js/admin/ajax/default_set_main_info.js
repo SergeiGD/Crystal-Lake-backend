@@ -1,4 +1,4 @@
-const errors = require("../errors");
+const errors = require("../../common/errors");
 
 $(document).ready(function (){
     $('.default_ajax_edit').on('submit', function (event){

@@ -1,19 +1,14 @@
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, View
+from django.views.generic import ListView
 
 from ..room.models import Room
 from ..service.models import Service
-from .utils import ResponseMessage, RelocateResponseMixin
+from .utils import ClientContextMixin
 
 
 # Create your views here.
 
 
-class Index(ListView):
+class Index(ClientContextMixin, ListView):
     template_name = 'core/index.html'
     model = Room
     context_object_name = 'rooms'
@@ -22,7 +17,7 @@ class Index(ListView):
         context = super().get_context_data(**kwargs)
         context['services'] = Service.objects.filter(is_hidden=False)[:3]
         context['current_page'] = 'index'
-        return context
+        return {**context, **self.get_general_context()}
 
     def get_queryset(self):
         return Room.objects.filter(is_hidden=False, main_room=None)[:3]

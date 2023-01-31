@@ -1,4 +1,4 @@
-const errors = require("../errors");
+const errors = require("../../common/errors");
 $(document).ready(function (){
     //var workers = []
     var workers = {}
@@ -45,7 +45,6 @@ $(document).ready(function (){
             data: form_data,
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                console.log(response)
                 errors.handle_errors(response['message'], form.find(".timetable_errors"))
             },
             success: function (){

@@ -28,45 +28,6 @@ class Order(models.Model):
     date_finished = models.DateTimeField(verbose_name="дата завершения", blank=True, null=True)
     date_canceled = models.DateTimeField(verbose_name="дата отмены", blank=True, null=True)
 
-    # def check_payment(self):
-    #     if self.paid != self.prepayment:
-    #         self.date_full_prepayment = None
-    #     elif self.date_full_prepayment is None:
-    #         self.date_full_prepayment = timezone.now()
-    #
-    #     if self.paid != self.price:
-    #         self.date_full_paid = None
-    #     elif self.date_full_paid is None:
-    #         self.date_full_paid = timezone.now()
-    #
-    #     self.save()
-
-    # def update_paid(self):
-    #     paid = 0
-    #     for purchase in self.purchases.all():
-    #         if purchase.is_paid and not purchase.is_refund_made:
-    #             paid += purchase.price
-    #         elif purchase.is_paid and purchase.is_refund_made:
-    #             paid += purchase.price - purchase.refund
-    #         elif purchase.is_prepayment_paid:
-    #             paid += purchase.prepayment
-    #
-    #     self.paid = paid
-    #     if self.paid >= self.prepayment and self.date_full_prepayment is None:
-    #         self.date_full_prepayment = timezone.now()
-    #
-    #     if self.paid < self.price:
-    #         self.date_full_paid = None
-    #     elif self.date_full_paid is None:
-    #         self.date_full_paid = timezone.now()
-    #
-    #     self.save()
-
-        # if self.paid != self.prepayment:
-        #     self.date_full_prepayment = None
-        # elif self.date_full_prepayment is None:
-        #     self.date_full_prepayment = timezone.now()
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.pk:
@@ -98,32 +59,6 @@ class Order(models.Model):
             self.date_full_paid = None
             if self.paid < self.__original_paid:
                 self.purchases.filter(is_canceled=False).update(is_paid=False)
-
-
-    # def mark_as_prepayment_paid(self):
-    #     if not self.date_full_prepayment and self.price > 0:
-    #         for purchase in self.purchases.filter(is_canceled=False):
-    #             purchase.is_prepayment_paid = True
-    #             purchase.save()
-    #         self.update_paid()
-    #
-    # def mark_as_paid(self):
-    #     if not self.date_full_paid and self.price > 0:
-    #         self.mark_as_prepayment_paid()
-    #         for purchase in self.purchases.filter(is_canceled=False):
-    #             purchase.is_paid = True
-    #             purchase.save()
-    #         self.update_paid()
-
-    # def mark_as_prepayment_unpaid(self):
-    #     if self.prepayment > 0:
-    #         for purchase in self.purchases.filter(is_canceled=False):
-    #             purchase.is_prepayment_paid = False
-    #             purchase.is_paid = False
-    #             purchase.save()
-    #         self.date_full_prepayment = None
-    #         self.date_full_paid = None
-    #         self.save()
 
     def mark_as_refund_made(self):
         for purchase in self.purchases.filter(is_canceled=True, is_refund_made=False):
@@ -169,15 +104,6 @@ class Order(models.Model):
 
         return price
 
-        # for purchase in self.purchases.filter(is_canceled=False):
-        #     price += purchase.price
-        # for purchase in self.purchases.filter(is_canceled=True):
-        #     if purchase.is_paid:
-        #         price += purchase.price - purchase.refund
-        #     else:
-        #         price += purchase.prepayment
-        # return price
-
     @property
     def prepayment(self):
         prepayment = 0
@@ -186,16 +112,6 @@ class Order(models.Model):
         for purchase in self.purchases.filter(is_canceled=False):
             prepayment += purchase.prepayment
         return prepayment
-
-    # @property
-    # def paid(self):
-    #     paid = 0
-    #     for purchase in self.purchases.all():
-    #         if purchase.is_full_paid:
-    #             paid += purchase.price
-    #         else:
-    #             paid += purchase.prepayment
-    #     return paid
 
     @property
     def left_to_refund(self):

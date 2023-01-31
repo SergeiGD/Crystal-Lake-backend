@@ -9,13 +9,13 @@
       "name": "css/admin-1d2017df37ac0e197a2d.bundle.css.map",
       "path": "/app/static/css/admin-1d2017df37ac0e197a2d.bundle.css.map"
     },
-    "css/client-7bbd42f026c0ed093a27.bundle.css": {
-      "name": "css/client-7bbd42f026c0ed093a27.bundle.css",
-      "path": "/app/static/css/client-7bbd42f026c0ed093a27.bundle.css"
+    "css/client-0ae1fb39d6df26bbe2a0.bundle.css": {
+      "name": "css/client-0ae1fb39d6df26bbe2a0.bundle.css",
+      "path": "/app/static/css/client-0ae1fb39d6df26bbe2a0.bundle.css"
     },
-    "css/client-7bbd42f026c0ed093a27.bundle.css.map": {
-      "name": "css/client-7bbd42f026c0ed093a27.bundle.css.map",
-      "path": "/app/static/css/client-7bbd42f026c0ed093a27.bundle.css.map"
+    "css/client-0ae1fb39d6df26bbe2a0.bundle.css.map": {
+      "name": "css/client-0ae1fb39d6df26bbe2a0.bundle.css.map",
+      "path": "/app/static/css/client-0ae1fb39d6df26bbe2a0.bundle.css.map"
     },
     "images/intro-60e8cb53066439a45a79.webp": {
       "name": "images/intro-60e8cb53066439a45a79.webp",
@@ -25,21 +25,29 @@
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
       "path": "/app/static/images/why_is-8d9483bc8b97327e78b1.webp"
     },
-    "js/admin-0d0408bf8ef8e4f00aaa.bundle.js": {
-      "name": "js/admin-0d0408bf8ef8e4f00aaa.bundle.js",
-      "path": "/app/static/js/admin-0d0408bf8ef8e4f00aaa.bundle.js"
+    "js/admin-2fe78d531e507254321a.bundle.js": {
+      "name": "js/admin-2fe78d531e507254321a.bundle.js",
+      "path": "/app/static/js/admin-2fe78d531e507254321a.bundle.js"
     },
-    "js/admin-0d0408bf8ef8e4f00aaa.bundle.js.map": {
-      "name": "js/admin-0d0408bf8ef8e4f00aaa.bundle.js.map",
-      "path": "/app/static/js/admin-0d0408bf8ef8e4f00aaa.bundle.js.map"
+    "js/admin-2fe78d531e507254321a.bundle.js.map": {
+      "name": "js/admin-2fe78d531e507254321a.bundle.js.map",
+      "path": "/app/static/js/admin-2fe78d531e507254321a.bundle.js.map"
     },
-    "js/client-c90820282f4117d1fd69.bundle.js": {
-      "name": "js/client-c90820282f4117d1fd69.bundle.js",
-      "path": "/app/static/js/client-c90820282f4117d1fd69.bundle.js"
+    "js/client-664cbe048d35ed934973.bundle.js": {
+      "name": "js/client-664cbe048d35ed934973.bundle.js",
+      "path": "/app/static/js/client-664cbe048d35ed934973.bundle.js"
     },
-    "js/client-c90820282f4117d1fd69.bundle.js.map": {
-      "name": "js/client-c90820282f4117d1fd69.bundle.js.map",
-      "path": "/app/static/js/client-c90820282f4117d1fd69.bundle.js.map"
+    "js/client-664cbe048d35ed934973.bundle.js.map": {
+      "name": "js/client-664cbe048d35ed934973.bundle.js.map",
+      "path": "/app/static/js/client-664cbe048d35ed934973.bundle.js.map"
+    },
+    "js/client-e1c35caa946b71fe7878.bundle.js": {
+      "name": "js/client-e1c35caa946b71fe7878.bundle.js",
+      "path": "/app/static/js/client-e1c35caa946b71fe7878.bundle.js"
+    },
+    "js/client-e1c35caa946b71fe7878.bundle.js.map": {
+      "name": "js/client-e1c35caa946b71fe7878.bundle.js.map",
+      "path": "/app/static/js/client-e1c35caa946b71fe7878.bundle.js.map"
     },
     "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js": {
       "name": "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
@@ -63,12 +71,12 @@
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
       "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
       "css/admin-1d2017df37ac0e197a2d.bundle.css",
-      "js/admin-0d0408bf8ef8e4f00aaa.bundle.js"
+      "js/admin-2fe78d531e507254321a.bundle.js"
     ],
     "client": [
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
-      "css/client-7bbd42f026c0ed093a27.bundle.css",
-      "js/client-c90820282f4117d1fd69.bundle.js"
+      "css/client-0ae1fb39d6df26bbe2a0.bundle.css",
+      "js/client-664cbe048d35ed934973.bundle.js"
     ]
   }
 }

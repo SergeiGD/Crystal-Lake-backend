@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -20,6 +20,7 @@ from ..service.forms import SearchServicesAdmin, SearchTimetablesAdmin
 from ..room.models import Room
 from .status_choises import Status
 from ..service.models import ServiceTimetable
+from django.conf import settings
 
 
 # Create your views here.
@@ -191,8 +192,10 @@ def room_purchase_create_view(request, order_id):
         if form.is_valid():
             room_id = form.cleaned_data['room_id']
             room = get_object_or_404(Room, pk=room_id)
+            start = datetime.combine(form.cleaned_data['start'], settings.CHECK_IN_TIME)
+            end = datetime.combine(form.cleaned_data['end'], settings.CHECK_IN_TIME)
 
-            rooms = room.pick_rooms_for_purchase(form.cleaned_data['start'], form.cleaned_data['end'])
+            rooms = room.pick_rooms_for_purchase(start, end)
             if len(rooms) == 0:
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
                     'Свободность номера': ['Нету свободных комнат на выбранные даты']

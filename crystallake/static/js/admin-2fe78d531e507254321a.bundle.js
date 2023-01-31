@@ -82,7 +82,7 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
+const errors = __webpack_require__(/*! ../../common/errors */ "./src/js/common/errors.js");
 $(document).ready(function (){
 
     $('.add_additional_form').on('submit', function (event, data={}){
@@ -162,7 +162,7 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
+const errors = __webpack_require__(/*! ../../common/errors */ "./src/js/common/errors.js");
 
 $(document).ready(function (){
     $('.default_ajax_edit').on('submit', function (event){
@@ -196,7 +196,7 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
+const errors = __webpack_require__(/*! ../../common/errors */ "./src/js/common/errors.js");
 
 $(document).ready(function (){
 
@@ -461,7 +461,7 @@ $(document).ready(function () {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
+const errors = __webpack_require__(/*! ../../common/errors */ "./src/js/common/errors.js");
 $(document).ready(function (){
 
     $('.manage_purchase').on('submit', function (event){
@@ -497,7 +497,7 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
+const errors = __webpack_require__(/*! ../../common/errors */ "./src/js/common/errors.js");
 $(document).ready(function (){
     //var workers = []
     var workers = {}
@@ -544,7 +544,6 @@ $(document).ready(function (){
             data: form_data,
             error: function (jqXHR){
                 const response = jQuery.parseJSON(jqXHR.responseText)
-                console.log(response)
                 errors.handle_errors(response['message'], form.find(".timetable_errors"))
             },
             success: function (){
@@ -566,7 +565,7 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const errors = __webpack_require__(/*! ../errors */ "./src/js/admin/errors.js");
+const errors = __webpack_require__(/*! ../../common/errors */ "./src/js/common/errors.js");
 $(document).ready(function (){
 
 
@@ -686,30 +685,6 @@ $(document).ready(function() {
     });
 });
 
-
-/***/ }),
-
-/***/ "./src/js/admin/errors.js":
-/*!********************************!*\
-  !*** ./src/js/admin/errors.js ***!
-  \********************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
- const handle_errors = function(errors, elem){
-    var result = ''
-    for (var field in errors){
-        const message = errors[field][0]
-        result += `<li>${message}</li>`
-    }
-    elem.html(result);
-
-    $([document.documentElement, document.body]).animate({
-        scrollTop: elem.offset().top
-    }, 200);
-}
-
-module.exports.handle_errors = handle_errors;
 
 /***/ }),
 
@@ -1441,6 +1416,30 @@ $(document).ready(function(){
     }
 
 })
+
+/***/ }),
+
+/***/ "./src/js/common/errors.js":
+/*!*********************************!*\
+  !*** ./src/js/common/errors.js ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+ const handle_errors = function(errors, elem){
+    var result = ''
+    for (var field in errors){
+        const message = errors[field][0]
+        result += `<li>${message}</li>`
+    }
+    elem.html(result);
+
+    $([document.documentElement, document.body]).animate({
+        scrollTop: elem.offset().top
+    }, 200);
+}
+
+module.exports.handle_errors = handle_errors;
 
 /***/ }),
 
@@ -2906,4 +2905,4 @@ $(document).ready(function(){
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=admin-0d0408bf8ef8e4f00aaa.bundle.js.map
+//# sourceMappingURL=admin-2fe78d531e507254321a.bundle.js.map

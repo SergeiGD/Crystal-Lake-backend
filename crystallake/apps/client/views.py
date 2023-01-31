@@ -51,6 +51,7 @@ class AdminCreatClient(RelocateResponseMixin, CreateView):
         return response
 
     def form_valid(self, form):
+        form.instance.is_active = False
         form.instance.save()
         return self.relocate(form.instance.get_admin_show_url())
 
@@ -64,7 +65,7 @@ class AdminClientDetail(DetailView):    # TODO: не давать возможн
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'clients'
-        context['delete_link'] = self.object.get_admin_delete_url()
+        # context['delete_link'] = self.object.get_admin_delete_url()
         return context
 
 
@@ -90,9 +91,9 @@ class AdminClientUpdate(RelocateResponseMixin, UpdateView):
         return self.relocate(form.instance.get_admin_show_url())
 
 
-def admin_delete_client(request, client_id):
-    get_object_or_404(Client, pk=client_id).mark_as_deleted()
-    return redirect('admin_clients')
+# def admin_delete_client(request, client_id):
+#     get_object_or_404(Client, pk=client_id).mark_as_deleted()
+#     return redirect('admin_clients')
 
 
 def find_clients(request, **kwargs):

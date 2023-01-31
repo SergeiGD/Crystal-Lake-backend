@@ -61,6 +61,7 @@ class ClientLoginView(RelocateResponseMixin, View):
                 login(request, client)
                 return self.relocate(reverse_lazy('active_orders'))
             else:
+                # branch test
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
                     'Неверные данные': ['Не найден пользователь с таким номером и паролем']
                 })
@@ -102,12 +103,6 @@ class SendRegisterCodeView(SmsCodeMixin, RelocateResponseMixin, View):
 
 class ClientRegisterView(PasswordsMixin, View):
     def post(self, request):
-        if request.user.is_authenticated:
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                'Уже авторизированы': ['Для начала выйдите с аккаунта']
-            })
-            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-            return response
         phone_form = ClientPhoneForm(request.POST, prefix='register')
         passwords_form = ClientPasswordsForm(request.POST, prefix='register')
         if phone_form.is_valid() and passwords_form.is_valid():
@@ -143,12 +138,6 @@ class ClientRegisterView(PasswordsMixin, View):
 
 class ClientResetPasswordCodeView(View):
     def post(self, request):
-        if request.user.is_authenticated:
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                'Уже авторизированы': ['Для начала выйдите с аккаунта']
-            })
-            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-            return response
         phone_form = ClientPhoneForm(request.POST, prefix='reset')
         if phone_form.is_valid():
             phone = phone_form.cleaned_data['phone']

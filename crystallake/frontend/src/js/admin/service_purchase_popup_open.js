@@ -1,5 +1,5 @@
 const form_date = require("./form_date");
-const add_hours = require("./add_hours");
+const add_hours = require("../common/add_hours");
 
 $(document).ready(function (){
 

@@ -1,4 +1,4 @@
-const add_hours = require('./add_hours');
+const add_hours = require('../common/add_hours');
 $(document).ready(function (){
 
     $('#edit_timetable_modal').on('popup_open', function (event, data){

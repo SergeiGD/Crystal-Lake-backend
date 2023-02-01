@@ -10,7 +10,12 @@ $(document).ready(function () {
         $(this).find('.day').first().trigger('click');
 
         $(this).siblings('form').children('button').first().trigger('click')
+    });
 
+    $('.calendar__room').on('selectYear', function(event, year, additional_info){
+        if (!additional_info?.programmatically){
+            $('.calendar__room').not(this).evoCalendar('selectYear', year, {programmatically: true});
+        }
     });
 
     $(".calendar__room_form").on('submit', function (event){

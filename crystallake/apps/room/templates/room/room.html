@@ -31,7 +31,7 @@
         <h3 class="dates_title">Занятость номера</h3>
         <form action="{{ offer.get_general_busy_dates_url }}" class="calendar__room_form" method="GET">
             {% csrf_token %}
-            <button type="submit" class="d-none"></button>
+            <button type="submit" hidden=""></button>
         </form>
         <div id="evoCalendar" class="evoCalendar calendar calendar__room"></div>
 

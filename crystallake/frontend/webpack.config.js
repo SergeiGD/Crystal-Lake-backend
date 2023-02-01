@@ -43,8 +43,9 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/ajax/ajax_redirect.js'),
             path.resolve(__dirname,'src/js/client/ajax/reset_password.js'),
 
-            // path.resolve(__dirname,'src/js/common/evo-calendar/evo-starter.js'),
-            // path.resolve(__dirname,'src/js/admin/ajax/get_dates_info.js'),
+            path.resolve(__dirname,'src/js/common/ajax/get_room_dates.js'),
+            path.resolve(__dirname,'src/js/common/evo-calendar/evo-starter.js'),
+            path.resolve(__dirname,'src/js/common/evo-calendar/evo-calendar.js'),
         ],
         admin: [
             path.resolve(__dirname,'src/scss/admin.scss'),
@@ -76,7 +77,7 @@ module.exports = {
             path.resolve(__dirname,'src/js/admin/ajax/manage_purchase.js'),
             path.resolve(__dirname,'src/js/admin/ajax/default_set_main_info.js'),
             path.resolve(__dirname,'src/js/admin/ajax/manage_timetable.js'),
-            path.resolve(__dirname,'src/js/admin/ajax/get_dates_info.js'),
+            path.resolve(__dirname,'src/js/common/ajax/get_room_dates.js'),
             path.resolve(__dirname,'src/js/admin/ajax/get_service_dates_info.js'),
             path.resolve(__dirname,'src/js/admin/ajax/ajax_search.js'),
         ]

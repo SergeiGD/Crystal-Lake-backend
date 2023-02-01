@@ -1,4 +1,143 @@
-/*!
+(self["webpackChunkcrystal_lake_frontend"] = self["webpackChunkcrystal_lake_frontend"] || []).push([["src_js_common_ajax_get_room_dates_js-src_js_common_errors_js-src_js_common_evo-calendar_evo-c-c4c58f"],{
+
+/***/ "./src/js/common/add_hours.js":
+/*!************************************!*\
+  !*** ./src/js/common/add_hours.js ***!
+  \************************************/
+/***/ ((module) => {
+
+ const add_hours = function(date, hours){
+     date.setTime(date.getTime() + (hours * 60 * 60 * 1000))
+     return date
+}
+
+module.exports.add_hours = add_hours;
+
+/***/ }),
+
+/***/ "./src/js/common/ajax/get_room_dates.js":
+/*!**********************************************!*\
+  !*** ./src/js/common/ajax/get_room_dates.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const add_hours = __webpack_require__(/*! ../add_hours */ "./src/js/common/add_hours.js");
+
+$(document).ready(function () {
+
+    $('.calendar__room').on('selectMonth', function(event, month_str, month_index, additional_info){
+
+        if (!additional_info?.programmatically){
+            $('.calendar__room').not(this).evoCalendar('selectMonth', month_index, {programmatically: true});
+        }
+        $(this).find('.day').first().trigger('click');
+
+        $(this).siblings('form').children('button').first().trigger('click')
+    });
+
+    $('.calendar__room').on('selectYear', function(event, year, additional_info){
+        if (!additional_info?.programmatically){
+            $('.calendar__room').not(this).evoCalendar('selectYear', year, {programmatically: true});
+        }
+    });
+
+    $(".calendar__room_form").on('submit', function (event){
+        event.preventDefault();
+
+        const calendar = $(this).siblings('.evoCalendar')
+        const date_str = calendar.evoCalendar('getActiveDate');
+        const year = date_str.substring(0,4),
+            month = date_str.substring(5,7)
+        const start = new Date(
+            year,
+            parseInt(month) - 1,
+            1,
+        ).getTime()
+
+        const end = new Date(
+            year,
+            month,
+            0,
+        ).getTime()
+
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'GET',
+            data: {'start': start, 'end': end, 'csrfmiddlewaretoken': csrf_token},
+            success: function (response){
+
+                 $('.day-busy').removeClass('day-busy')
+                calendar.find(".event-indicator").removeClass('event-indicator')
+                calendar.evoCalendar('removeCalendarEvent', []);
+
+                for (const day of response['data']){
+
+                    const date = new Date(day * 1000)
+                    const local_date = add_hours.add_hours(date, date.getTimezoneOffset() / 60 * -1)
+                    const date_str = local_date.toISOString().substring(0,10)
+
+                    calendar.evoCalendar('addCalendarEvent',
+                        {
+                            id: Date.now(),
+                            name: "busy",
+                            date: date_str,
+                            type: "busy",
+                        }
+                    );
+                }
+
+                $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
+                    $(this).parent().addClass('day-busy');
+                });
+            },
+        });
+    })
+
+    $('.calendar__room').evoCalendar('selectMonth', new Date().getMonth(), {programmatically: true});   // при выбриаем текущей месяц, чтоб стригерить отправку запроса
+
+
+    // $('.calendar__room').on('selectMonth', function(){
+    //     console.log($(`.calendar[data-id="68"]`).evoCalendar.calendarEvents)
+    //     console.log($(this).attr('data-id'))
+    //
+    //     $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
+    //         $(this).parent().addClass('day-busy');
+    //     });
+    // });
+})
+
+/***/ }),
+
+/***/ "./src/js/common/errors.js":
+/*!*********************************!*\
+  !*** ./src/js/common/errors.js ***!
+  \*********************************/
+/***/ ((module) => {
+
+ const handle_errors = function(errors, elem){
+    var result = ''
+    for (var field in errors){
+        const message = errors[field][0]
+        result += `<li>${message}</li>`
+    }
+    elem.html(result);
+
+}
+
+module.exports.handle_errors = handle_errors;
+
+/***/ }),
+
+/***/ "./src/js/common/evo-calendar/evo-calendar.js":
+/*!****************************************************!*\
+  !*** ./src/js/common/evo-calendar/evo-calendar.js ***!
+  \****************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * Evo Calendar - Simple and Modern-looking Event Calendar Plugin
  *
  * Licensed under the MIT License
@@ -13,13 +152,12 @@
 
 ;(function(factory) {
     'use strict';
-    if (typeof define === 'function' && define.amd) {
-        define(['jquery'], factory);
-    } else if (typeof exports !== 'undefined') {
-        module.exports = factory(require('jquery'));
-    } else {
-        factory(jQuery);
-    }
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {}
 
 }(function($) {
     'use strict';
@@ -1137,3 +1275,151 @@
     };
 
 }));
+
+
+/***/ }),
+
+/***/ "./src/js/common/evo-calendar/evo-starter.js":
+/*!***************************************************!*\
+  !*** ./src/js/common/evo-calendar/evo-starter.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+// import './evo-calendar'
+
+$(document).ready(function(){
+
+    // const serviceEvents = [
+    //     {
+    //         id: "required-id-1",
+    //         name: "busy",
+    //         date: "2022/11/11",
+    //         type: "enable",
+    //         name:"15:00 - 17:00",
+    //         description:"3 мест(а)"
+    //     },
+    // ];
+    //
+    // const roomEvents = [
+    //     {
+    //         id: "required-id-1",
+    //         name: "busy",
+    //         date: "2022/11/11",
+    //         type: "busy",
+    //     },
+    //     {
+    //         id: "required-id-2",
+    //         name: "busy",
+    //         date: "2022/11/12",
+    //         type: "busy",
+    //     },
+    //     {
+    //         id: "required-id-3",
+    //         name: "busy",
+    //         date: "2022/11/13",
+    //         type: "busy",
+    //     },
+    //
+    // ];
+
+
+    // $('.calendar__service').evoCalendar({
+    //     calendarEvents: serviceEvents,
+    //
+    //     format: 'yyyy/mm/dd',
+    //
+    //     sidebarDisplayDefault: false,
+    //     sidebarToggler: true,
+    //
+    //     eventListToggler: false,
+    //
+    //     eventDisplayDefault: false,
+    //
+    //     language:'ru',
+    //
+    //     firstDayOfWeek: 1
+    // });
+
+    $('.evoCalendar').evoCalendar({
+        calendarEvents: [],
+
+        format: 'yyyy/mm/dd',
+
+        sidebarDisplayDefault: false,
+        sidebarToggler: true,
+
+        eventDisplayDefault: false,
+        eventListToggler: false,
+
+        todayHighlight: true,
+
+        language:'ru',
+
+        firstDayOfWeek: 1
+    });
+
+
+
+    $('.calendar__service .calendar-events').addClass('calendar-events__required');
+   
+    // $('.calendar__service').on('selectMonth', function(){
+    //     $(".event-indicator").each(function(){              // если на день есть событие, оказываем услугу в этот день
+    //         $(this).parent().addClass('day-enable');
+    //     });
+    // });
+    //
+    // $('.calendar__room').on('selectMonth', function(){
+    //     $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
+    //         $(this).parent().addClass('day-busy');
+    //     });
+    // });
+
+    //$('.evoCalendar').evoCalendar('selectMonth', new Date().getMonth());    // выбираем текущий месяц
+
+    // $('.calendar__room').on('selectMonth', function(){
+    //     $(this).siblings('form').children('button').trigger('click')
+    // });
+    
+});
+
+/***/ }),
+
+/***/ "./src/js/common/redirect.js":
+/*!***********************************!*\
+  !*** ./src/js/common/redirect.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function(){
+    $("[data-goto]").on('mousedown', function(e){
+        e.stopPropagation();
+        const url = e.currentTarget.getAttribute('data-goto');
+        if (e.which == 1) {
+          window.location.href = url
+       }
+        if (e.which == 2) {
+          window.open(url, '_blank').focus();
+       }
+    });
+
+    $(".offers").on('mousedown', function(e){
+        const elem = e.target.closest('[data-goto]');                                       // в списке офферов (скидки) есть элементы, добавляющиеся диначимески.
+        if(!elem) return;                                                                   // поэтому будет искать в его дочерних элементах
+        if (!elem.dataset.goto) return;
+        //if (elem.dataset.goto) window.location.href = elem.dataset.goto;
+        if (e.which == 1) {
+            window.location.href = elem.dataset.goto;
+
+       }
+        if (e.which == 2) {
+            window.open(elem.dataset.goto, '_blank').focus();
+       }
+    });
+});
+
+/***/ })
+
+}]);
+//# sourceMappingURL=src_js_common_ajax_get_room_dates_js-src_js_common_errors_js-src_js_common_evo-calendar_evo-c-c4c58f-845f9a84be55f948f954.bundle.js.map

@@ -41,14 +41,16 @@
 {% endblock %}
 
 {% block book %}
-    <form class="book" method="post" action=".">
+    <form class="book ajax_redirect" method="post" action=".">
 
         {% csrf_token %}
 
         <div class="fields">
 
+            <div class="errors_wrapper"></div>
+
             <div class="field_item">
-                <p class="field_name">Время пребывания:</p>
+                <p class="field_name">Время пребывания*:</p>
                 <div class="field_content">
                     <div class="field_subcontent">
                         <label for="{{ book_form.date_start.id_for_label }}" class="field_subname">{{ book_form.date_start.label }}</label>
@@ -65,6 +67,6 @@
 
         </div>
 
-    </div>
+    </form>
 {% endblock book %}
 

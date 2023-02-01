@@ -13,12 +13,14 @@ from django.db.models import Max
 from ..offer.models import Offer
 from ..client.models import Client
 from .status_choises import get_status_by_code, get_status_by_name, Status
+from ..user.models import CustomUser
 
 # Create your models here.
 
 
 class Order(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.PROTECT, verbose_name='Клиент')
+    # client = models.ForeignKey(Client, on_delete=models.PROTECT, verbose_name='Клиент')
+    client = models.ForeignKey(CustomUser, on_delete=models.PROTECT, verbose_name='Клиент')
     comment = models.TextField(verbose_name="комментарий к заказу", blank=True, null=True)
     paid = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name='Оплачено')     # сколько заплатили
     refunded = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name='Возвращено')

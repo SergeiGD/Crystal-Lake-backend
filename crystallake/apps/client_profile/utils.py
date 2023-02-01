@@ -1,11 +1,17 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.mixins import AccessMixin
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.utils import timezone
+from django.urls import reverse
 
 from ..user.models import SmsCode
 from ..core.utils import ResponseMessage
+from ..client.models import Client
+from ..worker.models import Worker
+from ..user.models import CustomUser
 
 from django.conf import settings
 
@@ -28,11 +34,24 @@ class SmsCodeMixin:
 
     def get_unknown_phone_error(self):
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-            'Ошибка': 'Не найден пользователь, отправивший запрос'
+            'Ошибка': ['Не найден пользователь, отправивший запрос']
         })
         response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
         return response
 
 
-# class PasswordsMixin:
-#     def post(self):
+class PhoneCheckMixin:
+    def is_phone_in_use(self, phone):
+        return CustomUser.objects.filter(phone=phone, is_active=True).exists()
+        # return Client.objects.filter(phone=phone, is_active=True).exists() or Worker.objects.filter(phone=phone).exists()
+
+    def is_phone_registered(self, phone):
+        return CustomUser.objects.filter(phone=phone).exists()
+
+
+class ActiveLoginRequiredMixin(AccessMixin):
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_active:
+            return redirect(reverse('index'))
+        return super().dispatch(request, *args, **kwargs)

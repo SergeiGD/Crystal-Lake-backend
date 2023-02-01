@@ -35,7 +35,7 @@ class AdminLoginView(RelocateResponseMixin, LoginView):
             password = form.cleaned_data['password']
             worker = authenticate(phone=phone, password=password)
             if worker is not None and worker.is_staff:
-                login(request, worker)
+                login(request, worker, backend=settings.AUTHENTICATION_BACKENDS[0])
                 return redirect(reverse_lazy('admin_orders'))
             else:
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={

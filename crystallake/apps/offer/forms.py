@@ -126,16 +126,24 @@ class SearchOffersAdmin(forms.Form):
         
 
 class BookOfferForm(forms.Form):
-    first_name = forms.CharField(label='Ваше имя:', widget=forms.TextInput(attrs={
+    first_name = forms.CharField(label='Ваше имя:', required=False, widget=forms.TextInput(attrs={
         'class': 'input_field input_field__name',
     }))
-    last_name = forms.CharField(label='Ваша фамилия:', widget=forms.TextInput(attrs={
+    last_name = forms.CharField(label='Ваша фамилия:', required=False, widget=forms.TextInput(attrs={
         'class': 'input_field input_field__name',
     }))
-    phone = PhoneNumberField(region='RU', label='Номер телефона:', widget=RegionalPhoneNumberWidget(attrs={
-        'class': 'input_field input_field__phone',
-        'placeholder': '+79999999999'
-    }))
+    phone = PhoneNumberField(
+        region='RU',
+        label='Номер телефона*:',
+        required=True,
+        error_messages={
+            'invalid': 'Неверный номер номера телефона. Пример: +79999999999 или 8(999)999-99-99'
+        },
+        widget=RegionalPhoneNumberWidget(attrs={
+            'class': 'input_field input_field__phone',
+            'placeholder': '+79999999999'
+            }
+        ))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)

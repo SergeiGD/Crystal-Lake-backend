@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 
+from django.contrib.auth.mixins import AccessMixin
 from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse
 from django.utils import timezone
@@ -81,4 +82,3 @@ def is_ajax(request):
         return True
     else:
         return False
-

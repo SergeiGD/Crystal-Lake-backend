@@ -142,11 +142,15 @@ class Room(Offer):
                 end__gte=day,
             ).exists()
 
-    def get_general_busy_dates(self, start, end=None):
+    def get_general_busy_dates(self, start, end):
         general_dates = []
         room = self if self.main_room is None else self.main_room
 
         rooms = room.get_same_rooms()
+
+        if len(rooms) == 1:
+            return rooms[0].get_busy_dates(start, end)
+
         for same_room in rooms:
             room_dates = set()
 

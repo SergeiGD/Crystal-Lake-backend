@@ -17,12 +17,13 @@ from ..order.models import Order, Purchase
 from ..client.models import Client
 from ..user.models import SmsCode, CustomUser
 from ..worker.models import Worker
-from .utils import SmsCodeMixin
+from .utils import SmsCodeMixin, PhoneCheckMixin, ActiveLoginRequiredMixin
+from django.conf import settings
 
 # Create your views here.
 
 
-class ActiveOrdersCatalog(LoginRequiredMixin, ListView):
+class ActiveOrdersCatalog(ActiveLoginRequiredMixin, ListView):
     login_url = 'index'
     model = Order
     context_object_name = 'orders'
@@ -48,7 +49,7 @@ class ActiveOrdersCatalog(LoginRequiredMixin, ListView):
         return orders
 
 
-class ClientInfoView(RelocateResponseMixin, LoginRequiredMixin, UpdateView):
+class ClientInfoView(ActiveLoginRequiredMixin, RelocateResponseMixin, UpdateView):
     login_url = 'index'
     model = Client
     template_name = 'client_profile/info.html'
@@ -77,15 +78,15 @@ class ClientInfoView(RelocateResponseMixin, LoginRequiredMixin, UpdateView):
 
 class ClientLoginView(RelocateResponseMixin, View):
     def post(self, request):
-        if request.user.is_authenticated and not request.user.is_staff:
+        if request.user.is_authenticated and request.user.is_active:
             return self.relocate(reverse_lazy('active_orders'))
         form = ClientLoginForm(request.POST)
         if form.is_valid():
             phone = form.cleaned_data['phone']
             password = form.cleaned_data['password']
             client = authenticate(phone=phone, password=password)
-            if client is not None and not client.is_staff:
-                login(request, client)
+            if client is not None:
+                login(request, client, backend=settings.AUTHENTICATION_BACKENDS[0])
                 return self.relocate(reverse_lazy('active_orders'))
             else:
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
@@ -119,7 +120,7 @@ class SendRegisterCodeView(SmsCodeMixin, RelocateResponseMixin, View):
             client.save()
             sms_code.is_used = True
             sms_code.save()
-            login(request, client)
+            login(request, client, backend=settings.AUTHENTICATION_BACKENDS[0])
             return self.relocate(reverse_lazy('active_orders'))
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
@@ -127,14 +128,14 @@ class SendRegisterCodeView(SmsCodeMixin, RelocateResponseMixin, View):
             return response
 
 
-class ClientRegisterView(View):
+class ClientRegisterView(PhoneCheckMixin, View):
     def post(self, request):
         phone_form = ClientPhoneForm(request.POST, prefix='register')
         passwords_form = ClientPasswordsForm(request.POST, prefix='register')
         if phone_form.is_valid() and passwords_form.is_valid():
             cleaned_data = {**passwords_form.cleaned_data, **phone_form.cleaned_data}
             phone = cleaned_data['phone']
-            if Client.objects.filter(phone=phone, is_active=True).exists() or Worker.objects.filter(phone=phone).exists():
+            if self.is_phone_in_use(phone):
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
                     'Неверные данные': ['Невозможно зарегистировать этот номер. Похоже, он уже зарегестирован']
                 })
@@ -165,7 +166,7 @@ class ClientResetPasswordCodeView(View):
             phone = phone_form.cleaned_data['phone']
             if not Client.objects.filter(phone=phone, is_active=True).exists():
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                    'Неверные данные': ['Не найден пользователь с таким номером телефона']
+                    'Неверные данные': ['Не найден клиент с таким номером телефона']
                 })
                 response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
                 return response
@@ -199,7 +200,7 @@ class ClientResetPasswordView(SmsCodeMixin, RelocateResponseMixin, View):
             client.save()
             sms_code.is_used = True
             sms_code.save()
-            login(request, client)
+            login(request, client, backend=settings.AUTHENTICATION_BACKENDS[0])
             return self.relocate(self.relocate_url)
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={**passwords_form.errors, **code_form.errors})
@@ -207,7 +208,7 @@ class ClientResetPasswordView(SmsCodeMixin, RelocateResponseMixin, View):
             return response
 
 
-class ClientChangePasswordView(ClientResetPasswordView, LoginRequiredMixin):
+class ClientChangePasswordView(ClientResetPasswordView, ActiveLoginRequiredMixin):
     login_url = 'index'
 
     def __init__(self, *args, **kwargs):
@@ -229,7 +230,7 @@ class CartView(ClientContextMixin, TemplateView):
     template_name = 'client_profile/cart.html'
 
     def get_context_data(self, **kwargs):
-        if not self.request.user.is_authenticated or self.request.user.is_staff:
+        if not self.request.user.is_authenticated:
             context = super().get_context_data(**kwargs)
             context['order'] = Order()
             context['cart_items'] = Purchase.objects.none()
@@ -237,14 +238,13 @@ class CartView(ClientContextMixin, TemplateView):
             return {**context, **self.get_general_context()}
         context = super().get_context_data(**kwargs)
         order = Order.objects.filter(
-            client=self.request.user,
+            client__id=self.request.user.id,
             paid=0, refunded=0,
             date_canceled=None,
             date_finished=None
         ).first()
         if order is None:
-            # TODO: пофиксить, мб ссылка просто на кастом юзера
-            client = get_object_or_404(Client, pk=self.request.user.pk)
+            client = get_object_or_404(CustomUser, pk=self.request.user.pk)
             order = Order(client=client, date_create=timezone.now())
             cart_items = Purchase.objects.none()
         else:
@@ -252,6 +252,6 @@ class CartView(ClientContextMixin, TemplateView):
         context['order'] = order
         context['cart_items'] = cart_items
         context['current_page'] = 'cart'
-        return context
+        return {**context, **self.get_general_context()}
 
 

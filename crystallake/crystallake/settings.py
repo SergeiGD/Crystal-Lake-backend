@@ -25,7 +25,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'django-insecure-8a@)ukh&36+asiwqk&o)f4yx!+flvoaoq^-7fnq(fc9$6s=wmt'
 SECRET_KEY = environ.get("KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -166,7 +165,9 @@ MEDIA_ROOT = path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# AUTH SETTINGS
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'django.contrib.auth.backends.AllowAllUsersModelBackend']
 
 # TODO: ПО СКОЛЬКО ПАГИНАЦИЯ
 

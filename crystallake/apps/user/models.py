@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils import timezone
+from django.urls import reverse
 
 from .managers import CustomUserManager, SmsCodeManager
 
@@ -60,6 +61,11 @@ class CustomUser(AbstractUser):
         self.date_deleted = timezone.now()
         self.last_name = self.last_name + '-DELETED'
         self.save()
+
+    def get_admin_show_url(self):
+        if self.is_staff:
+            return reverse('admin_show_worker', kwargs={'worker_id': self.pk})
+        return reverse('admin_show_client', kwargs={'client_id': self.pk})
 
 
 class SmsCode(models.Model):

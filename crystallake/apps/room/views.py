@@ -1,5 +1,7 @@
 from datetime import datetime
 import pytz
+from django.contrib.auth import login
+from django.core.exceptions import PermissionDenied
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -7,17 +9,22 @@ from django.contrib.auth.decorators import permission_required
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from django.http import HttpResponse, Http404
 from django.utils.timezone import localtime, now
+from django.conf import settings
+from django.urls import reverse
 
 
-from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, parse_datetime, is_ajax, ClientContextMixin
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, is_ajax, ClientContextMixin, RelocateResponseMixin
+
+from ..client_profile.utils import PhoneCheckMixin
+from ..client.models import Client
+
 from django.template.loader import render_to_string
 from .models import Room
 from .forms import RoomForm, SearchRoomsForm, SearchRoomsAdmin, BookRoomForm
 from ..photo.models import Photo
 from ..core.forms import ShortSearchForm
-from ..offer.utils import ManageOfferMixin
+from ..offer.utils import ManageOfferMixin, CartMixin
 from ..order.models import Order, Purchase
-from ..client.models import Client
 
 # Create your views here.
 
@@ -49,7 +56,7 @@ class RoomsCatalog(ClientContextMixin, ListView):
         return rooms
 
 
-class RoomDetail(ClientContextMixin, DetailView):
+class RoomDetail(CartMixin, ClientContextMixin, PhoneCheckMixin, RelocateResponseMixin, DetailView):
     template_name = 'room/room.html'
     model = Room
     slug_url_kwarg = 'room_slug'
@@ -71,50 +78,44 @@ class RoomDetail(ClientContextMixin, DetailView):
     def post(self, request, **kwargs):
         book_form = BookRoomForm(self.request.POST, user=self.request.user)
         if book_form.is_valid():
-            if self.request.user.is_authenticated:
-                order = Order.objects.filter(
-                    client=self.request.user,
-                    paid=0, refunded=0,
-                    date_canceled=None,
-                    date_finished=None
-                ).first()
-                if order is None:
-                    # TODO: пофиксить, мб ссылка просто на кастом юзера
-                    client = get_object_or_404(Client, pk=self.request.user.pk)
-                    # order = Order(client=self.request.user, date_create=now())
-                    order = Order(client=client, date_create=now())
-                    order.save()
-
-                room = self.get_object()
-                rooms = room.pick_rooms_for_purchase(book_form.cleaned_data['date_start'], book_form.cleaned_data['date_end'])
-                if len(rooms) == 0:
-                    response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                        'Свободность номера': ['Нету свободных комнат на выбранные даты']
-                    })
-                    response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                    return response
-                if len(rooms) > 1 and not form.cleaned_data['multiple_rooms_acceptable']:
-                    response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
-                        'Свободность номера': [
-                            'Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
-                    })
-                    response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                    return response
-
-                purchases = []
-                for room in rooms:
-                    purchase = Purchase(
-                        order=order,
-                        offer=room['room'],
-                        start=room['start'],
-                        end=room['end']
-                    )
-                    purchases.append(purchase)
-                Purchase.objects.bulk_create(purchases)
-                response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-                response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
+            try:
+                cart = self.get_cart(self.request)
+            except PermissionDenied:
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                    'Неверные данные': ['Пользователь с этим телефоном зерегестрирован. Сначала авторизируйтесь']
+                })
+                response = HttpResponse(response_message.get_json(), status=401, content_type='application/json')
+                return response
+            # TODO: mixin
+            room = self.get_object()
+            start = datetime.combine(book_form.cleaned_data['date_start'], settings.CHECK_IN_TIME)
+            end = datetime.combine(book_form.cleaned_data['date_end'], settings.CHECK_IN_TIME)
+            rooms = room.pick_rooms_for_purchase(start, end)
+            if len(rooms) == 0:
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                    'Свободность номера': ['Нету свободных комнат на выбранные даты']
+                })
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
+            if len(rooms) > 1 and not book_form.cleaned_data['multiple_rooms_acceptable']:
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
+                    'Свободность номера': [
+                        'Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
+                })
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
                 return response
 
+            purchases = []
+            for room in rooms:
+                purchase = Purchase(
+                    order=cart,
+                    offer=room['room'],
+                    start=room['start'],
+                    end=room['end']
+                )
+                purchases.append(purchase)
+            Purchase.objects.bulk_create(purchases)
+            return self.relocate(reverse('cart'))
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=book_form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')

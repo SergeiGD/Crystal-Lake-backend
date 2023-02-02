@@ -1,6 +1,9 @@
 $(document).ready(function (){
 
     function refresh_icons(){
+
+        if ($('.sorting').length == 0) return;
+
         $('.sorting .sorting_icon_active').removeClass('sorting_icon_active');
 
         const sort_by_input = $('#id_sort_by');

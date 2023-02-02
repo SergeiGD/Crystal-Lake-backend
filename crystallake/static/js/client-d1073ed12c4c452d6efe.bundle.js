@@ -444,6 +444,9 @@ $(document).ready(function(){
 $(document).ready(function (){
 
     function refresh_icons(){
+
+        if ($('.sorting').length == 0) return;
+
         $('.sorting .sorting_icon_active').removeClass('sorting_icon_active');
 
         const sort_by_input = $('#id_sort_by');
@@ -703,4 +706,4 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-6307bd4fde6e371c608a.bundle.js.map
+//# sourceMappingURL=client-d1073ed12c4c452d6efe.bundle.js.map

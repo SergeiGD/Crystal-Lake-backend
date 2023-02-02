@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.urls import reverse
 
 from .managers import CustomUserManager, SmsCodeManager
+from ..order.models import Order
 
 # Create your models here.
 
@@ -50,6 +51,14 @@ class CustomUser(AbstractUser):
         if not self.first_name and not self.last_name:
             return 'Неизвестно'
         return f'{self.first_name} {self.last_name}'
+
+    def get_cart(self):
+        return Order.objects.filter(
+            client=self,
+            paid=0, refunded=0,
+            date_canceled=None,
+            date_finished=None
+        ).first()
 
     class Meta:
         ordering = ['first_name']

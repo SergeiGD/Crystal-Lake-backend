@@ -65,12 +65,7 @@ class CartMixin(PhoneCheckMixin):
                 client.save()
             login(request, client, backend=settings.AUTHENTICATION_BACKENDS[1])
 
-        cart_order = Order.objects.filter(
-            client__id=client.id,
-            paid=0, refunded=0,
-            date_canceled=None,
-            date_finished=None
-        ).first()
+        cart_order = client.get_cart()
         if cart_order is None:
             cart_order = Order(client=client, date_create=now())
             cart_order.save()

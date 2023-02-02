@@ -230,19 +230,14 @@ class CartView(ClientContextMixin, TemplateView):
     template_name = 'client_profile/cart.html'
 
     def get_context_data(self, **kwargs):
-        if not self.request.user.is_authenticated:
+        if self.request.user is None or not self.request.user.is_authenticated:
             context = super().get_context_data(**kwargs)
             context['order'] = Order()
             context['cart_items'] = Purchase.objects.none()
             context['current_page'] = 'cart'
             return {**context, **self.get_general_context()}
         context = super().get_context_data(**kwargs)
-        order = Order.objects.filter(
-            client__id=self.request.user.id,
-            paid=0, refunded=0,
-            date_canceled=None,
-            date_finished=None
-        ).first()
+        order = self.request.user.get_cart()
         if order is None:
             client = get_object_or_404(CustomUser, pk=self.request.user.pk)
             order = Order(client=client, date_create=timezone.now())
@@ -253,5 +248,37 @@ class CartView(ClientContextMixin, TemplateView):
         context['cart_items'] = cart_items
         context['current_page'] = 'cart'
         return {**context, **self.get_general_context()}
+
+
+def cart_fully_pay_view(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            order = request.user.get_cart()
+            order.mark_as_fully_paid()
+            if request.user.is_active:
+                return redirect('active_orders')
+            return redirect('index')
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                'Ошибка': ['Не удалось обнаружить пользователя, создавшего корзину']
+            })
+            response = HttpResponse(response_message.get_json(), status=401, content_type='application/json')
+            return response
+
+
+def cart_prepayment_pay_view(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            order = request.user.get_cart()
+            order.mark_as_prepayment_paid()
+            if request.user.is_active:
+                return redirect('active_orders')
+            return redirect('index')
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                'Ошибка': ['Не удалось обнаружить пользователя, создавшего корзину']
+            })
+            response = HttpResponse(response_message.get_json(), status=401, content_type='application/json')
+            return response
 
 

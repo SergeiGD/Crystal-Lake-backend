@@ -11,16 +11,16 @@ from django.utils import timezone
 from django.db.models import Max
 
 from ..offer.models import Offer
-from ..client.models import Client
+# from ..client.models import Client
 from .status_choises import get_status_by_code, get_status_by_name, Status
-from ..user.models import CustomUser
+# from ..user.models import *
 
 # Create your models here.
 
 
 class Order(models.Model):
     # client = models.ForeignKey(Client, on_delete=models.PROTECT, verbose_name='Клиент')
-    client = models.ForeignKey(CustomUser, on_delete=models.PROTECT, verbose_name='Клиент')
+    client = models.ForeignKey("user.CustomUser", on_delete=models.PROTECT, verbose_name='Клиент')
     comment = models.TextField(verbose_name="комментарий к заказу", blank=True, null=True)
     paid = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name='Оплачено')     # сколько заплатили
     refunded = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name='Возвращено')
@@ -61,6 +61,14 @@ class Order(models.Model):
             self.date_full_paid = None
             if self.paid < self.__original_paid:
                 self.purchases.filter(is_canceled=False).update(is_paid=False)
+
+    def mark_as_prepayment_paid(self):
+        self.paid = self.prepayment
+        self.save()
+
+    def mark_as_fully_paid(self):
+        self.paid = self.price
+        self.save()
 
     def mark_as_refund_made(self):
         for purchase in self.purchases.filter(is_canceled=True, is_refund_made=False):

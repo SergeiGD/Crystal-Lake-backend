@@ -55,7 +55,6 @@
                                         </div>
                                     </div>
 
-{#                                    <i class="fa-regular fa-trash-can card_delete"></i>#}
 
                                     <form method="post" action="{{ cart_item.get_remove_cart_item_url }}">
                                         {% csrf_token %}
@@ -78,10 +77,18 @@
                         <div class="cart_info_stats">
                             <p class="cart_info_text highlighted">Условия заказа:</p>
                             <p class="cart_info_text">Элементов в корзине: <span class="highlighted">{{ cart_items.count }}</span></p>
-                            <p class="cart_info_text">К оплате: <span class="highlighted">{{ order.price }}&#8381;</span></p>
+                            <p class="cart_info_text">Общая стоимость: <span class="highlighted">{{ order.price }}&#8381;</span></p>
+                            <p class="cart_info_text">Общая предоплата: <span class="highlighted">{{ order.prepayment }}&#8381;</span></p>
                         </div>
 
-                        <button class="button__pay">Перейти к оплате</button>
+                        <form action="{% url 'cart_fully_pay' %}" method="POST" id="cart_fully_pay">
+                            {% csrf_token %}
+                            <button class="button__pay">Оплатить полностью</button>
+                        </form>
+                        <form action="{% url 'cart_prepayment_pay' %}" method="POST" id="cart_prepayment_pay">
+                            {% csrf_token %}
+                            <button class="button__pay">Внести предоплату</button>
+                        </form>
                     {% endif %}
 
                 </div>

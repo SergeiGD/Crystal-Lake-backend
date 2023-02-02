@@ -105,8 +105,24 @@
 
             <div class="tablet-slider-required"></div>
 
-            {% for room in rooms %}
-            <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ room.get_absolute_url }}">
+            <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ rooms.0.get_absolute_url }}">
+                <div class="card_inner">
+                    <img src="{{ rooms.0.main_photo.url }}" alt="{{ rooms.0.name }}" class="card_img">
+                    <div class="card_info">
+                        <p class="card_info_title">
+                            {{ rooms.0.name }}
+                        </p>
+                        <p class="card_info_text">Начиная от:
+                            <span class="highlighted">
+                                {{ rooms.0.default_price.to_integral_value }}&#8381;
+                            </span>
+                        </p>
+                        <button class="card_button card_button__long" data-goto="{{ rooms.0.get_absolute_url }}#offer_book">Забронировать</button>
+                    </div>
+                </div>
+            </article>
+            {% for room in rooms|slice:"1:" %}
+            <article class="card_short recomendations_item slider_content" data-goto="{{ room.get_absolute_url }}">
                 <div class="card_inner">
                     <img src="{{ room.main_photo.url }}" alt="{{ room.name }}" class="card_img">
                     <div class="card_info">
@@ -141,8 +157,24 @@
 
             <div class="tablet-slider-required"></div>
 
-                {% for service in services %}
-                <article class="card_short recomendations_item slider_content slider_content__active" data-goto="service.html">
+                <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ services.0.get_absolute_url }}">
+                    <div class="card_inner">
+                        <img src="{{ services.0.main_photo.url }}" alt="{{ services.0.name }}" class="card_img">
+                        <div class="card_info">
+                            <p class="card_info_title">
+                                {{ services.0.name }}
+                            </p>
+                            <p class="card_info_text">Начиная от:
+                                <span class="highlighted">
+                                    {{ services.0.default_price.to_integral_value }}&#8381;
+                                </span>
+                            </p>
+                            <button class="card_button card_button__long" data-goto="{{ services.0.get_absolute_url }}#offer_book">Забронировать</button>
+                        </div>
+                    </div>
+                </article>
+                {% for service in services|slice:"1:" %}
+                <article class="card_short recomendations_item slider_content" data-goto="{{ service.get_absolute_url }}">
                     <div class="card_inner">
                         <img src="{{ service.main_photo.url }}" alt="{{ service.name }}" class="card_img">
                         <div class="card_info">
@@ -154,7 +186,7 @@
                                     {{ service.default_price.to_integral_value }}&#8381;
                                 </span>
                             </p>
-                            <button class="card_button card_button__long" data-goto="room.html#offer_book">Забронировать</button>
+                            <button class="card_button card_button__long" data-goto="{{ service.get_absolute_url }}#offer_book">Забронировать</button>
                         </div>
                     </div>
                 </article>

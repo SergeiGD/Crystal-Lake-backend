@@ -35,7 +35,10 @@ $(document).ready(function(){
 
     
 
-    $('.slider_content').on("swipeleft", function(){
+    $('.slider_content').on("swipeleft", function(e){
+
+        e.stopPropagation()
+        e.preventDefault()
 
         if ($(this).siblings('.slider_content').length < 2) return;
 
@@ -63,7 +66,10 @@ $(document).ready(function(){
         
     });
 
-    $('.slider_content').on("swiperight", function(){
+    $('.slider_content').on("swiperight", function(e){
+
+        e.stopPropagation()
+        e.preventDefault()
 
         if ($(this).siblings('.slider_content').length < 2) return;
 

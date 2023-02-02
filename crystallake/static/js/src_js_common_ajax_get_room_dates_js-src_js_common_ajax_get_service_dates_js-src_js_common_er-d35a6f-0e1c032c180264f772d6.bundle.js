@@ -1416,18 +1416,23 @@ $(document).ready(function(){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function(){
-    $("[data-goto]").on('mousedown', function(e){
+    $("[data-goto]").on('click ', function(e){
         e.stopPropagation();
         const url = e.currentTarget.getAttribute('data-goto');
         if (e.which == 1) {
           window.location.href = url
        }
+    });
+
+    $("[data-goto]").on('mousedown ', function(e){
+        e.stopPropagation();
+        const url = e.currentTarget.getAttribute('data-goto');
         if (e.which == 2) {
           window.open(url, '_blank').focus();
        }
     });
 
-    $(".offers").on('mousedown', function(e){
+    $(".offers").on('click ', function(e){
         const elem = e.target.closest('[data-goto]');                                       // в списке офферов (скидки) есть элементы, добавляющиеся диначимески.
         if(!elem) return;                                                                   // поэтому будет искать в его дочерних элементах
         if (!elem.dataset.goto) return;
@@ -1436,6 +1441,12 @@ $(document).ready(function(){
             window.location.href = elem.dataset.goto;
 
        }
+    });
+
+    $(".offers").on('mousedown ', function(e){
+        const elem = e.target.closest('[data-goto]');                                       // в списке офферов (скидки) есть элементы, добавляющиеся диначимески.
+        if(!elem) return;                                                                   // поэтому будет искать в его дочерних элементах
+        if (!elem.dataset.goto) return;
         if (e.which == 2) {
             window.open(elem.dataset.goto, '_blank').focus();
        }
@@ -1445,4 +1456,4 @@ $(document).ready(function(){
 /***/ })
 
 }]);
-//# sourceMappingURL=src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-bc82199e5b38028801e1.bundle.js.map
+//# sourceMappingURL=src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js.map

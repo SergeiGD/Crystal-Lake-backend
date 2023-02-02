@@ -30,7 +30,6 @@ module.exports = {
     entry: {
         client: [
             path.resolve(__dirname,'src/scss/style.scss'),
-            path.resolve(__dirname,'src/js/common/redirect.js'),
             path.resolve(__dirname,'src/js/client/header_burger.js'),
             path.resolve(__dirname,'src/js/client/login_popup.js'),
             path.resolve(__dirname,'src/js/client/offers_slider.js'),
@@ -46,6 +45,9 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/ajax/reset_password.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_room_dates.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_service_dates.js'),
+
+            path.resolve(__dirname,'src/js/common/redirect.js'),
+
         ],
         admin: [
             path.resolve(__dirname,'src/scss/admin.scss'),

@@ -7,13 +7,18 @@
     <div class="content_container">
         <h2 class="section_title">{{ offer.name }}</h2>
 
-        <div class="breadcrumbs">
-            <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
-            <span>&#10148;</span>
-            <a href="{% url 'rooms' %}" class="breadcrumbs_item">Номера</a>
-            <span>&#10148;</span>
-            <a href="#" class="breadcrumbs_item">{{ offer.name }}</a>
-        </div>
+            <div class="breadcrumbs">
+                {% block breadcrumbs %}
+                {% endblock breadcrumbs %}
+            </div>
+
+{#        <div class="breadcrumbs">#}
+{#            <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>#}
+{#            <span>&#10148;</span>#}
+{#            <a href="{% url 'rooms' %}" class="breadcrumbs_item">Номера</a>#}
+{#            <span>&#10148;</span>#}
+{#            <a href="#" class="breadcrumbs_item">{{ offer.name }}</a>#}
+{#        </div>#}
 
         <div class="offer">
             <div class="photos_description">

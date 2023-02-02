@@ -27,17 +27,12 @@
 
                         <div class="errors_wrapper"></div>
 
-{#                            {% for field in form %}#}
-{#                                {% if field.errors %}#}
-{#                                    <div class="errors_wrapper">#}
-{#                                        <ul>#}
-{#                                            {% for error in field.errors %}#}
-{#                                                <li>{{ error }}</li>#}
-{#                                            {% endfor %}#}
-{#                                        </ul>#}
-{#                                    </div>#}
-{#                                {% endif %}#}
-{#                            {% endfor %}#}
+                            <div class="field_item">
+                                <span class="profile_label">Номер телефона:</span>
+                                <div class="field_content">
+                                    <p>{{ user.phone }}</p>
+                                </div>
+                            </div>
 
                             <div class="field_item">
                                 <label for="{{ form.first_name.id_for_label }}" class="profile_label">{{ form.first_name.label }}</label>
@@ -60,12 +55,7 @@
                                 </div>
                             </div>
 
-                            <div class="field_item">
-                                <label for="{{ form.phone.id_for_label }}" class="profile_label">{{ form.phone.label }}</label>
-                                <div class="field_content">
-                                    {{ form.phone }}
-                                </div>
-                            </div>
+
 
                             <div class="field_item">
                                 <label for="{{ form.gender.id_for_label }}" class="profile_label">{{ form.gender.label }}</label>

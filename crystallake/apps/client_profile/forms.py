@@ -55,7 +55,7 @@ class ClientPasswordsForm(forms.ModelForm):
 class ClientInfoForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ['phone', 'first_name', 'last_name', 'gender', 'email']
+        fields = ['first_name', 'last_name', 'gender', 'email']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -69,12 +69,7 @@ class ClientInfoForm(forms.ModelForm):
         self.fields['email'].widget.attrs.update({'class': 'input_field input_field__email', 'placeholder': 'Эл. почта'})
         self.fields['email'].label = 'Эл. почта:'
 
-        self.fields['phone'].widget.attrs.update({'class': 'input_field input_field__phone', 'placeholder': 'Номер телефона'})
-        self.fields['phone'].label = 'Номер телефона:'
-        self.fields['phone'].error_messages = {'required': 'Номер телефона является обязательным полем'}
-        self.fields['phone'].error_messages = {'invalid': 'Неверный номер номера телефона. Пример: +79999999999 или 8(999)999-99-99'}
-
         self.fields['gender'].widget.attrs.update({'class': 'select_field input_field'})
-        self.fields['gender'].label = 'Пол'
+        self.fields['gender'].label = 'Пол:'
 
 

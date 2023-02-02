@@ -1,5 +1,13 @@
 {% extends 'offer/base_offer.html' %}
 
+{% block breadcrumbs %}
+    <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
+    <span>&#10148;</span>
+    <a href="{% url 'rooms' %}" class="breadcrumbs_item">Номера</a>
+    <span>&#10148;</span>
+    <a href="#" class="breadcrumbs_item">{{ offer.name }}</a>
+{% endblock breadcrumbs %}
+
 {% block info_dates %}
     <div class="info">
         <h3 class="info_title">Подробное описание</h3>

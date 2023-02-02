@@ -1,4 +1,4 @@
-(self["webpackChunkcrystal_lake_frontend"] = self["webpackChunkcrystal_lake_frontend"] || []).push([["src_js_common_ajax_get_room_dates_js-src_js_common_errors_js-src_js_common_evo-calendar_evo-c-c4c58f"],{
+(self["webpackChunkcrystal_lake_frontend"] = self["webpackChunkcrystal_lake_frontend"] || []).push([["src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"],{
 
 /***/ "./src/js/common/add_hours.js":
 /*!************************************!*\
@@ -23,6 +23,7 @@ module.exports.add_hours = add_hours;
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const add_hours = __webpack_require__(/*! ../add_hours */ "./src/js/common/add_hours.js");
+__webpack_require__(/*! ../evo-calendar/evo-starter */ "./src/js/common/evo-calendar/evo-starter.js");
 
 $(document).ready(function () {
 
@@ -107,6 +108,98 @@ $(document).ready(function () {
     //         $(this).parent().addClass('day-busy');
     //     });
     // });
+})
+
+/***/ }),
+
+/***/ "./src/js/common/ajax/get_service_dates.js":
+/*!*************************************************!*\
+  !*** ./src/js/common/ajax/get_service_dates.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const add_hours = __webpack_require__(/*! ../../common/add_hours */ "./src/js/common/add_hours.js");
+__webpack_require__(/*! ../evo-calendar/evo-starter */ "./src/js/common/evo-calendar/evo-starter.js");
+
+$(document).ready(function () {
+
+    // TODO: ДОБАВИТЬ АККОРДЕОН И ПРИ ЕГО ОТКРЫТИИ ВЫЗЫВАЕМ selectMonth
+
+
+    $('.calendar__service').on('selectMonth', function(event, month_str, month_index){
+
+        // if (!additional_info?.programmatically){
+        //     $('.calendar__service').not(this).evoCalendar('selectMonth', month_index, {programmatically: true});
+        // }
+        $(this).find('.day').first().trigger('click');
+
+        $(this).siblings('form').children('button').first().trigger('click')
+
+        console.log('asd')
+    });
+
+    $(".calendar__service_form").on('submit', function (event){
+        event.preventDefault();
+
+        const calendar = $(this).siblings('.evoCalendar')
+        const date_str = calendar.evoCalendar('getActiveDate');
+        const year = date_str.substring(0,4),
+            month = date_str.substring(5,7)
+        const start = new Date(
+            year,
+            parseInt(month) - 1,
+            1,
+        ).getTime()
+
+        const end = new Date(
+            year,
+            month,
+            0,
+        ).getTime()
+
+        const csrf_token = $(this).find('[name=csrfmiddlewaretoken]').attr('value')
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'GET',
+            data: {'start': start, 'end': end, 'csrfmiddlewaretoken': csrf_token},
+            success: function (response){
+
+                $('.day-busy').removeClass('day-busy')
+                calendar.find(".event-indicator").removeClass('event-indicator')
+                calendar.evoCalendar('removeCalendarEvent', []);
+
+                for (const day of response['data']){
+                    const start = new Date(day.start * 1000)
+                    const local_start = add_hours.add_hours(start, start.getTimezoneOffset() / 60 * -1)
+                    const end = new Date(day.end * 1000)
+                    const local_end = add_hours.add_hours(end, end.getTimezoneOffset() / 60 * -1)
+
+                    const date = local_start.toISOString().substring(0,10)
+                    const start_time = local_start.toISOString().substring(11,16)
+                    const end_time = local_end.toISOString().substring(11,16)
+                    calendar.evoCalendar('addCalendarEvent',
+                        {
+                            id: new Date(),
+                            date: date,
+                            name: `${start_time} - ${end_time}`,
+                            type: "enable",
+                            description: (day.left !== undefined) ? `${day.left} мест(а)` : ''
+                        }
+                    );
+
+                }
+
+                $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
+                    $(this).parent().addClass('day-enable');
+                });
+            },
+        });
+    })
+
+    $('.calendar__service').evoCalendar('selectMonth', new Date().getMonth(), {programmatically: true});   // при выбриаем текущей месяц, чтоб стригерить отправку запроса
+
 })
 
 /***/ }),
@@ -1287,59 +1380,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 // import './evo-calendar'
-
+__webpack_require__(/*! ./evo-calendar */ "./src/js/common/evo-calendar/evo-calendar.js");
 $(document).ready(function(){
-
-    // const serviceEvents = [
-    //     {
-    //         id: "required-id-1",
-    //         name: "busy",
-    //         date: "2022/11/11",
-    //         type: "enable",
-    //         name:"15:00 - 17:00",
-    //         description:"3 мест(а)"
-    //     },
-    // ];
-    //
-    // const roomEvents = [
-    //     {
-    //         id: "required-id-1",
-    //         name: "busy",
-    //         date: "2022/11/11",
-    //         type: "busy",
-    //     },
-    //     {
-    //         id: "required-id-2",
-    //         name: "busy",
-    //         date: "2022/11/12",
-    //         type: "busy",
-    //     },
-    //     {
-    //         id: "required-id-3",
-    //         name: "busy",
-    //         date: "2022/11/13",
-    //         type: "busy",
-    //     },
-    //
-    // ];
-
-
-    // $('.calendar__service').evoCalendar({
-    //     calendarEvents: serviceEvents,
-    //
-    //     format: 'yyyy/mm/dd',
-    //
-    //     sidebarDisplayDefault: false,
-    //     sidebarToggler: true,
-    //
-    //     eventListToggler: false,
-    //
-    //     eventDisplayDefault: false,
-    //
-    //     language:'ru',
-    //
-    //     firstDayOfWeek: 1
-    // });
 
     $('.evoCalendar').evoCalendar({
         calendarEvents: [],
@@ -1362,25 +1404,7 @@ $(document).ready(function(){
 
 
     $('.calendar__service .calendar-events').addClass('calendar-events__required');
-   
-    // $('.calendar__service').on('selectMonth', function(){
-    //     $(".event-indicator").each(function(){              // если на день есть событие, оказываем услугу в этот день
-    //         $(this).parent().addClass('day-enable');
-    //     });
-    // });
-    //
-    // $('.calendar__room').on('selectMonth', function(){
-    //     $(".event-indicator").each(function(){              // если на день есть событие, то номер занят
-    //         $(this).parent().addClass('day-busy');
-    //     });
-    // });
 
-    //$('.evoCalendar').evoCalendar('selectMonth', new Date().getMonth());    // выбираем текущий месяц
-
-    // $('.calendar__room').on('selectMonth', function(){
-    //     $(this).siblings('form').children('button').trigger('click')
-    // });
-    
 });
 
 /***/ }),
@@ -1422,4 +1446,4 @@ $(document).ready(function(){
 /***/ })
 
 }]);
-//# sourceMappingURL=src_js_common_ajax_get_room_dates_js-src_js_common_errors_js-src_js_common_evo-calendar_evo-c-c4c58f-845f9a84be55f948f954.bundle.js.map
+//# sourceMappingURL=src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-6d8219ec89dd70b35af4.bundle.js.map

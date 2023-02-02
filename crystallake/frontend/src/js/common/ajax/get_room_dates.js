@@ -1,4 +1,5 @@
 const add_hours = require('../add_hours');
+require('../evo-calendar/evo-starter');
 
 $(document).ready(function () {
 

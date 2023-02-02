@@ -15,9 +15,12 @@
     {% endwith %}
     <div class="dates">
 
-        <h3 class="dates_title">Свободное время</h3>
-
-        <div id="evoCalendar" class="evoCalendar calendar calendar__service"></div>
+        <h3 class="dates_title">Доступное время</h3>
+        <form action="{{ offer.get_free_time_url }}" class="calendar__service_form" method="GET">
+            {% csrf_token %}
+            <button type="submit" class="d-none"></button>
+        </form>
+        <div class="evoCalendar calendar calendar__service"></div>
 
     </div>
 {% endblock %}

@@ -33,6 +33,14 @@
       "name": "js/admin-b2450e7406bdca943b01.bundle.js.map",
       "path": "/app/static/js/admin-b2450e7406bdca943b01.bundle.js.map"
     },
+    "js/client-ad4fd2bad7a9ecbea989.bundle.js": {
+      "name": "js/client-ad4fd2bad7a9ecbea989.bundle.js",
+      "path": "/app/static/js/client-ad4fd2bad7a9ecbea989.bundle.js"
+    },
+    "js/client-ad4fd2bad7a9ecbea989.bundle.js.map": {
+      "name": "js/client-ad4fd2bad7a9ecbea989.bundle.js.map",
+      "path": "/app/static/js/client-ad4fd2bad7a9ecbea989.bundle.js.map"
+    },
     "js/client-af7c18b73335f9ca602d.bundle.js": {
       "name": "js/client-af7c18b73335f9ca602d.bundle.js",
       "path": "/app/static/js/client-af7c18b73335f9ca602d.bundle.js"

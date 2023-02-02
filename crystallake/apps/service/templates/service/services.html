@@ -19,12 +19,6 @@
             </div>
         </div>
 
-        <div class="filter_item">
-            <label class="filter_name filter_name__long" for="{{ search_form.persons.id_for_label }}">{{ search_form.persons.label }}</label>
-            <div class="filter_select">
-                {{ search_form.persons }}
-            </div>
-        </div>
 
         <div class="filter_item">
             <p class="filter_name filter_name__long">Даты прибывания:</p>
@@ -42,6 +36,14 @@
     </div>
 
     <div class="filter_column">
+
+        <div class="filter_item">
+            <label class="filter_name filter_name__long" for="{{ search_form.persons.id_for_label }}">{{ search_form.persons.label }}</label>
+            <div class="filter_select">
+                {{ search_form.persons }}
+            </div>
+        </div>
+
         <div class="filter_item">
             <p class="filter_name filter_name__long">Цена за 1 чел/шт:</p>
             <div class="filter_select">

@@ -15,12 +15,12 @@ class Index(ClientContextMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['services'] = Service.objects.filter(is_hidden=False)[:3]
+        context['services'] = Service.objects.filter(is_hidden=False, date_deleted=None)[:3]
         context['current_page'] = 'index'
         return {**context, **self.get_general_context()}
 
     def get_queryset(self):
-        return Room.objects.filter(is_hidden=False, main_room=None)[:3]
+        return Room.objects.filter(is_hidden=False, main_room=None, date_deleted=None)[:3]
 
 
 

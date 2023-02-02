@@ -46,8 +46,6 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/ajax/reset_password.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_room_dates.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_service_dates.js'),
-
-
         ],
         admin: [
             path.resolve(__dirname,'src/scss/admin.scss'),
@@ -86,7 +84,7 @@ module.exports = {
         filename: 'js/[name]-[contenthash].bundle.js',
         path: path.resolve(__dirname, '../static'),
         clean: {
-            keep: /(admin|polymorphic)\//
+            keep: /(admin|polymorphic|images)\//
         },
     },
     devtool: isDev ? 'source-map' : false,

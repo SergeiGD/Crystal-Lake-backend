@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -29,7 +30,7 @@
 
             </div>
 
-            <form class="find_rooms">
+            <form class="find_rooms" id="index_find_rooms" method="get">
                 <div class="find_rooms_section">
                     <i class="fa fa-solid fa-calendar calendar-start"></i>
                     <div class="find_rooms_info">
@@ -79,7 +80,7 @@
 
             <div class="about_us">
 
-                <img src="../../static/images/about_us.webp" alt="О нас" class="about_us_img">
+                <img src="{% static 'images/about_us.webp' %}" alt="О нас" class="about_us_img">
 
                 <div class="about_us_info">
                     <h2 class="section_subtitle">О нас</h2>

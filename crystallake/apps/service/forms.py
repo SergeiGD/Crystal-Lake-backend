@@ -45,7 +45,7 @@ class SearchServicesForm(SearchOffersForm):
         ('5', '5 человек'),
     )
 
-    persons = forms.ChoiceField(choices=PERSONS_CHOICES, label='Человек с вами', required=False, widget=forms.Select(attrs={
+    persons = forms.ChoiceField(choices=PERSONS_CHOICES, label='Человек:', required=False, widget=forms.Select(attrs={
         'class': 'input_field select_field'
     }))
 

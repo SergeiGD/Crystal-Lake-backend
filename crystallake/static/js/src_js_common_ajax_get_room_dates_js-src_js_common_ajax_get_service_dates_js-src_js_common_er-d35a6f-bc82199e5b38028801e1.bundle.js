@@ -136,7 +136,6 @@ $(document).ready(function () {
 
         $(this).siblings('form').children('button').first().trigger('click')
 
-        console.log('asd')
     });
 
     $(".calendar__service_form").on('submit', function (event){
@@ -1446,4 +1445,4 @@ $(document).ready(function(){
 /***/ })
 
 }]);
-//# sourceMappingURL=src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-6d8219ec89dd70b35af4.bundle.js.map
+//# sourceMappingURL=src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-bc82199e5b38028801e1.bundle.js.map

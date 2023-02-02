@@ -15,7 +15,6 @@ $(document).ready(function () {
 
         $(this).siblings('form').children('button').first().trigger('click')
 
-        console.log('asd')
     });
 
     $(".calendar__service_form").on('submit', function (event){

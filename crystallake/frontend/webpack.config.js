@@ -40,6 +40,7 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/picked_time.js'),
             path.resolve(__dirname,'src/js/client/sortby.js'),
             path.resolve(__dirname,'src/js/client/delete_cart_item.js'),
+            path.resolve(__dirname,'src/js/client/slick-slider/slick_starter.js'),
             path.resolve(__dirname,'src/js/client/ajax/register.js'),
             path.resolve(__dirname,'src/js/client/ajax/ajax_redirect.js'),
             path.resolve(__dirname,'src/js/client/ajax/reset_password.js'),

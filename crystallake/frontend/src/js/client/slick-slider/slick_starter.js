@@ -1,4 +1,4 @@
-import './slick.js'
+require('./slick');
 
 $(document).ready(function(){
     $('.slick_slider').slick({

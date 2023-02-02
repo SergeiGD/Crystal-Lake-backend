@@ -8,7 +8,6 @@ $(document).ready(function(){
         $('.slider').each(function(){
             const count = $(this).siblings('.slider_content').length;
             var dot = '<div class="slider_item"></div>';
-            //var dot = $(this).children('.slider_item').first();
             for(let i = 0; i < count; i++){
                 $(this).append(dot);
             }
@@ -38,6 +37,9 @@ $(document).ready(function(){
 
     $('.slider_content').on("swipeleft", function(){
 
+        if ($(this).siblings('.slider_content').length < 2) return;
+
+
         var current_card = $(this).first();
 
         var slider = current_card.siblings('.slider');
@@ -63,6 +65,8 @@ $(document).ready(function(){
 
     $('.slider_content').on("swiperight", function(){
 
+        if ($(this).siblings('.slider_content').length < 2) return;
+
         var current_card = $(this).first();
 
         var slider = current_card.siblings('.slider');
@@ -86,6 +90,7 @@ $(document).ready(function(){
     });
 
     function swipe_slider(old_dot, new_dot){
+
 
         if (!isSliderRequired($(old_dot).parent())){    // проверяем, не скрыт ли слайдер
             return;

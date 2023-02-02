@@ -96,7 +96,7 @@ class RoomPurchaseView(RoomPurchaseMixin, View):
 
         if request.user != purchase.order.client:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                'Ошибка': ['Не удалось обнаружить пользователя, создавшего заказ']
+                'Ошибка': ['Не удалось опознать пользователя, создавшего заказ']
             })
             response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
             return response
@@ -120,7 +120,7 @@ class ServicePurchaseView(ServicePurchaseMixin, View):
 
         if request.user != purchase.order.client:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                'Ошибка': ['Не удалось обнаружить пользователя, создавшего заказ']
+                'Ошибка': ['Не удалось опознать пользователя, создавшего заказ']
             })
             response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
             return response
@@ -139,6 +139,30 @@ class ServicePurchaseView(ServicePurchaseMixin, View):
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
+
+
+def cancel_purchase_view(request, purchase_id, **kwargs):
+    purchase = get_object_or_404(Purchase, pk=purchase_id)
+    if request.user != purchase.order.client:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Ошибка': ['Не удалось опознать пользователя, создавшего заказ']
+        })
+        response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
+        return response
+    purchase.cancel()
+    return redirect(purchase.order.get_client_manage_order_url())
+
+
+def pay_view(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    if request.user != order.client:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Ошибка': ['Не удалось опознать пользователя, создавшего заказ']
+        })
+        response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
+        return response
+    order.mark_as_fully_paid()
+    return redirect(order.get_client_manage_order_url())
 
 
 class ClientInfoView(ActiveLoginRequiredMixin, RelocateResponseMixin, UpdateView):

@@ -26,7 +26,7 @@
         <h3 class="dates_title">Доступное время</h3>
         <form action="{{ offer.get_free_time_url }}" class="calendar__service_form" method="GET">
             {% csrf_token %}
-            <button type="submit" class="d-none"></button>
+            <button type="submit" hidden class="d-none"></button>
         </form>
         <div class="evoCalendar calendar calendar__service"></div>
 

@@ -195,6 +195,9 @@ class Order(models.Model):
     def get_client_manage_order_url(self):
         return reverse('client_manage_order', kwargs={'order_id': self.pk})
 
+    def get_client_pay_url(self):
+        return reverse('client_pay', kwargs={'order_id': self.pk})
+
     class Meta:
         ordering = ['-date_create']
 
@@ -350,6 +353,9 @@ class Purchase(PolymorphicModel):
 
     def get_client_save_changes_url(self):
         return reverse('client_save_room_changes', kwargs={'purchase_id': self.pk, 'order_id': self.order.pk})
+
+    def get_client_cancel_url(self):
+        return reverse('client_cancel_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
 
     def get_edit_url(self):
         return reverse('edit_room_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})

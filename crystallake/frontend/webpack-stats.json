@@ -9,102 +9,6 @@
       "name": "css/admin-1d2017df37ac0e197a2d.bundle.css.map",
       "path": "/app/static/css/admin-1d2017df37ac0e197a2d.bundle.css.map"
     },
-    "css/client-200920af9b77f9706293.bundle.css": {
-      "name": "css/client-200920af9b77f9706293.bundle.css",
-      "path": "/app/static/css/client-200920af9b77f9706293.bundle.css"
-    },
-    "css/client-200920af9b77f9706293.bundle.css.map": {
-      "name": "css/client-200920af9b77f9706293.bundle.css.map",
-      "path": "/app/static/css/client-200920af9b77f9706293.bundle.css.map"
-    },
-    "css/client-31b6969cd7d16e13063d.bundle.css": {
-      "name": "css/client-31b6969cd7d16e13063d.bundle.css",
-      "path": "/app/static/css/client-31b6969cd7d16e13063d.bundle.css"
-    },
-    "css/client-31b6969cd7d16e13063d.bundle.css.map": {
-      "name": "css/client-31b6969cd7d16e13063d.bundle.css.map",
-      "path": "/app/static/css/client-31b6969cd7d16e13063d.bundle.css.map"
-    },
-    "css/client-342f29b76b8e99783f67.bundle.css": {
-      "name": "css/client-342f29b76b8e99783f67.bundle.css",
-      "path": "/app/static/css/client-342f29b76b8e99783f67.bundle.css"
-    },
-    "css/client-342f29b76b8e99783f67.bundle.css.map": {
-      "name": "css/client-342f29b76b8e99783f67.bundle.css.map",
-      "path": "/app/static/css/client-342f29b76b8e99783f67.bundle.css.map"
-    },
-    "css/client-4c0ffca1623f4dfc6b87.bundle.css": {
-      "name": "css/client-4c0ffca1623f4dfc6b87.bundle.css",
-      "path": "/app/static/css/client-4c0ffca1623f4dfc6b87.bundle.css"
-    },
-    "css/client-4c0ffca1623f4dfc6b87.bundle.css.map": {
-      "name": "css/client-4c0ffca1623f4dfc6b87.bundle.css.map",
-      "path": "/app/static/css/client-4c0ffca1623f4dfc6b87.bundle.css.map"
-    },
-    "css/client-55648b9f9af0d261fe6e.bundle.css": {
-      "name": "css/client-55648b9f9af0d261fe6e.bundle.css",
-      "path": "/app/static/css/client-55648b9f9af0d261fe6e.bundle.css"
-    },
-    "css/client-55648b9f9af0d261fe6e.bundle.css.map": {
-      "name": "css/client-55648b9f9af0d261fe6e.bundle.css.map",
-      "path": "/app/static/css/client-55648b9f9af0d261fe6e.bundle.css.map"
-    },
-    "css/client-55cac52e175aa61299cc.bundle.css": {
-      "name": "css/client-55cac52e175aa61299cc.bundle.css",
-      "path": "/app/static/css/client-55cac52e175aa61299cc.bundle.css"
-    },
-    "css/client-55cac52e175aa61299cc.bundle.css.map": {
-      "name": "css/client-55cac52e175aa61299cc.bundle.css.map",
-      "path": "/app/static/css/client-55cac52e175aa61299cc.bundle.css.map"
-    },
-    "css/client-5dfa7def6e43ab70c1e6.bundle.css": {
-      "name": "css/client-5dfa7def6e43ab70c1e6.bundle.css",
-      "path": "/app/static/css/client-5dfa7def6e43ab70c1e6.bundle.css"
-    },
-    "css/client-5dfa7def6e43ab70c1e6.bundle.css.map": {
-      "name": "css/client-5dfa7def6e43ab70c1e6.bundle.css.map",
-      "path": "/app/static/css/client-5dfa7def6e43ab70c1e6.bundle.css.map"
-    },
-    "css/client-80e9c160e1dea92604ac.bundle.css": {
-      "name": "css/client-80e9c160e1dea92604ac.bundle.css",
-      "path": "/app/static/css/client-80e9c160e1dea92604ac.bundle.css"
-    },
-    "css/client-80e9c160e1dea92604ac.bundle.css.map": {
-      "name": "css/client-80e9c160e1dea92604ac.bundle.css.map",
-      "path": "/app/static/css/client-80e9c160e1dea92604ac.bundle.css.map"
-    },
-    "css/client-8b61184997a6c979e148.bundle.css": {
-      "name": "css/client-8b61184997a6c979e148.bundle.css",
-      "path": "/app/static/css/client-8b61184997a6c979e148.bundle.css"
-    },
-    "css/client-8b61184997a6c979e148.bundle.css.map": {
-      "name": "css/client-8b61184997a6c979e148.bundle.css.map",
-      "path": "/app/static/css/client-8b61184997a6c979e148.bundle.css.map"
-    },
-    "css/client-9450b7cefc8a4c11661d.bundle.css": {
-      "name": "css/client-9450b7cefc8a4c11661d.bundle.css",
-      "path": "/app/static/css/client-9450b7cefc8a4c11661d.bundle.css"
-    },
-    "css/client-9450b7cefc8a4c11661d.bundle.css.map": {
-      "name": "css/client-9450b7cefc8a4c11661d.bundle.css.map",
-      "path": "/app/static/css/client-9450b7cefc8a4c11661d.bundle.css.map"
-    },
-    "css/client-aea5becbd515fc16249f.bundle.css": {
-      "name": "css/client-aea5becbd515fc16249f.bundle.css",
-      "path": "/app/static/css/client-aea5becbd515fc16249f.bundle.css"
-    },
-    "css/client-aea5becbd515fc16249f.bundle.css.map": {
-      "name": "css/client-aea5becbd515fc16249f.bundle.css.map",
-      "path": "/app/static/css/client-aea5becbd515fc16249f.bundle.css.map"
-    },
-    "css/client-ced6141014f7debea2f8.bundle.css": {
-      "name": "css/client-ced6141014f7debea2f8.bundle.css",
-      "path": "/app/static/css/client-ced6141014f7debea2f8.bundle.css"
-    },
-    "css/client-ced6141014f7debea2f8.bundle.css.map": {
-      "name": "css/client-ced6141014f7debea2f8.bundle.css.map",
-      "path": "/app/static/css/client-ced6141014f7debea2f8.bundle.css.map"
-    },
     "css/client-e88fbe036742d1154545.bundle.css": {
       "name": "css/client-e88fbe036742d1154545.bundle.css",
       "path": "/app/static/css/client-e88fbe036742d1154545.bundle.css"
@@ -112,14 +16,6 @@
     "css/client-e88fbe036742d1154545.bundle.css.map": {
       "name": "css/client-e88fbe036742d1154545.bundle.css.map",
       "path": "/app/static/css/client-e88fbe036742d1154545.bundle.css.map"
-    },
-    "css/client-ee86245292fd3ecfb308.bundle.css": {
-      "name": "css/client-ee86245292fd3ecfb308.bundle.css",
-      "path": "/app/static/css/client-ee86245292fd3ecfb308.bundle.css"
-    },
-    "css/client-ee86245292fd3ecfb308.bundle.css.map": {
-      "name": "css/client-ee86245292fd3ecfb308.bundle.css.map",
-      "path": "/app/static/css/client-ee86245292fd3ecfb308.bundle.css.map"
     },
     "images/intro-60e8cb53066439a45a79.webp": {
       "name": "images/intro-60e8cb53066439a45a79.webp",
@@ -184,7 +80,5 @@
       "css/client-e88fbe036742d1154545.bundle.css",
       "js/client-988d5cef857301abd0b2.bundle.js"
     ]
-  },
-  "error": "ModuleBuildError",
-  "message": "Module build failed (from ./node_modules/sass-loader/dist/cjs.js):\nSassError: Can't find stylesheet to import.\n   ╷\n57 │ @import 'pages/profile_history_item';\n   │         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   ╵\n  src/scss/style.scss 57:9  root stylesheet"
+  }
 }

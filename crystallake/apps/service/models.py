@@ -59,34 +59,24 @@ class Service(Offer):
         )
 
         for timetable in timetables:
-            purchases = PurchaseCountable.objects.filter(
-                offer__pk=timetable.service.pk,
-                is_canceled=False,
-                order__date_canceled=None,
-                start__gte=timetable.start,
-                end__lte=timetable.end
-            )
-
-            purchases_time = []
-            intersections = []
-            for purchase in purchases:
-                purchase_time = DateTimeRange(purchase.start, purchase.end)
-                for existing_time in purchases_time:
-                    if purchase_time.is_intersection(existing_time):                        # если время пересекается с уже просмотренным
-                        intersections.append(purchase_time.intersection(existing_time))     # то в список пересечений добаволяем их пересечение
-                purchases_time.append(purchase_time)
-
+            current_time = timetable.start
+            step = datetime.timedelta(minutes=10)
             banned_ranges = []
-            for i in range(len(intersections) - 1):
-                intersections_count = 0
-                current_range = intersections[i]
-                temp_banned = []
-                for j in range(i + 1, len(intersections)):                      # каждое пересечение нужно сравнить друг с другом
-                    if current_range.is_intersection(intersections[j]):
-                        temp_banned.append(current_range.intersection(intersections[j]))    # если есть, то добавляем во временный список недоступных
-                        intersections_count += 1
-                if intersections_count >= self.max_intersections - 1:   # если больше разрешенного кол-ва пересечений, то недоступно
-                    banned_ranges.extend(temp_banned)
+
+            while current_time < timetable.end:
+                time_range = DateTimeRange(current_time, current_time + step)
+
+                if PurchaseCountable.objects.filter(
+                    Q(start__range=[current_time, current_time + step]) |
+                    Q(end__range=[current_time, current_time + step]) |
+                    (Q(start__lte=current_time) & Q(end__gte=current_time + step)),
+                    offer__pk=timetable.service.pk,
+                    is_canceled=False,
+                    order__date_canceled=None,
+                ).count() >= self.max_intersections:
+                    banned_ranges.append(time_range)
+
+                current_time += step
 
             available_ranges = [DateTimeRange(timetable.start, timetable.end)]      # изначально доступно все время расписания
             for banned_time in banned_ranges:

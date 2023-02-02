@@ -67,14 +67,17 @@
                                 </li>
                             </ul>
 
-                            <div class="long_buttons_group">
-                                {% if order.date_full_paid %}
-                                    <button class="card_button card_button__pay card_button__inactive" disabled>Доплатить</button>
-                                {% else %}
-                                    <button class="card_button card_button__pay">Доплатить</button>
-                                {% endif %}
-                                <button class="card_button card_button__cancel">Отменить</button>
-                            </div>
+                            <form action="{{ order.get_client_pay_url }}" method="post">
+                                {% csrf_token %}
+                                <div class="long_buttons_group">
+                                    {% if order.date_full_paid %}
+                                        <button class="card_button card_button__pay card_button__inactive" disabled>Доплатить</button>
+                                    {% else %}
+                                        <button class="card_button card_button__pay" type="submit">Доплатить</button>
+                                    {% endif %}
+                                    <button class="card_button card_button__cancel">Отменить</button>
+                                </div>
+                            </form>
 
                         </div>
                     </div>
@@ -124,7 +127,8 @@
 
                                 <div class="long_buttons_group">
                                     <button class="card_button card_button__pay" data-goto="{{ purchase.get_client_edit_url }}">Изменить</button>
-                                    <form action="" method="post">
+                                    <form action="{{ purchase.get_client_cancel_url }}" method="post">
+                                        {% csrf_token %}
                                         <button class="card_button card_button__cancel" type="submit">Отменить</button>
                                     </form>
                                 </div>

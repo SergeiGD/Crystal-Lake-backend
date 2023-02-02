@@ -1,10 +1,9 @@
 from datetime import timedelta, datetime
 
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, View, TemplateView, UpdateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, View, TemplateView, UpdateView, DetailView
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
@@ -13,12 +12,15 @@ from ..order.models import Order
 from ..core.utils import SafePaginator
 from ..core.utils import ResponseMessage, RelocateResponseMixin, ClientContextMixin
 from .forms import ClientLoginForm, SendCodeForm, ClientPhoneForm, ClientPasswordsForm, ClientInfoForm
-from ..order.models import Order, Purchase
+from ..order.models import Order, Purchase, PurchaseCountable
 from ..client.models import Client
 from ..user.models import SmsCode, CustomUser
 from ..worker.models import Worker
 from .utils import SmsCodeMixin, PhoneCheckMixin, ActiveLoginRequiredMixin
 from django.conf import settings
+from ..service.forms import ManageServicePurchaseForm
+from ..room.forms import ManageRoomPurchaseForm
+from ..order.views import RoomPurchaseMixin, ServicePurchaseMixin
 
 # Create your views here.
 
@@ -47,6 +49,96 @@ class ActiveOrdersCatalog(ActiveLoginRequiredMixin, ListView):
         )
 
         return orders
+
+
+class ManageOrder(ActiveLoginRequiredMixin, DetailView):
+    model = Order
+    context_object_name = 'order'
+    url = 'room_slug'
+    pk_url_kwarg = 'order_id'
+    template_name = 'client_profile/manage_order.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = 'profile'
+        context['current_profile_page'] = 'active_orders'
+        return context
+
+    def get_object(self, queryset=None):
+        obj = super(ManageOrder, self).get_object(queryset=queryset)
+        if obj.date_finished or obj.date_canceled or obj.client != self.request.user:
+            raise Http404()
+        return obj
+
+
+class ManagePurchase(ActiveLoginRequiredMixin, DetailView):
+    model = Purchase
+    template_name = 'client_profile/manage_purchase.html'
+    context_object_name = 'purchase'
+    pk_url_kwarg = 'purchase_id'
+
+    def get_context_data(self, **kwargs):
+        context = super(ManagePurchase, self).get_context_data(**kwargs)
+        if isinstance(self.object, PurchaseCountable):
+            form = ManageServicePurchaseForm(purchase=self.object)
+        else:
+            form = ManageRoomPurchaseForm(purchase=self.object)
+        context['form'] = form
+        context['current_page'] = 'profile'
+        context['current_profile_page'] = 'active_orders'
+        return context
+
+
+class RoomPurchaseView(RoomPurchaseMixin, View):
+    def post(self, request, purchase_id, **kwargs):
+        purchase = get_object_or_404(Purchase, pk=purchase_id)
+        form = ManageRoomPurchaseForm(request.POST, purchase=purchase)
+
+        if request.user != purchase.order.client:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                'Ошибка': ['Не удалось обнаружить пользователя, создавшего заказ']
+            })
+            response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
+            return response
+
+        if form.is_valid():
+            purchase.offer = purchase.offer.main_room
+            start, end = self.aware_date(form.cleaned_data['date_start'], form.cleaned_data['date_end'])
+
+            # ВОТКНУТЬ КНОПКУ НЕСКОЛЬКО КОМНАТ
+            return self.manage_room_purchase(purchase, start, end, False, success_url=purchase.order.get_client_manage_order_url())
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
+
+
+class ServicePurchaseView(ServicePurchaseMixin, View):
+    def post(self, request, purchase_id, **kwargs):
+        purchase = get_object_or_404(PurchaseCountable, pk=purchase_id)
+        form = ManageServicePurchaseForm(request.POST, purchase=purchase)
+
+        if request.user != purchase.order.client:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                'Ошибка': ['Не удалось обнаружить пользователя, создавшего заказ']
+            })
+            response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
+            return response
+
+        if form.is_valid():
+            purchase.quantity = form.cleaned_data['quantity']
+            purchase.start, purchase.end = self.aware_time(
+                form.cleaned_data['date'],
+                form.cleaned_data['time_start'],
+                form.cleaned_data['time_end']
+            )
+
+            return self.manage_service_purchase(purchase, success_url=purchase.order.get_client_manage_order_url())
+
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
 
 
 class ClientInfoView(ActiveLoginRequiredMixin, RelocateResponseMixin, UpdateView):
@@ -280,5 +372,23 @@ def cart_prepayment_pay_view(request):
             })
             response = HttpResponse(response_message.get_json(), status=401, content_type='application/json')
             return response
+
+
+def remove_from_cart_view(request, purchase_id, **kwargs):
+    purchase = get_object_or_404(Purchase, pk=purchase_id)
+    if not purchase.order.is_cart:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Ошибка': ['Этот элемент не является частью корзины']
+        })
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
+    if purchase.order.client != request.user:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Ошибка': ['Нельзя изменить чужую корзину']
+        })
+        response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
+        return response
+    purchase.cancel()
+    return redirect(reverse_lazy('cart'))
 
 

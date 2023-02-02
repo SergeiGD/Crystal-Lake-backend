@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <section class="section">
+
+        <div class="content_container">
+
+            <h2 class="section_title">Личный кабинет</h2>
+
+            <div class="breadcrumbs">
+                <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
+                <span>&#10148;</span>
+                <a href="{% url 'active_orders' %}" class="breadcrumbs_item">Активные заказы</a>
+                <span>&#10148;</span>
+                <a href="{{ purchase.order.get_client_manage_order_url }}" class="breadcrumbs_item">Управление заказом</a>
+                <span>&#10148;</span>
+                <p class="breadcrumbs_item breadcrumbs_item__active">Управление покупкой</p>
+            </div>
+
+            <div class="profile">
+
+                {% include 'client_profile/profile_menu.html' %}
+
+                <div class="profile_content">
+
+                    <div class="client_order">
+                        <div class="photos">
+                            <img src="{{ purchase.offer.get_main_photo.url }}" alt="{{ purchase.offer.name }}" class="photos_img">
+                        </div>
+
+                        <form class="info ajax_redirect" method="post" action="{{ purchase.get_client_save_changes_url }}" >
+
+                            {% csrf_token %}
+
+                            <div class="errors_wrapper"></div>
+
+
+                            <a href="{{ purchase.offer.get_absolute_url }}" class="info_title info_link">{{ purchase.offer.name }}</a>
+                            <ul class="info_stats">
+
+
+                                {% for field in form %}
+                                    <div class="field_item">
+                                         <label class="field_name" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                        <div class="field_content">
+                                            {{ field }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </ul>
+
+                            <div class="long_buttons_group">
+                                <button class="card_button card_button__pay" type="submit">Сохранить</button>
+                                <button class="card_button card_button__cancel" type="button" data-goto="{{ purchase.order.get_client_manage_order_url }}">Отменить</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock content %}

@@ -84,47 +84,4 @@
         }
     }
 
-    .card_long_buttons{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-
-        @include mixins.device(mobile){
-            gap: 1em;
-        }
-
-        .card_button{
-            @extend %button;
-        }
-
-        .card_button__reschedule{
-            background-color: #fff;
-            color: #000;
-            border-color: #000;
-        }
-        
-        .card_button__pay{
-            background-color: vars.$yellow_color;
-            color: #000;
-            border-color: transparent;
-        }
-        
-        .card_button__cancel{
-            background-color: vars.$red_color;
-            color: #fff;
-            border-color: transparent;
-        }
-
-        .card_button__more{
-            background-color: #fff;
-            color: #000;
-            border-color: #000;
-        }
-        
-        .card_button__inactive{
-            cursor: auto;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-    }
 }

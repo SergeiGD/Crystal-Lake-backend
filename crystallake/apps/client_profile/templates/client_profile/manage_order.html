@@ -1,0 +1,148 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <section class="section">
+
+        <div class="content_container">
+
+            <h2 class="section_title">Личный кабинет</h2>
+
+            <div class="breadcrumbs">
+                <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
+                <span>&#10148;</span>
+                <a href="{% url 'active_orders' %}" class="breadcrumbs_item">Активные заказы</a>
+                <span>&#10148;</span>
+                <p class="breadcrumbs_item breadcrumbs_item__active">Управление заказом</p>
+            </div>
+
+            <div class="profile">
+
+                {% include 'client_profile/profile_menu.html' %}
+
+                <div class="profile_content">
+
+                    <div class="client_order">
+                        <div class="photos">
+                            <img src="{{ order.main_offer.get_main_photo.url }}" alt="{{ order.name }}" class="photos_img">
+                        </div>
+
+                        <div class="info">
+                            <p class="info_title">{{ order.name }}</p>
+                            <ul class="info_stats">
+                                <li class="stat_item">
+                                    <p class="stat_item_name">Номер заказа: </p>
+                                    <span class="highlighted stat_item_value">{{ order.id }}</span>
+                                </li>
+                                <li class="stat_item">
+                                    <p class="stat_item_name">Дата создания: </p>
+                                    <span class="highlighted  stat_item_value">{{ order.date_create }}</span>
+                                </li>
+                                <li class="stat_item">
+                                    <p class="stat_item_name">Количество покупок: </p>
+                                    <span class="highlighted  stat_item_value">{{ order.purchases.count }}</span>
+                                </li>
+                                <li class="stat_item">
+                                    <p class="stat_item_name">Суммарная цена: </p>
+                                    <span class="highlighted  stat_item_value">{{ order.price }}&#8381;</span>
+                                </li>
+                                <li class="stat_item">
+                                    <p class="stat_item_name">Суммарная предоплата: </p>
+                                    <span class="highlighted  stat_item_value">{{ order.prepayment }}&#8381;</span>
+                                </li>
+                                <li class="stat_item">
+                                    <p class="stat_item_name">Средств возвращено: </p>
+                                    <span class="highlighted  stat_item_value">{{ order.refunded }}&#8381;</span>
+                                </li>
+                                <li class="stat_item">
+                                    <p class="stat_item_name">Средств к возврату: </p>
+                                    <span class="highlighted  stat_item_value">{{ order.left_to_refund }}&#8381;</span>
+                                </li>
+                                <li class="stat_item">
+                                    <p class="stat_item_name">Оплачено: </p>
+                                    <span class="highlighted  stat_item_value">{{ order.paid }}&#8381;</span>
+                                </li>
+                                <li class="stat_item">
+                                    <p class="stat_item_name">Статус оплаты: </p>
+                                    <span class="highlighted  stat_item_value">{{ order.payment_status }}</span>
+                                </li>
+                            </ul>
+
+                            <div class="long_buttons_group">
+                                {% if order.date_full_paid %}
+                                    <button class="card_button card_button__pay card_button__inactive" disabled>Доплатить</button>
+                                {% else %}
+                                    <button class="card_button card_button__pay">Доплатить</button>
+                                {% endif %}
+                                <button class="card_button card_button__cancel">Отменить</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="order_purchases">
+                        <div class="catalog_long">
+
+                            {% for purchase in order.purchases.all %}
+                            <div class="card_long">
+
+                                <img src="{{ purchase.offer.get_main_photo.url }}" alt="{{ purchase.offer.name }}" class="card_long_img">
+
+                                <div class="card_long_inner">
+                                    <div class="card_long_desciption">
+                                        <a href="{{ purchase.offer.get_absolute_url }}" class="card_long_name">{{ purchase.offer.name }}</a>
+                                        <div class="card_long_stats">
+                                            <div class="card_long_text">
+                                                <p>Дата начала:</p>
+                                                <span class="highlighted">{{ purchase.start }}</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Дата конца:</p>
+                                                <span class="highlighted">{{ purchase.end }}</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Количество: </p>
+                                                {% if purchase.quantity %}
+                                                    <span class="highlighted">{{ purchase.quantity }}</span>
+                                                {% else %}
+                                                    <span class="highlighted">Нет</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Суммарная предоплата: </p>
+                                                <span class="highlighted">{{ purchase.prepayment }}&#8381;</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Суммарная цена: </p>
+                                                <span class="highlighted">{{ purchase.price }}&#8381;</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Статус оплаты: </p>
+                                                <span class="highlighted">{{ purchase.get_payment_status }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <div class="long_buttons_group">
+                                    <button class="card_button card_button__pay" data-goto="{{ purchase.get_client_edit_url }}">Изменить</button>
+                                    <form action="" method="post">
+                                        <button class="card_button card_button__cancel" type="submit">Отменить</button>
+                                    </form>
+                                </div>
+
+                                </div>
+
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock content %}

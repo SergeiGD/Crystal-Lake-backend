@@ -5,6 +5,7 @@ from django import forms
 
 from ..offer.forms import SearchOffersForm, OfferForm, SearchOffersAdmin, BookOfferForm
 from .models import Service, ServiceTimetable
+from ..order.models import PurchaseCountable
 
 
 class ServiceForm(OfferForm):
@@ -103,23 +104,38 @@ class SearchTimetablesAdmin(forms.Form):
     }))
 
 
-class BookServiceForm(BookOfferForm):
+class ServicePurchaseForm(forms.Form):
+
     date = forms.DateField(label='Дата*:', widget=forms.DateInput(attrs={
         'class': 'input_field',
         'type': 'date'
     }))
-    time_start = forms.TimeField(label='с', widget=forms.TimeInput(attrs={
+    time_start = forms.TimeField(label='Время с*', widget=forms.TimeInput(attrs={
         'class': 'input_field',
         'type': 'time'
     }))
-    time_end = forms.TimeField(label='до', widget=forms.TimeInput(attrs={
+    time_end = forms.TimeField(label='Время до*', widget=forms.TimeInput(attrs={
         'class': 'input_field',
         'type': 'time'
     }))
-    quantity = forms.IntegerField(label='Человек*:', initial=1,  widget=forms.NumberInput(attrs={
+    quantity = forms.IntegerField(label='Человек*:', widget=forms.NumberInput(attrs={
         'class': 'input_field input_field__people'
     }))
 
+
+class ManageServicePurchaseForm(ServicePurchaseForm):
+    def __init__(self, *args, **kwargs):
+        self.purchase = kwargs.pop('purchase', None)
+        super().__init__(*args, **kwargs)
+
+        self.fields['date'].widget.attrs['value'] = timezone.localtime(self.purchase.end).date()
+        self.fields['quantity'].widget.attrs['value'] = self.purchase.quantity
+        self.fields['time_start'].widget.attrs['value'] = timezone.localtime(self.purchase.start).time()
+        self.fields['time_end'].widget.attrs['value'] = timezone.localtime(self.purchase.end).time()
+
+
+class BookServiceForm(BookOfferForm, ServicePurchaseForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['quantity'].widget.attrs['value'] = 1
+        self.fields['date'].widget.attrs['value'] = datetime.now().date()

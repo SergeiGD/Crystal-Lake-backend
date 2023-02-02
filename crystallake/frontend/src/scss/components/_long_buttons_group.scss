@@ -1,0 +1,9 @@
+@use '../utils/vars' as vars;
+@use '../utils/mixins' as mixins;
+
+.long_buttons_group{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 1em;
+}

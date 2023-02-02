@@ -2,7 +2,7 @@ from datetime import datetime, time
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, UpdateView, CreateView, DetailView
+from django.views.generic import ListView, UpdateView, CreateView, DetailView, View
 from django.utils import timezone
 from django.urls import reverse
 
@@ -21,6 +21,7 @@ from ..room.models import Room
 from .status_choises import Status
 from ..service.models import ServiceTimetable
 from django.conf import settings
+from .utils import ServicePurchaseMixin, RoomPurchaseMixin
 
 
 # Create your views here.
@@ -122,53 +123,24 @@ class AdminOrderUpdate(RelocateResponseMixin, AdminLoginRequired, UpdateView):
         return response
 
 
-def room_purchase_edit_view(request, purchase_id, **kwargs):
-    if request.POST:
+class RoomPurchaseEditView(RoomPurchaseMixin, View):
+    def post(self, request, purchase_id, **kwargs):
         purchase = get_object_or_404(Purchase, pk=purchase_id)
-
         form = RoomPurchaseForm(request.POST or None, instance=purchase, prefix='edit')
 
         if form.is_valid():
-            room = purchase.offer.main_room
-            rooms = room.pick_rooms_for_purchase(form.cleaned_data['start'], form.cleaned_data['end'], purchase.pk)
-            if len(rooms) == 0:
-                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                    'Свободность номера': ['Нету свободных комнат на выбранные даты']
-                })
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
+            purchase.offer = purchase.offer.main_room
+            start, end = self.aware_date(form.cleaned_data['start'], form.cleaned_data['end'])
 
-            if len(rooms) > 1 and not form.cleaned_data['multiple_rooms_acceptable']:
-                response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
-                    'Свободность номера': [
-                        'Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
-                })
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
-
-            purchases = []
-            for room in rooms:
-                created_purchase = Purchase(
-                    order=purchase.order,
-                    offer=room['room'],
-                    start=room['start'],
-                    end=room['end'],
-                    is_prepayment_paid=purchase.is_prepayment_paid
-                )
-                purchases.append(created_purchase)
-            purchase.delete()
-            Purchase.objects.bulk_create(purchases)
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-            response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
-            return response
+            return self.manage_room_purchase(purchase, start, end, form.cleaned_data['multiple_rooms_acceptable'])
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
 
 
-def room_purchase_create_view(request, order_id):
-    if request.POST:
+class RoomPurchaseCreateView(RoomPurchaseMixin, View):
+    def post(self, request, order_id):
         order = get_object_or_404(Order, pk=order_id)
 
         form = RoomPurchaseForm(request.POST or None, prefix='create')
@@ -177,112 +149,54 @@ def room_purchase_create_view(request, order_id):
 
         if form.is_valid():
             room_id = form.cleaned_data['room_id']
-            room = get_object_or_404(Room, pk=room_id)
-            start = datetime.combine(form.cleaned_data['start'], settings.CHECK_IN_TIME)
-            end = datetime.combine(form.cleaned_data['end'], settings.CHECK_IN_TIME)
+            purchase.offer = get_object_or_404(Room, pk=room_id)
+            start, end = self.aware_date(form.cleaned_data['start'], form.cleaned_data['end'])
 
-            rooms = room.pick_rooms_for_purchase(start, end)
-            if len(rooms) == 0:
-                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                    'Свободность номера': ['Нету свободных комнат на выбранные даты']
-                })
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
-
-            if len(rooms) > 1 and not form.cleaned_data['multiple_rooms_acceptable']:
-                print(form.cleaned_data)
-                response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
-                    'Свободность номера': ['Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
-                })
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
-
-            purchases = []
-            for room in rooms:
-                purchase = Purchase(
-                    order=order,
-                    offer=room['room'],
-                    start=room['start'],
-                    end=room['end']
-                )
-                purchases.append(purchase)
-            Purchase.objects.bulk_create(purchases)
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-            response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
-            return response
+            return self.manage_room_purchase(purchase, start, end, form.cleaned_data['multiple_rooms_acceptable'])
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
 
 
-def service_purchase_create_view(request, order_id):
-    if request.POST:
+class ServicePurchaseEditView(ServicePurchaseMixin, View):
+    def post(self, request, purchase_id, **kwargs):
+        purchase = get_object_or_404(PurchaseCountable, pk=purchase_id)
+        form = ServicePurchaseForm(request.POST or None, instance=purchase, prefix='edit')
+
+        if form.is_valid():
+            purchase.start, purchase.end = self.aware_time(
+                form.cleaned_data['day'],
+                form.cleaned_data['time_start'],
+                form.cleaned_data['time_end']
+            )
+
+            return self.manage_service_purchase(purchase)
+
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
+
+
+class ServicePurchaseCreateView(ServicePurchaseMixin, View):
+    def post(self, request, order_id):
         order = get_object_or_404(Order, pk=order_id)
 
         purchase = PurchaseCountable(order=order)
         form = ServicePurchaseForm(request.POST or None, instance=purchase, prefix='create')
-
         if form.is_valid():
             service_id = form.cleaned_data['service_id']
             service = get_object_or_404(Offer, pk=service_id)
             purchase.offer = service
 
-            start = datetime.combine(form.cleaned_data['day'], form.cleaned_data['time_start'])
-            end = datetime.combine(form.cleaned_data['day'], form.cleaned_data['time_end'])
-            start, end = timezone.make_aware(start), timezone.make_aware(end)
+            purchase.start, purchase.end = self.aware_time(
+                form.cleaned_data['day'],
+                form.cleaned_data['time_start'],
+                form.cleaned_data['time_end']
+            )
 
-            purchase.start, purchase.end = start, end
-
-            if purchase.offer.is_time_available(purchase.start, purchase.end):
-                purchase.save()
-            else:
-                response_message = ResponseMessage(
-                    status=ResponseMessage.STATUSES.ERROR,
-                    message={'Время': ['На выбранное время нет доступной брони']}
-                )
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
-
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-            response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
-            return response
-        else:
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
-            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-            return response
-
-
-def service_purchase_edit_view(request, purchase_id, **kwargs):
-    # TODO: mixin
-    if request.POST:
-        purchase = get_object_or_404(PurchaseCountable, pk=purchase_id)
-        form = ServicePurchaseForm(request.POST or None, instance=purchase, prefix='edit')
-
-        if form.is_valid():
-            start = datetime.combine(form.cleaned_data['day'], form.cleaned_data['time_start'])
-            end = datetime.combine(form.cleaned_data['day'], form.cleaned_data['time_end'])
-            start, end = timezone.make_aware(start), timezone.make_aware(end)
-
-            purchase.start, purchase.end = start, end
-
-            if purchase.offer.is_time_available(purchase.start, purchase.end, purchase.pk):
-                purchase.save()
-            else:
-                response_message = ResponseMessage(
-                    status=ResponseMessage.STATUSES.ERROR,
-                    message={'Время': ['На выбранное время нет доступной брони']}
-                )
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
-
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-            response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
-            return response
-        else:
-            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
-            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-            return response
+            return self.manage_service_purchase(purchase)
 
 
 def get_purchase_info_view(request, purchase_id, **kwargs):
@@ -298,23 +212,6 @@ def cancel_purchase_view(request, purchase_id, **kwargs):
     purchase.cancel()
     return redirect(purchase.order.get_admin_edit_url())
 
-
-def remove_from_cart_view(request, purchase_id, **kwargs):
-    purchase = get_object_or_404(Purchase, pk=purchase_id)
-    if not purchase.order.is_cart:
-        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-            'Ошибка': ['Этот элемент не является частью корзины']
-        })
-        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-        return response
-    if purchase.order.client != request.user:
-        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-            'Ошибка': ['Нельзя изменить чужую корзину']
-        })
-        response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
-        return response
-    purchase.cancel()
-    return redirect(reverse('cart'))
 
 
 

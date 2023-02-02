@@ -1,7 +1,7 @@
 @use '../utils/vars' as vars;
 @use '../utils/mixins' as mixins; 
 
-.history_item{
+.client_order{
     display: flex;
     justify-content: space-between;
     font-size: 1rem;

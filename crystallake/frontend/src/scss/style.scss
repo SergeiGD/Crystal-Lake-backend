@@ -22,6 +22,8 @@
 @import 'components/content_container';
 @import 'components/modal';
 @import 'components/errors_wrapper';
+@import 'components/buttons';
+@import 'components/long_buttons_group';
 
 
 // LAYOUT 
@@ -44,6 +46,7 @@
 @import 'layout/free_dates';
 @import 'layout/form_inputs';
 @import 'layout/login_popup';
+@import 'layout/order_purchases';
 
 
 // PAGES SPECIFIC STYLES
@@ -52,7 +55,7 @@
 @import 'pages/cart';
 @import 'pages/offer';
 @import 'pages/profile';
-@import 'pages/profile_history_item';
+@import 'pages/client_order';
 @import 'pages/profile_info';
 
 // VENDORS (JQUERY PLUGINS)

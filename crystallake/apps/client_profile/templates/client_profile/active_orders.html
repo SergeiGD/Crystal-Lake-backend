@@ -32,10 +32,10 @@
 
                                 <div class="card_long_inner">
                                     <div class="card_long_desciption">
-                                        <a href="{{ order.get_show_client_url }}" class="card_long_name">{{ order.name }}</a>
+                                        <a href="{{ order.get_client_manage_order_url }}" class="card_long_name">{{ order.name }}</a>
                                         <div class="card_long_stats">
                                             <div class="card_long_text">
-                                                <p>Даты создания:</p>
+                                                <p>Дата создания:</p>
                                                 <span class="highlighted">{{ order.date_create }}</span>
                                             </div>
                                             <div class="card_long_text">
@@ -53,9 +53,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="card_long_buttons">
-                                        <button class="card_button card_button__reschedule">Перенести</button>
-                                        <button class="card_button card_button__pay">Доплатить</button>
+                                    <div class="long_buttons_group">
+                                        {% if order.date_full_paid %}
+                                            <button class="card_button card_button__pay card_button__inactive" disabled>Доплатить</button>
+                                        {% else %}
+                                            <button class="card_button card_button__pay">Доплатить</button>
+                                        {% endif %}
                                         <button class="card_button card_button__cancel">Отменить</button>
                                     </div>
                                 </div>

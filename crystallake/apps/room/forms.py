@@ -1,5 +1,8 @@
+import datetime
+
 from django import forms
 from django.db.models import Q
+from django.utils import timezone
 
 
 from .models import Room
@@ -94,12 +97,32 @@ class SearchRoomsAdmin(SearchOffersAdmin):
     }))
 
 
-class BookRoomForm(BookOfferForm):
-    date_start = forms.DateField(label='с', widget=forms.DateInput(attrs={
+class RoomPurchaseForm(forms.Form):
+    date_start = forms.DateField(label='Дата с*', widget=forms.DateInput(attrs={
         'class': 'input_field',
         'type': 'date'
     }))
-    date_end = forms.DateField(label='до', widget=forms.DateInput(attrs={
+    date_end = forms.DateField(label='Дата до*', widget=forms.DateInput(attrs={
         'class': 'input_field',
         'type': 'date'
     }))
+
+
+class ManageRoomPurchaseForm(RoomPurchaseForm):
+    def __init__(self, *args, **kwargs):
+        self.purchase = kwargs.pop('purchase', None)
+        super().__init__(*args, **kwargs)
+
+        self.fields['date_start'].widget.attrs['value'] = timezone.localtime(self.purchase.start).date()
+        self.fields['date_end'].widget.attrs['value'] = timezone.localtime(self.purchase.end).date()
+
+
+class BookRoomForm(BookOfferForm, RoomPurchaseForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['date_start'].widget.attrs['value'] = timezone.now().date()
+        self.fields['date_end'].widget.attrs['value'] = (timezone.now() + datetime.timedelta(days=7)).date()
+
+
+

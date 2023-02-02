@@ -150,18 +150,14 @@ class BookOfferForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         if self.user is not None and self.user.is_authenticated:
-            # self.fields['phone'].disabled = True
             self.fields['phone'].widget.attrs['value'] = self.user.phone
             self.fields['phone'].widget.attrs['readonly'] = ''
 
-            # self.fields['first_name'].disabled = True
             self.fields['first_name'].widget.attrs['value'] = self.user.first_name
             self.fields['first_name'].widget.attrs['readonly'] = ''
 
-            # self.fields['last_name'].disabled = True
             self.fields['last_name'].widget.attrs['value'] = self.user.last_name
             self.fields['last_name'].widget.attrs['readonly'] = ''
-
 
 
 

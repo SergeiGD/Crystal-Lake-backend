@@ -111,20 +111,6 @@ class AdminOrderUpdate(RelocateResponseMixin, AdminLoginRequired, UpdateView):
             if status == Status.process.name:
                 form.instance.mark_as_in_process()
 
-        # paid = form.cleaned_data['paid']
-        # if paid and self.object.date_full_paid is None:
-        #     self.object.mark_as_paid()
-        # elif not paid and self.object.date_full_paid is not None:
-        #     self.object.mark_as_unpaid()
-
-        # prepayment_paid = form.cleaned_data['prepayment_paid']
-        # if prepayment_paid:
-        #     self.object.mark_as_prepayment_paid()
-        #
-        # paid = form.cleaned_data['paid']
-        # if paid:
-        #     self.object.mark_as_paid()
-
         refund_made = form.cleaned_data['refund_made']
         if refund_made:
             self.object.mark_as_refund_made()
@@ -233,16 +219,6 @@ def room_purchase_create_view(request, order_id):
 def service_purchase_create_view(request, order_id):
     if request.POST:
         order = get_object_or_404(Order, pk=order_id)
-        # print(request.POST)
-        # service_id = request.POST['create-service_id']
-        # service = get_object_or_404(Offer, pk=service_id)
-
-        # day = datetime(request.POST['create-day'])
-        # time_start = datetime.time(request.POST['create-time_start'])
-        # time_end = datetime.time(request.POST['create-time_end'])
-        # start = datetime.combine(day, time_start)
-        # end = datetime.combine(day, time_end)
-        # start, end = timezone.make_aware(start), timezone.make_aware(end)
 
         purchase = PurchaseCountable(order=order)
         form = ServicePurchaseForm(request.POST or None, instance=purchase, prefix='create')

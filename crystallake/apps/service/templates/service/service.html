@@ -23,71 +23,46 @@
 {% endblock %}
 
 {% block book %}
-    <div class="fields">
+    <form class="book ajax_redirect" method="post" action=".">
 
-        <div class="field_item">
-            <label for="input_people" class="field_name">Человек с Вами:</label>
-            <div class="field_content">
-                <input type="number" id="input_people" class="input_field input_field__people" value="0">
+        {% csrf_token %}
+
+        <div class="fields">
+
+            <div class="errors_wrapper"></div>
+
+            <div class="field_item">
+                <label for="{{ book_form.date.id_for_label }}" class="field_name">{{ book_form.date.label }}</label>
+                <div class="field_content">
+                    {{ book_form.date }}
+                </div>
             </div>
+
+            <div class="field_item">
+                <p class="field_name">Время*:</p>
+                <div class="field_content">
+                    <div class="field_subcontent">
+                        <label for="{{ book_form.time_start.id_for_label }}" class="field_subname">{{ book_form.time_start.label }}</label>
+                        {{ book_form.time_start }}
+                    </div>
+                    <div class="field_subcontent">
+                        <label for="{{ book_form.time_end.id_for_label }}" class="field_subname">{{ book_form.time_end.label }}</label>
+                        {{ book_form.time_end }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field_item">
+                <label for="{{ book_form.quantity.id_for_label }}" class="field_name">{{ book_form.quantity.label }}</label>
+                <div class="field_content">
+                    {{ book_form.quantity }}
+                </div>
+            </div>
+
+            {% include 'offer/book_general_fields.html' %}
+
         </div>
 
-        <div class="field_item">
-            <label class="field_name" for="input_date">Дата:</label>
-            <div class="field_content">
-                <input type="date" id="input_date" class="input_field">
-            </div>
-        </div>
-
-        <div class="field_item">
-            <span class="field_name">Время:</span>
-            <div class="field_content">
-                <span class="time time__active">14:30</span>
-                <span class="time">17:30</span>
-                <span class="time">19:00</span>
-            </div>
-        </div>
-
-        <div class="field_item">
-            <label for="input_name" class="field_name">Ваше Ф.И.О:</label>
-            <div class="field_content">
-                <input type="text" id="input_name" class="input_field input_field__name">
-            </div>
-        </div>
-
-        <div class="field_item">
-            <label for="input_phone" class="field_name">Номер телефона:</label>
-            <div class="field_content">
-                <input type="tel" id="input_phone" class="input_field input_field__phone" placeholder="+7(___)___-__-__">
-            </div>
-        </div>
-
-
-        <div class="field_item">
-            <label for="input_payment" class="field_name">Оплатить сейчас:</label>
-            <div class="field_content">
-                <select id="input_payment" class="input_field select_field">
-                    <option value="1">полностью</option>
-                    <option value="2" selected>только предоплату</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="field_item">
-            <p class="field_name">К оплате сейчас:</p>
-            <div class="field_content">
-                <p class="field_info">2.899&#8381;</p>
-            </div>
-        </div>
-
-        <div class="field_item">
-            <p class="field_name">Суммарная цена:</p>
-            <div class="field_content">
-                <p class="field_info">12.399&#8381;</p>
-            </div>
-        </div>
-
-    </div>
-    <button class="button__book">Продолжить</button>
+    </form>
 {% endblock book %}
 

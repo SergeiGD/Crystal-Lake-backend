@@ -3,7 +3,7 @@ from django.utils import timezone
 
 from django import forms
 
-from ..offer.forms import SearchOffersForm, OfferForm, SearchOffersAdmin
+from ..offer.forms import SearchOffersForm, OfferForm, SearchOffersAdmin, BookOfferForm
 from .models import Service, ServiceTimetable
 
 
@@ -101,3 +101,25 @@ class SearchTimetablesAdmin(forms.Form):
         'class': 'form-control w-100  rounded-end flex-grow-0 flex-shrink-1',
         'type': 'date'
     }))
+
+
+class BookServiceForm(BookOfferForm):
+    date = forms.DateField(label='Дата*:', widget=forms.DateInput(attrs={
+        'class': 'input_field',
+        'type': 'date'
+    }))
+    time_start = forms.TimeField(label='с', widget=forms.TimeInput(attrs={
+        'class': 'input_field',
+        'type': 'time'
+    }))
+    time_end = forms.TimeField(label='до', widget=forms.TimeInput(attrs={
+        'class': 'input_field',
+        'type': 'time'
+    }))
+    quantity = forms.IntegerField(label='Человек*:', initial=1,  widget=forms.NumberInput(attrs={
+        'class': 'input_field input_field__people'
+    }))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['quantity'].widget.attrs['value'] = 1

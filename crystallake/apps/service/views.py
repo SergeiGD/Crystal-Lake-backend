@@ -1,27 +1,29 @@
 from datetime import datetime
 import json
 import pytz
+from django.core.exceptions import PermissionDenied
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.utils import timezone
 from django.template.loader import render_to_string
+from django.urls import reverse
 
 from .models import Service, ServiceTimetable
-from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, is_ajax, ClientContextMixin
-from .forms import SearchServicesForm, ServiceForm, TimetableForm
-from ..offer.utils import ManageOfferMixin
-from ..photo.forms import PhotoForm
+from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, is_ajax, ClientContextMixin, RelocateResponseMixin
+from .forms import SearchServicesForm, ServiceForm, TimetableForm, BookServiceForm
+from ..offer.utils import ManageOfferMixin, CartMixin
 from ..photo.models import Photo
 from ..tag.forms import SearchTagForm
 from ..user.forms import SearchUserForm
 from ..worker.models import Worker
+from ..order.models import PurchaseCountable
 
 # Create your views here.
 
 
-class ServiceDetail(ClientContextMixin, DetailView):
+class ServiceDetail(CartMixin, ClientContextMixin, RelocateResponseMixin, DetailView):
     template_name = 'service/service.html'
     model = Service
     slug_url_kwarg = 'service_slug'
@@ -31,6 +33,7 @@ class ServiceDetail(ClientContextMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'services'
         context['familiar'] = self.object.get_familiar()
+        context['book_form'] = BookServiceForm(self.request.POST, user=self.request.user)
         return {**context, **self.get_general_context()}
 
     def get_object(self, queryset=None):
@@ -38,6 +41,43 @@ class ServiceDetail(ClientContextMixin, DetailView):
         if obj.date_deleted or obj.is_hidden:
             raise Http404()
         return obj
+
+    def post(self, request, **kwargs):
+        book_form = BookServiceForm(self.request.POST, user=self.request.user)
+        if book_form.is_valid():
+            try:
+                cart = self.get_cart(self.request)
+            except PermissionDenied:
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                    'Неверные данные': ['Пользователь с этим телефоном зерегестрирован. Сначала авторизируйтесь']
+                })
+                response = HttpResponse(response_message.get_json(), status=401, content_type='application/json')
+                return response
+            # TODO: mixin
+            # TODO: проверка количества и мин время >= 30 min
+            service = self.get_object()
+            start = datetime.combine(book_form.cleaned_data['date'], book_form.cleaned_data['time_start'])
+            end = datetime.combine(book_form.cleaned_data['date'], book_form.cleaned_data['time_end'])
+            start, end = timezone.make_aware(start), timezone.make_aware(end)
+
+            purchase = PurchaseCountable(order=cart, offer=service)
+            purchase.start, purchase.end = start, end
+
+            if purchase.offer.is_time_available(purchase.start, purchase.end):
+                purchase.save()
+            else:
+                response_message = ResponseMessage(
+                    status=ResponseMessage.STATUSES.ERROR,
+                    message={'Время': ['На выбранное время нет доступной брони']}
+                )
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
+
+            return self.relocate(reverse('cart'))
+        else:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=book_form.errors)
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
 
 
 class ServicesCatalog(ClientContextMixin, ListView):

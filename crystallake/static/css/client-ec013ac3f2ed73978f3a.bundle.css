@@ -377,6 +377,9 @@ body {
 .card_long .card_delete:hover {
   opacity: 1;
 }
+.card_long .card_delete button {
+  display: none;
+}
 .card_long .card_long_buttons {
   display: flex;
   flex-direction: column;
@@ -4175,4 +4178,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=client-464bcbb8c08ff5d2b79b.bundle.css.map*/
+/*# sourceMappingURL=client-ec013ac3f2ed73978f3a.bundle.css.map*/

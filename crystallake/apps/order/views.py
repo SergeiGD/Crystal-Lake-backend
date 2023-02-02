@@ -1,10 +1,10 @@
 from datetime import datetime, time
 
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, UpdateView, CreateView, DetailView
 from django.utils import timezone
-from django.urls import reverse_lazy
+from django.urls import reverse
 
 from .models import Order
 from ..core.utils import SafePaginator, RelocateResponseMixin, ResponseMessage
@@ -296,10 +296,25 @@ def get_purchase_info_view(request, purchase_id, **kwargs):
 def cancel_purchase_view(request, purchase_id, **kwargs):
     purchase = get_object_or_404(Purchase, pk=purchase_id)
     purchase.cancel()
-    response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
-    response = HttpResponse(response_message.get_json(), status=302, content_type='application/json')
-    response['Location'] = purchase.order.get_admin_edit_url()
-    return response
+    return redirect(purchase.order.get_admin_edit_url())
+
+
+def remove_from_cart_view(request, purchase_id, **kwargs):
+    purchase = get_object_or_404(Purchase, pk=purchase_id)
+    if not purchase.order.is_cart:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Ошибка': ['Этот элемент не является частью корзины']
+        })
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
+    if purchase.order.client != request.user:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Ошибка': ['Нельзя изменить чужую корзину']
+        })
+        response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
+        return response
+    purchase.cancel()
+    return redirect(reverse('cart'))
 
 
 

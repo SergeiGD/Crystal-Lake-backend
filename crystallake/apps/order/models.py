@@ -163,6 +163,12 @@ class Order(models.Model):
             return self.main_offer.name
         return f'Заказ от {self.date_create.date()}'
 
+    @property
+    def is_cart(self):
+        if self.paid == 0 and self.refunded == 0 and self.date_canceled is None and self.date_finished is None:
+            return True
+        return False
+
     def get_active_purchases(self):
         return self.purchases.filter(is_canceled=False)
 
@@ -319,12 +325,14 @@ class Purchase(PolymorphicModel):
             self.delete()
             order.save()
 
-
     def get_info_url(self):
         return reverse('get_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
 
     def get_cancel_url(self):
         return reverse('cancel_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
+
+    def get_remove_cart_item_url(self):
+        return reverse('remove_cart_item', kwargs={'purchase_id': self.pk})
 
     def get_edit_url(self):
         return reverse('edit_room_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})

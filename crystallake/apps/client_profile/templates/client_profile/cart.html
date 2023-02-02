@@ -55,7 +55,14 @@
                                         </div>
                                     </div>
 
-                                    <i class="fa-regular fa-trash-can card_delete"></i>
+{#                                    <i class="fa-regular fa-trash-can card_delete"></i>#}
+
+                                    <form method="post" action="{{ cart_item.get_remove_cart_item_url }}">
+                                        {% csrf_token %}
+                                         <i class="fa-regular fa-trash-can card_delete" id="delete_cart_item_icon">
+                                             <button type="submit" id="delete_cart_item_btn"></button>
+                                         </i>
+                                    </form>
 
                                 </div>
 

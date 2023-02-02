@@ -39,10 +39,10 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/infinity_catalog.js'),
             path.resolve(__dirname,'src/js/client/picked_time.js'),
             path.resolve(__dirname,'src/js/client/sortby.js'),
+            path.resolve(__dirname,'src/js/client/delete_cart_item.js'),
             path.resolve(__dirname,'src/js/client/ajax/register.js'),
             path.resolve(__dirname,'src/js/client/ajax/ajax_redirect.js'),
             path.resolve(__dirname,'src/js/client/ajax/reset_password.js'),
-
             path.resolve(__dirname,'src/js/common/ajax/get_room_dates.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_service_dates.js'),
 

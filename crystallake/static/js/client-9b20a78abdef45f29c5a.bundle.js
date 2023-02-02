@@ -117,6 +117,24 @@ $(document).ready(function (){
 
 /***/ }),
 
+/***/ "./src/js/client/delete_cart_item.js":
+/*!*******************************************!*\
+  !*** ./src/js/client/delete_cart_item.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(document).ready(function (){
+    $('#delete_cart_item_icon').on('click', function (){
+        $('#delete_cart_item_btn').trigger('click');
+    })
+    $('#delete_cart_item_btn').on('click', function (e){
+        e.stopPropagation();
+    });
+})
+
+/***/ }),
+
 /***/ "./src/js/client/filter_mobile.js":
 /*!****************************************!*\
   !*** ./src/js/client/filter_mobile.js ***!
@@ -697,6 +715,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/infinity_catalog.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/picked_time.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/sortby.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/delete_cart_item.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/ajax/register.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/ajax/ajax_redirect.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/ajax/reset_password.js")))
@@ -706,4 +725,4 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-d1073ed12c4c452d6efe.bundle.js.map
+//# sourceMappingURL=client-9b20a78abdef45f29c5a.bundle.js.map

@@ -12,7 +12,7 @@
                 <span>&#10148;</span>
                 <a href="{% url 'active_orders' %}" class="breadcrumbs_item">Активные заказы</a>
                 <span>&#10148;</span>
-                <a href="{{ purchase.order.get_client_manage_order_url }}" class="breadcrumbs_item">Управление заказом</a>
+                <a href="{{ purchase.order.get_client_manage_url }}" class="breadcrumbs_item">Управление заказом</a>
                 <span>&#10148;</span>
                 <p class="breadcrumbs_item breadcrumbs_item__active">Управление покупкой</p>
             </div>
@@ -52,7 +52,7 @@
 
                             <div class="long_buttons_group">
                                 <button class="card_button card_button__pay" type="submit">Сохранить</button>
-                                <button class="card_button card_button__cancel" type="button" data-goto="{{ purchase.order.get_client_manage_order_url }}">Отменить</button>
+                                <button class="card_button card_button__cancel" type="button" data-goto="{{ purchase.order.get_client_manage_url }}">Отменить</button>
                             </div>
 
                         </form>

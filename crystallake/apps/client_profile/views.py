@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 
 from django.contrib.auth.hashers import make_password
+from django.db.models import Q
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, View, TemplateView, UpdateView, DetailView
@@ -51,6 +52,49 @@ class ActiveOrdersCatalog(ActiveLoginRequiredMixin, ListView):
         return orders
 
 
+class HistoryCatalog(ActiveLoginRequiredMixin, ListView):
+    login_url = 'index'
+    model = Order
+    context_object_name = 'orders'
+    template_name = 'client_profile/history.html'
+    paginator_class = SafePaginator
+    paginate_by = 10
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = 'profile'
+        context['current_profile_page'] = 'history'
+        return context
+
+    def get_queryset(self):
+        user = self.request.user
+        orders = Order.objects.exclude(date_canceled=None, date_finished=None).filter(
+            client=user
+        )
+        return orders
+
+
+class HistoryItemView(ActiveLoginRequiredMixin, DetailView):
+    model = Order
+    context_object_name = 'order'
+    pk_url_kwarg = 'order_id'
+    template_name = 'client_profile/history_item.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = 'profile'
+        context['current_profile_page'] = 'history'
+        return context
+
+    def get_object(self, queryset=None):
+        obj = super(HistoryItemView, self).get_object(queryset=queryset)
+        if obj.client != self.request.user:
+            raise Http404()
+        if obj.date_finished is not None and obj.date_canceled is not None:
+            raise Http404()
+        return obj
+
+
 class ManageOrder(ActiveLoginRequiredMixin, DetailView):
     model = Order
     context_object_name = 'order'
@@ -66,7 +110,7 @@ class ManageOrder(ActiveLoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         obj = super(ManageOrder, self).get_object(queryset=queryset)
-        if obj.date_finished or obj.date_canceled or obj.client != self.request.user:
+        if obj.date_finished or obj.date_canceled or obj.client != self.request.user or not obj.is_editable():
             raise Http404()
         return obj
 
@@ -88,6 +132,12 @@ class ManagePurchase(ActiveLoginRequiredMixin, DetailView):
         context['current_profile_page'] = 'active_orders'
         return context
 
+    def get_object(self, queryset=None):
+        obj = super(ManagePurchase, self).get_object(queryset=queryset)
+        if not obj.is_editable():
+            raise Http404()
+        return obj
+
 
 class RoomPurchaseView(RoomPurchaseMixin, View):
     def post(self, request, purchase_id, **kwargs):
@@ -106,7 +156,7 @@ class RoomPurchaseView(RoomPurchaseMixin, View):
             start, end = self.aware_date(form.cleaned_data['date_start'], form.cleaned_data['date_end'])
 
             # ВОТКНУТЬ КНОПКУ НЕСКОЛЬКО КОМНАТ
-            return self.manage_room_purchase(purchase, start, end, False, success_url=purchase.order.get_client_manage_order_url())
+            return self.manage_room_purchase(purchase, start, end, False, success_url=purchase.order.get_client_manage_url())
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
@@ -133,7 +183,7 @@ class ServicePurchaseView(ServicePurchaseMixin, View):
                 form.cleaned_data['time_end']
             )
 
-            return self.manage_service_purchase(purchase, success_url=purchase.order.get_client_manage_order_url())
+            return self.manage_service_purchase(purchase, success_url=purchase.order.get_client_manage_url())
 
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
@@ -149,8 +199,16 @@ def cancel_purchase_view(request, purchase_id, **kwargs):
         })
         response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
         return response
+    if not purchase.is_editable():
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Ошибка': ['Эту покупку нельзя изменить']
+        })
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
     purchase.cancel()
-    return redirect(purchase.order.get_client_manage_order_url())
+    if purchase.order.is_editable():
+        return redirect(purchase.order.get_client_manage_url())
+    return redirect(reverse_lazy('active_orders'))
 
 
 def pay_view(request, order_id):
@@ -162,7 +220,25 @@ def pay_view(request, order_id):
         response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
         return response
     order.mark_as_fully_paid()
-    return redirect(order.get_client_manage_order_url())
+    return redirect(order.get_client_manage_url())
+
+
+def cancel_order_view(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    if request.user != order.client:
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Ошибка': ['Не удалось опознать пользователя, создавшего заказ']
+        })
+        response = HttpResponse(response_message.get_json(), status=403, content_type='application/json')
+        return response
+    if not order.is_cancelable():
+        response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+            'Ошибка': ['Нельзя отменить уже начавшийся заказ']
+        })
+        response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+        return response
+    order.mark_as_canceled()
+    return redirect(reverse_lazy('active_orders'))
 
 
 class ClientInfoView(ActiveLoginRequiredMixin, RelocateResponseMixin, UpdateView):
@@ -372,7 +448,7 @@ def cart_fully_pay_view(request):
             order = request.user.get_cart()
             order.mark_as_fully_paid()
             if request.user.is_active:
-                return redirect('active_orders')
+                return redirect(order.get_client_manage_url())
             return redirect('index')
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={

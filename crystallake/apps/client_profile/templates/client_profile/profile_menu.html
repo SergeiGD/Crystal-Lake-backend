@@ -15,9 +15,9 @@
     <div class="profile_menu_item">
         <i class="fa-solid fa-clock-rotate-left"></i>
         {% if current_profile_page == 'history' %}
-            <a href="#" class="profile_menu_title profile_menu_title__active">История заказов</a>
+            <a href="{% url 'history' %}" class="profile_menu_title profile_menu_title__active">История заказов</a>
         {% else %}
-            <a href="profile_history.html" class="profile_menu_title">История заказов</a>
+            <a href="{% url 'history' %}" class="profile_menu_title">История заказов</a>
         {% endif %}
     </div>
     <div class="profile_menu_item">

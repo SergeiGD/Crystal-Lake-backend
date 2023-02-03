@@ -80,14 +80,18 @@ class Order(models.Model):
         self.save()
 
     def mark_as_canceled(self):
-        self.date_canceled = timezone.now()
-        self.date_finished = None
-        self.save()
+        if self.is_cancelable():
+            self.date_canceled = timezone.now()
+            self.date_finished = None
+            for purchase in self.purchases.filter(is_canceled=False):
+                purchase.cancel()
+            self.save()
 
     def mark_as_finished(self):
-        self.date_canceled = None
-        self.date_finished = timezone.now()
-        self.save()
+        if self.is_finishable():
+            self.date_canceled = None
+            self.date_finished = timezone.now()
+            self.save()
 
     def mark_as_in_process(self):
         self.date_canceled = None
@@ -96,6 +100,18 @@ class Order(models.Model):
 
     def is_editable(self):
         if self.status == Status.finished.value or self.status == Status.canceled.value:
+            return False
+        return True
+
+    def is_cancelable(self):
+        if self.date_canceled is not None:
+            return False
+        # if self.purchases.filter(start__lte=timezone.now(), is_canceled=False).exists():
+        #     return False
+        return True
+
+    def is_finishable(self):
+        if self.date_full_paid is None or self.date_finished is not None:
             return False
         return True
 
@@ -164,9 +180,9 @@ class Order(models.Model):
 
     @property
     def name(self):
-        purchases_count = self.get_active_purchases().count()
+        purchases_count = self.purchases.count()
         if purchases_count > 1:
-            return f'{self.main_offer.name} и еще {purchases_count} покупок'
+            return f'{self.main_offer.name} и еще {purchases_count - 1} покупок'
         if self.main_offer is not None:
             return self.main_offer.name
         return f'Заказ от {self.date_create.date()}'
@@ -192,11 +208,17 @@ class Order(models.Model):
     def get_create_service_purchase_url(self):
         return reverse('create_service_purchase', kwargs={'order_id': self.pk})
 
-    def get_client_manage_order_url(self):
+    def get_client_manage_url(self):
         return reverse('client_manage_order', kwargs={'order_id': self.pk})
+
+    def get_client_cancel_url(self):
+        return reverse('client_cancel_order', kwargs={'order_id': self.pk})
 
     def get_client_pay_url(self):
         return reverse('client_pay', kwargs={'order_id': self.pk})
+
+    def get_client_history_url(self):
+        return reverse('history_item', kwargs={'order_id': self.pk})
 
     class Meta:
         ordering = ['-date_create']
@@ -248,7 +270,9 @@ class Purchase(PolymorphicModel):
 
     objects = PurchaseManager()
 
-    def get_payment_status(self):
+    def get_status(self):
+        if self.is_canceled:
+            return 'Отменен'
         if self.is_paid:
             return 'Оплачен'
         if self.is_prepayment_paid:
@@ -276,24 +300,7 @@ class Purchase(PolymorphicModel):
         refund_ratio = Decimal(self.offer.refund_percent) / 100
         return self.price * refund_ratio
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.__old_is_paid = self.is_paid                    # сохраняем изначальное имя, на случай, если его изменяет
-    #     self.__old_is_prepayment_paid = self.is_prepayment_paid
-    #     self.__old_is_refund_paid = self.is_refund_made
-    #     self.__last_paid = self.get_paid()
-
-    def get_paid(self):
-        if self.is_paid and not self.is_refund_made:
-            return self.is_paid
-        if self.is_paid and self.is_refund_made:
-            return self.price - self.refund
-        if self.is_prepayment_paid:
-            return self.prepayment
-        return 0
-
     def save(self, *args, **kwargs):
-        # self.clean()
         self.price = self.calc_price()
         self.prepayment = self.calc_prepayment()
         self.refund = self.calc_refund()
@@ -303,8 +310,6 @@ class Purchase(PolymorphicModel):
         super().save(*args, **kwargs)
         order = self.order
         order.save()
-
-        # self.order.update_payment_status()
 
     # def clean(self):
     #     from django.core.exceptions import ValidationError
@@ -331,6 +336,9 @@ class Purchase(PolymorphicModel):
         }
 
     def cancel(self):
+        if not self.order.purchases.exclude(pk=self.id).filter(is_canceled=False).exists() and self.order.date_canceled is None:
+            self.order.mark_as_canceled()
+            return
         if self.is_paid or self.is_prepayment_paid:
             self.is_canceled = True
             self.save()
@@ -338,6 +346,11 @@ class Purchase(PolymorphicModel):
             order = self.order
             self.delete()
             order.save()
+
+    def is_editable(self):
+        if self.is_canceled or self.end <= timezone.now() or not self.order.is_editable():
+            return False
+        return True
 
     def get_info_url(self):
         return reverse('get_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})

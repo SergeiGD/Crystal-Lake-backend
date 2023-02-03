@@ -181,7 +181,7 @@
                         <th scope="col">Стоимость</th>
                         <th scope="col">prepay</th>
                         <th scope="col">refund</th>
-                        <th scope="col">Оплата</th>
+                        <th scope="col">Статус</th>
                         <th scope="col" class="px-3 text-center" type="button">Изменить</th>
                         <th scope="col" class="px-3 text-center" type="button">Убрать</th>
                     </tr>
@@ -222,7 +222,7 @@
                                     {{ purchase.refund }}
                                 </td>
                                 <td>
-                                    {{ purchase.get_payment_status }}
+                                    {{ purchase.get_status }}
                                 </td>
                                 <td class="p-0 position-relative w-10r">
                                     <form method="post" action="{{ purchase.get_info_url }}" class="edit_additional_form" >
@@ -230,10 +230,8 @@
                                         {% with purchase.offer|offer_type as modelclass %}
                                             {% if modelclass == "Room" %}
                                                 <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or not order.is_editable %}disabled{% endif %} type="button" data-popup="#edit_room_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_room_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
-{#                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-popup="#edit_room_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_room_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>#}
                                             {% elif modelclass == "Service" %}
                                                 <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or not order.is_editable %}disabled{% endif %} type="button" data-popup="#edit_service_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_service_purchase_modal" data-set-called-by="#edit_service_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
-{#                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-popup="#edit_service_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_service_purchase_modal" data-set-called-by="#edit_service_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>#}
                                             {% endif %}
                                         {% endwith %}
                                     </form>

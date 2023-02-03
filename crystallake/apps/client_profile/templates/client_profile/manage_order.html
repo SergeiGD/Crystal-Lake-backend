@@ -67,17 +67,26 @@
                                 </li>
                             </ul>
 
-                            <form action="{{ order.get_client_pay_url }}" method="post">
-                                {% csrf_token %}
-                                <div class="long_buttons_group">
-                                    {% if order.date_full_paid %}
-                                        <button class="card_button card_button__pay card_button__inactive" disabled>Доплатить</button>
-                                    {% else %}
+
+                            <div class="long_buttons_group">
+                                {% if not order.date_full_paid %}
+                                    <form action="{{ order.get_client_pay_url }}" method="post" class="long_buttons_group">
+                                        {% csrf_token %}
                                         <button class="card_button card_button__pay" type="submit">Доплатить</button>
-                                    {% endif %}
-                                    <button class="card_button card_button__cancel">Отменить</button>
-                                </div>
-                            </form>
+                                     </form>
+                                {% else %}
+                                    <button class="card_button card_button__pay card_button__inactive" disabled>Доплатить</button>
+                                {% endif %}
+                                {% if order.is_cancelable %}
+                                    <form action="{{ order.get_client_cancel_url }}" method="post" class="long_buttons_group">
+                                        {% csrf_token %}
+                                        <button class="card_button card_button__cancel" type="submit">Отменить</button>
+                                    </form>
+                                {% else %}
+                                    <button class="card_button card_button__cancel card_button__inactive" disabled>Отменить</button>
+                                {% endif %}
+                            </div>
+
 
                         </div>
                     </div>
@@ -111,26 +120,28 @@
                                                 {% endif %}
                                             </div>
                                             <div class="card_long_text">
-                                                <p>Суммарная предоплата: </p>
-                                                <span class="highlighted">{{ purchase.prepayment }}&#8381;</span>
-                                            </div>
-                                            <div class="card_long_text">
                                                 <p>Суммарная цена: </p>
                                                 <span class="highlighted">{{ purchase.price }}&#8381;</span>
                                             </div>
                                             <div class="card_long_text">
-                                                <p>Статус оплаты: </p>
-                                                <span class="highlighted">{{ purchase.get_payment_status }}</span>
+                                                <p>Статус: </p>
+                                                <span class="highlighted">{{ purchase.get_status }}</span>
                                             </div>
                                         </div>
                                     </div>
 
                                 <div class="long_buttons_group">
-                                    <button class="card_button card_button__pay" data-goto="{{ purchase.get_client_edit_url }}">Изменить</button>
-                                    <form action="{{ purchase.get_client_cancel_url }}" method="post">
-                                        {% csrf_token %}
-                                        <button class="card_button card_button__cancel" type="submit">Отменить</button>
-                                    </form>
+                                    {% if purchase.is_editable %}
+                                        <button class="card_button card_button__pay" data-goto="{{ purchase.get_client_edit_url }}">Изменить</button>
+                                        <form action="{{ purchase.get_client_cancel_url }}" class="long_buttons_group" method="post">
+                                            {% csrf_token %}
+                                            <button class="card_button card_button__cancel" type="submit">Отменить</button>
+                                        </form>
+                                    {% else %}
+                                        <button class="card_button card_button__pay card_button__inactive">Изменить</button>
+                                        <button class="card_button card_button__cancel card_button__inactive">Отменить</button>
+                                    {% endif %}
+
                                 </div>
 
                                 </div>

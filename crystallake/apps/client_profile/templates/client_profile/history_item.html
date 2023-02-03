@@ -10,9 +10,9 @@
             <div class="breadcrumbs">
                 <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
                 <span>&#10148;</span>
-                <a href="{% url 'active_orders' %}" class="breadcrumbs_item">Активные заказы</a>
+                <a href="{% url 'history' %}" class="breadcrumbs_item">История заказов</a>
                 <span>&#10148;</span>
-                <p class="breadcrumbs_item breadcrumbs_item__active">Управление заказом</p>
+                <p class="breadcrumbs_item breadcrumbs_item__active">Просмотр заказа</p>
             </div>
 
             <div class="profile">
@@ -38,16 +38,20 @@
                                     <span class="highlighted  stat_item_value">{{ order.date_create }}</span>
                                 </li>
                                 <li class="stat_item">
+                                    <p class="stat_item_name">Дата завершения: </p>
+                                    {% if order.date_finished %}
+                                        <span class="highlighted  stat_item_value">{{ order.date_finished }}</span>
+                                    {% else %}
+                                        <span class="highlighted  stat_item_value">{{ order.date_canceled }}</span>
+                                    {% endif %}
+                                </li>
+                                <li class="stat_item">
                                     <p class="stat_item_name">Количество покупок: </p>
                                     <span class="highlighted  stat_item_value">{{ order.purchases.count }}</span>
                                 </li>
                                 <li class="stat_item">
                                     <p class="stat_item_name">Суммарная цена: </p>
                                     <span class="highlighted  stat_item_value">{{ order.price }}&#8381;</span>
-                                </li>
-                                <li class="stat_item">
-                                    <p class="stat_item_name">Суммарная предоплата: </p>
-                                    <span class="highlighted  stat_item_value">{{ order.prepayment }}&#8381;</span>
                                 </li>
                                 <li class="stat_item">
                                     <p class="stat_item_name">Средств возвращено: </p>
@@ -62,8 +66,8 @@
                                     <span class="highlighted  stat_item_value">{{ order.paid }}&#8381;</span>
                                 </li>
                                 <li class="stat_item">
-                                    <p class="stat_item_name">Статус оплаты: </p>
-                                    <span class="highlighted  stat_item_value">{{ order.payment_status }}</span>
+                                    <p class="stat_item_name">Статус: </p>
+                                    <span class="highlighted  stat_item_value">{{ order.status }}</span>
                                 </li>
                             </ul>
 
@@ -101,6 +105,10 @@
                                             <div class="card_long_text">
                                                 <p>Суммарная цена: </p>
                                                 <span class="highlighted">{{ purchase.price }}&#8381;</span>
+                                            </div>
+                                            <div class="card_long_text">
+                                                <p>Статус: </p>
+                                                <span class="highlighted">{{ purchase.get_status }}</span>
                                             </div>
                                         </div>
                                     </div>

@@ -1,8 +1,19 @@
 from django.urls import path
 
-from .views import ActiveOrdersCatalog, ClientInfoView, ClientChangePasswordView, ManageOrder, ManagePurchase, RoomPurchaseView, ServicePurchaseView, cancel_purchase_view, pay_view
+from .views import ActiveOrdersCatalog, ClientInfoView, ClientChangePasswordView, ManageOrder, ManagePurchase, \
+    RoomPurchaseView, ServicePurchaseView, cancel_purchase_view, pay_view, cancel_order_view, HistoryCatalog, HistoryItemView
 
 urlpatterns = [
+    path(
+        'history/',
+        HistoryCatalog.as_view(),
+        name='history'
+    ),
+    path(
+        'history/history_item/<int:order_id>',
+        HistoryItemView.as_view(),
+        name='history_item'
+    ),
     path(
         'active_orders/',
         ActiveOrdersCatalog.as_view(),
@@ -17,6 +28,11 @@ urlpatterns = [
         'active_orders/manage_order/<int:order_id>/pay',
         pay_view,
         name='client_pay'
+    ),
+    path(
+        'active_orders/manage_order/<int:order_id>/cancel',
+        cancel_order_view,
+        name='client_cancel_order'
     ),
     path(
         'active_orders/manage_order/<int:order_id>/manage_purchase/<int:purchase_id>',

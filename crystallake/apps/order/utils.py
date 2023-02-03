@@ -13,6 +13,13 @@ class RoomPurchaseMixin(RelocateResponseMixin):
         return datetime.combine(date_start, settings.CHECK_IN_TIME), datetime.combine(date_end, settings.CHECK_IN_TIME)
 
     def manage_room_purchase(self, room_purchase, start, end, multiple_rooms_acceptable, success_url=None):
+        if not room_purchase.is_editable():
+            response_message = ResponseMessage(
+                status=ResponseMessage.STATUSES.ERROR,
+                message={'Статус': ['Эту покупку нельзя изменить']}
+            )
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
         rooms = room_purchase.offer.pick_rooms_for_purchase(start, end, room_purchase.pk)
         if len(rooms) == 0:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
@@ -54,6 +61,13 @@ class ServicePurchaseMixin(RelocateResponseMixin):
         return timezone.make_aware(start), timezone.make_aware(end)
 
     def manage_service_purchase(self, service_purchase, success_url=None):
+        if not service_purchase.is_editable():
+            response_message = ResponseMessage(
+                status=ResponseMessage.STATUSES.ERROR,
+                message={'Статус': ['Эту покупку нельзя изменить']}
+            )
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
         if service_purchase.offer.is_time_available(service_purchase.start, service_purchase.end, service_purchase.pk):
             service_purchase.save()
         else:

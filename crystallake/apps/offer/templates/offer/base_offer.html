@@ -38,15 +38,10 @@
                     <div class="description_extra">
                         <div class="description_info">
                             <p class="description_info_item">
-                                Обычная цена:
+{#                                {% if offer.price_type == 'hour' %}#}
+                                Цена за {{ offer.get_price_type_display }}:
                                 <span class="highlighted">
                                     {{ offer.default_price.to_integral_value }}&#8381;
-                                </span>
-                            </p>
-                            <p class="description_info_item">
-                                Цена в выходные:
-                                <span class="highlighted">
-                                    {{ offer.weekend_price.to_integral_value }}&#8381;
                                 </span>
                             </p>
                         </div>

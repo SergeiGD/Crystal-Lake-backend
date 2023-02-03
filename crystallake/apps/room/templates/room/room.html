@@ -1,5 +1,12 @@
 {% extends 'offer/base_offer.html' %}
 
+{% block header_meta %}
+    <title>
+        Crystal Lake | Забронировать номер {{ offer.name }}, для {{ offer.beds }} человек, {{ offer.rooms }} комнат
+    </title>
+    <meta name="description" content="Номер {{ offer.name }}, комфорт, удобство, низная цена всего {{ offer.default_price }} за сутки, смотри свободые даты онлайн и бронируй">
+{% endblock header_meta %}
+
 {% block breadcrumbs %}
     <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
     <span>&#10148;</span>

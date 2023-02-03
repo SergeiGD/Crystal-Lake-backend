@@ -11,6 +11,7 @@ from polymorphic.query import PolymorphicQuerySet
 
 from ..tag.models import Tag
 from ..core.build_photo_path import build_photo_path
+from .price_choises import PRICE_CHOICES
 
 # Create your models here.
 
@@ -37,10 +38,10 @@ class OfferQuerySet(PolymorphicQuerySet):
 
 
 class Offer(PolymorphicModel):
-    PRICE_CHOICES = (
-        ('hours', 'часы'),
-        ('days', 'дни'),
-    )
+    # PRICE_CHOICES = (
+    #     ('hours', 'часы'),
+    #     ('days', 'дни'),
+    # )
 
     name = models.CharField(
         verbose_name='наименование',
@@ -57,7 +58,7 @@ class Offer(PolymorphicModel):
         max_length=50, choices=PRICE_CHOICES,
         blank=False, null=False,
         verbose_name='Цена за',
-        default='days'
+        default='day',
     )
     default_price = models.DecimalField(
         verbose_name='стандартная цена',
@@ -93,28 +94,6 @@ class Offer(PolymorphicModel):
     def get_main_photo(self):
         return self.main_photo
 
-    # @property
-    # def main_photo(self):
-    #     return self._main_photo
-    #
-    # @main_photo.setter
-    # def main_photo(self, value):
-    #     self._main_photo = value
-
-    # @property
-    # def main_photo(self):
-    #     return self._main_photo
-    #
-    # @main_photo.setter
-    # def main_photo(self, value):
-    #
-    #     self._main_photo = value
-    #     self.save()
-
-    # dynamic_timetable = models.BooleanField(
-    #     verbose_name='динамическое расписание',
-    #     default=True
-    # )
     date_create = models.DateTimeField(
         verbose_name='дата создания',
         auto_now_add=True,

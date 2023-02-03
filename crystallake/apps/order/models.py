@@ -1,5 +1,4 @@
 from decimal import Decimal
-from datetime import datetime
 
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -13,7 +12,7 @@ from django.db.models import Max
 from ..offer.models import Offer
 # from ..client.models import Client
 from .status_choises import get_status_by_code, get_status_by_name, Status
-# from ..user.models import *
+from ..offer.price_choises import PriceType
 
 # Create your models here.
 
@@ -283,11 +282,11 @@ class Purchase(PolymorphicModel):
         delta_seconds = (self.end - self.start).total_seconds()
         seconds_in_hour = 3600
         seconds_in_day = seconds_in_hour * 24
-        if self.offer.price_type == 'hours':
-            hours = Decimal(delta_seconds / seconds_in_hour)
+        if self.offer.price_type == PriceType.hour.name:
+            hours = round(Decimal(delta_seconds / seconds_in_hour), 0)
             return self.offer.default_price * hours
-        if self.offer.price_type == 'days':
-            days = Decimal(delta_seconds / seconds_in_day)
+        if self.offer.price_type == PriceType.day.name:
+            days = round(Decimal(delta_seconds / seconds_in_day), 0)
             return self.offer.default_price * days
 
         raise ValueError('Неизвестный тип цены')

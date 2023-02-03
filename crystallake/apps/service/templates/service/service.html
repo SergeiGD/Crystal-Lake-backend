@@ -1,5 +1,12 @@
 {% extends 'offer/base_offer.html' %}
 
+{% block header_meta %}
+    <title>
+        Crystal Lake | Забронировать услугу {{ offer.name }}, для компании из {{ offer.max_in_group }} человек
+    </title>
+    <meta name="description" content="Услуга {{ offer.name }}, отличный для компании из {{ offer.max_in_group }} человек, открытый воздух, приятная цена">
+{% endblock header_meta %}
+
 {% block breadcrumbs %}
     <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>
     <span>&#10148;</span>

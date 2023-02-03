@@ -40,7 +40,7 @@
 
                     <div class="header_upper_section">
                         <p class="header_upper_address">
-                            <a href="contacts.html#main_map" class="header_link">
+                            <a href="{% url 'contacts' %}#main_map" class="header_link">
                                 <i class="fa-solid fa-location-dot"></i> Россия, Иркутская область, Кристальные озера
                             </a>
                         </p>
@@ -63,8 +63,7 @@
                         <a href="{% url 'index' %}" class="header_menu_item header_link {% if current_page == 'index' %} header_menu_item__active {% endif %}" data-text="Главная">Главная</a>
                         <a href="{% url 'rooms' %}" class="header_menu_item header_link {% if current_page == 'rooms' %} header_menu_item__active {% endif %}"  data-text="Номера">Номера</a>
                         <a href="{% url 'services' %}" class="header_menu_item header_link {% if current_page == 'services' %} header_menu_item__active {% endif %}" data-text="Услуги">Услуги</a>
-                        <a href="sales.html" class="header_menu_item header_link {% if current_page == 'sales' %} header_menu_item__active {% endif %}" data-text="Акции">Акции</a>
-                        <a href="contacts.html" class="header_menu_item header_link {% if current_page == 'contacts' %} header_menu_item__active {% endif %}" data-text="Контакты">Контакты</a>
+                        <a href="{% url 'contacts' %}" class="header_menu_item header_link {% if current_page == 'contacts' %} header_menu_item__active {% endif %}" data-text="Контакты">Контакты</a>
                         <a href="{% url 'cart' %}" class="header_menu_item header_link {% if current_page == 'cart' %} header_menu_item__active {% endif %}" data-text="Корзина">Корзина</a>
                         {% if user.is_authenticated and user.is_active %}
                             <a href="{% url 'active_orders' %}" class="header_menu_item header_link {% if current_page == 'profile' %} header_menu_item__active {% endif %}" data-text="Личный кабинет">Личный кабинет</a>
@@ -95,7 +94,7 @@
 
                 <div class="footer_section footer_section__info">
                     <h3 class="footer_title">Crystal Lake</h3>
-                    <a href="contacts.html#main_map" class="footer_link">Россия, Иркутская область, Кристальные Озера</a>
+                    <a href="{% url 'contacts' %}#main_map" class="footer_link">Россия, Иркутская область, Кристальные Озера</a>
                     <button class="button__footer" data-goto="rooms.html">Забронировать</button>
                 </div>
 
@@ -106,13 +105,17 @@
                         <div class="footer_menu_column">
                             <a href="{% url 'index' %}" class="footer_link">Главная</a>
                             <a href="{% url 'rooms' %}" class="footer_link">Номера</a>
-                            <a href="services.html" class="footer_link">Услуги</a>
-                            <a href="sales.html" class="footer_link">Акции</a>
+                            <a href="{% url 'services' %}" class="footer_link">Услуги</a>
                         </div>
                         <div class="footer_menu_column">
-                            <a href="contacts.html" class="footer_link">Контакты</a>
-                            <a href="cart.html" class="footer_link">Корзина</a>
-                            <p class="footer_link" id="login_open__footer">Личный кабинет</p>
+                            <a href="{% url 'contacts' %}" class="footer_link">Контакты</a>
+                            <a href="{% url 'cart' %}" class="footer_link">Корзина</a>
+
+                            {% if user.is_authenticated and user.is_active %}
+                                <a href="{% url 'active_orders' %}" class="footer_link">Личный кабинет</a>
+                            {% else %}
+                                <p class="footer_link" id="login_open__footer">Личный кабинет</p>
+                            {% endif %}
                         </div>
 
                     </div>

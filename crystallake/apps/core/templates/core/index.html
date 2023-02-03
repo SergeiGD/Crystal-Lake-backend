@@ -20,7 +20,7 @@
 
                 <div class="intro_contacts">
                     <p class="intro_contacts_text">
-                        Адрес: <a href="contacts.html#main_map" class="intro_link">Россия, Ирк. область, Кристальные Озера</a>
+                        Адрес: <a href="{% url 'contacts' %}#main_map" class="intro_link">Россия, Ирк. область, Кристальные Озера</a>
                     </p>
 
                     <p class="intro_contacts_text intro_contacts_text__phone">
@@ -67,7 +67,7 @@
 
                 </div>
 
-                <button class="button__find" data-goto="rooms.html" type="button">Найти</button>
+                <button class="button__find" data-goto="{% url 'rooms' %}" type="button">Найти</button>
 
             </form>
 
@@ -199,49 +199,6 @@
         </div>
 
     </div>
-</section>
-
-<section class="section">
-
-    <div class="content_container">
-
-        <h2 class="section_title">Интересные акции</h2>
-
-        <div class="sales">
-
-            <div class="always-slider-required"></div>
-
-            <article class="card_short slider_content slider_content__big slider_content__active" data-goto="sale.html">
-                <div class="card_inner">
-                    <img src="../../../../static/images/sale-9640c63d398e7d2bd79c.jpg" alt="Акции" class="card_img">
-                    <div class="card_info">
-                        <p class="card_info_text">Скидка 30% на водные прогулки по средам до конца сентярбря</p>
-                    </div>
-                </div>
-            </article>
-            <article class="card_short slider_content slider_content__big" data-goto="sale.html">
-                <div class="card_inner">
-                    <img src="../../../../static/images/sale-9640c63d398e7d2bd79c.jpg" alt="Акции" class="card_img">
-                    <div class="card_info">
-                        <p class="card_info_text">Скидка 20% на водные прогулки по средам до конца сентярбря</p>
-                    </div>
-                </div>
-            </article>
-            <article class="card_short slider_content slider_content__big" data-goto="sale.html">
-                <div class="card_inner">
-                    <img src="../../../../static/images/sale-9640c63d398e7d2bd79c.jpg" alt="Акции" class="card_img">
-                    <div class="card_info">
-                        <p class="card_info_text">Скидка 10% на водные прогулки по средам до конца сентярбря</p>
-                    </div>
-                </div>
-            </article>
-            <div class="slider">
-            </div>
-        </div>
-
-
-    </div>
-
 </section>
 
 <section class="section">

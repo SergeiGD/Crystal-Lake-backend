@@ -1,7 +1,8 @@
-from django.urls import path, re_path
+from django.urls import path
 
-from .views import Index
+from .views import Index, Contacts
 
 urlpatterns = [
-    path('', Index.as_view(), name='index')
+    path('', Index.as_view(), name='index'),
+    path('contacts', Contacts.as_view(), name='contacts')
 ]

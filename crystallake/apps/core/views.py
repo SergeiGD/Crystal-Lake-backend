@@ -26,8 +26,12 @@ class Index(ClientContextMixin, ListView):
             is_hidden=False,
             date_deleted=None
         ).order_by('-default_price').values('default_price').first()
-        context['min_price'] = min_price_room['default_price']
-        context['max_price'] = max_price_room['default_price']
+        if max_price_room is not None and min_price_room is not None:
+            context['min_price'] = min_price_room['default_price']
+            context['max_price'] = max_price_room['default_price']
+        else:
+            context['min_price'] = 0
+            context['max_price'] = 0
         context['check_in'] = settings.CHECK_IN_TIME
         context['check_out'] = settings.CHECK_OUT_TIME
         context['intro_img'] = get_image_src('intro')

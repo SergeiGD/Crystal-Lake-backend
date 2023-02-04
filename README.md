@@ -22,7 +22,9 @@ APACHE_PORT=8000
 KEY=@@)*r3&2f0=%t^@bnom9@916(z=3-2e_iqqr90(r_v@foum(q^
 DEV=true
 ```
-2) Соберите и запустите контейнеры:
+2) Если
+3) Соберите и запустите контейнеры:
 ```
 docker-compose up --build
 ```
+

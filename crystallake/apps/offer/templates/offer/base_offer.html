@@ -1,5 +1,63 @@
 {% extends 'core/base.html' %}
 
+{% block header_meta %}
+    {% block offer_header_meta %}
+    {% endblock offer_header_meta %}
+    <script type="application/ld+json">
+    [
+    {
+        "@context": "https://schema.org",
+        {% block offer_json_ld %}
+        {% endblock offer_json_ld %}
+        "name": "{{ offer.name }}",
+        "image": "{{ offer.main_photo }}",
+        "description": "{{ offer.description }}",
+        "offers":
+            {
+                "@type": "Offer",
+                "price": {{ offer.default_price.to_integral_value }},
+                "priceCurrency": "RUB"
+            },
+        "isSimilarTo":
+            [
+                {% for familiar_offer in familiar|slice:":-1" %}
+                {
+                    "@type": "Product",
+                    "name": "{{ familiar_offer.name }}",
+                    "image": "{{ familiar_offer.main_photo }}",
+                    "description": "{{ familiar_offer.description }}",
+                    "url": "{{ familiar_offer.get_absolute_url }}",
+                    "offers":
+                        {
+                            "@type": "Offer",
+                            "price": {{ familiar_offer.default_price.to_integral_value }},
+                            "priceCurrency": "RUB"
+                        }
+                },
+                {% endfor %}
+                {% with familiar|last as last %}
+                {
+                    "@type": "Product",
+                    "name": "{{ last.name }}",
+                    "image": "{{ last.main_photo }}",
+                    "description": "{{ last.description }}",
+                    "url": "{{ last.get_absolute_url }}",
+                    "offers":
+                        {
+                            "@type": "Offer",
+                            "price": {{ last.default_price.to_integral_value }},
+                            "priceCurrency": "RUB"
+                        }
+                }
+                {% endwith %}
+            ]
+    },
+    {% block breadcrumbs_json_ld %}
+    {% endblock %}
+    ]
+    </script>
+{% endblock header_meta %}
+
 {% block content %}
 <main>
 
@@ -124,6 +182,8 @@
                 </div>
             </div>
         </article>
+
+        {{ offer.get_often_together }}
 
         {% for familiar_offer in familiar|slice:"1:" %}
             <article class="card_short recomendations_item slider_content" data-goto="{{ familiar_offer.get_absolute_url }}">

@@ -34,12 +34,14 @@ class RoomsCatalog(ClientContextMixin, ListView):
     model = Room
     context_object_name = 'rooms'
     paginator_class = SafePaginator
-    paginate_by = 1
+    paginate_by = 2
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'rooms'
         context['search_form'] = SearchRoomsForm(self.request.GET)
+        context['items'] = range(self.paginate_by)
+        context['pag_by'] = self.paginate_by
         return {**context, **self.get_general_context()}
 
     def get_queryset(self):

@@ -5,6 +5,59 @@
         Crystal Lake | Контакты, как добраться
     </title>
     <meta name="description" content="Наша турбаза находится в самом леса Forver Green, прямо у берега одноименного озера Crystal Lake, приезжайте, будем рады Вам в любое время года и суток!">
+    <script type="application/ld+json">
+    [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "address":
+      {
+            "@type": "PostalAddress",
+            "addressCountry": "RU",
+            "addressLocality": "Иркутск",
+            "addressRegion": "Иркутская область",
+            "postalCode": "664082",
+            "streetAddress": "Кристальные Озера 21"
+      },
+      "telephone": "999-555-222",
+      "email": "crystal_lake@lake.com",
+      "name": "Crystal Lake",
+      "contactPoint" :
+      [
+        {
+            "@type" : "ContactPoint",
+            "telephone" : "999-555-222",
+            "contactType" : "customer service",
+            "email": "crystal_lake@lake.com"
+        }
+      ],
+      "sameAs" : [
+            "https://instagram.com/Crystal_Lakes",
+            "https://facebook.com/Crystal_Lakes",
+            "https://vk.com/Crystal_Lakes"
+        ]
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement":
+        [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Главная",
+                "item": "{% url 'index' %}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Контакты",
+                "item": "{% url 'contacts' %}"
+            }
+        ]
+    }
+    ]
+    </script>
 {% endblock header_meta %}
 
 {% block content %}

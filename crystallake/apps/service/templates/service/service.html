@@ -1,11 +1,41 @@
 {% extends 'offer/base_offer.html' %}
 
-{% block header_meta %}
+{% block offer_header_meta %}
     <title>
         Crystal Lake | Забронировать услугу {{ offer.name }}, для компании из {{ offer.max_in_group }} человек
     </title>
     <meta name="description" content="Услуга {{ offer.name }}, отличный для компании из {{ offer.max_in_group }} человек, открытый воздух, приятная цена">
-{% endblock header_meta %}
+{% endblock offer_header_meta %}
+{% block offer_json_ld %}
+    "@type": "Product",
+{% endblock offer_json_ld %}
+{% block breadcrumbs_json_ld %}
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement":
+        [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Главная",
+                "item": "{% url 'index' %}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Услуги",
+                "item": "{% url 'services' %}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "{{ offer.name }}",
+                "item": "{{ offer.get_absolute_url }}"
+            }
+        ]
+    }
+{% endblock breadcrumbs_json_ld %}
 
 {% block breadcrumbs %}
     <a href="{% url 'index' %}" class="breadcrumbs_item">Главная</a>

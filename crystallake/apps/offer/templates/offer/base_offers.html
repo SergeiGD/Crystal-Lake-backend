@@ -1,5 +1,73 @@
 {% extends 'core/base.html' %}
 
+{% block header_meta %}
+    <script type="application/ld+json">
+    [
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "numberOfItems": "{{ page_obj.paginator.count }}",
+        "itemListElement":
+            [
+                {% load offer_tags %}
+                {% for i in items|slice:":-1" %}
+                {
+                    {% with page_obj|index:i as elem %}
+                    "@type": "ListItem",
+                    "position": {% get_position i page_obj.number pag_by %},
+                    "item":
+                        {
+                            "@type": "Product",
+                            "name": "{{ elem.name }}",
+                            "image": "{{  elem.main_photo}}",
+                            "description": "{{ elem.description }}",
+                            "url": "{{ elem.get_absolute_url }}",
+
+                            "offers":
+                                {
+                                    "@type": "Offer",
+                                    "price": {{ elem.default_price.to_integral_value }},
+                                    "priceCurrency": "RUB"
+                                }
+                        }
+
+                    {% endwith %}
+                },
+                {% endfor %}
+                {% with items|last as last %}
+                {
+                    {% with page_obj|index:last as elem %}
+                    "@type": "ListItem",
+                    "position": {% get_position last page_obj.number pag_by %},
+                     "item":
+                         {
+                            "@type": "Product",
+                            "name": "{{ elem.name }}",
+                            "image": "{{  elem.main_photo}}",
+                            "description": "{{ elem.description }}",
+                            "url": "{{ elem.get_absolute_url }}",
+
+                            "offers":
+                                {
+                                    "@type": "Offer",
+                                    "price": {{ elem.default_price.to_integral_value }},
+                                    "priceCurrency": "RUB"
+                                }
+                         }
+                    {% endwith %}
+                }
+                {% endwith %}
+            ]
+    },
+    {% block breadcrumbs_json_ld %}
+    {% endblock %}
+    ]
+    </script>
+    {% block offers_header_meta %}
+
+    {% endblock offers_header_meta %}
+{% endblock header_meta %}
+
 {% block content %}
 <main>
 

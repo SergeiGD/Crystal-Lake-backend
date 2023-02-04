@@ -5,6 +5,7 @@ from pytils.translit import slugify
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.apps import apps
 
 from polymorphic.models import PolymorphicModel
 from polymorphic.query import PolymorphicQuerySet
@@ -12,6 +13,8 @@ from polymorphic.query import PolymorphicQuerySet
 from ..tag.models import Tag
 from ..core.build_photo_path import build_photo_path
 from .price_choises import PRICE_CHOICES
+# from ..order.models import Order
+
 
 # Create your models here.
 

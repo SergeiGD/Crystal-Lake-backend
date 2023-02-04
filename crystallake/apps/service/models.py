@@ -134,6 +134,7 @@ class Service(Offer):
     def get_admin_delete_url(self):
         return reverse('admin_delete_service', kwargs={'offer_id': self.pk})
 
+
     def get_admin_edit_url(self):
         return reverse('admin_edit_service', kwargs={'offer_id': self.pk})
 

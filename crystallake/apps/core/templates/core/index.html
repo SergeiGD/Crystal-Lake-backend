@@ -3,9 +3,55 @@
 
 {% block header_meta %}
     <title>
-        Crystal Lake | Элитная турбаза посреди дикой природы, комфортные номера, развлечения на открытом воздухе
+        Crystal Lake | Турбаза посреди дикой природы, комфортные номера, развлечения на открытом воздухе
     </title>
     <meta name="description" content="Комфортный отдых, дешевые номера, первозданная природа, развлечения на любой вкус, лес, чистой воздух, Кристальный Озера, бронируй сейчас">
+    <script type="application/ld+json">
+    [
+    {
+        "@context": "https://schema.org",
+        "@type": "Hotel",
+        "name": "Crystal Lake",
+        "description": "Турбаза посреди леса Forver Green, прямо у берега одноименного озера Crystal Lake. У нас Вы можете отдохнуть от городской суеты и насладится первозданной природой, не отказываясь от благ цивилации. Для любитилей активного отдыха у нас есть множество услуг на любой вкус и цвет, которые не оставят равнодушным никого!",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "RU",
+            "addressLocality": "Иркутск",
+            "addressRegion": "Иркутская область",
+            "postalCode": "664082",
+            "streetAddress": "Кристальные Озера 21"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "52.269896",
+            "longitude": "104.315955"
+         },
+        "telephone": "999-555-222",
+        "priceRange": "{{ min_price.to_integral_value }} RUB - {{ max_price.to_integral_value }} RUB",
+        "petsAllowed": true,
+        "checkinTime": "{{ check_in }}",
+        "checkoutTime": "{{ check_out }}",
+        "sameAs" : [
+            "https://instagram.com/Crystal_Lakes",
+            "https://facebook.com/Crystal_Lakes",
+            "https://vk.com/Crystal_Lakes"
+        ]
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement":
+        [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Главная",
+                "item": "{% url 'index' %}"
+            }
+        ]
+    }
+    ]
+    </script>
 {% endblock header_meta %}
 
 {% block content %}

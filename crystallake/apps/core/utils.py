@@ -89,4 +89,4 @@ def is_ajax(request):
 def get_image_src(name):
     for image_file in os.listdir(f'{settings.STATIC_ROOT}/images'):
         if name in image_file in image_file:
-            return image_file
+            return f'images/{image_file}'

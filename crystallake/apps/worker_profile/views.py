@@ -8,6 +8,7 @@ from django.contrib.auth.views import LoginView
 
 from ..core.utils import ResponseMessage, RelocateResponseMixin
 from .forms import AdminLoginForm
+from django.conf import settings
 
 # Create your views here.
 

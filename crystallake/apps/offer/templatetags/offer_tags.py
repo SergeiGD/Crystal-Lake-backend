@@ -15,5 +15,11 @@ def index(iterable, i):
 
 
 @register.simple_tag
+def get_last(page_obj):
+    if len(page_obj) > 0:
+        return page_obj[-1]
+
+
+@register.simple_tag
 def get_position(elem_index, page_num, paginate_by):
     return elem_index + 1 + ((page_num - 1) * paginate_by)

@@ -5,6 +5,11 @@
         Crystal Lake | Забронировать номер {{ offer.name }}, для {{ offer.beds }} человек, {{ offer.rooms }} комнат
     </title>
     <meta name="description" content="Номер {{ offer.name }}, комфорт, удобство, низная цена всего {{ offer.default_price }} за сутки, смотри свободые даты онлайн и бронируй">
+    <meta property="og:title" content="Crystal Lake | Забронировать номер {{ offer.name }}, для {{ offer.beds }} человек, {{ offer.rooms }} комнат" />
+    <meta property="og:description" content="Номер {{ offer.name }}, комфорт, удобство, низная цена всего {{ offer.default_price }} за сутки, смотри свободые даты онлайн и бронируй"/>
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{{ offer.main_photo.url }}" />
+    <meta property="og:url" content="{{ offer.get_absolute_url }}" />
 {% endblock offer_header_meta %}
 {% block offer_json_ld %}
     "@type": ["HotelRoom", "Product"],

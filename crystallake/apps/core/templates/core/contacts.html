@@ -1,10 +1,15 @@
 {% extends 'core/base.html' %}
-
+{% load static %}
 {% block header_meta %}
     <title>
         Crystal Lake | Контакты, как добраться
     </title>
     <meta name="description" content="Наша турбаза находится в самом леса Forver Green, прямо у берега одноименного озера Crystal Lake, приезжайте, будем рады Вам в любое время года и суток!">
+    <meta property="og:title" content="Crystal Lake | Контакты, как добраться" />
+    <meta property="og:description" content="Наша турбаза находится в самом леса Forver Green, прямо у берега одноименного озера Crystal Lake, приезжайте, будем рады Вам в любое время года и суток!" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static intro_img %}" />
+    <meta property="og:url" content="{% url 'contacts' %}" />
     <script type="application/ld+json">
     [
     {

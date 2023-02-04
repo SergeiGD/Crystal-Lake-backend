@@ -2,7 +2,7 @@ from django.views.generic import ListView, TemplateView
 
 from ..room.models import Room
 from ..service.models import Service
-from .utils import ClientContextMixin
+from .utils import ClientContextMixin, get_image_src
 from django.conf import settings
 
 
@@ -30,6 +30,7 @@ class Index(ClientContextMixin, ListView):
         context['max_price'] = max_price_room['default_price']
         context['check_in'] = settings.CHECK_IN_TIME
         context['check_out'] = settings.CHECK_OUT_TIME
+        context['intro_img'] = get_image_src('intro')
         return {**context, **self.get_general_context()}
 
     def get_queryset(self):
@@ -42,5 +43,6 @@ class Contacts(ClientContextMixin, TemplateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'contacts'
+        context['intro_img'] = get_image_src('intro')
         return {**context, **self.get_general_context()}
 

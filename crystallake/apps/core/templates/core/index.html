@@ -6,6 +6,11 @@
         Crystal Lake | Турбаза посреди дикой природы, комфортные номера, развлечения на открытом воздухе
     </title>
     <meta name="description" content="Комфортный отдых, дешевые номера, первозданная природа, развлечения на любой вкус, лес, чистой воздух, Кристальный Озера, бронируй сейчас">
+    <meta property="og:title" content="Crystal Lake | Турбаза посреди дикой природы, комфортные номера, развлечения на открытом воздухе" />
+    <meta property="og:description" content="Комфортный отдых, дешевые номера, первозданная природа, развлечения на любой вкус, лес, чистой воздух, Кристальный Озера, бронируй сейчас" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static intro_img %}" />
+    <meta property="og:url" content="{% url 'index' %}" />
     <script type="application/ld+json">
     [
     {
@@ -154,19 +159,19 @@
 
         <h2 class="section_title">Комфортное прибывание в любое время года</h2>
 
-        <div class="recomendations">
+        <div class="recomendations" itemscope itemtype="https://schema.org/ItemList">
 
             <div class="tablet-slider-required"></div>
 
-            <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ rooms.0.get_absolute_url }}">
+            <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ rooms.0.get_absolute_url }}" itemprop="itemListElement" itemscope itemtype="https://schema.org/Product">
                 <div class="card_inner">
-                    <img src="{{ rooms.0.main_photo.url }}" alt="{{ rooms.0.name }}" class="card_img">
+                    <img src="{{ rooms.0.main_photo.url }}" alt="{{ rooms.0.name }}" class="card_img" itemprop="image">
                     <div class="card_info">
-                        <p class="card_info_title">
+                        <p class="card_info_title" itemprop="name">
                             {{ rooms.0.name }}
                         </p>
-                        <p class="card_info_text">Начиная от:
-                            <span class="highlighted">
+                        <p class="card_info_text" itemprop="offers" itemscope itemtype="https://schema.org/Offer">Начиная от:
+                            <span class="highlighted" itemprop="price">
                                 {{ rooms.0.default_price.to_integral_value }}&#8381;
                             </span>
                         </p>
@@ -175,15 +180,15 @@
                 </div>
             </article>
             {% for room in rooms|slice:"1:" %}
-            <article class="card_short recomendations_item slider_content" data-goto="{{ room.get_absolute_url }}">
+            <article class="card_short recomendations_item slider_content" data-goto="{{ room.get_absolute_url }}" itemprop="itemListElement" itemscope itemtype="https://schema.org/Product">
                 <div class="card_inner">
-                    <img src="{{ room.main_photo.url }}" alt="{{ room.name }}" class="card_img">
+                    <img src="{{ room.main_photo.url }}" alt="{{ room.name }}" class="card_img" itemprop="image">
                     <div class="card_info">
-                        <p class="card_info_title">
+                        <p class="card_info_title"  itemprop="name">
                             {{ room.name }}
                         </p>
-                        <p class="card_info_text">Начиная от:
-                            <span class="highlighted">
+                        <p class="card_info_text" itemscope itemtype="https://schema.org/Offer">Начиная от:
+                            <span class="highlighted" itemprop="price">
                                 {{ room.default_price.to_integral_value }}&#8381;
                             </span>
                         </p>
@@ -206,19 +211,19 @@
 
         <h2 class="section_title">Надется занятие по душе каждому</h2>
 
-        <div class="recomendations">
+        <div class="recomendations" itemscope itemtype="https://schema.org/ItemList">
 
             <div class="tablet-slider-required"></div>
 
-                <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ services.0.get_absolute_url }}">
+                <article class="card_short recomendations_item slider_content slider_content__active" data-goto="{{ services.0.get_absolute_url }}" itemprop="itemListElement" itemscope itemtype="https://schema.org/Product">
                     <div class="card_inner">
-                        <img src="{{ services.0.main_photo.url }}" alt="{{ services.0.name }}" class="card_img">
+                        <img src="{{ services.0.main_photo.url }}" alt="{{ services.0.name }}" class="card_img" itemprop="image">
                         <div class="card_info">
                             <p class="card_info_title">
                                 {{ services.0.name }}
                             </p>
-                            <p class="card_info_text">Начиная от:
-                                <span class="highlighted">
+                            <p class="card_info_text" itemscope itemtype="https://schema.org/Offer">Начиная от:
+                                <span class="highlighted" itemprop="price">
                                     {{ services.0.default_price.to_integral_value }}&#8381;
                                 </span>
                             </p>
@@ -227,15 +232,15 @@
                     </div>
                 </article>
                 {% for service in services|slice:"1:" %}
-                <article class="card_short recomendations_item slider_content" data-goto="{{ service.get_absolute_url }}">
+                <article class="card_short recomendations_item slider_content" data-goto="{{ service.get_absolute_url }}" itemprop="itemListElement" itemscope itemtype="https://schema.org/Product">
                     <div class="card_inner">
-                        <img src="{{ service.main_photo.url }}" alt="{{ service.name }}" class="card_img">
+                        <img src="{{ service.main_photo.url }}" alt="{{ service.name }}" class="card_img" itemprop="image">
                         <div class="card_info">
                             <p class="card_info_title">
                                 {{ service.name }}
                             </p>
-                            <p class="card_info_text">Начиная от:
-                                <span class="highlighted">
+                            <p class="card_info_text" itemscope itemtype="https://schema.org/Offer">Начиная от:
+                                <span class="highlighted" itemprop="price">
                                     {{ service.default_price.to_integral_value }}&#8381;
                                 </span>
                             </p>

@@ -5,6 +5,11 @@
         Crystal Lake | Бронирование номеров
     </title>
     <meta name="description" content="Множество комфортабельных номеров по низким ценам, забронируй сейчас">
+    <meta property="og:title" content="Crystal Lake | Бронирование номеров" />
+    <meta property="og:description" content="Множество комфортабельных номеров по низким ценам, забронируй сейчас"/>
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{{ page_obj.0.main_photo.url }}" />
+    <meta property="og:url" content="{% url 'rooms' %}" />
 {% endblock offers_header_meta %}
 {% block breadcrumbs_json_ld %}
     {

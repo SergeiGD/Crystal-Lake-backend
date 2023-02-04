@@ -17,6 +17,7 @@ RUN pip3 install -r requirements.txt
 COPY . .
 
 COPY ./crystal_lake.conf /etc/apache2/sites-available/crystal_lake.conf
+RUN a2enmod headers && service apache2 restart
 RUN a2ensite crystal_lake.conf
 RUN a2dissite 000-default.conf
 EXPOSE 80

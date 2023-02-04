@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 
 from django.contrib.auth.mixins import AccessMixin
@@ -7,6 +8,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 
 from ..client_profile.forms import ClientLoginForm, SendCodeForm, ClientPasswordsForm, ClientPhoneForm
+from django.conf import settings
 
 
 class SafePaginator(Paginator):
@@ -82,3 +84,9 @@ def is_ajax(request):
         return True
     else:
         return False
+
+
+def get_image_src(name):
+    for image_file in os.listdir(f'{settings.STATIC_ROOT}/images'):
+        if name in image_file in image_file:
+            return image_file

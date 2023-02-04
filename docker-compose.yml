@@ -29,3 +29,5 @@ services:
       - ${DB_PORT}:5432
     env_file:
       - ./.env
+
+

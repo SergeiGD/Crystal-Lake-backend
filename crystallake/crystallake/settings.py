@@ -180,3 +180,8 @@ try:
     from .additional_settings.rooms_settings import *
 except ImportError:
     pass
+
+try:
+    from .additional_settings.pagination_settings import *
+except ImportError:
+    pass

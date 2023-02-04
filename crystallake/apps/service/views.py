@@ -19,6 +19,7 @@ from ..tag.forms import SearchTagForm
 from ..user.forms import SearchUserForm
 from ..worker.models import Worker
 from ..order.models import PurchaseCountable
+from django.conf import settings
 
 # Create your views here.
 
@@ -84,13 +85,15 @@ class ServicesCatalog(ClientContextMixin, ListView):
     model = Service
     context_object_name = 'services'
     paginator_class = SafePaginator
-    paginate_by = 1
+    paginate_by = settings.CLIENT_PAGINATE_BY
     template_name = 'service/services.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'services'
         context['search_form'] = SearchServicesForm(self.request.GET)
+        context['paginate_by_range'] = range(self.paginate_by)
+        context['paginate_by'] = self.paginate_by
         return {**context, **self.get_general_context()}
 
     def get_queryset(self):

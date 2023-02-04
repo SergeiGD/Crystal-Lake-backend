@@ -32,7 +32,7 @@ class ActiveOrdersCatalog(ActiveLoginRequiredMixin, ListView):
     context_object_name = 'orders'
     template_name = 'client_profile/active_orders.html'
     paginator_class = SafePaginator
-    paginate_by = 10
+    paginate_by = settings.CLIENT_PAGINATE_BY
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,7 +58,7 @@ class HistoryCatalog(ActiveLoginRequiredMixin, ListView):
     context_object_name = 'orders'
     template_name = 'client_profile/history.html'
     paginator_class = SafePaginator
-    paginate_by = 10
+    paginate_by = settings.CLIENT_PAGINATE_BY
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

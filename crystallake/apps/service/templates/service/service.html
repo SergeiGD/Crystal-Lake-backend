@@ -5,6 +5,11 @@
         Crystal Lake | Забронировать услугу {{ offer.name }}, для компании из {{ offer.max_in_group }} человек
     </title>
     <meta name="description" content="Услуга {{ offer.name }}, отличный для компании из {{ offer.max_in_group }} человек, открытый воздух, приятная цена">
+    <meta property="og:title" content=" Crystal Lake | Забронировать услугу {{ offer.name }}, для компании из {{ offer.max_in_group }} человек" />
+    <meta property="og:description" content="Услуга {{ offer.name }}, отличный для компании из {{ offer.max_in_group }} человек, открытый воздух, приятная цена"/>
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{{ offer.main_photo.url }}" />
+    <meta property="og:url" content="{{ offer.get_absolute_url }}" />
 {% endblock offer_header_meta %}
 {% block offer_json_ld %}
     "@type": "Product",

@@ -9,7 +9,7 @@
     <meta property="og:description" content="Наша турбаза находится в самом леса Forver Green, прямо у берега одноименного озера Crystal Lake, приезжайте, будем рады Вам в любое время года и суток!" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="{% static intro_img %}" />
-    <meta property="og:url" content="{% url 'contacts' %}" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
     <script type="application/ld+json">
     [
     {

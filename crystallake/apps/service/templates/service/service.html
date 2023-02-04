@@ -9,7 +9,7 @@
     <meta property="og:description" content="Услуга {{ offer.name }}, отличный для компании из {{ offer.max_in_group }} человек, открытый воздух, приятная цена"/>
     <meta property="og:type" content="website" />
     <meta property="og:image" content="{{ offer.main_photo.url }}" />
-    <meta property="og:url" content="{{ offer.get_absolute_url }}" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
 {% endblock offer_header_meta %}
 {% block offer_json_ld %}
     "@type": "Product",

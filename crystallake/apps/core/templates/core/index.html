@@ -10,7 +10,7 @@
     <meta property="og:description" content="Комфортный отдых, дешевые номера, первозданная природа, развлечения на любой вкус, лес, чистой воздух, Кристальный Озера, бронируй сейчас" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="{% static intro_img %}" />
-    <meta property="og:url" content="{% url 'index' %}" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
     <script type="application/ld+json">
     [
     {

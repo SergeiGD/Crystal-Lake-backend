@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import pytz
 from django.core.exceptions import PermissionDenied
@@ -55,13 +55,20 @@ class ServiceDetail(CartMixin, ClientContextMixin, RelocateResponseMixin, Detail
                 response = HttpResponse(response_message.get_json(), status=401, content_type='application/json')
                 return response
             # TODO: mixin
-            # TODO: проверка количества и мин время >= 30 min
+            # TODO: мин время в модели/настройках сделать
             service = self.get_object()
             start = datetime.combine(book_form.cleaned_data['date'], book_form.cleaned_data['time_start'])
             end = datetime.combine(book_form.cleaned_data['date'], book_form.cleaned_data['time_end'])
             start, end = timezone.make_aware(start), timezone.make_aware(end)
 
-            purchase = PurchaseCountable(order=cart, offer=service)
+            if start + timedelta(minutes=30) >= end:
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                    'Даты бронирования': ['Минимальное время брони более 30 минут']
+                })
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
+
+            purchase = PurchaseCountable(order=cart, offer=service, quantity=book_form.cleaned_data['quantity'])
             purchase.start, purchase.end = start, end
 
             if purchase.offer.is_time_available(purchase.start, purchase.end):

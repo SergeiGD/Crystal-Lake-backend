@@ -209,6 +209,7 @@ class ServiceTimetable(models.Model):
             raise ValidationError('Выбор данного времени приведет к невозможности оказать услуги')
 
         intersections = ServiceTimetable.objects.filter(
+            service_id=self.service.id,
             start__year=self.start.year,
             start__month=self.start.month,
             start__day=self.start.day

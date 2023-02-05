@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, time
 from django.utils import timezone
 
 from django import forms
@@ -105,6 +105,7 @@ class SearchTimetablesAdmin(forms.Form):
 
 
 class ServicePurchaseForm(forms.Form):
+    # TODO: сделать модальной и вынести валидацию в модель
 
     date = forms.DateField(label='Дата*:', widget=forms.DateInput(attrs={
         'class': 'input_field',
@@ -121,6 +122,14 @@ class ServicePurchaseForm(forms.Form):
     quantity = forms.IntegerField(label='Человек*:', widget=forms.NumberInput(attrs={
         'class': 'input_field input_field__people'
     }))
+
+    def clean(self):
+        form_data = self.cleaned_data
+
+        if form_data['date'] < datetime.now().date():
+            self._errors["date"] = ["Нельзя сделать бронь на уже прошедшую дату"]
+
+        return form_data
 
 
 class ManageServicePurchaseForm(ServicePurchaseForm):
@@ -139,3 +148,4 @@ class BookServiceForm(BookOfferForm, ServicePurchaseForm):
         super().__init__(*args, **kwargs)
         self.fields['quantity'].widget.attrs['value'] = 1
         self.fields['date'].widget.attrs['value'] = datetime.now().date()
+

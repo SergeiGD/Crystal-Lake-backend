@@ -87,7 +87,7 @@
                 {% endblock breadcrumbs %}
             </div>
 
-            <form class="offers" id="offers" action=".">
+            <form class="offers" id="offers" action="." method="get">
 
                 <div class="finder">
 
@@ -148,38 +148,7 @@
 
                 </div>
 
-                <div class="pages">
-                    {% if page_obj.has_previous %}
-                        <input type="submit" name="page" value="{{ page_obj.previous_page_number }}" class="page_arrow page_arrow__prev">
-                    {% else %}
-                        <p class="page_arrow page_arrow__prev page_disabled"></p>
-                    {% endif %}
-
-                    {% if page_obj.number|add:'-3' > 1 %}
-                        <input type="submit" name="page" value="1" class="page_item">
-                        <span>&hellip;</span>
-                    {% endif %}
-
-                    {% for i in page_obj.paginator.page_range  %}
-                        {% if i == page_obj.number %}
-                            <p class="page_item page_item_active">{{ i }}</p>
-                        {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
-                            <input type="submit" name="page" value="{{ i }}" class="page_item">
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
-                        <span>&hellip;</span>
-                        <input type="submit" name="page" value="{{ page_obj.paginator.num_pages }}" class="page_item">
-                    {% endif %}
-
-                    {% if page_obj.has_next %}
-                        <input type="submit" name="page" value="{{ page_obj.next_page_number }}" class="page_arrow page_arrow__next">
-                    {% else %}
-                        <p class="page_arrow page_arrow__next page_disabled"></p>
-                    {% endif %}
-
-                </div>
+                {% include 'core/client_pagination.html' %}
 
             </form>
         </div>

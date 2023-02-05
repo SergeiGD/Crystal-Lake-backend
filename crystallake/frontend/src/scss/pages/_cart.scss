@@ -46,16 +46,9 @@
     .button__pay{
         @extend %button;
         width: 100%;
+        height: 100%;
         color: #000;
         border-color: #000;
         background-color: #fff;
-        
-        @include mixins.device(tablet){
-            width: 30%;
-        }
-
-        @include mixins.device(mobile){
-            width: 100%;
-        }
     }
 }

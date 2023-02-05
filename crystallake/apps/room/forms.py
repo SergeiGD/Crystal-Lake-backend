@@ -98,6 +98,7 @@ class SearchRoomsAdmin(SearchOffersAdmin):
 
 
 class RoomPurchaseForm(forms.Form):
+    # TODO: сделать модальной и вынести валидацию в модель
     date_start = forms.DateField(label='Дата с*', widget=forms.DateInput(attrs={
         'class': 'input_field',
         'type': 'date'
@@ -106,6 +107,14 @@ class RoomPurchaseForm(forms.Form):
         'class': 'input_field',
         'type': 'date'
     }))
+
+    def clean(self):
+        form_data = self.cleaned_data
+
+        if form_data['date_start'] >= form_data['date_end']:
+            self._errors["date_start"] = ["Дата конца должна быть больше даты начала"]
+
+        return form_data
 
 
 class ManageRoomPurchaseForm(RoomPurchaseForm):

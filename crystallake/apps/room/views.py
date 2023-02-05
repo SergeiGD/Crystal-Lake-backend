@@ -88,10 +88,16 @@ class RoomDetail(CartMixin, ClientContextMixin, PhoneCheckMixin, RelocateRespons
                 })
                 response = HttpResponse(response_message.get_json(), status=401, content_type='application/json')
                 return response
-            # TODO: mixin
+            # TODO: использовать миксин (уже есть в orders)
             room = self.get_object()
             start = datetime.combine(book_form.cleaned_data['date_start'], settings.CHECK_IN_TIME)
             end = datetime.combine(book_form.cleaned_data['date_end'], settings.CHECK_IN_TIME)
+            if start.date() < datetime.now().date():
+                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                    'Дата': ['Нельзя сделать бронь на уже прошедшую дату']
+                })
+                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+                return response
             rooms = room.pick_rooms_for_purchase(start, end)
             if len(rooms) == 0:
                 response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={

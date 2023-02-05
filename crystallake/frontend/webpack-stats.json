@@ -9,6 +9,70 @@
       "name": "css/admin-1d2017df37ac0e197a2d.bundle.css.map",
       "path": "/app/static/css/admin-1d2017df37ac0e197a2d.bundle.css.map"
     },
+    "css/client-0b962fbdc8a2feb3738b.bundle.css": {
+      "name": "css/client-0b962fbdc8a2feb3738b.bundle.css",
+      "path": "/app/static/css/client-0b962fbdc8a2feb3738b.bundle.css"
+    },
+    "css/client-0b962fbdc8a2feb3738b.bundle.css.map": {
+      "name": "css/client-0b962fbdc8a2feb3738b.bundle.css.map",
+      "path": "/app/static/css/client-0b962fbdc8a2feb3738b.bundle.css.map"
+    },
+    "css/client-2fb380dd0090dbb1ece1.bundle.css": {
+      "name": "css/client-2fb380dd0090dbb1ece1.bundle.css",
+      "path": "/app/static/css/client-2fb380dd0090dbb1ece1.bundle.css"
+    },
+    "css/client-2fb380dd0090dbb1ece1.bundle.css.map": {
+      "name": "css/client-2fb380dd0090dbb1ece1.bundle.css.map",
+      "path": "/app/static/css/client-2fb380dd0090dbb1ece1.bundle.css.map"
+    },
+    "css/client-4014536aee64f215ad84.bundle.css": {
+      "name": "css/client-4014536aee64f215ad84.bundle.css",
+      "path": "/app/static/css/client-4014536aee64f215ad84.bundle.css"
+    },
+    "css/client-4014536aee64f215ad84.bundle.css.map": {
+      "name": "css/client-4014536aee64f215ad84.bundle.css.map",
+      "path": "/app/static/css/client-4014536aee64f215ad84.bundle.css.map"
+    },
+    "css/client-41571d208b98bd31dedd.bundle.css": {
+      "name": "css/client-41571d208b98bd31dedd.bundle.css",
+      "path": "/app/static/css/client-41571d208b98bd31dedd.bundle.css"
+    },
+    "css/client-41571d208b98bd31dedd.bundle.css.map": {
+      "name": "css/client-41571d208b98bd31dedd.bundle.css.map",
+      "path": "/app/static/css/client-41571d208b98bd31dedd.bundle.css.map"
+    },
+    "css/client-4aceef593d85bbc16e14.bundle.css": {
+      "name": "css/client-4aceef593d85bbc16e14.bundle.css",
+      "path": "/app/static/css/client-4aceef593d85bbc16e14.bundle.css"
+    },
+    "css/client-4aceef593d85bbc16e14.bundle.css.map": {
+      "name": "css/client-4aceef593d85bbc16e14.bundle.css.map",
+      "path": "/app/static/css/client-4aceef593d85bbc16e14.bundle.css.map"
+    },
+    "css/client-7919fffd26aff776eec1.bundle.css": {
+      "name": "css/client-7919fffd26aff776eec1.bundle.css",
+      "path": "/app/static/css/client-7919fffd26aff776eec1.bundle.css"
+    },
+    "css/client-7919fffd26aff776eec1.bundle.css.map": {
+      "name": "css/client-7919fffd26aff776eec1.bundle.css.map",
+      "path": "/app/static/css/client-7919fffd26aff776eec1.bundle.css.map"
+    },
+    "css/client-9ad196032d2377cb9681.bundle.css": {
+      "name": "css/client-9ad196032d2377cb9681.bundle.css",
+      "path": "/app/static/css/client-9ad196032d2377cb9681.bundle.css"
+    },
+    "css/client-9ad196032d2377cb9681.bundle.css.map": {
+      "name": "css/client-9ad196032d2377cb9681.bundle.css.map",
+      "path": "/app/static/css/client-9ad196032d2377cb9681.bundle.css.map"
+    },
+    "css/client-cc1892e12612cb1678da.bundle.css": {
+      "name": "css/client-cc1892e12612cb1678da.bundle.css",
+      "path": "/app/static/css/client-cc1892e12612cb1678da.bundle.css"
+    },
+    "css/client-cc1892e12612cb1678da.bundle.css.map": {
+      "name": "css/client-cc1892e12612cb1678da.bundle.css.map",
+      "path": "/app/static/css/client-cc1892e12612cb1678da.bundle.css.map"
+    },
     "css/client-e88fbe036742d1154545.bundle.css": {
       "name": "css/client-e88fbe036742d1154545.bundle.css",
       "path": "/app/static/css/client-e88fbe036742d1154545.bundle.css"
@@ -33,13 +97,13 @@
       "name": "js/admin-b2450e7406bdca943b01.bundle.js.map",
       "path": "/app/static/js/admin-b2450e7406bdca943b01.bundle.js.map"
     },
-    "js/client-988d5cef857301abd0b2.bundle.js": {
-      "name": "js/client-988d5cef857301abd0b2.bundle.js",
-      "path": "/app/static/js/client-988d5cef857301abd0b2.bundle.js"
+    "js/client-298d72279c781a66c478.bundle.js": {
+      "name": "js/client-298d72279c781a66c478.bundle.js",
+      "path": "/app/static/js/client-298d72279c781a66c478.bundle.js"
     },
-    "js/client-988d5cef857301abd0b2.bundle.js.map": {
-      "name": "js/client-988d5cef857301abd0b2.bundle.js.map",
-      "path": "/app/static/js/client-988d5cef857301abd0b2.bundle.js.map"
+    "js/client-298d72279c781a66c478.bundle.js.map": {
+      "name": "js/client-298d72279c781a66c478.bundle.js.map",
+      "path": "/app/static/js/client-298d72279c781a66c478.bundle.js.map"
     },
     "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js": {
       "name": "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js",
@@ -77,8 +141,8 @@
     "client": [
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
       "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js",
-      "css/client-e88fbe036742d1154545.bundle.css",
-      "js/client-988d5cef857301abd0b2.bundle.js"
+      "css/client-4aceef593d85bbc16e14.bundle.css",
+      "js/client-298d72279c781a66c478.bundle.js"
     ]
   }
 }

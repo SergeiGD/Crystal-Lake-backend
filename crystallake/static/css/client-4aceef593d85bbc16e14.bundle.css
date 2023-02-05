@@ -2762,19 +2762,10 @@ body {
 }
 .cart_info .button__pay {
   width: 100%;
+  height: 100%;
   color: #000;
   border-color: #000;
   background-color: #fff;
-}
-@media screen and (max-width: 1279px) {
-  .cart_info .button__pay {
-    width: 30%;
-  }
-}
-@media screen and (max-width: 767px) {
-  .cart_info .button__pay {
-    width: 100%;
-  }
 }
 
 .description .description_title, .info .info_title, .dates .dates_title {
@@ -4244,4 +4235,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=client-e88fbe036742d1154545.bundle.css.map*/
+/*# sourceMappingURL=client-4aceef593d85bbc16e14.bundle.css.map*/

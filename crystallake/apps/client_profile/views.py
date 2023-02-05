@@ -47,7 +47,7 @@ class ActiveOrdersCatalog(ActiveLoginRequiredMixin, ListView):
             date_finished=None,
             client=user,
             paid__gt=0
-        )
+        ).order_by('-date_create')
 
         return orders
 
@@ -70,7 +70,7 @@ class HistoryCatalog(ActiveLoginRequiredMixin, ListView):
         user = self.request.user
         orders = Order.objects.exclude(date_canceled=None, date_finished=None).filter(
             client=user
-        )
+        ).order_by('-date_create')
         return orders
 
 

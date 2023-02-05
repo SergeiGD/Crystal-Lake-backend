@@ -82,9 +82,9 @@ class Order(models.Model):
         if self.is_cancelable():
             self.date_canceled = timezone.now()
             self.date_finished = None
+            self.save()
             for purchase in self.purchases.filter(is_canceled=False):
                 purchase.cancel()
-            self.save()
 
     def mark_as_finished(self):
         if self.is_finishable():
@@ -382,16 +382,30 @@ class PurchaseCountable(Purchase):
     #     if self.quantity > self.offer.max_in_group:
     #         raise ValidationError('Превышено максимальное количество')
 
+    # def calc_price(self):
+    #     delta_seconds = (self.end - self.start).total_seconds()
+    #     seconds_in_hour = 3600
+    #     seconds_in_day = seconds_in_hour * 24
+    #     if self.offer.price_type == 'hours':
+    #         hours = Decimal(delta_seconds / seconds_in_hour)
+    #         return (self.offer.default_price * hours) * self.quantity
+    #     if self.offer.price_type == 'days':
+    #         days = Decimal(delta_seconds / seconds_in_day)
+    #         return (self.offer.default_price * days) * self.quantity
+    #
+    #     raise ValueError('Неизвестный тип цены')
+
     def calc_price(self):
-        delta_seconds = (self.end - self.start).total_seconds()
-        seconds_in_hour = 3600
-        seconds_in_day = seconds_in_hour * 24
-        if self.offer.price_type == 'hours':
-            hours = Decimal(delta_seconds / seconds_in_hour)
-            return (self.offer.default_price * hours) * self.quantity
-        if self.offer.price_type == 'days':
-            days = Decimal(delta_seconds / seconds_in_day)
-            return (self.offer.default_price * days) * self.quantity
+        return super().calc_price() * self.quantity
+        # delta_seconds = (self.end - self.start).total_seconds()
+        # seconds_in_hour = 3600
+        # seconds_in_day = seconds_in_hour * 24
+        # if self.offer.price_type == PriceType.hour.name:
+        #     hours = round(Decimal(delta_seconds / seconds_in_hour), 0)
+        #     return (self.offer.default_price * hours) * self.quantity
+        # if self.offer.price_type == PriceType.day.name:
+        #     days = round(Decimal(delta_seconds / seconds_in_day), 0)
+        #     return (self.offer.default_price * days) * self.quantity
 
         raise ValueError('Неизвестный тип цены')
 

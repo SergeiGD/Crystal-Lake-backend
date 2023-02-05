@@ -23,13 +23,13 @@
 
                 {% include 'client_profile/profile_menu.html' %}
 
-                <div class="profile_content">
+                <form class="profile_content" method="get" action=".">
 
-                    {% include 'client_profile/orders_filter.html' %}
+{#                    {% include 'client_profile/orders_filter.html' %}#}
 
                     <div class="catalog_long">
 
-                        {% for order in orders %}
+                        {% for order in page_obj %}
                             <div class="card_long">
 
                                 {% if order.main_offer.get_main_photo %}
@@ -70,7 +70,9 @@
 
                     </div>
 
-                </div>
+                    {% include 'core/client_pagination.html' %}
+
+                </form>
 
             </div>
 

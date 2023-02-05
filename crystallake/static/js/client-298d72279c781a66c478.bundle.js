@@ -125,10 +125,10 @@ $(document).ready(function (){
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function (){
-    $('#delete_cart_item_icon').on('click', function (){
-        $('#delete_cart_item_btn').trigger('click');
+    $('.delete_cart_item_icon').on('click', function (){
+        $(this).find('.delete_cart_item_btn').trigger('click');
     })
-    $('#delete_cart_item_btn').on('click', function (e){
+    $('.delete_cart_item_btn').on('click', function (e){
         e.stopPropagation();
     });
 })
@@ -3803,4 +3803,4 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-988d5cef857301abd0b2.bundle.js.map
+//# sourceMappingURL=client-298d72279c781a66c478.bundle.js.map

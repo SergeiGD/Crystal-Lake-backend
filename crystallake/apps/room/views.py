@@ -188,7 +188,6 @@ class AdminUpdateRoom(ManageOfferMixin, UpdateView):  # TODO: не давать 
         return {**context, **common_context}
 
     def form_valid(self, form):
-        # print(form.cleaned_data)
         context = self.get_context_data()
         formset_photos = context['formset_photos']
         if formset_photos.is_valid():

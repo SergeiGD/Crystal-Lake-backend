@@ -17,6 +17,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
+from django.conf import settings
 
 from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 

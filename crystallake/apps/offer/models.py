@@ -192,7 +192,6 @@ class Offer(PolymorphicModel):
     def save(self, *args, **kwargs):
         if not self.pk or self.__original_name != self.name:    # если новый объект или сменили имя, то генерируем слаг
             self._generate_slug()
-
         super().save(*args, **kwargs)
 
 

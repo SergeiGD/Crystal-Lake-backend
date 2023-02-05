@@ -156,7 +156,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = []
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = path.join(BASE_DIR, 'media')
 
 
@@ -168,8 +168,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH SETTINGS
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'django.contrib.auth.backends.AllowAllUsersModelBackend']
-
-# TODO: ПО СКОЛЬКО ПАГИНАЦИЯ
 
 try:
     from .additional_settings.sms_settings import *

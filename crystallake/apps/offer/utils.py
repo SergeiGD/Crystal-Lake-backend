@@ -16,6 +16,7 @@ from django.conf import settings
 
 class ManageOfferMixin:
     def save_offer(self, **kwargs):
+
         formset_photos = kwargs['formset_photos']
 
         offer = kwargs['offer']

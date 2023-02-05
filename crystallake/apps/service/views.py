@@ -99,7 +99,10 @@ class ServicesCatalog(ClientContextMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'services'
         context['search_form'] = SearchServicesForm(self.request.GET)
-        context['paginate_by_range'] = range(self.paginate_by)
+        if len(self.get_queryset()) > self.paginate_by:
+            context['paginate_by_range'] = range(self.paginate_by)
+        else:
+            context['paginate_by_range'] = range(len(self.get_queryset()))
         context['paginate_by'] = self.paginate_by
         return {**context, **self.get_general_context()}
 
@@ -108,7 +111,7 @@ class ServicesCatalog(ClientContextMixin, ListView):
         services = Service.objects.filter(
             date_deleted=None,
             is_hidden=False,
-        )
+        ).order_by('default_price')
 
         if search_form.is_valid():
             services = services.search(**search_form.cleaned_data)

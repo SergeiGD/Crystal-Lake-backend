@@ -9,8 +9,9 @@
         "numberOfItems": "{{ page_obj.paginator.count }}",
         "itemListElement":
             [
-                {% if page_obj|length > 0 %}
+
                 {% load offer_tags %}
+                    {% if page_obj|length > 1 %}
                     {% for i in paginate_by_range|slice:":-1" %}
                     {
                         {% with page_obj|index:i as elem %}
@@ -35,6 +36,8 @@
                         {% endwith %}
                     },
                     {% endfor %}
+                    {% endif %}
+                    {% if page_obj|length > 0 %}
                     {
                         {% get_last page_obj as elem %}
                         "@type": "ListItem",
@@ -57,7 +60,8 @@
                                     }
                              }
                     }
-                {% endif %}
+                    {% endif %}
+
             ]
     },
     {% block breadcrumbs_json_ld %}

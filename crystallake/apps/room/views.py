@@ -54,6 +54,7 @@ class RoomsCatalog(ClientContextMixin, ListView):
 
         if search_form.is_valid():
             rooms = rooms.search(**search_form.cleaned_data)
+            rooms = rooms[0:1]
 
         return rooms
 

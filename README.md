@@ -28,6 +28,6 @@ docker-compose up --build
 ```
 3) Для создания суперпользователя выполните скрипт [create_superuser.sh](./create_superuser.sh), который первым аргументом принимает номер телефона RU формата, а вторым пароль. Пример:
 ```
-./create_superuser.sh +711223311223 qwe
+./create_superuser.sh +79999999999 qwe
 ```
 

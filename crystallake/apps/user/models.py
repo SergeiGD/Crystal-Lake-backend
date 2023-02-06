@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from .managers import CustomUserManager, SmsCodeManager
 from ..order.models import Order
+from .code_type_choises import CODE_TYPE_CHOICES
 
 # Create your models here.
 
@@ -78,6 +79,7 @@ class CustomUser(AbstractUser):
 
 
 class SmsCode(models.Model):
+
     phone = PhoneNumberField(
         null=False,
         blank=False,
@@ -102,6 +104,21 @@ class SmsCode(models.Model):
         blank=False,
         default=False,
         verbose_name='Использован'
+    )
+    ip = models.CharField(
+        null=False,
+        blank=False,
+        default='qwerty',
+        verbose_name='ip',
+        max_length=30
+    )
+    type = models.CharField(
+        choices=CODE_TYPE_CHOICES,
+        null=False,
+        blank=False,
+        default='register',
+        verbose_name='Тип запроса',
+        max_length=50
     )
 
     objects = SmsCodeManager()

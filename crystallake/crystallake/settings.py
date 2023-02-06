@@ -33,7 +33,7 @@ if 'true' in environ.get("DEV", "false").lower():
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = [environ.get("CUSTOM_HOST", "localhost")]
+ALLOWED_HOSTS = [environ.get("CUSTOM_HOST", "localhost"), '192.168.1.57']
 
 
 # Application definition

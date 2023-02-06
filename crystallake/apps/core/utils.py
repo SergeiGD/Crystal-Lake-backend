@@ -90,3 +90,12 @@ def get_image_src(name):
     for image_file in os.listdir(f'{settings.STATIC_ROOT}/images'):
         if name in image_file in image_file:
             return f'images/{image_file}'
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[-1].strip()
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip

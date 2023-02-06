@@ -10,19 +10,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 
 from ..order.models import Order
-from ..core.utils import SafePaginator
+from ..core.utils import SafePaginator, get_client_ip
 from ..core.utils import ResponseMessage, RelocateResponseMixin, ClientContextMixin
 from .forms import ClientLoginForm, SendCodeForm, ClientPhoneForm, ClientPasswordsForm, ClientInfoForm
 from ..order.models import Order, Purchase, PurchaseCountable
 from ..client.models import Client
 from ..user.models import SmsCode, CustomUser
+from ..user.code_type_choises import CODE_TYPE_CHOICES, CodeType
 from ..worker.models import Worker
 from .utils import SmsCodeMixin, PhoneCheckMixin, ActiveLoginRequiredMixin
 from django.conf import settings
 from ..service.forms import ManageServicePurchaseForm
 from ..room.forms import ManageRoomPurchaseForm
 from ..order.views import RoomPurchaseMixin, ServicePurchaseMixin
-
 # Create your views here.
 
 
@@ -302,7 +302,7 @@ class SendRegisterCodeView(SmsCodeMixin, RelocateResponseMixin, View):
     def post(self, request):
         form = SendCodeForm(request.POST, prefix='register')
         if form.is_valid():
-            sms_code = self.find_sms_code(form.cleaned_data['code'])
+            sms_code = self.find_sms_code(form.cleaned_data['code'], code_type=CodeType.register.name, ip=get_client_ip(request))
             if not sms_code:
                 return self.get_code_error_message()
             client = Client.objects.filter(phone=sms_code.phone).first()
@@ -341,7 +341,7 @@ class ClientRegisterView(PhoneCheckMixin, View):
             client.password = password
             client.is_active = False
             client.save()
-            SmsCode.objects.send_sms(phone)
+            SmsCode.objects.send_sms(phone, code_type=CodeType.register.name, ip=get_client_ip(request))
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
             return response
@@ -362,7 +362,7 @@ class ClientResetPasswordCodeView(View):
                 })
                 response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
                 return response
-            SmsCode.objects.send_sms(phone)
+            SmsCode.objects.send_sms(phone, code_type=CodeType.password_reset.name, ip=get_client_ip(request))
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
             response = HttpResponse(response_message.get_json(), status=200, content_type='application/json')
             return response
@@ -381,7 +381,11 @@ class ClientResetPasswordView(SmsCodeMixin, RelocateResponseMixin, View):
         passwords_form = ClientPasswordsForm(request.POST, prefix='reset')
         code_form = SendCodeForm(request.POST, prefix='reset')
         if passwords_form.is_valid() and code_form.is_valid():
-            sms_code = self.find_sms_code(code_form.cleaned_data['code'])
+            sms_code = self.find_sms_code(
+                code_form.cleaned_data['code'],
+                code_type=CodeType.password_reset.name,
+                ip=get_client_ip(request)
+            )
             if sms_code is None:
                 return self.get_code_error_message()
             client = Client.objects.filter(phone=sms_code.phone).first()
@@ -414,7 +418,7 @@ class ClientChangePasswordView(ClientResetPasswordView, ActiveLoginRequiredMixin
             'code_form':  SendCodeForm(prefix='reset'),
             'passwords_form': ClientPasswordsForm(prefix='reset')
         }
-        SmsCode.objects.send_sms(request.user.phone)
+        SmsCode.objects.send_sms(request.user.phone, code_type=CodeType.password_reset.name, ip=get_client_ip(request))
         return render(request, template_name='client_profile/change_password.html', context=context)
 
 

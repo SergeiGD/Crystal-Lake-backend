@@ -64,7 +64,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class SmsCodeManager(models.Manager):
-    def send_sms(self, phone):
+    def send_sms(self, phone, code_type, ip):
         min_date = datetime.now() - settings.CODE_ACTIVE_TIME
         # ЕСЛИ ЕСТЬ АКТИВНЫЙ КОД, ТО НЕ ОТПРАВЛЯЕМ
         if self.model.objects.exclude(date__lt=timezone.make_aware(min_date)).filter(
@@ -75,7 +75,13 @@ class SmsCodeManager(models.Manager):
         code = ''.join(choices(string.ascii_uppercase + string.digits, k=5))
         date = timezone.now()
         with open(settings.CODES_FILE, 'a') as f:
-            f.write(f'{phone} - {date} - {code} \n')                # реально смс не отпарвляем, а просто записываем в файл
+            f.write(f'{phone} - {ip} - {date} - {code} \n')                # реально смс не отпарвляем, а просто записываем в файл
         code = make_password(code, salt=settings.SMS_CODE_SALT)
-        sms_object = self.model(phone=phone, code=code, date=date)
+        sms_object = self.model(
+            phone=phone,
+            code=code,
+            date=date,
+            ip=ip,
+            type=code_type
+        )
         sms_object.save()

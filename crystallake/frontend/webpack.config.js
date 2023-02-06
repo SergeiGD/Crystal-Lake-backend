@@ -43,7 +43,6 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/ajax/reset_password.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_room_dates.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_service_dates.js'),
-
             path.resolve(__dirname,'src/js/common/redirect.js'),
 
         ],
@@ -103,7 +102,6 @@ module.exports = {
                     },
                     {loader: 'resolve-url-loader', options: {sourceMap: isDev}},
                     {loader: 'sass-loader', options: {sourceMap: true}},
-                    // {loader: 'sass-loader'},
                 ]
             },
             {

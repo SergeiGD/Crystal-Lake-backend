@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.http import HttpResponse
 from django.utils import timezone
@@ -13,6 +13,18 @@ class RoomPurchaseMixin(RelocateResponseMixin):
         return datetime.combine(date_start, settings.CHECK_IN_TIME), datetime.combine(date_end, settings.CHECK_IN_TIME)
 
     def manage_room_purchase(self, room_purchase, start, end, multiple_rooms_acceptable, success_url=None):
+        if start.date() < datetime.now().date():
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                'Дата': ['Нельзя сделать бронь на уже прошедшую дату']
+            })
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
+        if start >= end:
+            response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
+                'Дата': ['Дата конца должна быть больше даты начала']
+            })
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
         if not room_purchase.is_editable():
             response_message = ResponseMessage(
                 status=ResponseMessage.STATUSES.ERROR,
@@ -61,6 +73,20 @@ class ServicePurchaseMixin(RelocateResponseMixin):
         return timezone.make_aware(start), timezone.make_aware(end)
 
     def manage_service_purchase(self, service_purchase, success_url=None):
+        if service_purchase.start.date() < datetime.now().date():
+            response_message = ResponseMessage(
+                status=ResponseMessage.STATUSES.ERROR,
+                message={'Дата': ['Нельзя сделать бронь на уже прошедшую дату']}
+            )
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
+        if service_purchase.start + timedelta(minutes=service_purchase.offer.min_time) >= service_purchase.end:
+            response_message = ResponseMessage(
+                status=ResponseMessage.STATUSES.ERROR,
+                message={'Время': [f'Минимальное время брони более {service_purchase.offer.min_time} минут']}
+            )
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
         if not service_purchase.is_editable():
             response_message = ResponseMessage(
                 status=ResponseMessage.STATUSES.ERROR,

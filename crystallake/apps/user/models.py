@@ -108,7 +108,6 @@ class SmsCode(models.Model):
     ip = models.CharField(
         null=False,
         blank=False,
-        default='qwerty',
         verbose_name='ip',
         max_length=30
     )

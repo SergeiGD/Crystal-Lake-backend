@@ -8,6 +8,7 @@ services:
     container_name: crystal_lake_app
     volumes:
       - ./crystallake/:/app/
+      - /app/frontend/node_modules
     ports:
       - ${APACHE_PORT}:80
     restart: on-failure

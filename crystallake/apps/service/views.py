@@ -20,11 +20,12 @@ from ..user.forms import SearchUserForm
 from ..worker.models import Worker
 from ..order.models import PurchaseCountable
 from django.conf import settings
+from ..order.utils import ServicePurchaseMixin
 
 # Create your views here.
 
 
-class ServiceDetail(CartMixin, ClientContextMixin, RelocateResponseMixin, DetailView):
+class ServiceDetail(ServicePurchaseMixin, CartMixin, ClientContextMixin, RelocateResponseMixin, DetailView):
     template_name = 'service/service.html'
     model = Service
     slug_url_kwarg = 'service_slug'
@@ -54,34 +55,13 @@ class ServiceDetail(CartMixin, ClientContextMixin, RelocateResponseMixin, Detail
                 })
                 response = HttpResponse(response_message.get_json(), status=401, content_type='application/json')
                 return response
-            # TODO: mixin
-            # TODO: мин время в модели/настройках сделать
-            service = self.get_object()
-            start = datetime.combine(book_form.cleaned_data['date'], book_form.cleaned_data['time_start'])
-            end = datetime.combine(book_form.cleaned_data['date'], book_form.cleaned_data['time_end'])
-            start, end = timezone.make_aware(start), timezone.make_aware(end)
-
-            if start + timedelta(minutes=30) >= end:
-                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                    'Даты бронирования': ['Минимальное время брони более 30 минут']
-                })
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
-
-            purchase = PurchaseCountable(order=cart, offer=service, quantity=book_form.cleaned_data['quantity'])
-            purchase.start, purchase.end = start, end
-
-            if purchase.offer.is_time_available(purchase.start, purchase.end):
-                purchase.save()
-            else:
-                response_message = ResponseMessage(
-                    status=ResponseMessage.STATUSES.ERROR,
-                    message={'Время': ['На выбранное время нет доступной брони']}
-                )
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
-
-            return self.relocate(reverse('cart'))
+            purchase = PurchaseCountable(order=cart, offer=self.get_object())
+            purchase.start, purchase.end = self.aware_time(
+                book_form.cleaned_data['date'],
+                book_form.cleaned_data['time_start'],
+                book_form.cleaned_data['time_end'],
+            )
+            return self.manage_service_purchase(purchase, success_url=reverse('cart'))
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=book_form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')

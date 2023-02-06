@@ -347,7 +347,9 @@ class Purchase(PolymorphicModel):
             order.save()
 
     def is_editable(self):
-        if self.is_canceled or self.end <= timezone.now() or not self.order.is_editable():
+        if self.is_canceled or not self.order.is_editable():
+            return False
+        if self.end is not None and self.end <= timezone.now():
             return False
         return True
 

@@ -155,7 +155,6 @@ class RoomPurchaseView(RoomPurchaseMixin, View):
             purchase.offer = purchase.offer.main_room
             start, end = self.aware_date(form.cleaned_data['date_start'], form.cleaned_data['date_end'])
 
-            # ВОТКНУТЬ КНОПКУ НЕСКОЛЬКО КОМНАТ
             return self.manage_room_purchase(purchase, start, end, False, success_url=purchase.order.get_client_manage_url())
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)

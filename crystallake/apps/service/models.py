@@ -41,6 +41,7 @@ class ServiceTimetableQuerySet(models.QuerySet):
 class Service(Offer):
     max_in_group = models.SmallIntegerField(verbose_name='макс. в группе', default=1)
     max_intersections = models.SmallIntegerField(verbose_name='макс пересечений', default=0)
+    min_time = models.SmallIntegerField(verbose_name='мин. время брони', default=30, null=False, blank=False)
 
     objects = ServiceQuerySet.as_manager()
 

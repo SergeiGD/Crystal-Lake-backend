@@ -25,6 +25,7 @@ from ..photo.models import Photo
 from ..core.forms import ShortSearchForm
 from ..offer.utils import ManageOfferMixin, CartMixin
 from ..order.models import Order, Purchase
+from ..order.utils import RoomPurchaseMixin
 
 # Create your views here.
 
@@ -61,7 +62,7 @@ class RoomsCatalog(ClientContextMixin, ListView):
         return rooms
 
 
-class RoomDetail(CartMixin, ClientContextMixin, PhoneCheckMixin, RelocateResponseMixin, DetailView):
+class RoomDetail(RoomPurchaseMixin, CartMixin, ClientContextMixin, PhoneCheckMixin, RelocateResponseMixin, DetailView):
     template_name = 'room/room.html'
     model = Room
     slug_url_kwarg = 'room_slug'
@@ -91,42 +92,16 @@ class RoomDetail(CartMixin, ClientContextMixin, PhoneCheckMixin, RelocateRespons
                 })
                 response = HttpResponse(response_message.get_json(), status=401, content_type='application/json')
                 return response
-            # TODO: использовать миксин (уже есть в orders)
-            room = self.get_object()
-            start = datetime.combine(book_form.cleaned_data['date_start'], settings.CHECK_IN_TIME)
-            end = datetime.combine(book_form.cleaned_data['date_end'], settings.CHECK_IN_TIME)
-            if start.date() < datetime.now().date():
-                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                    'Дата': ['Нельзя сделать бронь на уже прошедшую дату']
-                })
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
-            rooms = room.pick_rooms_for_purchase(start, end)
-            if len(rooms) == 0:
-                response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
-                    'Свободность номера': ['Нету свободных комнат на выбранные даты']
-                })
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
-            if len(rooms) > 1 and not book_form.cleaned_data['multiple_rooms_acceptable']:
-                response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
-                    'Свободность номера': [
-                        'Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
-                })
-                response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
-                return response
+            start, end = self.aware_date(book_form.cleaned_data['date_start'], book_form.cleaned_data['date_end'])
+            purchase = Purchase(order=cart, offer=self.get_object())
 
-            purchases = []
-            for room in rooms:
-                purchase = Purchase(
-                    order=cart,
-                    offer=room['room'],
-                    start=room['start'],
-                    end=room['end']
-                )
-                purchases.append(purchase)
-            Purchase.objects.bulk_create(purchases)
-            return self.relocate(reverse('cart'))
+            return self.manage_room_purchase(
+                purchase,
+                start,
+                end,
+                False,
+                success_url=reverse('cart')
+            )
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=book_form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')

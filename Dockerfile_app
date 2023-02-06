@@ -22,13 +22,15 @@ RUN a2ensite crystal_lake.conf
 RUN a2dissite 000-default.conf
 EXPOSE 80
 
-ENTRYPOINT  cd /app/frontend && npm install && \
-            if [ $DEV = true ]; then npm run dev; else npm run build ; fi && \
+RUN cd ./crystallake/frontend && npm install
+
+ENTRYPOINT  cd /app/frontend && if [ $DEV = true ]; then npm run dev; else npm run build ; fi && \
             cd /app && chmod -R ugo+w /app/media /app/static /app/sms_codes.txt && \
             ./wait-for-it.sh db:5432 -- \
             python3 manage.py makemigrations && \
             python3 manage.py migrate && \
             python3 manage.py collectstatic --no-input && \
             apachectl -D FOREGROUND
+
 
 

@@ -172,31 +172,16 @@ $(document).ready(function(){
 
 /***/ }),
 
-/***/ "./src/js/client/infinity_catalog.js":
-/*!*******************************************!*\
-  !*** ./src/js/client/infinity_catalog.js ***!
-  \*******************************************/
+/***/ "./src/js/client/load_map.js":
+/*!***********************************!*\
+  !*** ./src/js/client/load_map.js ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
-
 $(document).ready(function(){
-    $(window).on("scroll", function () { 
-
-        // считаем дошли ли до конца каталога, не долистывая одного элемента
-        if($(document).height() <= $(window).scrollTop() + $(window).height() + $('.footer').height() + $('.card_short').height()){
-            // всятавляем три элемента
-            for (let i = 0; i < 8; i++){
-                // тут будет ajax запрос
-                $('.catalog_medium').append($('.card_short').first().clone());
-            }
-        }
-    
-    });
-});
-
+    $('.map_img__hidden').removeClass('map_img__hidden');
+})
 
 /***/ }),
 
@@ -207,7 +192,8 @@ $(document).ready(function(){
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-$( function() {
+$(document).ready(function(){
+
     $("#login_open, #login_open__footer").on("click", function(){
         $("#login_modal").toggleClass("modal_wrapper__active");
         $('.header_burger, .header_menu').removeClass('burger__active');    // скрываем бургер, чтоб не загораживал
@@ -257,7 +243,7 @@ $( function() {
         $("#login_popup, #signup_popup").toggleClass("login_popup__active");
     });
 
-  });
+});
 
 /***/ }),
 
@@ -415,30 +401,6 @@ $(document).ready(function(){
 
 });
 
-
-/***/ }),
-
-/***/ "./src/js/client/picked_time.js":
-/*!**************************************!*\
-  !*** ./src/js/client/picked_time.js ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
-
-$(document).ready(function(){
-    $('.time').on("click", function(){
-
-        if ($(this).hasClass("time__active")){
-            return;
-        }
-
-        $(".time__active").removeClass("time__active");
-        $(this).addClass("time__active");
-    });
-});
 
 /***/ }),
 
@@ -3788,9 +3750,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/offers_slider.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/profile_burger.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/filter_mobile.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/infinity_catalog.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/picked_time.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/sortby.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/load_map.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/delete_cart_item.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/slick-slider/slick_starter.js")))
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/ajax/register.js")))
@@ -3803,4 +3764,4 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-298d72279c781a66c478.bundle.js.map
+//# sourceMappingURL=client-cd2fade307b9810d2281.bundle.js.map

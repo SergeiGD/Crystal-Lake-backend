@@ -1,4 +1,5 @@
-$( function() {
+$(document).ready(function(){
+
     $("#login_open, #login_open__footer").on("click", function(){
         $("#login_modal").toggleClass("modal_wrapper__active");
         $('.header_burger, .header_menu').removeClass('burger__active');    // скрываем бургер, чтоб не загораживал
@@ -48,4 +49,4 @@ $( function() {
         $("#login_popup, #signup_popup").toggleClass("login_popup__active");
     });
 
-  });
+});

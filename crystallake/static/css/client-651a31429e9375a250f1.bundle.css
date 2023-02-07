@@ -1683,6 +1683,9 @@ body {
   border-radius: 5px 5px 0 0;
   height: 60vh;
 }
+.map .map_img__hidden {
+  display: none;
+}
 .map .map_info {
   padding: 1em;
   display: flex;
@@ -4057,4 +4060,4 @@ th[colspan="7"]::after {
   }
 }
 
-/*# sourceMappingURL=client-81fafddb667f9e9ecc9f.bundle.css.map*/
+/*# sourceMappingURL=client-651a31429e9375a250f1.bundle.css.map*/

@@ -7,12 +7,13 @@ RUN apt-get install -y software-properties-common
 RUN add-apt-repository -y ppa:deadsnakes/ppa
 RUN apt-get install -y python3.9 python3-pip python3-dev libpq-dev libapache2-mod-wsgi-py3 nodejs npm nano
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
 RUN pip3 install --upgrade pip
 COPY ./requirements.txt .
 RUN pip3 install -r requirements.txt
+
+COPY ./crystallake/frontend/package*.json /temp_node_modules/
+
+RUN cd /temp_node_modules && npm install
 
 COPY . .
 
@@ -22,7 +23,7 @@ RUN a2ensite crystal_lake.conf
 RUN a2dissite 000-default.conf
 EXPOSE 80
 
-ENTRYPOINT  cd /app/frontend && npm install && \
+ENTRYPOINT  cd /app/frontend && cp -r /temp_node_modules/node_modules /app/frontend/ && \
             if [ $DEV = true ]; then npm run dev; else npm run build ; fi && \
             cd /app && chmod -R ugo+w /app/media /app/static /app/sms_codes.txt && \
             ./wait-for-it.sh db:5432 -- \

@@ -65,7 +65,7 @@
     {% render_bundle 'index_critical' 'css' %}
 
     {#    PRELOAD   #}
-    {% render_bundle 'client' 'css' is_preload=True %}
+    {% render_bundle 'client' 'css' is_preload=True attrs='as="style"' %}
     {% render_bundle 'client' 'js' is_preload=True %}
     <link rel="dns-prefetch" href="//maps.googleapis.com/">
 {% endblock static_render %}
@@ -146,7 +146,7 @@
 </main>
 
 
-{% render_bundle 'client' 'css' %}
+{% render_bundle 'client' 'css'  attrs='media="print" onload="this.media=\'all\'"' %}
 {% render_bundle 'client' 'js' attrs='defer' %}
 
 <section class="section">

@@ -1,37 +1,17 @@
 {
   "status": "done",
   "assets": {
-    "css/admin-1d2017df37ac0e197a2d.bundle.css": {
-      "name": "css/admin-1d2017df37ac0e197a2d.bundle.css",
-      "path": "/app/static/css/admin-1d2017df37ac0e197a2d.bundle.css"
+    "css/admin-bfdd8f02028360a3c59c.bundle.css": {
+      "name": "css/admin-bfdd8f02028360a3c59c.bundle.css",
+      "path": "/app/static/css/admin-bfdd8f02028360a3c59c.bundle.css"
     },
-    "css/admin-1d2017df37ac0e197a2d.bundle.css.map": {
-      "name": "css/admin-1d2017df37ac0e197a2d.bundle.css.map",
-      "path": "/app/static/css/admin-1d2017df37ac0e197a2d.bundle.css.map"
+    "css/client-29f03368f38065fd659f.bundle.css": {
+      "name": "css/client-29f03368f38065fd659f.bundle.css",
+      "path": "/app/static/css/client-29f03368f38065fd659f.bundle.css"
     },
-    "css/client-4922167a45d2205a92e7.bundle.css": {
-      "name": "css/client-4922167a45d2205a92e7.bundle.css",
-      "path": "/app/static/css/client-4922167a45d2205a92e7.bundle.css"
-    },
-    "css/client-4922167a45d2205a92e7.bundle.css.map": {
-      "name": "css/client-4922167a45d2205a92e7.bundle.css.map",
-      "path": "/app/static/css/client-4922167a45d2205a92e7.bundle.css.map"
-    },
-    "css/client-651a31429e9375a250f1.bundle.css": {
-      "name": "css/client-651a31429e9375a250f1.bundle.css",
-      "path": "/app/static/css/client-651a31429e9375a250f1.bundle.css"
-    },
-    "css/client-651a31429e9375a250f1.bundle.css.map": {
-      "name": "css/client-651a31429e9375a250f1.bundle.css.map",
-      "path": "/app/static/css/client-651a31429e9375a250f1.bundle.css.map"
-    },
-    "css/index_critical-302d81ff45307373281c.bundle.css": {
-      "name": "css/index_critical-302d81ff45307373281c.bundle.css",
-      "path": "/app/static/css/index_critical-302d81ff45307373281c.bundle.css"
-    },
-    "css/index_critical-302d81ff45307373281c.bundle.css.map": {
-      "name": "css/index_critical-302d81ff45307373281c.bundle.css.map",
-      "path": "/app/static/css/index_critical-302d81ff45307373281c.bundle.css.map"
+    "css/index_critical-ada53a70e2de1a0034a8.bundle.css": {
+      "name": "css/index_critical-ada53a70e2de1a0034a8.bundle.css",
+      "path": "/app/static/css/index_critical-ada53a70e2de1a0034a8.bundle.css"
     },
     "images/intro_mobile-3a8c74053c3b16cc5103.webp": {
       "name": "images/intro_mobile-3a8c74053c3b16cc5103.webp",
@@ -45,72 +25,64 @@
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
       "path": "/app/static/images/why_is-8d9483bc8b97327e78b1.webp"
     },
-    "js/admin-b2450e7406bdca943b01.bundle.js": {
-      "name": "js/admin-b2450e7406bdca943b01.bundle.js",
-      "path": "/app/static/js/admin-b2450e7406bdca943b01.bundle.js"
+    "js/101-00a8519c98561e5a988e.bundle.js": {
+      "name": "js/101-00a8519c98561e5a988e.bundle.js",
+      "path": "/app/static/js/101-00a8519c98561e5a988e.bundle.js"
     },
-    "js/admin-b2450e7406bdca943b01.bundle.js.map": {
-      "name": "js/admin-b2450e7406bdca943b01.bundle.js.map",
-      "path": "/app/static/js/admin-b2450e7406bdca943b01.bundle.js.map"
+    "js/101-00a8519c98561e5a988e.bundle.js.LICENSE.txt": {
+      "name": "js/101-00a8519c98561e5a988e.bundle.js.LICENSE.txt",
+      "path": "/app/static/js/101-00a8519c98561e5a988e.bundle.js.LICENSE.txt"
     },
-    "js/client-cd2fade307b9810d2281.bundle.js": {
-      "name": "js/client-cd2fade307b9810d2281.bundle.js",
-      "path": "/app/static/js/client-cd2fade307b9810d2281.bundle.js"
+    "js/702-a06103f7d2f92b5fe7d2.bundle.js": {
+      "name": "js/702-a06103f7d2f92b5fe7d2.bundle.js",
+      "path": "/app/static/js/702-a06103f7d2f92b5fe7d2.bundle.js"
     },
-    "js/client-cd2fade307b9810d2281.bundle.js.map": {
-      "name": "js/client-cd2fade307b9810d2281.bundle.js.map",
-      "path": "/app/static/js/client-cd2fade307b9810d2281.bundle.js.map"
+    "js/702-a06103f7d2f92b5fe7d2.bundle.js.LICENSE.txt": {
+      "name": "js/702-a06103f7d2f92b5fe7d2.bundle.js.LICENSE.txt",
+      "path": "/app/static/js/702-a06103f7d2f92b5fe7d2.bundle.js.LICENSE.txt"
     },
-    "js/index_critical-d2d717097cd51a1b4349.bundle.js": {
-      "name": "js/index_critical-d2d717097cd51a1b4349.bundle.js",
-      "path": "/app/static/js/index_critical-d2d717097cd51a1b4349.bundle.js"
+    "js/755-3872dfbc2f8716fd8c75.bundle.js": {
+      "name": "js/755-3872dfbc2f8716fd8c75.bundle.js",
+      "path": "/app/static/js/755-3872dfbc2f8716fd8c75.bundle.js"
     },
-    "js/index_critical-d2d717097cd51a1b4349.bundle.js.map": {
-      "name": "js/index_critical-d2d717097cd51a1b4349.bundle.js.map",
-      "path": "/app/static/js/index_critical-d2d717097cd51a1b4349.bundle.js.map"
+    "js/755-3872dfbc2f8716fd8c75.bundle.js.LICENSE.txt": {
+      "name": "js/755-3872dfbc2f8716fd8c75.bundle.js.LICENSE.txt",
+      "path": "/app/static/js/755-3872dfbc2f8716fd8c75.bundle.js.LICENSE.txt"
     },
-    "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js": {
-      "name": "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js",
-      "path": "/app/static/js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js"
+    "js/admin-12c4ed55e3c7dcceb543.bundle.js": {
+      "name": "js/admin-12c4ed55e3c7dcceb543.bundle.js",
+      "path": "/app/static/js/admin-12c4ed55e3c7dcceb543.bundle.js"
     },
-    "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js.map": {
-      "name": "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js.map",
-      "path": "/app/static/js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js.map"
+    "js/client-88a5ae6e860050648a15.bundle.js": {
+      "name": "js/client-88a5ae6e860050648a15.bundle.js",
+      "path": "/app/static/js/client-88a5ae6e860050648a15.bundle.js"
     },
-    "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js": {
-      "name": "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
-      "path": "/app/static/js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js"
+    "js/client-88a5ae6e860050648a15.bundle.js.LICENSE.txt": {
+      "name": "js/client-88a5ae6e860050648a15.bundle.js.LICENSE.txt",
+      "path": "/app/static/js/client-88a5ae6e860050648a15.bundle.js.LICENSE.txt"
     },
-    "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js.map": {
-      "name": "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js.map",
-      "path": "/app/static/js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js.map"
-    },
-    "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js": {
-      "name": "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
-      "path": "/app/static/js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js"
-    },
-    "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js.map": {
-      "name": "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js.map",
-      "path": "/app/static/js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js.map"
+    "js/index_critical-31d6cfe0d16ae931b73c.bundle.js": {
+      "name": "js/index_critical-31d6cfe0d16ae931b73c.bundle.js",
+      "path": "/app/static/js/index_critical-31d6cfe0d16ae931b73c.bundle.js"
     }
   },
   "chunks": {
     "admin": [
-      "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
-      "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
-      "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js",
-      "css/admin-1d2017df37ac0e197a2d.bundle.css",
-      "js/admin-b2450e7406bdca943b01.bundle.js"
+      "js/755-3872dfbc2f8716fd8c75.bundle.js",
+      "js/702-a06103f7d2f92b5fe7d2.bundle.js",
+      "js/101-00a8519c98561e5a988e.bundle.js",
+      "css/admin-bfdd8f02028360a3c59c.bundle.css",
+      "js/admin-12c4ed55e3c7dcceb543.bundle.js"
     ],
     "client": [
-      "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
-      "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js",
-      "css/client-651a31429e9375a250f1.bundle.css",
-      "js/client-cd2fade307b9810d2281.bundle.js"
+      "js/755-3872dfbc2f8716fd8c75.bundle.js",
+      "js/101-00a8519c98561e5a988e.bundle.js",
+      "css/client-29f03368f38065fd659f.bundle.css",
+      "js/client-88a5ae6e860050648a15.bundle.js"
     ],
     "index_critical": [
-      "css/index_critical-302d81ff45307373281c.bundle.css",
-      "js/index_critical-d2d717097cd51a1b4349.bundle.js"
+      "css/index_critical-ada53a70e2de1a0034a8.bundle.css",
+      "js/index_critical-31d6cfe0d16ae931b73c.bundle.js"
     ]
   }
 }

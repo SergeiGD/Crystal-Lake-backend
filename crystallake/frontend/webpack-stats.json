@@ -9,17 +9,17 @@
       "name": "css/client-29f03368f38065fd659f.bundle.css",
       "path": "/app/static/css/client-29f03368f38065fd659f.bundle.css"
     },
-    "css/index_critical-ada53a70e2de1a0034a8.bundle.css": {
-      "name": "css/index_critical-ada53a70e2de1a0034a8.bundle.css",
-      "path": "/app/static/css/index_critical-ada53a70e2de1a0034a8.bundle.css"
+    "css/index_critical-df4849016f96d05c92a2.bundle.css": {
+      "name": "css/index_critical-df4849016f96d05c92a2.bundle.css",
+      "path": "/app/static/css/index_critical-df4849016f96d05c92a2.bundle.css"
+    },
+    "images/intro_desc-60e8cb53066439a45a79.webp": {
+      "name": "images/intro_desc-60e8cb53066439a45a79.webp",
+      "path": "/app/static/images/intro_desc-60e8cb53066439a45a79.webp"
     },
     "images/intro_mobile-3a8c74053c3b16cc5103.webp": {
       "name": "images/intro_mobile-3a8c74053c3b16cc5103.webp",
       "path": "/app/static/images/intro_mobile-3a8c74053c3b16cc5103.webp"
-    },
-    "images/intro-60e8cb53066439a45a79.webp": {
-      "name": "images/intro-60e8cb53066439a45a79.webp",
-      "path": "/app/static/images/intro-60e8cb53066439a45a79.webp"
     },
     "images/why_is-8d9483bc8b97327e78b1.webp": {
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
@@ -81,7 +81,7 @@
       "js/client-88a5ae6e860050648a15.bundle.js"
     ],
     "index_critical": [
-      "css/index_critical-ada53a70e2de1a0034a8.bundle.css",
+      "css/index_critical-df4849016f96d05c92a2.bundle.css",
       "js/index_critical-31d6cfe0d16ae931b73c.bundle.js"
     ]
   }

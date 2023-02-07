@@ -26,6 +26,9 @@ const optimize = () => {
 module.exports = {
     mode: isDev ? 'development' : 'production',
     entry: {
+        index_critical: [
+            path.resolve(__dirname,'src/scss/index_critical.scss'),
+        ],
         client: [
             path.resolve(__dirname,'src/scss/style.scss'),
             path.resolve(__dirname,'src/js/client/header_burger.js'),

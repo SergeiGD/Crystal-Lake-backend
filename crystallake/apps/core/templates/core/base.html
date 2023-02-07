@@ -12,8 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script async src="https://kit.fontawesome.com/c98347f4c9.js" crossorigin="anonymous"></script>
 
-    {% render_bundle 'client' 'css' %}
-    {% render_bundle 'client' 'js' attrs='defer' %}
+    {% block static_render %}
+        {% render_bundle 'client' 'css' %}
+        {% render_bundle 'client' 'js' attrs='defer' %}
+    {% endblock static_render %}
 
     {% block header_meta %}
     {% endblock header_meta %}

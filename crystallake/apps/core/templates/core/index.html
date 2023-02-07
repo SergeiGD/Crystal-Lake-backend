@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load render_bundle from webpack_loader %}
 {% load static %}
 
 {% block header_meta %}
@@ -58,6 +59,15 @@
     ]
     </script>
 {% endblock header_meta %}
+
+{% block static_render %}
+    {#    CRITICAL CSS    #}
+    {% render_bundle 'index_critical' 'css' %}
+
+    {#    PRELOAD   #}
+    {% render_bundle 'client' 'css' is_preload=True %}
+    {% render_bundle 'client' 'js' is_preload=True %}
+{% endblock static_render %}
 
 {% block content %}
 
@@ -132,26 +142,30 @@
         </div>
 
     </section>
+</main>
 
-    <section class="section">
-        <div class="content_container">
 
-            <div class="about_us">
+{% render_bundle 'client' 'css' %}
+{% render_bundle 'client' 'js' attrs='defer' %}
 
-                <img src="{% static 'images/about_us.webp' %}" alt="О нас" class="about_us_img">
+<section class="section">
+    <div class="content_container">
 
-                <div class="about_us_info">
-                    <h2 class="section_subtitle">О нас</h2>
-                    <p class="about_us_text">
-                        Мы предоставляем первоклассное качество обслуживания начиная с 1980 года. У нас Вы можете с комфортом отдохнуть в персональных домика и найти развлечения на любой вкус. Мы гордимся тем, что все эти годы Вы выбираете именно нас!
-                    </p>
-                </div>
+        <div class="about_us">
 
+            <img src="{% static 'images/about_us.webp' %}" alt="О нас" class="about_us_img">
+
+            <div class="about_us_info">
+                <h2 class="section_subtitle">О нас</h2>
+                <p class="about_us_text">
+                    Мы предоставляем первоклассное качество обслуживания начиная с 1980 года. У нас Вы можете с комфортом отдохнуть в персональных домика и найти развлечения на любой вкус. Мы гордимся тем, что все эти годы Вы выбираете именно нас!
+                </p>
             </div>
 
         </div>
-    </section>
-</main>
+
+    </div>
+</section>
 
 
 <section class="section">

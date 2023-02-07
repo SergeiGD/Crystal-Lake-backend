@@ -89,15 +89,15 @@
             z-index: 100;
             position: absolute;
             top: 100%;
-            left: 0;
+            //left: 0;
             left: 100vw;
-            padding: 1em 0em;
+            padding: 1em 0;
             text-align: center;
             width: 100%;
             background-color: vars.$header_color;
             border-bottom-left-radius: vars.$radius;
             border-bottom-right-radius: vars.$radius;
-            transition: background-color 0.15s linear;
+            //transition: background-color 0.15s linear;
             transition: all linear 0.2s;
         }
     }
@@ -162,31 +162,6 @@
     
         }
     }
-    
-    // .header_menu__mobile{
-    //     z-index: 100;
-    //     position: absolute;
-    //     top: 100%;
-    //     left: 100vw;
-    //     text-align: center;
-    //     width: 100%;
-    //     background-color: vars.$header_color;
-    //     border-bottom-left-radius: vars.$radius;
-    //     border-bottom-right-radius: vars.$radius;
-    //     transition: background-color 0.15s linear;
-    //     transition: all linear 0.2s;
-
-    //     .header_mobile_content{
-    //         display: flex;
-    //         flex-direction: column;
-    //         gap: 1em;
-    //         padding: 1em 0em;
-
-    //         li{
-    //             list-style: none;
-    //         }
-    //     }
-    // }
 
     .burger__active{
         &::before{

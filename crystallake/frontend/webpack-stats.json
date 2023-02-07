@@ -17,13 +17,13 @@
       "name": "css/client-0224e6cc53737d6317f6.bundle.css.map",
       "path": "/app/static/css/client-0224e6cc53737d6317f6.bundle.css.map"
     },
-    "css/index_critical-04c192c003342c6395e7.bundle.css": {
-      "name": "css/index_critical-04c192c003342c6395e7.bundle.css",
-      "path": "/app/static/css/index_critical-04c192c003342c6395e7.bundle.css"
+    "css/index_critical-fb6b1092c56d16db1020.bundle.css": {
+      "name": "css/index_critical-fb6b1092c56d16db1020.bundle.css",
+      "path": "/app/static/css/index_critical-fb6b1092c56d16db1020.bundle.css"
     },
-    "css/index_critical-04c192c003342c6395e7.bundle.css.map": {
-      "name": "css/index_critical-04c192c003342c6395e7.bundle.css.map",
-      "path": "/app/static/css/index_critical-04c192c003342c6395e7.bundle.css.map"
+    "css/index_critical-fb6b1092c56d16db1020.bundle.css.map": {
+      "name": "css/index_critical-fb6b1092c56d16db1020.bundle.css.map",
+      "path": "/app/static/css/index_critical-fb6b1092c56d16db1020.bundle.css.map"
     },
     "images/intro_desc-60e8cb53066439a45a79.webp": {
       "name": "images/intro_desc-60e8cb53066439a45a79.webp",
@@ -52,14 +52,6 @@
     "js/client-0405cca6aafcaff782dd.bundle.js.map": {
       "name": "js/client-0405cca6aafcaff782dd.bundle.js.map",
       "path": "/app/static/js/client-0405cca6aafcaff782dd.bundle.js.map"
-    },
-    "js/client-cd2fade307b9810d2281.bundle.js": {
-      "name": "js/client-cd2fade307b9810d2281.bundle.js",
-      "path": "/app/static/js/client-cd2fade307b9810d2281.bundle.js"
-    },
-    "js/client-cd2fade307b9810d2281.bundle.js.map": {
-      "name": "js/client-cd2fade307b9810d2281.bundle.js.map",
-      "path": "/app/static/js/client-cd2fade307b9810d2281.bundle.js.map"
     },
     "js/index_critical-d2d717097cd51a1b4349.bundle.js": {
       "name": "js/index_critical-d2d717097cd51a1b4349.bundle.js",
@@ -109,7 +101,7 @@
       "js/client-0405cca6aafcaff782dd.bundle.js"
     ],
     "index_critical": [
-      "css/index_critical-04c192c003342c6395e7.bundle.css",
+      "css/index_critical-fb6b1092c56d16db1020.bundle.css",
       "js/index_critical-d2d717097cd51a1b4349.bundle.js"
     ]
   }

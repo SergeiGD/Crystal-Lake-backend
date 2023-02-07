@@ -1,3 +1,3 @@
 $(document).ready(function(){
-    $('.map_img__hidden').removeClass('map_img__hidden');
+    $('.map__hidden').removeClass('map__hidden');
 })

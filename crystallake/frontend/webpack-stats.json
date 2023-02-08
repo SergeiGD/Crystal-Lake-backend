@@ -1,5 +1,88 @@
 {
-  "status": "compile",
-  "assets": {},
-  "chunks": {}
+  "status": "done",
+  "assets": {
+    "css/admin-bfdd8f02028360a3c59c.bundle.css": {
+      "name": "css/admin-bfdd8f02028360a3c59c.bundle.css",
+      "path": "/app/static/css/admin-bfdd8f02028360a3c59c.bundle.css"
+    },
+    "css/client-6b6d2079811c7176d982.bundle.css": {
+      "name": "css/client-6b6d2079811c7176d982.bundle.css",
+      "path": "/app/static/css/client-6b6d2079811c7176d982.bundle.css"
+    },
+    "css/index_critical-2afe36d8cc58b4155153.bundle.css": {
+      "name": "css/index_critical-2afe36d8cc58b4155153.bundle.css",
+      "path": "/app/static/css/index_critical-2afe36d8cc58b4155153.bundle.css"
+    },
+    "images/intro_desc-60e8cb53066439a45a79.webp": {
+      "name": "images/intro_desc-60e8cb53066439a45a79.webp",
+      "path": "/app/static/images/intro_desc-60e8cb53066439a45a79.webp"
+    },
+    "images/intro_mobile-3a8c74053c3b16cc5103.webp": {
+      "name": "images/intro_mobile-3a8c74053c3b16cc5103.webp",
+      "path": "/app/static/images/intro_mobile-3a8c74053c3b16cc5103.webp"
+    },
+    "images/why_is-8d9483bc8b97327e78b1.webp": {
+      "name": "images/why_is-8d9483bc8b97327e78b1.webp",
+      "path": "/app/static/images/why_is-8d9483bc8b97327e78b1.webp"
+    },
+    "js/101-00a8519c98561e5a988e.bundle.js": {
+      "name": "js/101-00a8519c98561e5a988e.bundle.js",
+      "path": "/app/static/js/101-00a8519c98561e5a988e.bundle.js"
+    },
+    "js/101-00a8519c98561e5a988e.bundle.js.LICENSE.txt": {
+      "name": "js/101-00a8519c98561e5a988e.bundle.js.LICENSE.txt",
+      "path": "/app/static/js/101-00a8519c98561e5a988e.bundle.js.LICENSE.txt"
+    },
+    "js/702-a06103f7d2f92b5fe7d2.bundle.js": {
+      "name": "js/702-a06103f7d2f92b5fe7d2.bundle.js",
+      "path": "/app/static/js/702-a06103f7d2f92b5fe7d2.bundle.js"
+    },
+    "js/702-a06103f7d2f92b5fe7d2.bundle.js.LICENSE.txt": {
+      "name": "js/702-a06103f7d2f92b5fe7d2.bundle.js.LICENSE.txt",
+      "path": "/app/static/js/702-a06103f7d2f92b5fe7d2.bundle.js.LICENSE.txt"
+    },
+    "js/755-3872dfbc2f8716fd8c75.bundle.js": {
+      "name": "js/755-3872dfbc2f8716fd8c75.bundle.js",
+      "path": "/app/static/js/755-3872dfbc2f8716fd8c75.bundle.js"
+    },
+    "js/755-3872dfbc2f8716fd8c75.bundle.js.LICENSE.txt": {
+      "name": "js/755-3872dfbc2f8716fd8c75.bundle.js.LICENSE.txt",
+      "path": "/app/static/js/755-3872dfbc2f8716fd8c75.bundle.js.LICENSE.txt"
+    },
+    "js/admin-12c4ed55e3c7dcceb543.bundle.js": {
+      "name": "js/admin-12c4ed55e3c7dcceb543.bundle.js",
+      "path": "/app/static/js/admin-12c4ed55e3c7dcceb543.bundle.js"
+    },
+    "js/client-6ca0f1fa7b9e431178e5.bundle.js": {
+      "name": "js/client-6ca0f1fa7b9e431178e5.bundle.js",
+      "path": "/app/static/js/client-6ca0f1fa7b9e431178e5.bundle.js"
+    },
+    "js/client-6ca0f1fa7b9e431178e5.bundle.js.LICENSE.txt": {
+      "name": "js/client-6ca0f1fa7b9e431178e5.bundle.js.LICENSE.txt",
+      "path": "/app/static/js/client-6ca0f1fa7b9e431178e5.bundle.js.LICENSE.txt"
+    },
+    "js/index_critical-31d6cfe0d16ae931b73c.bundle.js": {
+      "name": "js/index_critical-31d6cfe0d16ae931b73c.bundle.js",
+      "path": "/app/static/js/index_critical-31d6cfe0d16ae931b73c.bundle.js"
+    }
+  },
+  "chunks": {
+    "admin": [
+      "js/755-3872dfbc2f8716fd8c75.bundle.js",
+      "js/702-a06103f7d2f92b5fe7d2.bundle.js",
+      "js/101-00a8519c98561e5a988e.bundle.js",
+      "css/admin-bfdd8f02028360a3c59c.bundle.css",
+      "js/admin-12c4ed55e3c7dcceb543.bundle.js"
+    ],
+    "client": [
+      "js/755-3872dfbc2f8716fd8c75.bundle.js",
+      "js/101-00a8519c98561e5a988e.bundle.js",
+      "css/client-6b6d2079811c7176d982.bundle.css",
+      "js/client-6ca0f1fa7b9e431178e5.bundle.js"
+    ],
+    "index_critical": [
+      "css/index_critical-2afe36d8cc58b4155153.bundle.css",
+      "js/index_critical-31d6cfe0d16ae931b73c.bundle.js"
+    ]
+  }
 }

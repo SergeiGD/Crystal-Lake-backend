@@ -41,11 +41,9 @@ class RoomsCatalog(ClientContextMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'rooms'
         context['search_form'] = SearchRoomsForm(self.request.GET)
-        if len(self.get_queryset()) > self.paginate_by:
-            context['paginate_by_range'] = range(self.paginate_by)
-        else:
-            context['paginate_by_range'] = range(len(self.get_queryset()))
+        context['paginate_by_range'] = range(len(self.paginate_queryset(self.get_queryset(), self.paginate_by)))
         context['paginate_by'] = self.paginate_by
+
         return {**context, **self.get_general_context()}
 
     def get_queryset(self):

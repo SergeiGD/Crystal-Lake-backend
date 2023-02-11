@@ -12,7 +12,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
     <script async src="https://kit.fontawesome.com/c98347f4c9.js" crossorigin="anonymous"></script>
 
     {% render_bundle 'admin' 'css' %}
@@ -59,15 +58,6 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark link-hover {% if current_page == 'workers' %} link-active {% endif %}" href="{% url 'admin_workers' %}">Сотрудники</a>
                 </li>
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link text-dark link-hover {% if current_page == 'timetables' %} link-active {% endif %}" href="{% url 'admin_timetables' %}">Расписания</a>#}
-{#                </li>#}
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link text-dark link-hover {% if current_page == 'groups' %} link-active {% endif %}" href="{% url 'admin_groups' %}">Группы</a>#}
-{#                </li>#}
-                <li class="nav-item">
-                    <a class="nav-link text-dark link-hover {% if current_page == 'sales' %} link-active {% endif %}" href="admin_sales.html ">Акции</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark link-hover {% if current_page == 'profile' %} link-active {% endif %}" href="admin_profile.html">Кабинет</a>
                 </li>
@@ -80,8 +70,6 @@
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item {% if current_page == 'tags' %} link-active {% endif %}" href="{% url 'admin_tags' %}">Теги</a></li>
                           <li><a class="dropdown-item {% if current_page == 'groups' %} link-active {% endif %}" href="{% url 'admin_groups' %}">Группы</a></li>
-{#                          <li><a class="dropdown-item {% if current_page == 'properties' %} link-active {% endif %}" href="admin_properties.html">Доп. свойства</a></li>#}
-                          <li><a class="dropdown-item {% if current_page == 'weekends' %} link-active {% endif %}" href="admin_weekends.html">Даты праздников</a></li>
                           <li><a class="dropdown-item {% if current_page == 'set_main' %} link-active {% endif %}" href="admin_set_main.html">Настройка главной</a></li>
                         </ul>
                     </div>
@@ -116,10 +104,7 @@
                 <div class="d-flex flex-column gap-2">
                     <a href="{% url 'admin_workers' %}" class="text-white text-decoration-none link-hover fs-5">Сотрудники</a>
                     <a href="{% url 'admin_groups' %}" class="text-white text-decoration-none link-hover fs-5">Группы</a>
-                    <a href="admin_sales.html" class="text-white text-decoration-none link-hover fs-5">Акции</a>
                     <a href="admin_profile.html" class="text-white text-decoration-none link-hover fs-5">Кабинет</a>
-                </div>
-                <div class="d-flex flex-column gap-2">
                     <div class="dropdown">
                         <a class="text-white text-decoration-none link-hover fs-5 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                           Дополнительно
@@ -127,12 +112,9 @@
 
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="{% url 'admin_tags' %}">Теги</a></li>
-{#                          <li><a class="dropdown-item" href="admin_properties.html">Доп. свойства</a></li>#}
-                          <li><a class="dropdown-item" href="admin_weekends.html">Даты праздников</a></li>
                           <li><a class="dropdown-item" href="admin_set_main.html">Настройка главной</a></li>
                         </ul>
                     </div>
-                    <a href="{% url 'index' %}" class="text-white text-decoration-none link-hover fs-5">На главную</a>
                 </div>
 
             </div>

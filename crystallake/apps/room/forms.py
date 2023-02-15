@@ -27,14 +27,6 @@ class RoomForm(OfferForm):
             if str(field) in self.number_fields:
                 self.fields[str(field)].widget.attrs.update({'min': 1})
 
-    # def clean_name(self):
-    #     name = self.cleaned_data.get("name")
-    #     pk = self.instance.pk
-    #     if Room.objects.filter(date_deleted=None, name=name).exclude(Q(pk=pk) | Q(main_room=self.instance)):
-    #         raise forms.ValidationError('Номер с таким наименованием уже существует', code='unique')
-    #
-    #     return name
-
 
 class SearchRoomsForm(SearchOffersForm):
     ROOMS_CHOICES = (
@@ -98,7 +90,6 @@ class SearchRoomsAdmin(SearchOffersAdmin):
 
 
 class RoomPurchaseForm(forms.Form):
-    # TODO: сделать модальной и вынести валидацию в модель
     date_start = forms.DateField(label='Дата с*', widget=forms.DateInput(attrs={
         'class': 'input_field',
         'type': 'date'
@@ -107,14 +98,7 @@ class RoomPurchaseForm(forms.Form):
         'class': 'input_field',
         'type': 'date'
     }))
-
-    def clean(self):
-        form_data = self.cleaned_data
-
-        if form_data['date_start'] >= form_data['date_end']:
-            self._errors["date_start"] = ["Дата конца должна быть больше даты начала"]
-
-        return form_data
+    multiple_rooms_acceptable = forms.BooleanField(label='Разрешить переезд:', required=False)
 
 
 class ManageRoomPurchaseForm(RoomPurchaseForm):

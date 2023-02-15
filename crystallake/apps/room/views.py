@@ -97,7 +97,7 @@ class RoomDetail(RoomPurchaseMixin, CartMixin, ClientContextMixin, PhoneCheckMix
                 purchase,
                 start,
                 end,
-                False,
+                book_form.cleaned_data['multiple_rooms_acceptable'],
                 success_url=reverse('cart')
             )
         else:
@@ -111,7 +111,7 @@ class AdminRoomsList(PermissionRequiredMixin, ListView):
     template_name = 'room/admin_rooms.html'
     model = Room
     context_object_name = 'rooms'
-    paginate_by = 10
+    paginate_by = settings.ADMIN_PAGINATE_BY
     paginator_class = SafePaginator
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -121,8 +121,6 @@ class AdminRoomsList(PermissionRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        #return Room.objects.filter(date_deleted=None, main_room=None)
-
         search_form = SearchRoomsAdmin(self.request.GET)
         rooms = Room.objects.filter(date_deleted=None, main_room=None)
 
@@ -152,12 +150,18 @@ class AdminRoomDetail(PermissionRequiredMixin, DetailView):
         return obj
 
 
-class AdminUpdateRoom(ManageOfferMixin, UpdateView):  # TODO: не давать возможность открыть удаленные/дочерние
+class AdminUpdateRoom(ManageOfferMixin, UpdateView):
     model = Room
     template_name = 'room/admin_edit_room.html'
     form_class = RoomForm
     pk_url_kwarg = 'offer_id'
     context_object_name = 'offer'
+
+    def get_object(self, queryset=None):
+        obj = super(AdminUpdateRoom, self).get_object(queryset=queryset)
+        if obj.date_deleted or obj.main_room is not None:
+            raise Http404()
+        return obj
 
     def get_context_data(self, **kwargs):
         context = super(AdminUpdateRoom, self).get_context_data(**kwargs)
@@ -174,7 +178,6 @@ class AdminUpdateRoom(ManageOfferMixin, UpdateView):  # TODO: не давать 
         formset_photos = context['formset_photos']
         if formset_photos.is_valid():
             offer = form.instance
-            # offer.main_photo = form.cleaned_data['main_photo']
             return self.save_offer(
                 formset_photos=formset_photos,
                 offer=offer

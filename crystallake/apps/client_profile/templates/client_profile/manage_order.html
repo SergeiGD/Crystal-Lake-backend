@@ -141,6 +141,7 @@
                                         <button class="card_button card_button__pay" data-goto="{{ purchase.get_client_edit_url }}">Изменить</button>
                                         <form action="{{ purchase.get_client_cancel_url }}" class="long_buttons_group" method="post">
                                             {% csrf_token %}
+                                            <input type="hidden" name="elem_id" value="{{ purchase.id }}">
                                             <button class="card_button card_button__cancel" type="submit">Отменить</button>
                                         </form>
                                     {% else %}

@@ -22,10 +22,6 @@
 
     <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 position-relative">
 
-
-{#        {% if perms.client.delete_client %}#}
-{#            <i class="fa-regular fa-square-minus text-danger card_icon card_icon__delete" data-bs-toggle="modal" data-bs-target="#delete_modal"></i>#}
-{#        {% endif %}#}
         {% if perms.client.change_client %}
             <i class="fa-regular fa-pen-to-square card_icon card_icon__edit" data-goto="{{ client.get_admin_edit_url }}"></i>
         {% endif %}

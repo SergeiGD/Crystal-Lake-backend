@@ -35,14 +35,14 @@ urlpatterns = [
         name='client_cancel_order'
     ),
     path(
+        'active_orders/manage_order/<int:order_id>/cancel_purchase',
+        cancel_purchase_view,
+        name='client_cancel_purchase'
+    ),
+    path(
         'active_orders/manage_order/<int:order_id>/manage_purchase/<int:purchase_id>',
         ManagePurchase.as_view(),
         name='client_manage_purchase'
-    ),
-    path(
-        'active_orders/manage_order/<int:order_id>/manage_purchase/<int:purchase_id>/cancel',
-        cancel_purchase_view,
-        name='client_cancel_purchase'
     ),
     path(
         'active_orders/manage_order/<int:order_id>/manage_purchase/<int:purchase_id>/save_room_changes',

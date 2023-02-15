@@ -41,7 +41,7 @@ module.exports = {
             path.resolve(__dirname,'src/js/client/delete_cart_item.js'),
             path.resolve(__dirname,'src/js/client/slick-slider/slick_starter.js'),
             path.resolve(__dirname,'src/js/client/ajax/register.js'),
-            path.resolve(__dirname,'src/js/client/ajax/ajax_redirect.js'),
+            path.resolve(__dirname,'src/js/common/ajax/ajax_redirect.js'),
             path.resolve(__dirname,'src/js/client/ajax/reset_password.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_room_dates.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_service_dates.js'),
@@ -79,6 +79,8 @@ module.exports = {
             path.resolve(__dirname,'src/js/common/ajax/get_room_dates.js'),
             path.resolve(__dirname,'src/js/common/ajax/get_service_dates.js'),
             path.resolve(__dirname,'src/js/admin/ajax/ajax_search.js'),
+            path.resolve(__dirname,'src/js/common/ajax/ajax_redirect.js'),
+
         ]
     },
     output: {

@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.template.loader import render_to_string
+from django.conf import settings
 
 from .models import Worker
 from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data, is_ajax
@@ -19,7 +20,7 @@ class AdminWorkersList(ListView):
     model = Worker
     template_name = 'worker/admin_workers.html'
     context_object_name = 'workers'
-    paginate_by = 10
+    paginate_by = settings.ADMIN_PAGINATE_BY
     paginator_class = SafePaginator
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -68,6 +69,8 @@ class AdminWorkerDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'workers'
         context['delete_link'] = self.object.get_admin_delete_url()
+        context['form_services'] = ShortSearchForm()
+        context['form_groups'] = ShortSearchForm()
         return context
 
 

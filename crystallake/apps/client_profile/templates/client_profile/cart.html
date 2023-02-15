@@ -62,8 +62,9 @@
                                     </div>
 
 
-                                    <form method="post" action="{{ cart_item.get_remove_cart_item_url }}">
+                                    <form method="post" action="{% url 'remove_cart_item' %}">
                                         {% csrf_token %}
+                                        <input type="hidden" value="{{ cart_item.id }}" name="elem_id">
                                          <i class="fa-regular fa-trash-can card_delete delete_cart_item_icon" >
                                              <button type="submit" class="delete_cart_item_btn"></button>
                                          </i>

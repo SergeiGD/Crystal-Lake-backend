@@ -14,41 +14,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/js/client/ajax/ajax_redirect.js":
-/*!*********************************************!*\
-  !*** ./src/js/client/ajax/ajax_redirect.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const errors = __webpack_require__(/*! ../../common/errors */ "./src/js/common/errors.js");
-
-$(document).ready(function (){
-    $('.ajax_redirect').on('submit', function (){
-        event.preventDefault();
-
-        const errors_list = $(this).find('.errors_wrapper')
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: $(this).serialize(),
-            error: function (jqXHR){
-                const response = jQuery.parseJSON(jqXHR.responseText)
-                errors.handle_errors(response['message'], errors_list)
-            },
-        }).statusCode({
-           302: function (data){
-                const response = jQuery.parseJSON(data.responseText)
-                window.location.href = response['data']
-            }
-        });
-    })
-})
-
-/***/ }),
-
 /***/ "./src/js/client/ajax/register.js":
 /*!****************************************!*\
   !*** ./src/js/client/ajax/register.js ***!
@@ -3744,24 +3709,24 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AM
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/scss/style.scss")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/header_burger.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/login_popup.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/offers_slider.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/profile_burger.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/filter_mobile.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/sortby.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/load_map.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/delete_cart_item.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/slick-slider/slick_starter.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/ajax/register.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/ajax/ajax_redirect.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/client/ajax/reset_password.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/common/ajax/get_room_dates.js")))
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/common/ajax/get_service_dates.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"], () => (__webpack_require__("./src/js/common/redirect.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/scss/style.scss")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/header_burger.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/login_popup.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/offers_slider.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/profile_burger.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/filter_mobile.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/sortby.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/load_map.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/delete_cart_item.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/slick-slider/slick_starter.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/ajax/register.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/common/ajax/ajax_redirect.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/client/ajax/reset_password.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/common/ajax/get_room_dates.js")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/common/ajax/get_service_dates.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jquery_dist_jquery_js","src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"], () => (__webpack_require__("./src/js/common/redirect.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=client-0405cca6aafcaff782dd.bundle.js.map
+//# sourceMappingURL=client-8d387c13e5f6b45d6d71.bundle.js.map

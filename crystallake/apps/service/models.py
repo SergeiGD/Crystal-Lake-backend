@@ -1,10 +1,11 @@
-import datetime
+# import datetime
+from datetime import timedelta, time, date, datetime
 
 from datetimerange import DateTimeRange
 
 from django.db import models
 from django.urls import reverse
-from django.utils.timezone import localtime
+from django.utils.timezone import localtime, make_aware
 from django.db.models import Sum, Q
 
 from ..offer.models import Offer
@@ -14,11 +15,45 @@ from ..order.models import PurchaseCountable
 # Create your models here.
 
 
+# class ServiceQuerySet(OfferQuerySet):
+#     def search(self, **kwargs):
+#         qs = super().search(**kwargs)
+#         if kwargs.get('max_in_group', ''):
+#             qs = qs.filter(max_in_group=kwargs['max_in_group'])
+#
+#         return qs
+
+
 class ServiceQuerySet(OfferQuerySet):
+    def get_free_services(self, start, end):
+        services = self.filter(
+            is_hidden=False,
+            date_deleted=None,
+        )
+        result = []
+        for service in services:
+            if service.is_time_available(start, end):
+                result.append(service)
+
+        services_ids = [service.id for service in result]
+        queryset = services.filter(id__in=services_ids)
+
+        return queryset
+
     def search(self, **kwargs):
         qs = super().search(**kwargs)
+
         if kwargs.get('max_in_group', ''):
             qs = qs.filter(max_in_group=kwargs['max_in_group'])
+        if kwargs.get('dates_from', '') and kwargs.get('time_from', '') and kwargs.get('time_until', ''):
+            if isinstance(kwargs['dates_from'], date):
+                dates_from = datetime.combine(kwargs['dates_from'], kwargs['time_from'])
+                dates_until = datetime.combine(kwargs['dates_from'],  kwargs['time_until'])
+            else:
+                dates_from = datetime.strptime(f'{kwargs["dates_from"]} {kwargs["time_from"]}', "%Y-%m-%d %H:%M")
+                dates_until = datetime.strptime(f'{kwargs["dates_from"]} {kwargs["time_until"]}', "%Y-%m-%d %H:%M")
+            start, end = make_aware(dates_from), make_aware(dates_until)
+            qs = qs.get_free_services(start, end)
 
         return qs
 
@@ -32,8 +67,6 @@ class ServiceTimetableQuerySet(models.QuerySet):
             qs = qs.filter(start__gte=kwargs['start'])
         if kwargs.get('end', ''):
             qs = qs.filter(end__lte=kwargs['end'])
-        if kwargs.get('sort_by', ''):
-            qs = qs.order_by(kwargs['sort_by'])
 
         return qs
 
@@ -61,7 +94,7 @@ class Service(Offer):
 
         for timetable in timetables:
             current_time = timetable.start
-            step = datetime.timedelta(minutes=10)
+            step = timedelta(minutes=10)
             banned_ranges = []
 
             while current_time < timetable.end:
@@ -116,8 +149,8 @@ class Service(Offer):
         time_range = DateTimeRange(start, end)
         intersections_count = 0
         for purchase in purchases:
-            purchase_start = purchase.start + datetime.timedelta(seconds=5)     # прибавим от отнимем по 5 сек, чтоб если одна запись встает на конец/начало
-            purchase_end = purchase.end - datetime.timedelta(seconds=5)         # другой, мы не считали это за пересечение
+            purchase_start = purchase.start + timedelta(seconds=5)     # прибавим от отнимем по 5 сек, чтоб если одна запись встает на конец/начало
+            purchase_end = purchase.end - timedelta(seconds=5)         # другой, мы не считали это за пересечение
             if DateTimeRange(purchase_start, purchase_end).is_intersection(time_range):
                 intersections_count += 1
 
@@ -135,9 +168,11 @@ class Service(Offer):
     def get_admin_delete_url(self):
         return reverse('admin_delete_service', kwargs={'offer_id': self.pk})
 
-
     def get_admin_edit_url(self):
         return reverse('admin_edit_service', kwargs={'offer_id': self.pk})
+
+    def get_timetables_url(self):
+        return reverse('admin_service_timetables', kwargs={'offer_id': self.pk})
 
     def get_create_timetable_url(self):
         return reverse('create_timetable', kwargs={'offer_id': self.pk})
@@ -147,6 +182,12 @@ class Service(Offer):
 
     def get_free_time_url(self):
         return reverse('get_free_time', kwargs={'offer_id': self.pk})
+
+    def get_edit_timetable_url(self):
+        return reverse('edit_timetable', kwargs={'offer_id': self.service.pk})
+
+    def get_delete_timetable_url(self):
+        return reverse('delete_timetable',  kwargs={'offer_id': self.service.pk})
 
 
 class ServiceTimetable(models.Model):
@@ -178,14 +219,6 @@ class ServiceTimetable(models.Model):
         super().__init__(*args, **kwargs)
         self.__original_start = self.start
         self.__original_end = self.end
-
-    # def get_purchases(self):
-    #     return PurchaseCountable.objects.filter(
-    #         start__gte=self.start,
-    #         end__lte=self.end,
-    #         is_canceled=False,
-    #         order__date_canceled=None,
-    #     )
 
     def save(self, *args, **kwargs):
         self.clean()
@@ -244,15 +277,15 @@ class ServiceTimetable(models.Model):
             'end': self.end.timestamp(),
             'id': self.pk,
             'workers': workers,
-            'edit_url': self.get_edit_url()
+            'edit_url': self.service.get_edit_timetable_url()
         }
 
     def get_info_url(self):
         return reverse('get_timetable', kwargs={'offer_id': self.service.pk, 'timetable_id': self.pk})
 
-    def get_edit_url(self):
-        return reverse('edit_timetable', kwargs={'offer_id': self.service.pk, 'timetable_id': self.pk})
-
-    def get_delete_url(self):
-        return reverse('delete_timetable',  kwargs={'offer_id': self.service.pk, 'timetable_id': self.pk})
+    # def get_edit_url(self):
+    #     return reverse('edit_timetable', kwargs={'offer_id': self.service.pk, 'timetable_id': self.pk})
+    #
+    # def get_delete_url(self):
+    #     return reverse('delete_timetable',  kwargs={'offer_id': self.service.pk, 'timetable_id': self.pk})
 

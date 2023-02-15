@@ -6,7 +6,8 @@ $(document).ready(function (){
     $('#edit_service_purchase_modal').on('popup_open', function (event, data){
         $('#edit_service_purchase').attr('action', data.edit_url)
         $('.service_name').html(data.offer.name).attr('href', data.offer.link)
-        $('#id_edit-quantity').val(data.quantity)
+        $('#id_edit_service-quantity').val(data.quantity)
+        $('#id_edit_service-purchase_id').val(data.id)
 
         $('#search_timetables').attr('service_id', data.offer.id)
 
@@ -19,9 +20,9 @@ $(document).ready(function (){
             start_time = local_start.toISOString().substring(11,16),
             end_time = local_end.toISOString().substring(11,16)
 
-        $('#id_edit-day').val(day)
-        $('#id_edit-time_start').val(start_time)
-        $('#id_edit-time_end').val(end_time)
+        $('#id_edit_service-day').val(day)
+        $('#id_edit_service-time_start').val(start_time)
+        $('#id_edit_service-time_end').val(end_time)
 
     })
 })

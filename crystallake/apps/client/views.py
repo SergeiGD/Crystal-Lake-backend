@@ -1,22 +1,23 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.template.loader import render_to_string
+from django.conf import settings
 
 from .models import Client
 from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data, is_ajax
 from ..user.forms import UserForm, SearchUserForm
-from ..user.models import CustomUser
 from .forms import ClientForm
+from ..worker_profile.utils import AdminLoginRequired
 
 # Create your views here.
 
 
-class AdminClientsList(ListView):
+class AdminClientsList(AdminLoginRequired, ListView):
     model = Client
     template_name = 'client/admin_clients.html'
     context_object_name = 'clients'
-    paginate_by = 1
+    paginate_by = settings.ADMIN_PAGINATE_BY
     paginator_class = SafePaginator
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -35,7 +36,7 @@ class AdminClientsList(ListView):
         return clients
 
 
-class AdminCreatClient(RelocateResponseMixin, CreateView):
+class AdminCreatClient(RelocateResponseMixin, AdminLoginRequired, CreateView):
     model = Client
     template_name = 'client/admin_create_client.html'
     form_class = ClientForm
@@ -56,7 +57,7 @@ class AdminCreatClient(RelocateResponseMixin, CreateView):
         return self.relocate(form.instance.get_admin_show_url())
 
 
-class AdminClientDetail(DetailView):    # TODO: не давать возможность открыть удаленные
+class AdminClientDetail(AdminLoginRequired, DetailView):
     model = Client
     template_name = 'client/admin_show_client.html'
     context_object_name = 'client'
@@ -65,11 +66,16 @@ class AdminClientDetail(DetailView):    # TODO: не давать возможн
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'clients'
-        # context['delete_link'] = self.object.get_admin_delete_url()
         return context
 
+    def get_object(self, queryset=None):
+        obj = super(AdminClientDetail, self).get_object(queryset=queryset)
+        if obj.date_deleted:
+            raise Http404()
+        return obj
 
-class AdminClientUpdate(RelocateResponseMixin, UpdateView):
+
+class AdminClientUpdate(RelocateResponseMixin, AdminLoginRequired, UpdateView):
     model = Client
     template_name = 'client/admin_edit_client.html'
     context_object_name = 'client'
@@ -81,6 +87,12 @@ class AdminClientUpdate(RelocateResponseMixin, UpdateView):
         context['current_page'] = 'clients'
         return context
 
+    def get_object(self, queryset=None):
+        obj = super(AdminClientUpdate, self).get_object(queryset=queryset)
+        if obj.date_deleted:
+            raise Http404()
+        return obj
+
     def form_invalid(self, form):
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
         response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
@@ -89,11 +101,6 @@ class AdminClientUpdate(RelocateResponseMixin, UpdateView):
     def form_valid(self, form):
         form.instance.save()
         return self.relocate(form.instance.get_admin_show_url())
-
-
-# def admin_delete_client(request, client_id):
-#     get_object_or_404(Client, pk=client_id).mark_as_deleted()
-#     return redirect('admin_clients')
 
 
 def find_clients(request, **kwargs):

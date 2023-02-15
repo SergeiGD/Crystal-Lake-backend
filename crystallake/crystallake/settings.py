@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polymorphic',
+    'django_crontab',
     'apps.offer.apps.OfferConfig',
     'apps.room.apps.RoomConfig',
     'apps.service.apps.ServiceConfig',
@@ -70,6 +71,10 @@ WEBPACK_LOADER = {
         'STATS_FILE': path.join(BASE_DIR, 'frontend/webpack-stats.json'),
     },
 }
+
+CRONJOBS = [
+    ('0 * * * *', 'apps.core.cron.clean_orders_job')
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -183,3 +188,4 @@ try:
     from .additional_settings.pagination_settings import *
 except ImportError:
     pass
+

@@ -120,7 +120,6 @@ class Room(Offer):
             room = max_room_delta[0]
             room_start = start
             room_end = start + timedelta(days=max_room_delta[1])
-            # ТУПА ТУТ У ЕНДА СТАВИМ ДРУГЙО КОНЕЦ
             result.append({
                 'room': room,
                 'start': room_start,

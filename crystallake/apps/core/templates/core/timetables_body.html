@@ -1,0 +1,21 @@
+{% for timetable in timetables_list %}
+    <tr>
+        <td>{{ timetable.start }}</td>
+        <td>{{ timetable.end }}</td>
+        <td class="p-0 position-relative w-10r">
+            <form action="{{ timetable.get_info_url }}" method="POST" class="edit_additional_form">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ token }}">
+                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-set-called-by="#edit_timetable_modal" data-url="{{ timetable.service.get_edit_timetable_url }}" data-popup="#edit_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#edit_timetable_modal" data-id="{{ timetable.pk }}">
+                    Изменить
+                </button>
+            </form>
+        </td>
+        <td class="p-0 position-relative w-10r">
+            <form action="{{ timetable.service.get_delete_timetable_url }}" method="POST" class="delete_additional_form">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ token }}">
+                <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ timetable.pk }}">Убрать</button>
+            </form>
+        </td>
+    </tr>
+{% endfor %}
+

@@ -10,6 +10,7 @@
                 <form action="" class="manage_purchase" method="POST" id="edit_service_purchase">
 
                     {% csrf_token %}
+                    {{ form_edit_service_purchase.purchase_id }}
 
                     <div class="modal-body">
 

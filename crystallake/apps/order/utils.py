@@ -13,6 +13,7 @@ class RoomPurchaseMixin(RelocateResponseMixin):
         return datetime.combine(date_start, settings.CHECK_IN_TIME), datetime.combine(date_end, settings.CHECK_IN_TIME)
 
     def manage_room_purchase(self, room_purchase, start, end, multiple_rooms_acceptable, success_url=None):
+        print(multiple_rooms_acceptable)
         if start.date() < datetime.now().date():
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
                 'Дата': ['Нельзя сделать бронь на уже прошедшую дату']
@@ -42,7 +43,7 @@ class RoomPurchaseMixin(RelocateResponseMixin):
 
         if len(rooms) > 1 and not multiple_rooms_acceptable:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.INFO, message={
-                'Свободность номера': ['Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат']
+                'Свободность номера': ['Нету комнаты на эти даты. Вы можете выбрать опцию подбора нескольких комнат (переезд)']
             })
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
             return response
@@ -73,6 +74,13 @@ class ServicePurchaseMixin(RelocateResponseMixin):
         return timezone.make_aware(start), timezone.make_aware(end)
 
     def manage_service_purchase(self, service_purchase, success_url=None):
+        if service_purchase.quantity > service_purchase.offer.max_in_group or service_purchase.quantity < 1:
+            response_message = ResponseMessage(
+                status=ResponseMessage.STATUSES.ERROR,
+                message={'Количество': [f'Максимальное кол-во человек {service_purchase.offer.max_in_group}, минимальное 1']}
+            )
+            response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
+            return response
         if service_purchase.start.date() < datetime.now().date():
             response_message = ResponseMessage(
                 status=ResponseMessage.STATUSES.ERROR,

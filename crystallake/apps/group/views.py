@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from django.template.loader import render_to_string
+from django.conf import settings
 
 from .models import GroupProxy, PermissionsProxy
 from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data, is_ajax
@@ -17,7 +18,7 @@ class AdminGroupsList(ListView):
     model = GroupProxy
     template_name = 'group/admin_groups.html'
     context_object_name = 'groups'
-    paginate_by = 10
+    paginate_by = settings.ADMIN_PAGINATE_BY
     paginator_class = SafePaginator
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -49,7 +50,7 @@ class AdminGroupDetail(DetailView):
         context['additional_page'] = True
         context['delete_link'] = self.object.get_admin_delete_url()
         context['workers'] = Worker.objects.filter(groups=self.object, date_deleted=None)
-        context['permissions'] = self.object.permissions.all()#Worker.objects.filter(groups=self.object, date_deleted=None)
+        context['permissions'] = self.object.permissions.all()
         return context
 
 
@@ -121,23 +122,6 @@ def del_permission_from_group(request, group_id):
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK)
         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
-
-# def get_unattached_permissions(request, group_id):
-#     if request.method == 'POST':
-#         group = get_object_or_404(GroupProxy, pk=group_id)
-#         permissions = PermissionsProxy.objects.exclude(pk__in=group.permissions.values('pk')).search(**request.POST.dict())
-#         permissions_page, num_pages = get_paginator_data(permissions, request.POST.get('page_number', 1))
-#
-#         data = {'pages': {
-#             'pages_count': num_pages,
-#             'current_page': permissions_page.number,
-#         }, 'items': []}
-#         for permission in permissions_page.object_list:
-#             item = {'name': permission.name, 'id': permission.pk}
-#             data['items'].append(item)
-#
-#         response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
-#         return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 def find_permissions(request, **kwargs):
     permissions = PermissionsProxy.objects.all().search(

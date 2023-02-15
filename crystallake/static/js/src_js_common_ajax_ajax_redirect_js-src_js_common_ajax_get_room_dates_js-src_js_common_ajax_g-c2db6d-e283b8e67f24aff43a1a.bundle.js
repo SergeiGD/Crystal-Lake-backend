@@ -1,4 +1,4 @@
-(self["webpackChunkcrystal_lake_frontend"] = self["webpackChunkcrystal_lake_frontend"] || []).push([["src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f"],{
+(self["webpackChunkcrystal_lake_frontend"] = self["webpackChunkcrystal_lake_frontend"] || []).push([["src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d"],{
 
 /***/ "./src/js/common/add_hours.js":
 /*!************************************!*\
@@ -12,6 +12,41 @@
 }
 
 module.exports.add_hours = add_hours;
+
+/***/ }),
+
+/***/ "./src/js/common/ajax/ajax_redirect.js":
+/*!*********************************************!*\
+  !*** ./src/js/common/ajax/ajax_redirect.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const errors = __webpack_require__(/*! ../../common/errors */ "./src/js/common/errors.js");
+
+$(document).ready(function (){
+    $('.ajax_redirect').on('submit', function (){
+        event.preventDefault();
+
+        const errors_list = $(this).find('.errors_wrapper')
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            error: function (jqXHR){
+                const response = jQuery.parseJSON(jqXHR.responseText)
+                errors.handle_errors(response['message'], errors_list)
+            },
+        }).statusCode({
+           302: function (data){
+                const response = jQuery.parseJSON(data.responseText)
+                window.location.href = response['data']
+            }
+        });
+    })
+})
 
 /***/ }),
 
@@ -1456,4 +1491,4 @@ $(document).ready(function(){
 /***/ })
 
 }]);
-//# sourceMappingURL=src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js.map
+//# sourceMappingURL=src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d-e283b8e67f24aff43a1a.bundle.js.map

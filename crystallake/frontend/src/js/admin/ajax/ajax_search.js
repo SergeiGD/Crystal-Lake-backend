@@ -2,6 +2,7 @@ const find_items = require("../find_items");
 $(document).ready(function (){
 
     $('.ajax_search').on('submit', function (event, page='1'){
+        // $(document).on('submit', '.ajax_search', function (event, page='1'){
         event.preventDefault();
 
         const form = $(this);
@@ -25,12 +26,13 @@ $(document).ready(function (){
             processData: false,
             contentType: false,
             success: function (response){
-                console.log($(`tbody[data-find-form="#${form.attr('id')}"]`))
                 $(`tbody[data-find-form="#${form.attr('id')}"]`).html(response['data']['items'])
                 find_items.build_pages(response['data']['pages'], $(`.pagination[data-find-form="#${form.attr('id')}"]`))
             },
         });
 
     });
+
+    $('.ajax_search').trigger('submit')
 
 })

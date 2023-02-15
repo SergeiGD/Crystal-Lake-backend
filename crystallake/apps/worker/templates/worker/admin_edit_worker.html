@@ -101,41 +101,10 @@
     <!-- services -->
 
     <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
-        <form action="." method="post">
 
-            <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete"></i>
-
-            <div class="text-center">
-                <span class="fw-bold fs-5">Услуги, которые может оказывать сотрудник</span>
-            </div>
-
-            <div class="shadow p-3 rounded-2">
-
-                <div class="row align-items-start justify-content-between">
-
-                    <div class="col-12 row mx-auto p-0">
-
-                        <div class="col-lg-2 col-md-2 col-12">
-                            <label for="service_id" class="form-label">id услуги:</label>
-                            <input id="service_id" type="text" class="form-control w-auto mw-100">
-                        </div>
-
-                        <div class="col-md-10 col-12 mt-md-0 mt-3">
-                            <label for="service_name" class="form-label">Наименование:</label>
-                            <input type="text" class="form-control" id="service_name">
-                        </div>
-
-                    </div>
-
-                    <div class="col-12 mt-3">
-                        <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
-                    </div>
-
-
-                </div>
-
-            </div>
-        </form>
+        <div class="text-center">
+            <span class="fw-bold fs-5">Услуги, которые может оказывать сотрудник</span>
+        </div>
 
         <div class="rounded-2 overflow-hidden">
 
@@ -189,49 +158,16 @@
     <!-- groups -->
 
     <div class="shadow p-3 rounded-2 d-flex flex-column gap-4 mt-5 position-relative">
-        <form action="." method="post">
 
-            <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete"></i>
-
-            <div class="text-center">
-                <span class="fw-bold fs-5">Группы сотрудника</span>
-            </div>
-
-            <div class="shadow p-3 rounded-2">
-
-                <div class="row align-items-start justify-content-between">
-
-                    <div class="col-12 row mx-auto p-0">
-
-                        <div class="col-lg-2 col-md-2 col-12">
-                            <label for="service_id" class="form-label">id группы:</label>
-                            <input id="service_id" type="text" class="form-control w-auto mw-100">
-                        </div>
-
-                        <div class="col-md-10 col-12 mt-md-0 mt-3">
-                            <label for="service_name" class="form-label">Наименование:</label>
-                            <input type="text" class="form-control" id="service_name">
-                        </div>
-
-                    </div>
-
-                    <div class="col-12 mt-3">
-                        <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
-                    </div>
-
-
-                </div>
-
-            </div>
-        </form>
+        <div class="text-center">
+            <span class="fw-bold fs-5">Группы сотрудника</span>
+        </div>
 
         <div class="rounded-2 overflow-hidden">
 
             <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold open_search_btn" data-form="#search_groups" type="button" data-bs-toggle="modal" data-bs-target="#pick_group_modal">
                 + Добавить
             </button>
-
-
 
                 <table class="table table-striped table-hover table-bordered">
                     <thead>

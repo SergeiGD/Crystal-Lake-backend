@@ -57,7 +57,7 @@ class GroupProxy(Group):
         return reverse('get_permissions_for_group', kwargs={'group_id': self.pk})
 
 
-class PermissionsProxy(Permission):         # TODO: удалить дубликаты и подумать, что делать с разрешенияеми на прокси-моделями
+class PermissionsProxy(Permission):
     class Meta:
         proxy = True
         ordering = ['-id']

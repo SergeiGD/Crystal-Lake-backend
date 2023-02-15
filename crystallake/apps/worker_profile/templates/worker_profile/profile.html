@@ -1,0 +1,20 @@
+{% extends 'core/admin_base.html' %}
+
+{% block breadcrumbs %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb link-hover text-dark text-decoration-none fs-5">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}" class="link-hover text-dark text-decoration-none">
+                    Главная
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Кабинет</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+
+
+{% endblock content %}

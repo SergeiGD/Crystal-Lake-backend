@@ -59,7 +59,10 @@
                     <a class="nav-link text-dark link-hover {% if current_page == 'workers' %} link-active {% endif %}" href="{% url 'admin_workers' %}">Сотрудники</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark link-hover {% if current_page == 'profile' %} link-active {% endif %}" href="admin_profile.html">Кабинет</a>
+                    <a class="nav-link text-dark link-hover {% if current_page == 'tags' %} link-active {% endif %}" href="{% url 'admin_tags' %}">Теги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark link-hover {% if current_page == 'profile' %} link-active {% endif %}" href="{% url 'admin_profile' %}">Кабинет</a>
                 </li>
                 <li class="nav-item">
                     <div class="dropdown">
@@ -68,7 +71,6 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item {% if current_page == 'tags' %} link-active {% endif %}" href="{% url 'admin_tags' %}">Теги</a></li>
                           <li><a class="dropdown-item {% if current_page == 'groups' %} link-active {% endif %}" href="{% url 'admin_groups' %}">Группы</a></li>
                           <li><a class="dropdown-item {% if current_page == 'set_main' %} link-active {% endif %}" href="admin_set_main.html">Настройка главной</a></li>
                         </ul>
@@ -103,15 +105,15 @@
                 </div>
                 <div class="d-flex flex-column gap-2">
                     <a href="{% url 'admin_workers' %}" class="text-white text-decoration-none link-hover fs-5">Сотрудники</a>
-                    <a href="{% url 'admin_groups' %}" class="text-white text-decoration-none link-hover fs-5">Группы</a>
-                    <a href="admin_profile.html" class="text-white text-decoration-none link-hover fs-5">Кабинет</a>
+                    <a href="{% url 'admin_tags' %}" class="text-white text-decoration-none link-hover fs-5">Теги</a>
+                    <a href="{% url 'admin_profile' %}" class="text-white text-decoration-none link-hover fs-5">Кабинет</a>
                     <div class="dropdown">
                         <a class="text-white text-decoration-none link-hover fs-5 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                           Дополнительно
                         </a>
 
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="{% url 'admin_tags' %}">Теги</a></li>
+                          <li><a class="dropdown-item" href="{% url 'admin_groups' %}">Группы</a></li>
                           <li><a class="dropdown-item" href="admin_set_main.html">Настройка главной</a></li>
                         </ul>
                     </div>

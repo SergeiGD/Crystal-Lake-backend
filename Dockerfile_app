@@ -2,10 +2,10 @@ FROM ubuntu/apache2:2.4-20.04_edge
 
 WORKDIR /app
 
-RUN apt-get -y update
+RUN apt-get update
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository -y ppa:deadsnakes/ppa
-RUN apt-get install -y python3.9 python3-pip python3-dev libpq-dev libapache2-mod-wsgi-py3 nodejs npm nano
+RUN apt-get install -y python3.9 python3-pip python3-dev libpq-dev libapache2-mod-wsgi-py3 nodejs npm nano cron
 
 RUN pip3 install --upgrade pip
 COPY ./requirements.txt .
@@ -23,6 +23,7 @@ RUN a2ensite crystal_lake.conf
 RUN a2dissite 000-default.conf
 EXPOSE 80
 
+
 ENTRYPOINT  cd /app/frontend && cp -r /temp_node_modules/node_modules /app/frontend/ && \
             if [ $DEV = true ]; then npm run dev; else npm run build ; fi && \
             cd /app && chmod -R ugo+w /app/media /app/static /app/sms_codes.txt && \
@@ -30,4 +31,9 @@ ENTRYPOINT  cd /app/frontend && cp -r /temp_node_modules/node_modules /app/front
             python3 manage.py makemigrations && \
             python3 manage.py migrate && \
             python3 manage.py collectstatic --no-input && \
+            env | grep DB_NAME >> /etc/environment && \
+            env | grep DB_USER >> /etc/environment && \
+            env | grep DB_PASSWORD >> /etc/environment && \
+            cron && \
+            python3 manage.py crontab add && \
             apachectl -D FOREGROUND

@@ -11,13 +11,13 @@ from ..order.models import PurchaseCountable
 class ServiceForm(OfferForm):
     class Meta(OfferForm.Meta):
         model = Service
-        fields = [*OfferForm.Meta.fields, 'max_in_group', 'max_intersections']
+        fields = [*OfferForm.Meta.fields, 'max_in_group', 'max_intersections', 'min_time']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.short_fields.extend(['max_in_group', 'max_intersections'])
-        self.number_fields.extend(['max_in_group', 'max_intersections'])
+        self.short_fields.extend(['max_in_group', 'max_intersections', 'min_time'])
+        self.number_fields.extend(['max_in_group', 'max_intersections', 'min_time'])
 
         for field in self.fields:
             if str(field) in self.short_fields:
@@ -52,11 +52,16 @@ class SearchServicesForm(SearchOffersForm):
 
 
 class SearchServicesAdmin(SearchOffersAdmin):
-    time_from = forms.DateField(label='с', required=False, widget=forms.TimeInput(attrs={
-        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    time_from = forms.TimeField(label='с', required=False, widget=forms.TimeInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1',
+        'type': 'time'
     }))
-    time_until = forms.DateField(label='до', required=False, widget=forms.TimeInput(attrs={
-        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
+    time_until = forms.TimeField(label='до', required=False, widget=forms.TimeInput(attrs={
+        'class': 'form-control w-100 mw-10r rounded-0 rounded-end flex-grow-0 flex-shrink-1',
+        'type': 'time'
+    }))
+    max_in_group = forms.IntegerField(label='Человек в группе', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control w-auto mw-100',
     }))
 
 
@@ -72,7 +77,7 @@ class TimetableForm(forms.ModelForm):
         'class': 'form-control',
         'type': 'date'
     }))
-    start = forms.TimeField(label='Начало', widget=forms.TimeInput(attrs={
+    start = forms.TimeField(label='Начало', initial=datetime.now(), widget=forms.TimeInput(attrs={
         'class': 'form-control',
         'type': 'time'
     }))
@@ -96,12 +101,17 @@ class TimetableForm(forms.ModelForm):
 class SearchTimetablesAdmin(forms.Form):
     start = forms.DateField(label='с', required=False, widget=forms.DateInput(attrs={
         'class': 'form-control w-100  rounded-end flex-grow-0 flex-shrink-1',
-        'type': 'date'
+        'type': 'date',
     }))
     end = forms.DateField(label='до', required=False, widget=forms.DateInput(attrs={
         'class': 'form-control w-100  rounded-end flex-grow-0 flex-shrink-1',
         'type': 'date'
     }))
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #
+    #     self.fields['start'].widget.attrs.update({'value': datetime.today()})
 
 
 class ServicePurchaseForm(forms.Form):

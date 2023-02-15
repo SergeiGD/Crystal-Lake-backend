@@ -5,7 +5,7 @@ $(document).ready(function (){
         event.preventDefault();
 
         const form = $(this)
-
+        $('#id_create-multiple_rooms_acceptable').val('True')
 
 
         $.ajax({

@@ -155,7 +155,13 @@ class RoomPurchaseView(RoomPurchaseMixin, View):
             purchase.offer = purchase.offer.main_room
             start, end = self.aware_date(form.cleaned_data['date_start'], form.cleaned_data['date_end'])
 
-            return self.manage_room_purchase(purchase, start, end, False, success_url=purchase.order.get_client_manage_url())
+            return self.manage_room_purchase(
+                purchase,
+                start,
+                end,
+                form.cleaned_data['multiple_rooms_acceptable'],
+                success_url=purchase.order.get_client_manage_url()
+            )
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
             response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
@@ -190,8 +196,8 @@ class ServicePurchaseView(ServicePurchaseMixin, View):
             return response
 
 
-def cancel_purchase_view(request, purchase_id, **kwargs):
-    purchase = get_object_or_404(Purchase, pk=purchase_id)
+def cancel_purchase_view(request, **kwargs):
+    purchase = get_object_or_404(Purchase, pk=request.POST.get('elem_id'))
     if request.user != purchase.order.client:
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
             'Ошибка': ['Не удалось опознать пользователя, создавшего заказ']
@@ -477,8 +483,8 @@ def cart_prepayment_pay_view(request):
             return response
 
 
-def remove_from_cart_view(request, purchase_id, **kwargs):
-    purchase = get_object_or_404(Purchase, pk=purchase_id)
+def remove_from_cart_view(request, **kwargs):
+    purchase = get_object_or_404(Purchase, pk=request.POST.get('elem_id'))
     if not purchase.order.is_cart:
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message={
             'Ошибка': ['Этот элемент не является частью корзины']

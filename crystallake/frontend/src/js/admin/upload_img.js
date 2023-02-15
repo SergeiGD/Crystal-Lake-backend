@@ -1,3 +1,5 @@
+const errors = require('../common/errors');
+
 $(document).ready(function(){
     $('#edit_main_info_form').on('click', '.upload_img_button', function(){
         $(this).siblings('.upload_img_input').trigger('click');     // при клике вызываем скрытый загрузчик файлов
@@ -30,6 +32,12 @@ $(document).ready(function(){
                 img_to_resize.src = img_src_temp;
 
                 img_to_resize.onload = function (){
+
+                    if (img_to_resize.height > 1000 || img_to_resize.width > 1000){
+                         errors.handle_errors({'Размер картинки': ["Ширина и высота изображения не должны превышать 1000px"]}, $("#main_info_errors"));
+                         return
+                    }
+
                     const resized_src = resize_image(img_to_resize, file_ext); // !!
 
                     img_elem.attr('src', resized_src);                          // устанавливаем img новый src
@@ -39,10 +47,8 @@ $(document).ready(function(){
                     const input_name = input.attr('name');
 
                     const resized_file =  base64_to_file(resized_src, file_ext); // !!
-                    //$('#edit_main_info_form').trigger('file_uploaded', {[input_name]: file});   // выгружаем имя и картинку, для POST ajax запроса
                     $('#edit_main_info_form').trigger('file_uploaded', {[input_name]: resized_file});
                 }
-
 
             }
 
@@ -52,41 +58,19 @@ $(document).ready(function(){
 
     function resize_image(image, file_ext){
         const canvas = document.createElement("canvas");
-        canvas.height = 500;
-        canvas.width = 500;
+        var size = image.width;
+        if (image.width > image.height){
+            size = image.height + ((image.width - image.height) / 2)
+        }
+        else if(image.height > image.width){
+            size = image.width + ((image.height - image.width) / 2)
+        }
+
+        canvas.height = size;
+        canvas.width = size;
         const canvas_context = canvas.getContext('2d');
-        canvas_context.drawImage(image, 0, 0, 500, 500);
+        canvas_context.drawImage(image, 0, 0, size, size);
         return canvas.toDataURL(`image/${file_ext}`);
-
-        // var image = new Image();
-        // image.src = base64;
-        //
-        // image.onload = function (){
-        //     var canvas = document.createElement("canvas");
-        //
-        //     //var octx = canvas.getContext('2d')
-        //
-        //     canvas.getContext('2d').drawImage(image, 0, 0, 500, 500);
-        //     console.log(canvas.toDataURL('image/png'))
-        //     return canvas.toDataURL('image/png');
-        // }
-        //var canvas = document.createElement('canvas')
-
-        // var canvas = document.createElement('canvas'),
-        //             //max_size = 544,
-        //             width = 500,
-        //             height = 500;
-        // //max_size = 544;
-        // //const width = 500;
-        // //const height = 500;
-        //
-        // canvas.width = width;
-        // canvas.height = height;
-        // canvas.getContext('2d').drawImage(image, 0, 0, width, height);
-        // //console.log(canvas.toDataURL('image/png'))
-        // return canvas.toDataURL('image/png');
-
-        //return dataUrl;
     }
 
     function base64_to_file(base64, file_ext){
@@ -115,7 +99,6 @@ $(document).ready(function(){
         container.removeAttr('data-empty-container')                //  убираем признак 'пустого конрейнера (заготовки)'
         container.attr('data-active', '')
 
-        //$('#id_form-TOTAL_FORMS').attr('value', order)              // обновляем общее кол-во форм у формсета
 
         const old_total_forms = $('#id_form-TOTAL_FORMS').attr('value')
         $('#id_form-TOTAL_FORMS').attr('value', parseInt(old_total_forms) + 1)

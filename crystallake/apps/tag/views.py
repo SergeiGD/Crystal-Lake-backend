@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from django.template.loader import render_to_string
+from django.conf import settings
 
 
 from ..core.utils import SafePaginator, ResponseMessage, RelocateResponseMixin, get_paginator_data, is_ajax
@@ -22,7 +23,7 @@ class AdminTagsList(PermissionRequiredMixin, ListView):
     model = Tag
     template_name = 'tag/admin_tags.html'
     context_object_name = 'tags'
-    paginate_by = 10
+    paginate_by = settings.ADMIN_PAGINATE_BY
     paginator_class = SafePaginator
 
     def get_context_data(self, *, object_list=None, **kwargs):

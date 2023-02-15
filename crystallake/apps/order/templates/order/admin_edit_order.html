@@ -52,21 +52,12 @@
                 </div>
             </div>
 
-{#            <div class="col-lg-6 col-12 mt-lg-0 mt-4">#}
-{#                <div class="input-group flex-nowrap w-auto  opacity-75">#}
-{#                    <span class="input-group-text w-10r" id="basic-addon1">Наименование</span>#}
-{#                    <span class="form-control">{{ order.name }}</span>#}
-{#                </div>#}
-{#            </div>#}
-
             <div class="col-lg-6 col-12 mt-lg-0 mt-4">
                 <div class="input-group flex-nowrap w-auto  opacity-75">
                     <span class="input-group-text w-10r" id="basic-addon1">Предоплата</span>
                     <span class="form-control ">{{ order.prepayment }}</span>
                 </div>
             </div>
-
-
 
             <div class="col-lg-6 col-12 mt-4">
                 <div class="input-group flex-nowrap w-auto opacity-75">
@@ -102,16 +93,6 @@
                     {{ form.paid }}
                 </div>
             </div>
-
-{#            <div class="col-lg-4 col-12 mt-4 btn-group" role="group">#}
-{#                {{ form.prepayment_paid }}#}
-{#                <label class="btn btn-outline-primary" for="{{ form.prepayment_paid.id_for_label }}">{{ form.prepayment_paid.label }}</label>#}
-{#            </div>#}
-{##}
-{#            <div class="col-lg-4 col-12 mt-4 btn-group" role="group">#}
-{#                {{ form.paid }}#}
-{#                <label class="btn btn-outline-primary" for="{{ form.paid.id_for_label }}">{{ form.paid.label }}</label>#}
-{#            </div>#}
 
             <div class="col-lg-6 col-12 mt-4 btn-group" role="group">
                 {{ form.refund_made }}
@@ -179,9 +160,6 @@
                         <th scope="col">Конец</th>
                         <th scope="col">Количество</th>
                         <th scope="col">Стоимость</th>
-                        <th scope="col">prepay</th>
-                        <th scope="col">refund</th>
-                        <th scope="col">Статус</th>
                         <th scope="col" class="px-3 text-center" type="button">Изменить</th>
                         <th scope="col" class="px-3 text-center" type="button">Убрать</th>
                     </tr>
@@ -215,32 +193,31 @@
                                 <td>
                                     {{ purchase.price }}
                                 </td>
-                                <td>
-                                    {{ purchase.prepayment }}
-                                </td>
-                                <td>
-                                    {{ purchase.refund }}
-                                </td>
-                                <td>
-                                    {{ purchase.get_status }}
-                                </td>
                                 <td class="p-0 position-relative w-10r">
-                                    <form method="post" action="{{ purchase.get_info_url }}" class="edit_additional_form" >
+                                    {% if purchase.is_editable %}
+                                        <form method="post" action="{{ purchase.get_info_url }}" class="edit_additional_form" >
                                         {% csrf_token %}
                                         {% with purchase.offer|offer_type as modelclass %}
                                             {% if modelclass == "Room" %}
-                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or not order.is_editable %}disabled{% endif %} type="button" data-popup="#edit_room_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_room_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
+                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-popup="#edit_room_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_room_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
                                             {% elif modelclass == "Service" %}
-                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" {% if purchase.is_canceled or not order.is_editable %}disabled{% endif %} type="button" data-popup="#edit_service_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_service_purchase_modal" data-set-called-by="#edit_service_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
+                                                <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" type="button" data-popup="#edit_service_purchase_modal" data-bs-toggle="modal" data-bs-target="#edit_service_purchase_modal" data-set-called-by="#edit_service_purchase_modal" data-id="{{ purchase.pk }}" data-url="{{ purchase.get_edit_url }}">Изменить</button>
                                             {% endif %}
                                         {% endwith %}
                                     </form>
+                                    {% else %}
+                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" disabled type="button" >Изменить</button>
+                                    {% endif %}
+
                                 </td>
                                 <td class="p-0 position-relative w-10r">
+                                    {% if order.is_cancelable %}
                                     <form method="post" action="{{ purchase.get_cancel_url }}">
                                         {% csrf_token %}
+                                        <input type="text" type="hidden" class="d-none" name="elem_id" value="{{ purchase.id }}">
                                         <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="submit" {% if purchase.is_canceled or order.date_canceled or order.date_finished %}disabled{% endif %} data-id="{{ purchase.pk }}">Отменить</button>
                                     </form>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}

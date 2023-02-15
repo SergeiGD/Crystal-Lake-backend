@@ -37,21 +37,21 @@
       "name": "images/why_is-8d9483bc8b97327e78b1.webp",
       "path": "/app/static/images/why_is-8d9483bc8b97327e78b1.webp"
     },
-    "js/admin-b2450e7406bdca943b01.bundle.js": {
-      "name": "js/admin-b2450e7406bdca943b01.bundle.js",
-      "path": "/app/static/js/admin-b2450e7406bdca943b01.bundle.js"
+    "js/admin-ca94b85ca6c18dd440df.bundle.js": {
+      "name": "js/admin-ca94b85ca6c18dd440df.bundle.js",
+      "path": "/app/static/js/admin-ca94b85ca6c18dd440df.bundle.js"
     },
-    "js/admin-b2450e7406bdca943b01.bundle.js.map": {
-      "name": "js/admin-b2450e7406bdca943b01.bundle.js.map",
-      "path": "/app/static/js/admin-b2450e7406bdca943b01.bundle.js.map"
+    "js/admin-ca94b85ca6c18dd440df.bundle.js.map": {
+      "name": "js/admin-ca94b85ca6c18dd440df.bundle.js.map",
+      "path": "/app/static/js/admin-ca94b85ca6c18dd440df.bundle.js.map"
     },
-    "js/client-0405cca6aafcaff782dd.bundle.js": {
-      "name": "js/client-0405cca6aafcaff782dd.bundle.js",
-      "path": "/app/static/js/client-0405cca6aafcaff782dd.bundle.js"
+    "js/client-8d387c13e5f6b45d6d71.bundle.js": {
+      "name": "js/client-8d387c13e5f6b45d6d71.bundle.js",
+      "path": "/app/static/js/client-8d387c13e5f6b45d6d71.bundle.js"
     },
-    "js/client-0405cca6aafcaff782dd.bundle.js.map": {
-      "name": "js/client-0405cca6aafcaff782dd.bundle.js.map",
-      "path": "/app/static/js/client-0405cca6aafcaff782dd.bundle.js.map"
+    "js/client-8d387c13e5f6b45d6d71.bundle.js.map": {
+      "name": "js/client-8d387c13e5f6b45d6d71.bundle.js.map",
+      "path": "/app/static/js/client-8d387c13e5f6b45d6d71.bundle.js.map"
     },
     "js/index_critical-d2d717097cd51a1b4349.bundle.js": {
       "name": "js/index_critical-d2d717097cd51a1b4349.bundle.js",
@@ -61,13 +61,13 @@
       "name": "js/index_critical-d2d717097cd51a1b4349.bundle.js.map",
       "path": "/app/static/js/index_critical-d2d717097cd51a1b4349.bundle.js.map"
     },
-    "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js": {
-      "name": "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js",
-      "path": "/app/static/js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js"
+    "js/src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d-e283b8e67f24aff43a1a.bundle.js": {
+      "name": "js/src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d-e283b8e67f24aff43a1a.bundle.js",
+      "path": "/app/static/js/src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d-e283b8e67f24aff43a1a.bundle.js"
     },
-    "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js.map": {
-      "name": "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js.map",
-      "path": "/app/static/js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js.map"
+    "js/src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d-e283b8e67f24aff43a1a.bundle.js.map": {
+      "name": "js/src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d-e283b8e67f24aff43a1a.bundle.js.map",
+      "path": "/app/static/js/src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d-e283b8e67f24aff43a1a.bundle.js.map"
     },
     "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js": {
       "name": "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
@@ -90,15 +90,15 @@
     "admin": [
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
       "js/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-5f1080789f7745b9f4bd.bundle.js",
-      "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js",
+      "js/src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d-e283b8e67f24aff43a1a.bundle.js",
       "css/admin-1d2017df37ac0e197a2d.bundle.css",
-      "js/admin-b2450e7406bdca943b01.bundle.js"
+      "js/admin-ca94b85ca6c18dd440df.bundle.js"
     ],
     "client": [
       "js/vendors-node_modules_jquery_dist_jquery_js-3b0c559871f02d879796.bundle.js",
-      "js/src_js_common_ajax_get_room_dates_js-src_js_common_ajax_get_service_dates_js-src_js_common_er-d35a6f-0e1c032c180264f772d6.bundle.js",
+      "js/src_js_common_ajax_ajax_redirect_js-src_js_common_ajax_get_room_dates_js-src_js_common_ajax_g-c2db6d-e283b8e67f24aff43a1a.bundle.js",
       "css/client-0224e6cc53737d6317f6.bundle.css",
-      "js/client-0405cca6aafcaff782dd.bundle.js"
+      "js/client-8d387c13e5f6b45d6d71.bundle.js"
     ],
     "index_critical": [
       "css/index_critical-fb6b1092c56d16db1020.bundle.css",

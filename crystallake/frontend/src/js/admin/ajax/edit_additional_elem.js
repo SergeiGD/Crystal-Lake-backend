@@ -1,5 +1,5 @@
 $(document).ready(function (){
-    $('.edit_additional_form').on('submit', function (event, elem_id) {
+    $(document).on('submit', '.edit_additional_form', function (event, elem_id) {
         event.preventDefault();
         const popup = $(this).find('[data-popup]').attr('data-popup')
         //const  popup = $(this).attr('data-popup')

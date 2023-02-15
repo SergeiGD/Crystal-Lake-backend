@@ -2,7 +2,7 @@ const errors = require("../../common/errors");
 
 $(document).ready(function (){
 
-    $('.delete_additional_form').on('submit', function (event, data){
+    $(document).on('submit', '.delete_additional_form', function (event, data){
         const current_form = $(this);
         event.preventDefault();
 

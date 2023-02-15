@@ -59,7 +59,7 @@ class ClientContextMixin:
 
 
 def get_paginator_data(data_list, page_number):
-    paginator = SafePaginator(data_list, 1)
+    paginator = SafePaginator(data_list, settings.POPUP_PAGINATE_BY)
     data_page = paginator.get_page(page_number)
     num_pages = paginator.num_pages
 

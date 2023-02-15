@@ -69,7 +69,7 @@ class CustomUser(AbstractUser):
 
     def mark_as_deleted(self):
         self.date_deleted = timezone.now()
-        self.last_name = self.last_name + '-DELETED'
+        self.is_active = False
         self.save()
 
     def get_admin_show_url(self):

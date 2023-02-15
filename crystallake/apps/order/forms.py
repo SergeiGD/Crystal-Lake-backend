@@ -56,21 +56,8 @@ class PurchaseForm(forms.ModelForm):
     class Meta:
         model = Purchase
         fields = []
-        #fields = ['is_paid', 'is_prepayment_paid']
 
     purchase_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
-        # self.fields['is_paid'].widget.attrs.update({'class': 'btn-check'})
-        # self.fields['is_prepayment_paid'].widget.attrs.update({'class': 'btn-check'})
-        #
-        # self.fields['is_paid'].required = False
-        # self.fields['is_prepayment_paid'].required = False
-        #
-        # self.fields['is_paid'].label = 'Оплачено'
-        # self.fields['is_prepayment_paid'].label = 'Предоплата внесена'
 
 
 class RoomPurchaseForm(PurchaseForm):
@@ -96,6 +83,7 @@ class RoomPurchaseForm(PurchaseForm):
         required=False,
         widget=forms.CheckboxInput(attrs={
             'class': 'btn-check',
+            'type': 'checkbox',
         })
     )
 

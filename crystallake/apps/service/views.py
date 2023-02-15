@@ -9,10 +9,11 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.utils import timezone
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.middleware.csrf import get_token
 
 from .models import Service, ServiceTimetable
 from ..core.utils import SafePaginator, ResponseMessage, get_paginator_data, is_ajax, ClientContextMixin, RelocateResponseMixin
-from .forms import SearchServicesForm, ServiceForm, TimetableForm, BookServiceForm
+from .forms import SearchServicesForm, ServiceForm, TimetableForm, BookServiceForm, SearchServicesAdmin, SearchTimetablesAdmin
 from ..offer.utils import ManageOfferMixin, CartMixin
 from ..photo.models import Photo
 from ..tag.forms import SearchTagForm
@@ -61,6 +62,7 @@ class ServiceDetail(ServicePurchaseMixin, CartMixin, ClientContextMixin, Relocat
                 book_form.cleaned_data['time_start'],
                 book_form.cleaned_data['time_end'],
             )
+            purchase.quantity = book_form.cleaned_data['quantity']
             return self.manage_service_purchase(purchase, success_url=reverse('cart'))
         else:
             response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=book_form.errors)
@@ -104,15 +106,22 @@ class AdminServicesList(ListView):
     template_name = 'service/admin_services.html'
     context_object_name = 'services'
     paginator_class = SafePaginator
-    paginate_by = 1
+    paginate_by = settings.ADMIN_PAGINATE_BY
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'services'
+        context['form_services'] = SearchServicesAdmin(self.request.GET)
         return context
 
     def get_queryset(self):
-        return Service.objects.filter(date_deleted=None)
+        search_form = SearchServicesAdmin(self.request.GET)
+        services = Service.objects.filter(date_deleted=None)
+
+        if search_form.is_valid():
+            services = services.search(**search_form.cleaned_data)
+
+        return services
 
 
 class AdminCreateService(ManageOfferMixin, CreateView):
@@ -178,7 +187,7 @@ class AdminUpdateService(ManageOfferMixin, UpdateView):
             photos_qs=self.object.photos.all(),
             form_tags=SearchTagForm(self.request.POST or None),
             current_page='services',
-            # form_timetable=TimetableForm(),
+            form_timetables=SearchTimetablesAdmin(self.request.GET or None),
             form_edit_timetable=TimetableForm(prefix='edit'),
             form_create_timetable=TimetableForm(prefix='create'),
             form_workers=SearchUserForm()
@@ -199,6 +208,12 @@ class AdminUpdateService(ManageOfferMixin, UpdateView):
         response_message = ResponseMessage(status=ResponseMessage.STATUSES.ERROR, message=form.errors)
         response = HttpResponse(response_message.get_json(), status=400, content_type='application/json')
         return response
+
+    def get_object(self, queryset=None):
+        obj = super(AdminUpdateService, self).get_object(queryset=queryset)
+        if obj.date_deleted:
+            raise Http404()
+        return obj
 
 
 def admin_delete_service(request, offer_id):
@@ -263,9 +278,9 @@ def get_timetable_info_view(request, timetable_id, **kwargs):
     return response
 
 
-def edit_timetable_view(request, timetable_id, **kwargs):
+def edit_timetable_view(request, **kwargs):
     if request.POST:
-        timetable = get_object_or_404(ServiceTimetable, pk=timetable_id)
+        timetable = get_object_or_404(ServiceTimetable, pk=request.POST.get('edit-timetable_id'))
         form = TimetableForm(request.POST or None, prefix='edit', instance=timetable)
 
         if form.is_valid():
@@ -311,8 +326,8 @@ def edit_timetable_view(request, timetable_id, **kwargs):
             return response
 
 
-def delete_timetable_view(request, timetable_id, **kwargs):
-    timetable = get_object_or_404(ServiceTimetable, pk=timetable_id)
+def delete_timetable_view(request, **kwargs):
+    timetable = get_object_or_404(ServiceTimetable, pk=request.POST.get('elem_id'))
     if timetable.get_purchases().exists():
         response_message = ResponseMessage(
             status=ResponseMessage.STATUSES.ERROR,
@@ -341,6 +356,7 @@ def find_services(request, **kwargs):
 
     if is_ajax(request):
         popup_to_open = request.POST.get('popup_to_open')
+        # TODO: тут можно кидать нужны кнопки или нет
         html = render_to_string('core/services_body.html', {'services_list': services_page.object_list, 'popup_to_open': popup_to_open})
         data['items'] = html
     else:
@@ -359,13 +375,8 @@ def find_services(request, **kwargs):
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
-def find_timetables(request, **kwargs):
-    # service_id = request.POST.get('service_id', -1)
-    # service = get_object_or_404(Service, pk=service_id)
-    # service.timetables.filter(date_deleted=None, is_hidden=False).search(
-    #     **request.POST.dict()
-    # )
-    timetables = ServiceTimetable.objects.filter().search(
+def find_timetables(request, offer_id):
+    timetables = ServiceTimetable.objects.filter(service_id=offer_id).search(
         **request.POST.dict()
     )
 
@@ -375,18 +386,32 @@ def find_timetables(request, **kwargs):
         'pages_count': num_pages,
         'current_page': timetables_page.number,
     }, 'items': []}
-    for timetable in timetables_page.object_list:
-        start_unix_seconds = (timetable.start - timezone.make_aware(datetime(1970, 1, 1))).total_seconds()
-        end_unix_seconds = (timetable.end - timezone.make_aware(datetime(1970, 1, 1))).total_seconds()
-        item = {
-            'start': start_unix_seconds,
-            'end': end_unix_seconds,
-            'id': timetable.pk
-        }
-        data['items'].append(item)
+
+    if is_ajax(request):
+        html = render_to_string('core/timetables_body.html', {'timetables_list': timetables_page.object_list, 'token': get_token(request)})
+        data['items'] = html
+    else:
+        for timetable in timetables_page.object_list:
+            item = {
+                'start': timetable.start,
+                'end': timetable.end,
+            }
+            data['items'].append(item)
 
     response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
     return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
+    # for timetable in timetables_page.object_list:
+    #     start_unix_seconds = (timetable.start - timezone.make_aware(datetime(1970, 1, 1))).total_seconds()
+    #     end_unix_seconds = (timetable.end - timezone.make_aware(datetime(1970, 1, 1))).total_seconds()
+    #     item = {
+    #         'start': start_unix_seconds,
+    #         'end': end_unix_seconds,
+    #         'id': timetable.pk
+    #     }
+    #     data['items'].append(item)
+    #
+    # response_message = ResponseMessage(status=ResponseMessage.STATUSES.OK, data=data)
+    # return HttpResponse(response_message.get_json(), content_type='application/json', status=200)
 
 
 def get_free_time_view(request, offer_id, **kwargs):

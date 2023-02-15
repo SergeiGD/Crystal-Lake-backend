@@ -1,24 +1,19 @@
 from decimal import Decimal
 
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from polymorphic.models import PolymorphicModel, PolymorphicManager
 from django.urls import reverse
 from django.utils import timezone
-from django.db.models import Max
 
 from ..offer.models import Offer
-# from ..client.models import Client
-from .status_choises import get_status_by_code, get_status_by_name, Status
+from .status_choises import Status
 from ..offer.price_choises import PriceType
 
 # Create your models here.
 
 
 class Order(models.Model):
-    # client = models.ForeignKey(Client, on_delete=models.PROTECT, verbose_name='Клиент')
     client = models.ForeignKey("user.CustomUser", on_delete=models.PROTECT, verbose_name='Клиент')
     comment = models.TextField(verbose_name="комментарий к заказу", blank=True, null=True)
     paid = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name='Оплачено')     # сколько заплатили
@@ -33,7 +28,8 @@ class Order(models.Model):
         super().__init__(*args, **kwargs)
         if self.pk:
             self.__original_paid,  self.__original_price = self.paid,  self.price
-        self.__original_paid, self.__original_price = 0, 0
+        else:
+            self.__original_paid, self.__original_price = 0, 0
 
     def save(self, *args, **kwargs):
         if self.pk and (self.__original_paid != self.paid or self.__original_price != self.price):
@@ -87,10 +83,14 @@ class Order(models.Model):
                 purchase.cancel()
 
     def mark_as_finished(self):
-        if self.is_finishable():
-            self.date_canceled = None
-            self.date_finished = timezone.now()
-            self.save()
+        self.date_canceled = None
+        self.date_finished = timezone.now()
+        if self.paid < self.price:
+            self.paid = self.price
+        self.save()
+        for purchase in self.purchases.filter(is_canceled=False):
+            purchase.is_paid = True
+            purchase.save()
 
     def mark_as_in_process(self):
         self.date_canceled = None
@@ -104,13 +104,6 @@ class Order(models.Model):
 
     def is_cancelable(self):
         if self.date_canceled is not None:
-            return False
-        # if self.purchases.filter(start__lte=timezone.now(), is_canceled=False).exists():
-        #     return False
-        return True
-
-    def is_finishable(self):
-        if self.date_full_paid is None or self.date_finished is not None:
             return False
         return True
 
@@ -252,8 +245,8 @@ class PurchaseManager(PolymorphicManager):
 
 
 class Purchase(PolymorphicModel):
-    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name="purchases")
-    offer = models.ForeignKey(Offer, on_delete=models.PROTECT, related_name="purchases")
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="purchases")
+    offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name="purchases")
 
     is_paid = models.BooleanField(default=False, verbose_name='Оплачено')
     is_prepayment_paid = models.BooleanField(default=False, verbose_name='Предоплата внесена')
@@ -303,9 +296,7 @@ class Purchase(PolymorphicModel):
         self.price = self.calc_price()
         self.prepayment = self.calc_prepayment()
         self.refund = self.calc_refund()
-        if not self.is_canceled:
-            self.is_paid = False
-            self.is_prepayment_paid = False
+        print('asdsd')
         super().save(*args, **kwargs)
         order = self.order
         order.save()
@@ -357,7 +348,7 @@ class Purchase(PolymorphicModel):
         return reverse('get_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
 
     def get_cancel_url(self):
-        return reverse('cancel_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
+        return reverse('cancel_purchase', kwargs={'order_id': self.order.pk})
 
     def get_remove_cart_item_url(self):
         return reverse('remove_cart_item', kwargs={'purchase_id': self.pk})
@@ -369,47 +360,17 @@ class Purchase(PolymorphicModel):
         return reverse('client_save_room_changes', kwargs={'purchase_id': self.pk, 'order_id': self.order.pk})
 
     def get_client_cancel_url(self):
-        return reverse('client_cancel_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
+        return reverse('client_cancel_purchase', kwargs={'order_id': self.order.pk})
 
     def get_edit_url(self):
-        return reverse('edit_room_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
+        return reverse('edit_room_purchase', kwargs={'order_id': self.order.pk})
 
 
 class PurchaseCountable(Purchase):
     quantity = models.SmallIntegerField(default=1)
 
-    # def clean(self):
-    #     from django.core.exceptions import ValidationError
-    #
-    #     if self.quantity > self.offer.max_in_group:
-    #         raise ValidationError('Превышено максимальное количество')
-
-    # def calc_price(self):
-    #     delta_seconds = (self.end - self.start).total_seconds()
-    #     seconds_in_hour = 3600
-    #     seconds_in_day = seconds_in_hour * 24
-    #     if self.offer.price_type == 'hours':
-    #         hours = Decimal(delta_seconds / seconds_in_hour)
-    #         return (self.offer.default_price * hours) * self.quantity
-    #     if self.offer.price_type == 'days':
-    #         days = Decimal(delta_seconds / seconds_in_day)
-    #         return (self.offer.default_price * days) * self.quantity
-    #
-    #     raise ValueError('Неизвестный тип цены')
-
     def calc_price(self):
         return super().calc_price() * self.quantity
-        # delta_seconds = (self.end - self.start).total_seconds()
-        # seconds_in_hour = 3600
-        # seconds_in_day = seconds_in_hour * 24
-        # if self.offer.price_type == PriceType.hour.name:
-        #     hours = round(Decimal(delta_seconds / seconds_in_hour), 0)
-        #     return (self.offer.default_price * hours) * self.quantity
-        # if self.offer.price_type == PriceType.day.name:
-        #     days = round(Decimal(delta_seconds / seconds_in_day), 0)
-        #     return (self.offer.default_price * days) * self.quantity
-
-        raise ValueError('Неизвестный тип цены')
 
     def get_info(self):
         data = super().get_info()
@@ -417,7 +378,7 @@ class PurchaseCountable(Purchase):
         return data
 
     def get_edit_url(self):
-        return reverse('edit_service_purchase', kwargs={'order_id': self.order.pk, 'purchase_id': self.pk})
+        return reverse('edit_service_purchase', kwargs={'order_id': self.order.pk})
 
     def get_client_save_changes_url(self):
         return reverse('client_save_service_changes', kwargs={'purchase_id': self.pk, 'order_id': self.order.pk})

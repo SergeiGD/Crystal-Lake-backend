@@ -51,6 +51,13 @@
 
         <div class="col-md-6 col-12 mt-4">
             <div class="input-group flex-nowrap w-auto">
+                <label class="input-group-text w-12r" for="{{ form_service.min_time.id_for_label }}">{{ form_service.min_time.label }}</label>
+                {{ form_service.min_time }}
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12 mt-4">
+            <div class="input-group flex-nowrap w-auto">
                 <label class="input-group-text w-12r" for="{{ form_service.default_price.id_for_label }}">{{ form_service.default_price.label }}</label>
                 {{ form_service.default_price }}
             </div>
@@ -63,13 +70,6 @@
             </div>
         </div>
 
-{#        <div class="col-md-6 col-12 mt-4">#}
-{#            <div class="input-group flex-nowrap w-auto">#}
-{#                <label for="manage_bonus" class="input-group-text w-10r" id="basic-addon1">Макс. бонусов (%)</label>#}
-{#                <input id="manage_bonus" type="number" class="form-control " value="40">#}
-{#            </div>#}
-{#        </div>#}
-
         <div class="col-md-6 col-12 mt-4">
             <div class="input-group flex-nowrap w-auto">
                 <label class="input-group-text w-12r" for="{{ form_service.prepayment_percent.id_for_label }}">{{ form_service.prepayment_percent.label }}</label>
@@ -77,26 +77,12 @@
             </div>
         </div>
 
-{#        <div class="col-md-6 col-12 mt-4">#}
-{#            <div class="input-group flex-nowrap w-auto">#}
-{#                <label for="manage_prepayment_money" class="input-group-text w-10r" id="basic-addon1">Предоплата (&#8381;)</label>#}
-{#                <input id="manage_prepayment_money" type="number" class="form-control " value="">#}
-{#            </div>#}
-{#        </div>#}
-
         <div class="col-md-6 col-12 mt-4">
             <div class="input-group flex-nowrap w-auto">
                 <label class="input-group-text w-12r" for="{{ form_service.refund_percent.id_for_label }}">{{ form_service.refund_percent.label }}</label>
                 {{ form_service.refund_percent }}
             </div>
         </div>
-
-{#        <div class="col-md-6 col-12 mt-4">#}
-{#            <div class="form-check">#}
-{#                <label class="form-check-label" for="{{ form_service.dynamic_timetable.id_for_label }}">{{ form_service.dynamic_timetable.label }}</label>#}
-{#                {{ form_service.dynamic_timetable }}#}
-{#            </div>#}
-{#        </div>#}
 
         <div class="col-md-6 col-12 mt-4">
             <div class="form-check">
@@ -117,11 +103,37 @@
             <span class="fw-bold fs-5">Расписание</span>
         </div>
 
+        <form class="shadow p-3 rounded-2 position-relative find_form ajax_search" action="{{ offer.get_timetables_url }}" method="GET" id="service_timetables">
+
+            {% csrf_token %}
+
+            <i class="fa-regular fa-trash-can text-danger card_icon card_icon__delete clean_btn"></i>
+
+            <div class="row align-items-start justify-content-between ">
+
+                <div class="col-12 row mx-auto p-0">
+
+                    <div class="col-lg-2 col-md-2 col-12">
+                        <label for="{{ form_timetables.start.id_for_label }}" class="form-label">{{ form_timetables.start.label }}</label>
+                        {{ form_timetables.start }}
+                    </div>
+
+                    <div class="col-lg-2 col-md-2 col-12">
+                        <label for="{{ form_timetables.end.id_for_label }}" class="form-label">{{ form_timetables.end.label }}</label>
+                        {{ form_timetables.end }}
+                    </div>
+
+                     <div class="col-12 mt-4">
+                        <button class="btn btn-c_yellow-700 w-100 ">Найти</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
         <div class="overflow-auto mt-4 rounded-2">
-{#            <form action="{{ service.get_add_timetable_url }}" method="POST" id="add_same_room">#}
-{#                {% csrf_token %}#}
-{#                <button class="btn btn-c_grey-100 w-100 rounded-0 py-2 fw-bold">+ Добавить</button>#}
-{#            </form>#}
 
                 <div class="errors additional_errors"></div>
 
@@ -135,29 +147,16 @@
                         <th scope="col" class="px-3 text-center" >Убрать</th>
                     </tr>
                     </thead>
-                    <tbody class="additional_info_tbody" id="same_rooms_list_body">
-                        {% for timetable in service.timetables.all %}
-                            <tr>
-                                <td scope="row">{{ timetable.start }}</td>
-                                <td scope="row">{{ timetable.end }}</td>
-                                <td class="p-0 position-relative w-10r">
-                                    <form action="{{ timetable.get_info_url }}" method="POST" class="edit_additional_form" >
-                                        {% csrf_token %}
-                                        <button class="btn btn-primary w-100 rounded-0 h-100 position-absolute" data-set-called-by="#edit_timetable_modal" data-url="{{ timetable.get_edit_url }}" data-popup="#edit_timetable_modal" type="button" data-bs-toggle="modal" data-bs-target="#edit_timetable_modal" data-id="{{ timetable.pk }}">Изменить</button>
-                                    </form>
-                                </td>
-                                <td class="p-0 position-relative w-10r">
-                                    <form action="{{ timetable.get_delete_url }}" method="POST" class="delete_additional_form">
-                                        {% csrf_token %}
-                                        <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="button" data-id="{{ timetable.pk }}">Убрать</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
+                    <tbody data-find-form="#service_timetables">
+
                     </tbody>
                 </table>
 
         </div>
+
+        <nav class="d-flex justify-content-center">
+            <ul class="pagination" data-find-form="#service_timetables"></ul>
+        </nav>
 
 
     </div>

@@ -16,7 +16,7 @@ class Index(ClientContextMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['services'] = Service.objects.filter(is_hidden=False, date_deleted=None)[:3]
+        context['services'] = Service.objects.filter(is_hidden=False, date_deleted=None).order_by('-date_create')[:3]
         context['current_page'] = 'index'
         min_price_room = Room.objects.filter(
             is_hidden=False,
@@ -37,7 +37,7 @@ class Index(ClientContextMixin, ListView):
         return {**context, **self.get_general_context()}
 
     def get_queryset(self):
-        return Room.objects.filter(is_hidden=False, main_room=None, date_deleted=None)[:3]
+        return Room.objects.filter(is_hidden=False, main_room=None, date_deleted=None).order_by('-date_create')[:3]
 
 
 class Contacts(ClientContextMixin, TemplateView):

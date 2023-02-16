@@ -43,10 +43,6 @@ class OfferQuerySet(PolymorphicQuerySet):
 
 
 class Offer(PolymorphicModel):
-    # PRICE_CHOICES = (
-    #     ('hours', 'часы'),
-    #     ('days', 'дни'),
-    # )
 
     name = models.CharField(
         verbose_name='наименование',

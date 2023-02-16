@@ -213,6 +213,9 @@ class Order(models.Model):
         return reverse('history_item', kwargs={'order_id': self.pk})
 
     class Meta:
+        indexes = [
+            models.Index(fields=['paid', 'refunded', 'date_create'])
+        ]
         ordering = ['-date_create']
 
 

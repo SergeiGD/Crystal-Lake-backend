@@ -17,7 +17,9 @@
                 "@type": "Offer",
                 "price": {{ offer.default_price.to_integral_value }},
                 "priceCurrency": "RUB"
-            },
+            }
+        {% if familiar %}
+        ,
         "isSimilarTo":
             [
                 {% for familiar_offer in familiar|slice:":-1" %}
@@ -51,6 +53,7 @@
                 }
                 {% endwith %}
             ]
+    {% endif %}
     },
     {% block breadcrumbs_json_ld %}
     {% endblock %}
@@ -158,6 +161,7 @@
 </div>
 </section>
 
+{% if familiar %}
 <section class="section">
 <div class="content_container">
 
@@ -210,6 +214,7 @@
 
 </div>
 </section>
+{% endif %}
 
 
 

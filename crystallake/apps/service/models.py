@@ -87,7 +87,7 @@ class Service(Offer):
         result = []
 
         timetables = ServiceTimetable.objects.filter(
-            service=self,
+            service_id=self.pk,
             start__gte=start,
             end__lte=end
         )
@@ -211,7 +211,7 @@ class ServiceTimetable(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=['start', 'end'])
+            models.Index(fields=['service_id', 'start', 'end'])
         ]
         ordering = ['id']
 

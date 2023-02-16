@@ -1,5 +1,7 @@
 import datetime
 import itertools
+
+from django.db.models import Count, Q
 from pytils.translit import slugify
 
 from django.db import models
@@ -148,16 +150,18 @@ class Offer(PolymorphicModel):
         }
 
     def get_familiar(self):
-        tags_intersection = {}
-        for i in self.__class__.objects.filter(date_deleted=None, is_hidden=False):
-            tags_intersection[i] = len(self.tags.all() & i.tags.all())
-
-        sorted_familiar = [k for k, v in sorted(tags_intersection.items(), key=lambda item: item[1], reverse=True)]
-        return sorted_familiar[0:3]
+        have_same_tags = self.__class__.objects.filter(
+            date_deleted=None, is_hidden=False, tags__in=self.tags.all()
+        ).exclude(pk=self.pk).distinct()
+        calced_tags = have_same_tags.annotate(
+            count_familiar=Count('tags', filter=Q(tags__in=self.tags.all()))
+        ).order_by('-count_familiar')
+        if len(calced_tags) < 3:
+            return calced_tags.all()
+        return calced_tags[0:3]
 
     def mark_as_deleted(self):
         self.date_deleted = timezone.now()
-        # self.name = self.name + '-DELETED'
         self.save()
 
     def get_add_tag_url(self):

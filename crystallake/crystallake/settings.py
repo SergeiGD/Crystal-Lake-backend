@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'apps.group.apps.GroupConfig',
     'apps.client_profile.apps.ClientProfileConfig',
     'apps.worker_profile.apps.WorkerProfileConfig',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'

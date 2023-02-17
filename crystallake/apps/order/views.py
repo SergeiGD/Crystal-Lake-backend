@@ -12,7 +12,7 @@ from django.conf import settings
 from .models import Order
 from ..core.utils import SafePaginator, RelocateResponseMixin, ResponseMessage
 from ..worker_profile.utils import AdminLoginRequired
-from .forms import CreateOrderForm, EditOrderForm, RoomPurchaseForm, ServicePurchaseForm
+from .forms import CreateOrderForm, EditOrderForm, RoomPurchaseForm, ServicePurchaseForm, SearchOrdersAdmin
 from ..client.models import Client
 from ..user.forms import SearchUserForm
 from .status_choises import get_status_by_name
@@ -39,7 +39,19 @@ class AdminOrdersList(PermissionRequiredMixin, AdminLoginRequired, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = 'orders'
+        context['form'] = SearchOrdersAdmin(self.request.GET or None)
+        context['form_clients'] = SearchUserForm()
         return context
+
+    def get_queryset(self):
+        search_form = SearchOrdersAdmin(self.request.GET or None)
+        orders = Order.objects.all()
+        print(orders.count())
+
+        if search_form.is_valid():
+            orders = orders.search(**search_form.cleaned_data)
+
+        return orders
 
 
 class AdminOrderDetail(PermissionRequiredMixin, AdminLoginRequired, DetailView):

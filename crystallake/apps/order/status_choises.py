@@ -7,6 +7,13 @@ STATUS_CHOICES = (
     ('finished', 'завершен'),
 )
 
+STATUS_CHOICES_SEARCH = (
+    ('all', 'все'),
+    ('process', 'в процессе'),
+    ('canceled', 'отменен'),
+    ('finished', 'завершен'),
+)
+
 
 # class syntax
 class Status(Enum):

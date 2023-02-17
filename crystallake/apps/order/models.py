@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 from polymorphic.models import PolymorphicModel, PolymorphicManager
 from django.urls import reverse
 from django.utils import timezone
@@ -11,6 +12,28 @@ from .status_choises import Status
 from ..offer.price_choises import PriceType
 
 # Create your models here.
+
+
+class OrderQuerySet(models.QuerySet):
+    def search(self, **kwargs):
+        qs = self
+        if kwargs.get('id', ''):
+            qs = qs.filter(pk=kwargs['id'])
+        if kwargs.get('status', ''):
+            status = kwargs['status']
+            if status == Status.finished.name:
+                qs = qs.filter(~Q(date_finished=None))
+            if status == Status.canceled.name:
+                qs = qs.filter(~Q(date_canceled=None))
+            if status == Status.process.name:
+                qs = qs.filter(date_finished=None, date_canceled=None)
+        if kwargs.get('client_id', ''):
+            qs = qs.filter(client__id=kwargs['client_id'])
+
+        if kwargs.get('sort_by', ''):
+            qs = qs.order_by(kwargs['sort_by'])
+
+        return qs
 
 
 class Order(models.Model):
@@ -79,8 +102,9 @@ class Order(models.Model):
             self.date_canceled = timezone.now()
             self.date_finished = None
             self.save()
-            for purchase in self.purchases.filter(is_canceled=False):
-                purchase.cancel()
+            for purchase in self.purchases.filter(is_canceled=False, is_paid=False):
+                purchase.is_canceled = True
+                purchase.save()
 
     def mark_as_finished(self):
         self.date_canceled = None
@@ -88,7 +112,7 @@ class Order(models.Model):
         if self.paid < self.price:
             self.paid = self.price
         self.save()
-        for purchase in self.purchases.filter(is_canceled=False):
+        for purchase in self.purchases.filter(is_canceled=False, is_paid=False):
             purchase.is_paid = True
             purchase.save()
 
@@ -217,6 +241,8 @@ class Order(models.Model):
             models.Index(fields=['paid', 'refunded', 'date_create'])
         ]
         ordering = ['-date_create']
+
+    objects = OrderQuerySet.as_manager()
 
 
 class PurchaseManager(PolymorphicManager):

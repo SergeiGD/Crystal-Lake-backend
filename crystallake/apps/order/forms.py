@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Order, Purchase, PurchaseCountable
-from .status_choises import get_status_by_name, STATUS_CHOICES
+from .status_choises import get_status_by_name, STATUS_CHOICES, STATUS_CHOICES_SEARCH
 
 
 class CreateOrderForm(forms.ModelForm):
@@ -50,6 +50,29 @@ class EditOrderForm(forms.ModelForm):
 
         self.fields['comment'].widget.attrs.update({'class': 'form-control rounded-bottom rounded-0 h-10r'})
         self.fields['paid'].widget.attrs.update({'class': 'form-control rounded-bottom rounded-0'})
+
+
+class SearchOrdersAdmin(forms.Form):
+    id = forms.IntegerField(label='id', required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control'
+    }))
+    status = forms.ChoiceField(label='Статус заказа', choices=STATUS_CHOICES_SEARCH, required=False, widget=forms.Select(attrs={
+        'class': 'form-select w-100 mw-10r flex-grow-0 flex-shrink-1'
+    }))
+    client_id = forms.IntegerField(required=False, widget=forms.HiddenInput(attrs={
+        'class': 'd-none'
+    }))
+    client_name = forms.CharField(label='Клиент', required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control rounded-0 rounded-start',
+        'readonly': ''
+    }))
+    sort_by = forms.CharField(required=False, initial='id', widget=forms.TextInput(attrs={
+        'class': 'd-none sorting_input',
+        'value': 'id'
+    }))
+    page = forms.IntegerField(required=False, initial=1, widget=forms.NumberInput(attrs={
+        'class': 'd-none page_input',
+    }))
 
 
 class PurchaseForm(forms.ModelForm):

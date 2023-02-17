@@ -31,7 +31,7 @@
                 <p class="page-link">&hellip;</p>
             </li>
             <li class="page-item">
-                <button class="page-link" type="button" data-page="${data.pages_count}">{{ page_obj.paginator.count }}</button>
+                <button class="page-link" type="button" data-page="{{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</button>
             </li>
         {% endif %}
 

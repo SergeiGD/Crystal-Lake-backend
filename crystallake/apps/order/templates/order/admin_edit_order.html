@@ -214,7 +214,7 @@
                                     {% if order.is_cancelable %}
                                     <form method="post" action="{{ purchase.get_cancel_url }}">
                                         {% csrf_token %}
-                                        <input type="text" type="hidden" class="d-none" name="elem_id" value="{{ purchase.id }}">
+                                        <input type="hidden" class="d-none" name="elem_id" value="{{ purchase.id }}">
                                         <button class="btn btn-danger w-100 rounded-0 h-100 position-absolute" type="submit" {% if purchase.is_canceled or order.date_canceled or order.date_finished %}disabled{% endif %} data-id="{{ purchase.pk }}">Отменить</button>
                                     </form>
                                     {% else %}

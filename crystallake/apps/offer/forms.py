@@ -11,7 +11,6 @@ class OfferForm(forms.ModelForm):
             'name',
             'description',
             'default_price',
-            'weekend_price',
             'prepayment_percent',
             'refund_percent',
             'main_photo',
@@ -23,9 +22,9 @@ class OfferForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.short_fields = ['name', 'default_price', 'weekend_price', 'prepayment_percent', 'refund_percent', 'slug']
+        self.short_fields = ['name', 'default_price', 'prepayment_percent', 'refund_percent', 'slug']
 
-        self.number_fields = ['default_price', 'weekend_price']
+        self.number_fields = ['default_price']
 
         self.fields['is_hidden'].widget.attrs.update({'class': 'form-check-input'})
         self.fields['description'].widget.attrs.update(
@@ -108,12 +107,6 @@ class SearchOffersAdmin(forms.Form):
         'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
     }))
     price_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
-        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1 rounded-end'
-    }))
-    weekend_price_from = forms.IntegerField(label='от', required=False, widget=forms.NumberInput(attrs={
-        'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1'
-    }))
-    weekend_price_until = forms.IntegerField(label='до', required=False, widget=forms.NumberInput(attrs={
         'class': 'form-control w-100 mw-10r rounded-0 flex-grow-0 flex-shrink-1 rounded-end'
     }))
     sort_by = forms.CharField(required=False, initial='id', widget=forms.TextInput(attrs={

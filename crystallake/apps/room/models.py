@@ -96,7 +96,6 @@ class Room(Offer):
         self.is_hidden = True
         self.name = self.main_room.name
         self.default_price = self.main_room.default_price
-        self.weekend_price = self.main_room.weekend_price
         self.prepayment_percent = self.main_room.prepayment_percent
         self.refund_percent = self.main_room.refund_percent
 

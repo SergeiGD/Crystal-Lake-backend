@@ -75,7 +75,7 @@ WEBPACK_LOADER = {
 
 CRONJOBS = [
     ('0 * * * *', 'apps.core.cron.clean_orders_job'),
-    ('0 * * * *', 'apps.core.cron.finish_orders_job')
+    ('* * * * *', 'apps.core.cron.finish_orders_job')
 ]
 
 MIDDLEWARE = [

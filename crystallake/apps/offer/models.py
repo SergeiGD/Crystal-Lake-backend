@@ -32,10 +32,6 @@ class OfferQuerySet(PolymorphicQuerySet):
             qs = qs.filter(default_price__gte=kwargs['price_from'])
         if kwargs.get('price_until', ''):
             qs = qs.filter(default_price__lte=kwargs['price_until'])
-        if kwargs.get('weekend_price_from', ''):
-            qs = qs.filter(weekend_price__gte=kwargs['weekend_price_from'])
-        if kwargs.get('weekend_price_until', ''):
-            qs = qs.filter(weekend_price__lte=kwargs['weekend_price_until'])
         if kwargs.get('sort_by', ''):
             qs = qs.order_by(kwargs['sort_by'])
 
@@ -63,13 +59,6 @@ class Offer(PolymorphicModel):
     )
     default_price = models.DecimalField(
         verbose_name='стандартная цена',
-        max_digits=12,
-        decimal_places=2,
-        blank=False,
-        null=False
-    )
-    weekend_price = models.DecimalField(
-        verbose_name='праздничная цена',
         max_digits=12,
         decimal_places=2,
         blank=False,

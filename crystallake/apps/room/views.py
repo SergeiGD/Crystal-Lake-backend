@@ -280,7 +280,6 @@ def find_rooms(request, **kwargs):
                 'rooms': room.rooms,
                 'link': room.get_admin_show_url(),
                 'default_price': room.default_price,
-                'weekend_price': room.weekend_price
             }
             data['items'].append(item)
 

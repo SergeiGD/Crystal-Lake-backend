@@ -367,7 +367,6 @@ def find_services(request, **kwargs):
                 'max_in_group': service.max_in_group,
                 'link': service.get_admin_show_url(),
                 'default_price': service.default_price,
-                'weekend_price': service.weekend_price
             }
             data['items'].append(item)
 

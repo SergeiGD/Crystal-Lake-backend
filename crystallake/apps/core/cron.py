@@ -17,7 +17,7 @@ def finish_orders_job():
         date_canceled=None,
     ).exclude(
         purchases__in=Purchase.objects.filter(
-            end__lte=make_aware(datetime.now())
+            end__gte=make_aware(datetime.now())
         )
     )
 

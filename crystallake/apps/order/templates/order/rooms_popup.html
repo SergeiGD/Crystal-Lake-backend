@@ -96,20 +96,6 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6 col-12 mt-3">
-                                    <label for="room_wek_price" class="form-label">Цена по праздникам:</label>
-
-                                    <div class="d-flex justify-content-start gap-0">
-                                        <div class="input-group flex-nowrap w-auto">
-                                            <label for="{{ form_rooms.weekend_price_from.id_for_label }}" class="input-group-text rounded-start" >{{ form_rooms.weekend_price_from.label }}</label>
-                                            {{ form_rooms.weekend_price_from }}
-                                        </div>
-                                        <div class="input-group flex-nowrap w-auto">
-                                            <label for="{{ form_rooms.weekend_price_until.id_for_label }}" class="input-group-text  rounded-0" >{{ form_rooms.weekend_price_until.label }}</label>
-                                            {{ form_rooms.weekend_price_until }}
-                                        </div>
-                                    </div>
-                                </div>
 
                             </div>
 
@@ -143,9 +129,6 @@
                             </th>
                             <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="default_price">
                                 Обычная цена <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
-                            </th>
-                            <th scope="col" class="text-nowrap col-hover" role="button" data-sortby="weekend_price">
-                                Праздничная цена <i class="fa-solid fa-arrow-down-short-wide text-c_yellow-700"></i>
                             </th>
                             <th scope="col" class="text-nowrap">
                                 Выбрать

@@ -11,18 +11,24 @@ from ..order.models import Order
 
 
 class Client(CustomUser):
-    # TODO: сделать прокси?
+    # TODO: сделать прокси
     def save(self, *args, **kwargs):
         if not self.pk:
             self.is_staff = False
 
         super().save(*args, **kwargs)
 
+    class Meta:
+        ordering = ['-id']
+
     def get_orders_count(self):
         return Order.objects.filter(client=self, date_canceled=None).count()
 
     def get_money_spent(self):
-        return Order.objects.filter(client=self, date_canceled=None).aggregate(Sum('paid'))['paid__sum']
+        spent = Order.objects.filter(client=self, date_canceled=None).aggregate(Sum('paid'))['paid__sum']
+        if spent:
+            return spent
+        return 0
 
     def get_admin_show_url(self):
         return reverse('admin_show_client', kwargs={'client_id': self.pk})

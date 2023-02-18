@@ -4,6 +4,7 @@
 - [Описание проекта](#описание-проекта)
 - [Инструкция по запуску](#инструкция-по-запуску)
 - [Скриншоты и описание клиентской части](#скриншоты-и-описание-клиентской-части)
+- [Скриншоты и описание админской части](#скриншоты-и-описание-админской-части)
 - [Оптимизация сайта](#оптимизация-сайта)
 
 ## Описание проекта
@@ -94,6 +95,42 @@ docker-compose up --build
 *p.s. реально смс в кодом не отправлятся, вместо этого она записывается в файл [sms_codes](./crystallake/sms_codes.txt)
 ![register_info](./screenshots/register_info.png)
 ![register_code](./screenshots/register_code.png)
+
+## Скриншоты и описание админской части
+Для каждой основной сущности присуствует своя собственная вкладка, на которой есть список элементов с возможностью филтрации и сортировки, страница просмотра сущности и редактирования
+Список заказов:
+![admin_orders](./screenshots/admin_orders.png)                         
+Просмотр информации о заказе:
+![admin_show_order](./screenshots/admin_show_order.png)   
+![admin_show_order_purchases](./screenshots/admin_show_order_puchases.png)   
+Редактирование заказа:
+![admin_edit_order](./screenshots/admin_edit_order.png)   
+![admin_edit_order_purchases](./screenshots/admin_edit_order_puchase.png)   
+
+Список номеров:
+![admin_rooms](./screenshots/admin_rooms.png)  
+Просмотр номера:
+![admin_show_room](./screenshots/admin_show_room.png)  
+![admin_show_room_photos](./screenshots/admin_room_photos.png)  
+Редактирование номера:
+![admin_edit_room](./screenshots/admin_edit_room.png)
+![admin_edit_room_photos](./screenshots/admin_edit_room_photos.png)  
+![admin_edit_room_additional](./screenshots/admin_edit_room_additional.png)  
+
+Услуги аналогичны номерам, за исключением формирования расписания:
+![admin_service_timetables](./screenshots/admin_service_timetables.png)
+
+Список клиентов:
+![admin_clients](./screenshots/admin_clients.png)  
+![admin_show_client](./screenshots/admin_show_client.png)  
+![admin_edit_client](./screenshots/admin_edit_client.png)  
+
+Сотрудники аналогичны клиентам, за исключением услуг, которые они могут оказывать:
+![admin_edit_worker](./screenshots/admin_edit_worker.png)  
+
+Список групп:
+![admin_groups](./screenshots/admin_groups.png)  
+![admin_edit_group](./screenshots/admin_edit_group.png)  
 
 ## Оптимизация сайта
 Все css и js файлы в режиме продакшена идут в минимизированном (сжатом формате), также на них настроен cache control продолжительностью ~ месяц.
